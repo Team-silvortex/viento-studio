@@ -76,3 +76,34 @@ test('same-job polling preserves historical sample selection while a new run res
 test('returning to an earlier backend identity cannot revive invalidated run observations',async()=>{
   const h=await fixture();const other=state();other.backend.version='0.24.0';await h.refresh(other);await h.refresh(state());assert.equal(h.el('Panel').hidden,true);
 });
+
+async function ownedAcceptance(h, input) {
+  const value=structuredClone(input), program=JSON.parse(h.element('projectBuildPhysicsReplayProgram').value);
+  value.latestBuild.sceneCount=1;value.latestBuild.scenes=[value.latestBuild.scenes[0]];value.latestBuild.physicsReplayAvailable=true;
+  value.job.physics={...snapshot(),samples:Array.from({length:30},(_,index)=>({...sample(index+1,{step:index+1}),timeSeconds:(index+1)/60,deltaSeconds:1/60}))};
+  value.job.physicsControl={program,complete:true,sha256:`sha256:${'d'.repeat(64)}`};
+  const definition={format:'viento-physics2d-replay-case',schemaVersion:1,program,checks:[{instanceId:id(20),stepIndex:14,contact:{exists:false,bodyId:id(40)}}]};
+  value.job.physicsVerification={definition,sha256:`sha256:${'e'.repeat(64)}`,evaluation:{status:'failed',checks:[{instanceId:id(20),stepIndex:14,passed:false,contact:{exists:false,bodyId:id(40),actual:true,passed:false}}]}};
+  h.element('projectBuildPhysicsCaseProgram').value=JSON.stringify(definition);h.element('projectBuildPhysicsCaseProgram').dispatch('input');
+  await h.refresh(value);return value;
+}
+
+test('acceptance-selected sample preserves the existing independent character and collider source guards',async()=>{
+  for(const kind of ['character','collider']){
+    const gate=deferred(),writes=[];let h;
+    h=await fixture(state(),{openSource:async(path,location,context)=>{h.context.busy=true;try{await gate.promise;if(!context.isCurrent())return false;writes.push(path);return true;}finally{h.context.busy=false;}}});
+    const accepted=await ownedAcceptance(h,state()),before=h.calls.length;
+    const button=h.element('projectBuildPhysicsCaseChecks').querySelector('.build-physics-case-sample');assert.ok(button);button.click();
+    assert.equal(h.el('Sample').value,'14');assert.equal(h.el('Detail').dataset.sequence,'14');assert.equal(h.calls.length,before);assert.equal(h.opened.length,0);
+    (kind==='character'?h.el('Open'):h.el('Contacts').querySelector('.project-physics-collider-source')).click();await flushDialogs();
+    const expected=source(kind==='character'?0:2);assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])),expected);assert.equal(h.opened[0][2].isCurrent(),true);
+    await h.refresh(structuredClone(accepted));assert.equal(h.opened[0][2].isCurrent(),true);gate.resolve();await flushDialogs();await flushDialogs();assert.deepEqual(writes,[expected.sourcePath]);
+  }
+});
+
+test('a new run revokes source reads opened explicitly from an acceptance-selected sample',async()=>{
+  const gate=deferred(),writes=[];let h;
+  h=await fixture(state(),{openSource:async(path,location,context)=>{h.context.busy=true;try{await gate.promise;if(!context.isCurrent())return false;writes.push(path);return true;}finally{h.context.busy=false;}}});
+  const accepted=await ownedAcceptance(h,state());h.element('projectBuildPhysicsCaseChecks').querySelector('.build-physics-case-sample').click();h.el('Open').click();await flushDialogs();
+  const next=structuredClone(accepted);next.job.id='run-next';await h.refresh(next);assert.equal(h.opened[0][2].isCurrent(),false);gate.resolve();await flushDialogs();assert.deepEqual(writes,[]);
+});

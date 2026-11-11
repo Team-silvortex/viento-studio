@@ -14,7 +14,7 @@ async function harness(options={}) {
  const prepare=(patch={})=>prepareScriptDraft(context(),{starterId:'godot-node',documentType:'notes',sourcePath:`${context().documentRoot}/scripts/hello.txt`,...patch});
  return{...h,reads,writes,templates,context,prepare};
 }
-for(const version of [2,3])for(const starterId of ['godot-node','godot-character-intent'])test(`script helper creates ${starterId} in workspace ${version}, then ordinary Save alone registers it`,async()=>{
+for(const version of [2,3])for(const starterId of ['godot-node','godot-character-intent','godot-planar-intent'])test(`script helper creates ${starterId} in workspace ${version}, then ordinary Save alone registers it`,async()=>{
  const h=await harness({version}),p=h.prepare({starterId}),before=clone(h.state.workspace),result=h.runtime.createScriptDraft(p);
  assert.equal(result.applied,true);assert.equal(h.state.isCreating,true);assert.equal(h.state.isEditing,true);assert.equal(h.state.editInputMode,'source');assert.equal(h.state.editHasUnsavedChanges,true);
  assert.equal(h.runtime.getCurrentEditContent(),p.content);assert.equal(h.element('docCreatePathInput').value,p.sourcePath);assert.equal(h.state.activeCreateType,'notes');assert.equal(h.state.activeEditSourceVersion,'');

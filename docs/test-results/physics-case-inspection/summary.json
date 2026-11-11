@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-04",
+  "baseCommit": "00c06ffe9bad9389f3d4aeb344064b07ec522bb6",
+  "sourceVersion": "0.2.8",
+  "delivery": "unreleased-working-tree",
+  "appCheck": {
+    "command": "npm run check -- --app-only",
+    "exitCode": 0,
+    "tests": 9015,
+    "pass": 8363,
+    "skip": 652,
+    "fail": 0,
+    "cancelled": 0,
+    "durationMs": 475287.713943,
+    "scope": "Full application check was started before the browser-discovered narrow-screen CSS and observer scroll-target fixes. Those final fixes were then rechecked by the complete 73-test targeted suite and the final real browser/Godot run; this is not a second full run of a frozen final snapshot."
+  },
+  "targetedFinal": {
+    "tests": 73,
+    "pass": 73,
+    "skip": 0,
+    "fail": 0,
+    "log": "unit-final.log"
+  },
+  "browserFinal": {
+    "report": "browser-request-diagnostic-2026-11-04/browser.json",
+    "ok": true,
+    "jobs": 5,
+    "authorFiles": 39,
+    "authorBytesUnchanged": true,
+    "staleClickWindows": 5,
+    "staleClickNonGetRequests": 0,
+    "sourceSnapshotUnchanged": true
+  },
+  "limitations": [
+    "Linux Chrome/HTTP and a native headless Godot tool only; installed application and other hosts/backends not tested.",
+    "Acceptance intentionally includes a failed position check; native execution succeeded and both actual samples were correctly selected.",
+    "Earlier unmatched non-GET request had no recorded cause; do not attribute it to a specific action."
+  ],
+  "sources": {
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/project-physics2d-replay-case.mjs": "1caca248e84429fce7f87546020a110e29ce64b8bc1f22f026bb887745c8c02c",
+    "engine/project-physics2d-observation-selection.mjs": "86ac1d8b5e759f7f3b83a103f3ae7ddef379b6cb5db2c16cc1383431d8a80498",
+    "engine/project-physics2d-input-replay.mjs": "7e6a3ea069ca751b17ee53fd3b723804a86c8895538a6dc12ca1ed5666cba453",
+    "engine/project-physics2d-replay-contract.mjs": "18b3e336fd19ea6c139ed5f5666784ec42921a7718ed69eaef80f9e7e8086fdd",
+    "web/modules/app-project-build.js": "2666f3e084f5a15db94883d431e6d8ed6b0dc30403dbe7336a153c5b4591d257",
+    "web/modules/app-project-physics-observation.js": "b577c541a8b00491090f3d607fa0f9277704578d4fe50eb0c0c815dc3145c88e",
+    "web/project-build.css": "97b7d605a79b39a2c85afafca05b644609dc9ca9c73e950842bd343f5880b1e1",
+    "web/i18n/en.js": "6c2bf1d7f6adf2c7df0716a95611a003cb03da41daacb4b3a599a5cd5be35189",
+    "web/i18n/ja.js": "22f1c48e1a96e045ae2e86c4de76475796301f2e134dd4d194b013bb6aba2b61",
+    "scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs": "fd9ff292c16246e4c4e7c757444e8cdbabe6112d8eabe9deb9d61105c94b6e75",
+    "scripts/tests/physics-case-inspection-smoke.mjs": "f92a507cfcff714d3c5d2fa56ceda4f7a54dd89593cd77dc1ac01bb04c7e5138",
+    "scripts/tests/dialog-harness.mjs": "1b96284356b3b192ecc42b5f3df95041c70cf3821e02a63ce7809552aded6064",
+    "scripts/tests/project-physics-case-ui.test.mjs": "f51f0d564ceb61654a32d65b2d274704fb17da77255c8b62aefacac61bce098b",
+    "scripts/tests/project-physics-observation-build-ui.test.mjs": "65389c8cb89aba0d4a9fe7a9f8e301882d3ec21aaa0be06add8d402bdfefd7d3",
+    "scripts/tests/project-physics-observation-ui.test.mjs": "eb76accdf75690409f9326854cd6f0a0927fbeaf3c4ea43fc0c99c6163ca580f",
+    "scripts/tests/project-physics2d-observation-selection.test.mjs": "024d32e7e0c659b0b889beb27845de0d49c61bd91fbfd0b26ee38816c79e9f4d"
+  }
+}

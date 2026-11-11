@@ -1,3 +1,4 @@
+import { GODOT_PLANAR_INTENT_SCRIPT } from './godot-planar-intent-script.mjs';
 import { GODOT_CHARACTER_INTENT_SCRIPT } from './godot-character-intent-script.mjs';
 import { GODOT_PLATFORM_CONTROL_SCRIPT } from './godot-platform-control-script.mjs';
 import { GODOT_PLATFORM_ENDPOINT_EVENTS_SCRIPT } from './godot-platform-endpoint-events-script.mjs';
@@ -6,6 +7,7 @@ import { GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT } from './godot-character-contact
 import { GODOT_CHARACTER_MOTION_EVENTS_SCRIPT } from './godot-character-motion-events-script.mjs';
 import { GODOT_PROJECT_EVENT_AUDIO_SCRIPT } from './godot-project-event-audio-script.mjs';
 import { GODOT_PHYSICS_SENSOR_SCRIPT } from './godot-physics-sensor-script.mjs';
+import { GODOT_PHYSICS_SENSOR_OCCUPANCY_SCRIPT } from './godot-physics-sensor-occupancy-script.mjs';
 // Known starters prepare ordinary text drafts. Saving, registration, scene
 // relationships, language services and execution belong to their own hosts.
 import { getCreatePathError } from './document-contract.mjs';
@@ -55,6 +57,8 @@ const starters = freeze([
     content: "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n" },
   { id: 'godot-physics-sensor', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 物理触发区',
     description: '绑定到物理触发区实例。进入和离开时发布项目事件，载荷为对方实例编号；事件名称可在行为参数中设置。', content: GODOT_PHYSICS_SENSOR_SCRIPT },
+  { id: 'godot-physics-sensor-occupancy', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 触发区占用',
+    description: '绑定到物理触发区实例。首个有效物理体进入时发布 occupied_event（默认 physics.occupied），最后一个离开或被移除时发布 vacant_event（默认 physics.vacant）；载荷为触发区自身实例编号。事件名留空禁用对应方向，双非空不能同名。按实际物理体对象去重，初始重叠也会纳入，同批变动合并为最终占用状态，不逐帧发布；关闭时清理且不补发离开。', content: GODOT_PHYSICS_SENSOR_OCCUPANCY_SCRIPT },
   { id: 'godot-character-motion-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色起跳与落地',
     description: '绑定到已启用重力与跳跃的角色实例，真实起跳、首次接触地面及之后重新着地时发布项目事件，载荷为自身实例编号。可用 jumped_event／landed_event 改名，留空禁用；退出时断开连接。', content: GODOT_CHARACTER_MOTION_EVENTS_SCRIPT },
   { id: 'godot-character-contact-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色移动碰撞',
@@ -84,6 +88,8 @@ const starters = freeze([
     content: DEFAULT_GODOT_ANIMATION_STATE_SCRIPT },
   { id: 'godot-character-intent', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色运动意图',
     description: '绑定到 controls 为 none 且启用重力与跳跃的角色实例。可在行为参数中设置 left_action、right_action 和 jump_action，默认使用 ui_left、ui_right 和 ui_accept；动作必须已在 Godot 注册，模板不会创建按键映射。每次物理回调提交左右输入与跳跃按键上升沿；每个项目步只采纳该角色首个请求，未收到请求时横向输入归零；不缓存空中跳跃。', content: GODOT_CHARACTER_INTENT_SCRIPT },
+  { id: 'godot-planar-intent', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 平面运动意图',
+    description: '绑定到 controls 为 none 且未启用重力的角色实例。left_action、right_action、up_action、down_action 默认使用 ui_left、ui_right、ui_up、ui_down，动作须已注册；模板不创建按键映射。每次物理回调提交二维方向，下一项目步只采纳该角色首个请求，对角线统一归一化，未提交时归零。只提供运动意图，不直接修改位置或绕过碰撞；退出时停止处理。', content: GODOT_PLANAR_INTENT_SCRIPT },
 ]);
 
 // Inspect own data descriptors before reading values. Unknown keys, accessors,

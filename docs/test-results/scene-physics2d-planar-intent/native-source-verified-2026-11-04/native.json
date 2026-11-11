@@ -1,0 +1,5685 @@
+{
+  "format": "viento-planar-intent-native-proof",
+  "schemaVersion": 1,
+  "startedAt": "2026-11-04T12:41:49.683Z",
+  "sources": {
+    "engine/godot-planar-intent-script.mjs": "7bf625aec66384c814f7f52d6e6e6578923d09731286e8d6f65ecab9ad83ed4f",
+    "engine/script-authoring.mjs": "f0682f1e1ebb7b004e3c3e74d3965f582c4c6146c89371a0275931ecfbfcf8c7",
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/scene-physics2d.mjs": "15e58fd34e3352cfaa93f7fafff45fc6809ef508e621e0a151fc289bcb2aa58c",
+    "scripts/backends/godot4-adapter.mjs": "9fe4a1c9f1f04de0afe2f333b1b105912cb54469627363b9fe2d7444a03c3c81",
+    "scripts/backends/godot4-physics-planar-intent-projection.mjs": "2ba1933f67fc7511252f76100b32ff195b18359548997648c9f114d9eeba8128",
+    "scripts/backends/godot4-physics-planar-intent.mjs": "8d9c7f525e2980997ab72dc6a153fb49681453d79752c936e1a263666da306ed",
+    "scripts/backends/godot4-physics-planar-intent-inventory.mjs": "3e9fb05b284cd190d5a813d815f5f3eb0c49a3a6cd7eb29a61fd8aa71a3cd612",
+    "scripts/backends/godot4-input-map.mjs": "26734c72ad02d1a8b84c57c0e45aa02f997d951148a0c0e091b2fcfa9a6fd9b7",
+    "scripts/backends/godot4/physics-planar-intent-helper.gd": "6c3bb8f36542fc1265ab15dd2c5f4d55c2a7e3deda5145e24a9c0dbdfce3d24f",
+    "scripts/backends/godot4/physics-planar-intent-port.gd": "bf91944f7aa6c7b3dc4665968588f25d70559bad66f7df406f60dc369591a561",
+    "scripts/backends/godot4/physics-planar-intent-scene.gd": "a91f06626374abbcb6cf8ec5f69b2fce0b924a05f968a026292e84ab8eca6ffe",
+    "engine/project-input-map.mjs": "516307e5aa03cc4a3673b745291b5721a8ca7536076637949dd03784da61705c",
+    "scripts/adapters/node-project-build.mjs": "45019753057954697f10bee01790c8cdcb1d54c5d4cd9f20d92b7ed5158dfdda",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-backend-project.mjs": "18c87cb33ee032ed6f73e2e80147e64866c28241b43f9d2aa23e96cd5275a749",
+    "scripts/adapters/node-backend-project-delivery.mjs": "7bd862e5dd2fd86f8ac11172ce63cb426f71b5bace1ea9c8211385f85fd4d427",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/tests/helpers/scene-physics2d-planar-intent-author-fixture.mjs": "3ce16d3dbb07aaf461414661adbe3c823cc030a82c0e55d224dd3b943382e14d",
+    "scripts/tests/scene-physics2d-planar-intent-smoke.mjs": "3ce9113d297bd3f37aa4e0b441a9340dd2e823d31a1dd587018a6e6ca3b8e3ce"
+  },
+  "cases": [
+    {
+      "name": "shared-source-two-instances-migration-and-offline-delivery",
+      "passed": true,
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.41.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d",
+          "physics.observe2d",
+          "physics.character-motion2d",
+          "physics.character-events2d",
+          "physics.one-way-platform2d",
+          "physics.character-contacts2d",
+          "physics.character-drop-through2d",
+          "physics.platform-motion2d",
+          "physics.platform-events2d",
+          "runtime.execution-clock",
+          "runtime.execution-frames",
+          "runtime.audio-requests",
+          "physics.character-intent2d",
+          "physics.platform-vertical2d",
+          "physics.platform-control2d",
+          "physics.planar-intent2d",
+          "project.input-map"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "c0ec79342a60c8330a597ce1cd231d30efdc51988a1d4a5a7d5ba57fc1292ffe"
+      },
+      "authorFiles": 57,
+      "authorSha256": "9ab5b1f54cb06f0d612dd4f12688e2c1353485dc0fa2e6bcbbaea4c580a21c31",
+      "authorUnchanged": true,
+      "generatedUnchanged": true,
+      "sharedActorObjectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "instanceIds": [
+        "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "79797979-7979-4979-8979-000000000003"
+      ],
+      "gravityInstanceId": "96969696-9696-4696-8696-000000000001",
+      "authoredMotion": {
+        "first": [
+          {
+            "stepIndex": 1,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              102.82843017578125,
+              102.82843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 2,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              105.6568603515625,
+              105.6568603515625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 3,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              108.48529052734375,
+              108.48529052734375
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 4,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              111.313720703125,
+              111.313720703125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 5,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              114.14215087890625,
+              114.14215087890625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 6,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              116.9705810546875,
+              116.9705810546875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 7,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              119.79901123046875,
+              119.79901123046875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 8,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              122.62744140625,
+              122.62744140625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 9,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              125.45587158203125,
+              125.45587158203125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 10,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              128.2843017578125,
+              128.2843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 11,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              1.7125244140625,
+              1.7125244140625
+            ],
+            "positionAfter": [
+              129.996826171875,
+              129.996826171875
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.00787353515625
+                ],
+                "remainder": [
+                  1.1159027814865112,
+                  1.1159027814865112
+                ],
+                "travel": [
+                  1.7125245332717896,
+                  1.7125245332717896
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 12,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0332489013671875,
+              0.0332489013671875
+            ],
+            "positionAfter": [
+              130.0300750732422,
+              130.0300750732422
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.07417297363281
+                ],
+                "remainder": [
+                  2.7951786518096924,
+                  2.7951786518096924
+                ],
+                "travel": [
+                  0.0332486592233181,
+                  0.0332486592233181
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 13,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.01690673828125,
+              0.01690673828125
+            ],
+            "positionAfter": [
+              130.04698181152344,
+              130.04698181152344
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.107421875
+                ],
+                "remainder": [
+                  2.81152081489563,
+                  2.81152081489563
+                ],
+                "travel": [
+                  0.01690649427473545,
+                  0.01690649427473545
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 14,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0085906982421875,
+              0.0085906982421875
+            ],
+            "positionAfter": [
+              130.05557250976562,
+              130.05557250976562
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.12432861328125
+                ],
+                "remainder": [
+                  2.8198368549346924,
+                  2.8198368549346924
+                ],
+                "travel": [
+                  0.008590453304350376,
+                  0.008590453304350376
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 15,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.004364013671875,
+              0.004364013671875
+            ],
+            "positionAfter": [
+              130.0599365234375,
+              130.0599365234375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.13291931152344
+                ],
+                "remainder": [
+                  2.8240559101104736,
+                  2.8240559101104736
+                ],
+                "travel": [
+                  0.004371397662907839,
+                  0.004371397662907839
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 16,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.064605712890625,
+              0.0690460205078125
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              130.1289825439453
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.13728332519531
+                ],
+                "remainder": [
+                  2.759373903274536,
+                  2.759373903274536
+                ],
+                "travel": [
+                  -0.06459832936525345,
+                  0.06905340403318405
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 17,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              134.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 18,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              138.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 19,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              142.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 20,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 21,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 22,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 23,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 24,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 25,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 26,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 27,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 28,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 29,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 30,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          }
+        ],
+        "second": [
+          {
+            "stepIndex": 1,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              102.82843017578125,
+              302.82843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 2,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              105.6568603515625,
+              305.6568603515625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 3,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              108.48529052734375,
+              308.48529052734375
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 4,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              111.313720703125,
+              311.313720703125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 5,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              114.14215087890625,
+              314.14215087890625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 6,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              116.9705810546875,
+              316.9705810546875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 7,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              119.79901123046875,
+              319.79901123046875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 8,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              122.62744140625,
+              322.62744140625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 9,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              125.45587158203125,
+              325.45587158203125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 10,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              128.2843017578125,
+              328.2843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 11,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              1.7125244140625,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.996826171875,
+              331.11273193359375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  320.00787353515625
+                ],
+                "remainder": [
+                  1.1159027814865112,
+                  1.1159027814865112
+                ],
+                "travel": [
+                  1.7125245332717896,
+                  1.7125245332717896
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 12,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.071044921875,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.92578125,
+              333.9411315917969
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  321.1900634765625
+                ],
+                "remainder": [
+                  2.7951786518096924,
+                  2.7951786518096924
+                ],
+                "travel": [
+                  0.0332486592233181,
+                  0.0332486592233181
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 13,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.06817626953125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.99395751953125,
+              336.7695617675781
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  324.0184631347656
+                ],
+                "remainder": [
+                  2.76025128364563,
+                  2.76025128364563
+                ],
+                "travel": [
+                  0.0681760311126709,
+                  0.0681760311126709
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 14,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.068206787109375,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              339.5979919433594
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  326.8468933105469
+                ],
+                "remainder": [
+                  2.793767213821411,
+                  2.793767213821411
+                ],
+                "travel": [
+                  0.03466009721159935,
+                  0.03466009721159935
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 15,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              342.4263916015625
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  329.6753234863281
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 16,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              345.25482177734375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  332.50372314453125
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 17,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              348.0832214355469
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  335.3321533203125
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 18,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              350.9116516113281
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  338.1605529785156
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 19,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              353.74005126953125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  340.9889831542969
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 20,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              356.5684814453125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  343.8173828125
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 21,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              359.3968811035156
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  346.64581298828125
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 22,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              362.2253112792969
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  349.4742126464844
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 23,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              365.0537109375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  352.3026428222656
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 24,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              367.88214111328125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  355.13104248046875
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 25,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "documents/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  357.95947265625
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 26,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 27,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 28,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 29,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 30,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          }
+        ],
+        "gravityFirst": {
+          "bodyId": "96969696-9696-4696-8696-000000000002",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "96969696-9696-4696-8696-000000000001",
+          "positionAfter": [
+            504,
+            100.27222442626953
+          ],
+          "positionBefore": [
+            500,
+            100
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            4,
+            0.27222225069999695
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stepIndex": 1,
+          "timeSeconds": 0.016666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+            "propertyPath": "/bodies/6",
+            "sourceRange": {
+              "start": 2538,
+              "end": 3051,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/6",
+              "exact": true
+            }
+          },
+          "displacement": [
+            4,
+            0.27222442626953125
+          ]
+        },
+        "gravityLast": {
+          "bodyId": "96969696-9696-4696-8696-000000000002",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "96969696-9696-4696-8696-000000000001",
+          "positionAfter": [
+            564,
+            226.58334350585938
+          ],
+          "positionBefore": [
+            564,
+            218.4166717529297
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            8.166668891906738
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 90,
+          "stepIndex": 30,
+          "timeSeconds": 0.49999999999999994,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+            "propertyPath": "/bodies/6",
+            "sourceRange": {
+              "start": 2538,
+              "end": 3051,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/6",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            8.166671752929688
+          ]
+        },
+        "wallBodyId": "70707070-7070-4070-8070-000000000012"
+      },
+      "restoredMotion": {
+        "first": [
+          {
+            "stepIndex": 1,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              102.82843017578125,
+              102.82843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 2,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              105.6568603515625,
+              105.6568603515625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 3,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              108.48529052734375,
+              108.48529052734375
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 4,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              111.313720703125,
+              111.313720703125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 5,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              114.14215087890625,
+              114.14215087890625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 6,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              116.9705810546875,
+              116.9705810546875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 7,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              119.79901123046875,
+              119.79901123046875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 8,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              122.62744140625,
+              122.62744140625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 9,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              125.45587158203125,
+              125.45587158203125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 10,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              128.2843017578125,
+              128.2843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 11,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              1.7125244140625,
+              1.7125244140625
+            ],
+            "positionAfter": [
+              129.996826171875,
+              129.996826171875
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.00787353515625
+                ],
+                "remainder": [
+                  1.1159027814865112,
+                  1.1159027814865112
+                ],
+                "travel": [
+                  1.7125245332717896,
+                  1.7125245332717896
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 12,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0332489013671875,
+              0.0332489013671875
+            ],
+            "positionAfter": [
+              130.0300750732422,
+              130.0300750732422
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.07417297363281
+                ],
+                "remainder": [
+                  2.7951786518096924,
+                  2.7951786518096924
+                ],
+                "travel": [
+                  0.0332486592233181,
+                  0.0332486592233181
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 13,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.01690673828125,
+              0.01690673828125
+            ],
+            "positionAfter": [
+              130.04698181152344,
+              130.04698181152344
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.107421875
+                ],
+                "remainder": [
+                  2.81152081489563,
+                  2.81152081489563
+                ],
+                "travel": [
+                  0.01690649427473545,
+                  0.01690649427473545
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 14,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0085906982421875,
+              0.0085906982421875
+            ],
+            "positionAfter": [
+              130.05557250976562,
+              130.05557250976562
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.12432861328125
+                ],
+                "remainder": [
+                  2.8198368549346924,
+                  2.8198368549346924
+                ],
+                "travel": [
+                  0.008590453304350376,
+                  0.008590453304350376
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 15,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.004364013671875,
+              0.004364013671875
+            ],
+            "positionAfter": [
+              130.0599365234375,
+              130.0599365234375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.13291931152344
+                ],
+                "remainder": [
+                  2.8240559101104736,
+                  2.8240559101104736
+                ],
+                "travel": [
+                  0.004371397662907839,
+                  0.004371397662907839
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 16,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.064605712890625,
+              0.0690460205078125
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              130.1289825439453
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.13728332519531
+                ],
+                "remainder": [
+                  2.759373903274536,
+                  2.759373903274536
+                ],
+                "travel": [
+                  -0.06459832936525345,
+                  0.06905340403318405
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 17,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              134.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 18,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              138.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 19,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              142.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 20,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 21,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 22,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 23,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 24,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 25,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 26,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 27,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 28,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 29,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 30,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          }
+        ],
+        "second": [
+          {
+            "stepIndex": 1,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              102.82843017578125,
+              302.82843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 2,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              105.6568603515625,
+              305.6568603515625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 3,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              108.48529052734375,
+              308.48529052734375
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 4,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              111.313720703125,
+              311.313720703125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 5,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              114.14215087890625,
+              314.14215087890625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 6,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              116.9705810546875,
+              316.9705810546875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 7,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              119.79901123046875,
+              319.79901123046875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 8,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              122.62744140625,
+              322.62744140625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 9,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              125.45587158203125,
+              325.45587158203125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 10,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              128.2843017578125,
+              328.2843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 11,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              1.7125244140625,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.996826171875,
+              331.11273193359375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  320.00787353515625
+                ],
+                "remainder": [
+                  1.1159027814865112,
+                  1.1159027814865112
+                ],
+                "travel": [
+                  1.7125245332717896,
+                  1.7125245332717896
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 12,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.071044921875,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.92578125,
+              333.9411315917969
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  321.1900634765625
+                ],
+                "remainder": [
+                  2.7951786518096924,
+                  2.7951786518096924
+                ],
+                "travel": [
+                  0.0332486592233181,
+                  0.0332486592233181
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 13,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.06817626953125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.99395751953125,
+              336.7695617675781
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  324.0184631347656
+                ],
+                "remainder": [
+                  2.76025128364563,
+                  2.76025128364563
+                ],
+                "travel": [
+                  0.0681760311126709,
+                  0.0681760311126709
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 14,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.068206787109375,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              339.5979919433594
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  326.8468933105469
+                ],
+                "remainder": [
+                  2.793767213821411,
+                  2.793767213821411
+                ],
+                "travel": [
+                  0.03466009721159935,
+                  0.03466009721159935
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 15,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              342.4263916015625
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  329.6753234863281
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 16,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              345.25482177734375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  332.50372314453125
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 17,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              348.0832214355469
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  335.3321533203125
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 18,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              350.9116516113281
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  338.1605529785156
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 19,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              353.74005126953125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  340.9889831542969
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 20,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              356.5684814453125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  343.8173828125
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 21,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              359.3968811035156
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  346.64581298828125
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 22,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              362.2253112792969
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  349.4742126464844
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 23,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              365.0537109375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  352.3026428222656
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 24,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              367.88214111328125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  355.13104248046875
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 25,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  357.95947265625
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 26,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 27,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 28,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 29,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 30,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          }
+        ],
+        "gravityFirst": {
+          "bodyId": "96969696-9696-4696-8696-000000000002",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "96969696-9696-4696-8696-000000000001",
+          "positionAfter": [
+            504,
+            100.27222442626953
+          ],
+          "positionBefore": [
+            500,
+            100
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            4,
+            0.27222225069999695
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stepIndex": 1,
+          "timeSeconds": 0.016666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "design-data/physics/scene-0.json",
+            "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+            "propertyPath": "/bodies/6",
+            "sourceRange": {
+              "start": 2538,
+              "end": 3051,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/6",
+              "exact": true
+            }
+          },
+          "displacement": [
+            4,
+            0.27222442626953125
+          ]
+        },
+        "gravityLast": {
+          "bodyId": "96969696-9696-4696-8696-000000000002",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "96969696-9696-4696-8696-000000000001",
+          "positionAfter": [
+            564,
+            226.58334350585938
+          ],
+          "positionBefore": [
+            564,
+            218.4166717529297
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            8.166668891906738
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 90,
+          "stepIndex": 30,
+          "timeSeconds": 0.49999999999999994,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "design-data/physics/scene-0.json",
+            "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+            "propertyPath": "/bodies/6",
+            "sourceRange": {
+              "start": 2538,
+              "end": 3051,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/6",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            8.166671752929688
+          ]
+        },
+        "wallBodyId": "70707070-7070-4070-8070-000000000012"
+      },
+      "offlineMotion": {
+        "first": [
+          {
+            "stepIndex": 1,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              102.82843017578125,
+              102.82843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 2,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              105.6568603515625,
+              105.6568603515625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 3,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              108.48529052734375,
+              108.48529052734375
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 4,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              111.313720703125,
+              111.313720703125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 5,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              114.14215087890625,
+              114.14215087890625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 6,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              116.9705810546875,
+              116.9705810546875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 7,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              119.79901123046875,
+              119.79901123046875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 8,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              122.62744140625,
+              122.62744140625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 9,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              125.45587158203125,
+              125.45587158203125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 10,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              128.2843017578125,
+              128.2843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 11,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              1.7125244140625,
+              1.7125244140625
+            ],
+            "positionAfter": [
+              129.996826171875,
+              129.996826171875
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.00787353515625
+                ],
+                "remainder": [
+                  1.1159027814865112,
+                  1.1159027814865112
+                ],
+                "travel": [
+                  1.7125245332717896,
+                  1.7125245332717896
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 12,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0332489013671875,
+              0.0332489013671875
+            ],
+            "positionAfter": [
+              130.0300750732422,
+              130.0300750732422
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.07417297363281
+                ],
+                "remainder": [
+                  2.7951786518096924,
+                  2.7951786518096924
+                ],
+                "travel": [
+                  0.0332486592233181,
+                  0.0332486592233181
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 13,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.01690673828125,
+              0.01690673828125
+            ],
+            "positionAfter": [
+              130.04698181152344,
+              130.04698181152344
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.107421875
+                ],
+                "remainder": [
+                  2.81152081489563,
+                  2.81152081489563
+                ],
+                "travel": [
+                  0.01690649427473545,
+                  0.01690649427473545
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 14,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0085906982421875,
+              0.0085906982421875
+            ],
+            "positionAfter": [
+              130.05557250976562,
+              130.05557250976562
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.12432861328125
+                ],
+                "remainder": [
+                  2.8198368549346924,
+                  2.8198368549346924
+                ],
+                "travel": [
+                  0.008590453304350376,
+                  0.008590453304350376
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 15,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.004364013671875,
+              0.004364013671875
+            ],
+            "positionAfter": [
+              130.0599365234375,
+              130.0599365234375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.13291931152344
+                ],
+                "remainder": [
+                  2.8240559101104736,
+                  2.8240559101104736
+                ],
+                "travel": [
+                  0.004371397662907839,
+                  0.004371397662907839
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 16,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.064605712890625,
+              0.0690460205078125
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              130.1289825439453
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  120.13728332519531
+                ],
+                "remainder": [
+                  2.759373903274536,
+                  2.759373903274536
+                ],
+                "travel": [
+                  -0.06459832936525345,
+                  0.06905340403318405
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 17,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              134.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 18,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              138.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 19,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              142.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 20,
+            "requestedMotion": [
+              0,
+              4
+            ],
+            "displacement": [
+              0,
+              4
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 21,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 22,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 23,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 24,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 25,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 26,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 27,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 28,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 29,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 30,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.99533081054688,
+              146.1289825439453
+            ],
+            "contacts": []
+          }
+        ],
+        "second": [
+          {
+            "stepIndex": 1,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              102.82843017578125,
+              302.82843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 2,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              105.6568603515625,
+              305.6568603515625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 3,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              108.48529052734375,
+              308.48529052734375
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 4,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              111.313720703125,
+              311.313720703125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 5,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              114.14215087890625,
+              314.14215087890625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 6,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              116.9705810546875,
+              316.9705810546875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 7,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              119.79901123046875,
+              319.79901123046875
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 8,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              122.62744140625,
+              322.62744140625
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 9,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              125.45587158203125,
+              325.45587158203125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 10,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              2.82843017578125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              128.2843017578125,
+              328.2843017578125
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 11,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              1.7125244140625,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.996826171875,
+              331.11273193359375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  320.00787353515625
+                ],
+                "remainder": [
+                  1.1159027814865112,
+                  1.1159027814865112
+                ],
+                "travel": [
+                  1.7125245332717896,
+                  1.7125245332717896
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 12,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.071044921875,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.92578125,
+              333.9411315917969
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  321.1900634765625
+                ],
+                "remainder": [
+                  2.7951786518096924,
+                  2.7951786518096924
+                ],
+                "travel": [
+                  0.0332486592233181,
+                  0.0332486592233181
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 13,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.06817626953125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.99395751953125,
+              336.7695617675781
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  324.0184631347656
+                ],
+                "remainder": [
+                  2.76025128364563,
+                  2.76025128364563
+                ],
+                "travel": [
+                  0.0681760311126709,
+                  0.0681760311126709
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 14,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.068206787109375,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              339.5979919433594
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  326.8468933105469
+                ],
+                "remainder": [
+                  2.793767213821411,
+                  2.793767213821411
+                ],
+                "travel": [
+                  0.03466009721159935,
+                  0.03466009721159935
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 15,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              342.4263916015625
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  329.6753234863281
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 16,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              345.25482177734375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  332.50372314453125
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 17,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              348.0832214355469
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  335.3321533203125
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 18,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              350.9116516113281
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  338.1605529785156
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 19,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              353.74005126953125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  340.9889831542969
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 20,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              356.5684814453125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  343.8173828125
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 21,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              359.3968811035156
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  346.64581298828125
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 22,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              362.2253112792969
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  349.4742126464844
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 23,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              365.0537109375
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  352.3026428222656
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 24,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              -0.0681915283203125,
+              2.82843017578125
+            ],
+            "positionAfter": [
+              129.92575073242188,
+              367.88214111328125
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  355.13104248046875
+                ],
+                "remainder": [
+                  2.79375958442688,
+                  2.79375958442688
+                ],
+                "travel": [
+                  0.0346677266061306,
+                  0.0346677266061306
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 25,
+            "requestedMotion": [
+              2.828427314758301,
+              2.828427314758301
+            ],
+            "displacement": [
+              0.0681915283203125,
+              2.828399658203125
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": [
+              {
+                "collider": {
+                  "bodyId": "70707070-7070-4070-8070-000000000012",
+                  "instanceId": "70707070-7070-4070-8070-000000000003",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "70707070-7070-4070-8070-000000000001",
+                    "sourcePath": "design-data/physics/scene-0.json",
+                    "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+                    "propertyPath": "/bodies/2",
+                    "sourceRange": {
+                      "start": 846,
+                      "end": 1176,
+                      "encoding": "utf-16",
+                      "propertyPath": "/bodies/2",
+                      "exact": true
+                    }
+                  }
+                },
+                "normal": [
+                  -1,
+                  0
+                ],
+                "position": [
+                  140,
+                  357.95947265625
+                ],
+                "remainder": [
+                  2.7602360248565674,
+                  2.7602360248565674
+                ],
+                "travel": [
+                  0.0681912899017334,
+                  0.0681912899017334
+                ]
+              }
+            ]
+          },
+          {
+            "stepIndex": 26,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 27,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 28,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 29,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          },
+          {
+            "stepIndex": 30,
+            "requestedMotion": [
+              0,
+              0
+            ],
+            "displacement": [
+              0,
+              0
+            ],
+            "positionAfter": [
+              129.9939422607422,
+              370.7105407714844
+            ],
+            "contacts": []
+          }
+        ],
+        "gravityFirst": {
+          "bodyId": "96969696-9696-4696-8696-000000000002",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "96969696-9696-4696-8696-000000000001",
+          "positionAfter": [
+            504,
+            100.27222442626953
+          ],
+          "positionBefore": [
+            500,
+            100
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            4,
+            0.27222225069999695
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stepIndex": 1,
+          "timeSeconds": 0.016666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "design-data/physics/scene-0.json",
+            "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+            "propertyPath": "/bodies/6",
+            "sourceRange": {
+              "start": 2538,
+              "end": 3051,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/6",
+              "exact": true
+            }
+          },
+          "displacement": [
+            4,
+            0.27222442626953125
+          ]
+        },
+        "gravityLast": {
+          "bodyId": "96969696-9696-4696-8696-000000000002",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "96969696-9696-4696-8696-000000000001",
+          "positionAfter": [
+            564,
+            226.58334350585938
+          ],
+          "positionBefore": [
+            564,
+            218.4166717529297
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            8.166668891906738
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 90,
+          "stepIndex": 30,
+          "timeSeconds": 0.49999999999999994,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "design-data/physics/scene-0.json",
+            "sourceRevision": "sha256:f36f3ccd96f9a0bdaf9d77f6eac70ceb5281fde2e06b5eb8a6625a4685d7f4f1",
+            "propertyPath": "/bodies/6",
+            "sourceRange": {
+              "start": 2538,
+              "end": 3051,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/6",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            8.166671752929688
+          ]
+        },
+        "wallBodyId": "70707070-7070-4070-8070-000000000012"
+      },
+      "existingSubsystems": {
+        "sensorEvent": {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "96969696-9696-4696-8696-000000000001",
+          "visitIndex": 1
+        },
+        "platformExit": {
+          "instanceId": "79797979-7979-4979-8979-000000000001",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            800,
+            424
+          ],
+          "state": "idle"
+        }
+      },
+      "offlineExistingSubsystems": {
+        "sensorEvent": {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "96969696-9696-4696-8696-000000000001",
+          "visitIndex": 1
+        },
+        "platformExit": {
+          "instanceId": "79797979-7979-4979-8979-000000000001",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            800,
+            424
+          ],
+          "state": "idle"
+        }
+      },
+      "buildPhases": [
+        {
+          "phase": "import",
+          "status": "succeeded"
+        },
+        {
+          "phase": "script-check",
+          "status": "succeeded"
+        }
+      ],
+      "importedDocuments": 19,
+      "scriptSha256": "f175c15f5101c54953da2098f05ec9663a75840e0ef4487e5f4188d9c266ba33",
+      "manifestSha256": "d3922dec36fc19c58b8854378ffd42bf775e58ff70e2a629e9299b8e1fe4c46d",
+      "package": {
+        "bytes": 70909,
+        "sha256": "58a12d496c0ce0099887d1407fa5f481a27f86543b82bf009be731edc7d910aa"
+      },
+      "delivery": {
+        "bytes": 302733,
+        "sha256": "2ae2fa262b59c5431614623f4db2d192d2fca848816faeb29f0d62a80fdf8d64",
+        "originalAuthorOffline": true,
+        "restoredAuthorOffline": true,
+        "originalBuildOffline": true
+      }
+    }
+  ],
+  "limitations": [
+    "Real Linux Godot headless run with ordinary saved author TXT; no installed Tauri, Android, window rendering or Bevy claim.",
+    "The p2 actions are defined in the saved project input map; a disposable authored test driver injects action states, not real keyboard-device events. No physics or runtime events are synthesized.",
+    "Selective resource packages preserve starter bytes, typed parameters and source relationships; destination type/template declarations are explicitly seeded."
+  ],
+  "tool": {
+    "executable": "<toolchains>/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+    "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "passed": 1,
+  "failed": 0,
+  "finishedAt": "2026-11-04T12:42:29.568Z"
+}

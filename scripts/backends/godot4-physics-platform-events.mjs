@@ -1,3 +1,4 @@
+import { validateGodotPlanarIntentInventory } from './godot4-physics-planar-intent-inventory.mjs';
 // Visit-local endpoint facts extend, but never rewrite, the frozen .30 motion
 // implementation. The author decides whether to publish finite project events.
 import fs from 'node:fs/promises';
@@ -40,6 +41,7 @@ export async function godotPhysicsPlatformEventsAssemblyScripts(directory, signa
   const read = async (name, limit = 65536) => readBuildFile(await resolveContainedPath(directory, path.join(directory, name)), limit, signal);
   const optional = async (name, limit) => { try { return await read(name, limit); } catch (error) { if (error.code === 'ENOENT') return null; invalid(); } };
   try {
+    const planar = await validateGodotPlanarIntentInventory(directory, signal);
     const controls = await validateGodotPlatformControlInventory(directory, signal);
     const vertical = await validateGodotPlatformVerticalInventory(directory, signal);
     const inventory = await optional('platform-events-project.json', 8192), helper = await optional('platform-events-helper.gd'), port = await optional('platform-events-port.gd');
@@ -47,7 +49,7 @@ export async function godotPhysicsPlatformEventsAssemblyScripts(directory, signa
     const selected = [], added = [], wrapper = (await fs.readFile(sourceURL('scene'))).toString();
     for (const row of rows) {
       const id = row.sceneId, prefix = `scenes/${id}`, original = await optional(`${prefix}/platform-events-original.tscn`), scene = await optional(`${prefix}/platform-events-scene.gd`);
-      const main = vertical?.mains.get(id) || controls?.mains.get(id) || await read(`${prefix}/main.tscn`), motion = await optional(`${prefix}/platform-motion.json`);
+      const main = vertical?.mains.get(id) || controls?.mains.get(id) || planar?.mains.get(id) || await read(`${prefix}/main.tscn`), motion = await optional(`${prefix}/platform-motion.json`);
       const touched = original !== null || scene !== null || main.includes('platform-events');
       if (inventory === null) { if (touched) invalid(); continue; }
       if (motion === null) { if (touched) invalid(); continue; }

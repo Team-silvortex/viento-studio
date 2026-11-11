@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。已发布源码版本为 **0.2.8**，工作树可能另有未发布改动；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.2.9**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.2.9.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -110,6 +110,8 @@
 | `project-animation-*.mjs`／`project-event-review.mjs` | 有界账本、完整观察准入、来源关联和独立回看模型；不使用当前作者文件补造冻结事实 |
 | `scene-physics2d.mjs`／`scene-physics2d-edit.mjs` | Rust 声明检查、显式关系子计划与原文编辑；目标、空间目录和执行能力分开 |
 | `project-physics2d-trace.mjs` | 独立物理观察流准入、冻结身份／来源映射、访问次序与256样本预算；只读快照不改作者声明或既有运行对象坐标 |
+| `project-physics2d-observation-selection.mjs` | 以当前宿主所有者与已准入观察核对精确样本身份，返回实例／步骤／序号选择；不执行验收、导航、I/O 或作者写入 |
+| `project-physics2d-sample-diagram.mjs` | 将完整准入观察中的精确样本投影为冻结的等比相对端点、接触点与单位法线；保留原数值，不推测轨迹或作者几何 |
 | `scene-physics2d-targets.mjs` | 保存态实例目录与精确 source5 品牌、所有体的成员核对；Apply 前目录重读由宿主负责 |
 
 动画 schema 4 的逐实例运行、旧整场景协议兼容与目标时钟见[正式运行边界](../docs/ARCHITECTURE.md#逐实例正式动画运行边界)。声音、动画、物理的首次创建分别由 `world-audio-create.mjs`、`world-animation-create.mjs`、`world-physics2d-create.mjs` 规划，三文件事务在宿主执行，不借编辑提案直接落盘。
@@ -411,6 +413,10 @@ Android 的 `mobile/platform.mjs` 在 WebView 复用可移植规则，Rust `mobi
 
 `godot-platform-control-script.mjs` 提供0.2.8收录的普通 Godot TXT 起始源码：按 `initial_running` 和项目事件请求本平台启停，可选用 `instance_id` 过滤载荷；受竞争拒绝时保留最新期望并在物理回调重试。行为局部 `viento_platform_control` 版本 1 的首个有效请求在下一物理步应用；读取的是作者开关，不证明实际位移。Godot 实际移动平台由 0.40.0 层提供可选 `physics.platform-control2d`，不改变作者格式、Rust／WASM 或项目／观察协议；语义与保存流程见[事件控制平台](../docs/SCENE_PHYSICS2D.md#用事件控制平台启停)。
 
+0.2.9 收录的 `godot-physics-sensor-occupancy-script.mjs` 是独立普通作者模板：只读真实 Area2D 重叠与对象生命周期，按实际物理体对象去重，合并派发空／非空边沿，通过既有项目事件发送触发区自身 UUID。初始重叠、暂停最终状态与断开清理单独处理；不读取生成场景的私有 actors／物理目录，不自称完成登记认证。模板创建、普通保存和绑定仍由各自宿主负责，不增加中立物理求解或执行协议。操作见[多对象压力板](../docs/SCENE_PHYSICS2D.md#多对象压力板与触发区占用)。
+
+0.2.9 收录的 `godot-planar-intent-script.mjs` 是普通作者起始源码，通过四个动作名向行为局部 `viento_planar_intent` v1 提交二维标量。它不持有碰撞求解、生成节点目录或作者存储；原样官方源码才参与四个输入动作参数的非阻断诊断，自定义代码不据此推断语义。Godot 0.41.0 后端以独立 `physics.planar-intent2d` 能力授予无重力、`controls: none` 的物理角色；首请求、归一化与生命周期由运行实现负责，旧重力意图合同保持。见[自由平面角色](../docs/SCENE_PHYSICS2D.md#用行为脚本驱动自由平面角色)。
+
 `godot-character-drop-through-script.mjs` 把已有输入动作的按键边沿转换为自身 `viento_character_drop.request_drop()`，只有 `drop_action` 参数。端口拒绝是正常玩法结果；几何支撑、例外恢复和生命周期由独立Godot控制器负责，脚本不承担移动、碰撞查询或文件保存。见[主动下穿](../docs/SCENE_PHYSICS2D.md#从单向平台主动下穿)。
 
 `godot-platform-endpoint-events-script.mjs` 是普通TXT起始内容，严格核对 `viento_platform_events` 版本1、零参起点／终点信号和本实例身份。`origin_event`／`destination_event` 空名各自禁用，发布载荷为平台UUID。运行端每端每项目步合并通知，不在脚本中轮询位置、推进轨迹或管理物理句柄；现有项目事件预算保持。见[平台端点事件](../docs/SCENE_PHYSICS2D.md#用平台端点事件驱动动画与声音)。
@@ -455,3 +461,15 @@ Node将快照保存到会话与任务接口，原业务协议保持。含音轨G
 默认保留按发布sequence最新32条已结清发布加全部未决发布，零接收者发布立即结清；部分投递完成也会保留整份未决条目的已确认位置。原始尾部移出不丢失这些证据，但不扩展为完整历史时钟账本。位置是回执输出位置，不是回调开始时刻；pending不证明未执行，取消或失败不制造discarded。异常后的唯一已准入事实及下游尾帧会在收尾保存，回调拿到的副本不能改变内部状态。
 
 原有getter、events／diagnostics和可选snapshot继续转发；匹配位置或原账本失败时增加runtime_event_position_invalid，原业务诊断保持。Godot仅在项目协议≥3且已有runtime.execution-frames时组合此reader，旧reader和其他后端保持原字段范围。没有新backend能力、版本或GDScript；执行适配器指纹变化仍要求旧冻结构建重建。171项定向和真实Godot六案已通过，最终完整检查及兼容范围见[本轮专题](../docs/test-results/runtime-event-positions/README.md)。
+
+### 物理验收结果的只读样本定位
+
+0.2.9 收录的 `resolveProjectPhysics2DObservationSelection(observation, request, owner)` 核对完整运行身份与访问／场景／实例／步骤／序号，返回冻结的 `{instanceId, stepKey, sequence}`，不匹配返回 `null`。请求和所有者使用限定字段的自有标量记录，不序列化调用方对象或求值 getter；观察仍经独立验证器准入。此选择是会话内临时状态，不进入作者格式或运行协议。
+
+构建控制器复核验收输入、实际评价与冻结来源，再通过观察视图的 `selectSample()` 端口提交身份；视图另核对载入快照时捕获的所有者与当前会话。视图负责选择器、焦点和滚动，来源导航继续使用独立原文守护。旧按钮在草稿／任务／会话变化后撤销，同一有效记录的轮询与换语言保留 DOM 焦点。操作与范围见[验收样本定位](../docs/SCENE_PHYSICS2D.md#从验收条目定位物理样本)。
+
+### 物理样本的只读示意模型
+
+0.2.9 收录的 `createProjectPhysics2DSampleDiagram(observation, sequence)` 复用完整物理观察验证器，只返回指定序号的深冻结 DTO；非法观察、缺失或无效序号返回 `null`，不回退到其他样本。`sample` 保留完整原始精度，`points.before` 为相对原点，`requested` 与 `actual` 分别来自请求向量和已验证位移；接触位置独立减去移动前位置，法线独立单位化，不把 travel／remainder 拼成路径。
+
+投影使用统一的 `relative-uniform` 尺度：相对坐标除以 `2^scaleExponent`。指数只作为整数元数据保存，渲染器直接消费有限的 `points`；极大相减及 subnormal 位移不构造无穷比例。极端动态范围下丢失非零投影时设置 `projection.degraded`，原始样本保持。模型没有 DOM、I/O 或求解器；Web SVG 端口负责绘图、固定显示长度的法线和三语说明，观察控制器负责样本归属与焦点。见[操作与范围](../docs/SCENE_PHYSICS2D.md#查看位移与碰撞示意)。

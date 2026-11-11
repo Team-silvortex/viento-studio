@@ -1,10 +1,13 @@
+import { createProjectPhysics2DSampleDiagram } from '../../engine/project-physics2d-sample-diagram.mjs';
+import { setupProjectPhysicsDiagram } from './app-project-physics-diagram.js';
+import { resolveProjectPhysics2DObservationSelection } from '../../engine/project-physics2d-observation-selection.mjs';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { t, onLanguageChange } from '../i18n/index.js';
 
 // A read-only view of admitted native sweeps. It never updates runtime actors,
 // evaluates geometry, or turns a missing sample into a contact-state claim.
 export function setupProjectPhysicsObservation({ container, getContext = () => ({}), onOpen = async () => false } = {}) {
-  if (!container) return Object.freeze({ setSnapshot() {}, refresh() {}, dispose() {} });
+  if (!container) return Object.freeze({ setSnapshot() {}, selectSample() { return false; }, refresh() {}, dispose() {} });
   const document = container.ownerDocument;
   container.innerHTML = `<section id="projectPhysicsObservationPanel" class="project-physics-observation" hidden aria-labelledby="projectPhysicsObservationTitle">
     <h3 id="projectPhysicsObservationTitle"></h3><p id="projectPhysicsObservationNote" class="build-hint"></p>
@@ -17,13 +20,16 @@ export function setupProjectPhysicsObservation({ container, getContext = () => (
     <p id="projectPhysicsObservationEmpty" class="build-hint"></p>
     <article id="projectPhysicsObservationDetail" hidden>
       <h4 id="projectPhysicsObservationHeading"></h4><p id="projectPhysicsObservationIdentity" class="build-hint"></p>
+      <div id="projectPhysicsObservationDiagram" hidden></div>
       <dl id="projectPhysicsObservationMotion" class="project-physics-values"></dl>
       <p id="projectPhysicsObservationSource" class="build-hint"></p><button id="projectPhysicsObservationOpen" type="button" class="doc-btn doc-btn-ghost"></button>
       <h4 id="projectPhysicsObservationContactsTitle"></h4><p id="projectPhysicsObservationNoContacts" class="build-hint"></p><ol id="projectPhysicsObservationContacts"></ol>
     </article><p id="projectPhysicsObservationNavigation" role="status" aria-live="polite" hidden></p>
   </section>`;
   const el = suffix => container.querySelector('#projectPhysicsObservation' + suffix);
-  let disposed = false, snapshot = null, signature = '', sessionOwner = '', navigationOwner = '', wasVisible = false;
+  const diagram = setupProjectPhysicsDiagram({ container: el('Diagram') });
+  let diagramSignature = '', diagramModel = null;
+  let disposed = false, snapshot = null, signature = '', sessionOwner = '', navigationOwner = '', selectionOwner = null, wasVisible = false;
   let instance = '', step = '', sequence = '', selectedSignature = '', current = null, generation = 0, opening = null, navigationMessage = '';
   const options = new Map(), contacts = [];
   const context = () => { try { return getContext() || {}; } catch { return {}; } };
@@ -36,7 +42,8 @@ export function setupProjectPhysicsObservation({ container, getContext = () => (
   const numberText = value => String(Number(value.toPrecision(8)));
   const vector = value => `[${value.map(numberText).join(', ')}]`;
   function clear() {
-    invalidate(); snapshot = null; signature = ''; instance = ''; step = ''; sequence = ''; selectedSignature = ''; current = null;
+    invalidate(); snapshot = null; selectionOwner = null; signature = ''; instance = ''; step = ''; sequence = ''; selectedSignature = ''; current = null;
+    diagramSignature = ''; diagramModel = null; diagram.clear();
     options.clear(); contacts.length = 0; el('Contacts').replaceChildren(); el('Motion').replaceChildren();
   }
   function updateContext() {
@@ -45,6 +52,32 @@ export function setupProjectPhysicsObservation({ container, getContext = () => (
     if (state.navigationOwner !== navigationOwner) { invalidate(); navigationOwner = state.navigationOwner || ''; }
     if (wasVisible && !canUse(state)) invalidate();
     wasVisible = canUse(state); return state;
+  }
+  // Host identity is separate from the native observation. Capture its selected
+  // own scalar fields without invoking accessors on a selection request/context.
+  function selectionContext() {
+    const state = context();
+    if (!state || typeof state !== 'object' || Array.isArray(state)
+      || Object.getPrototypeOf(state) !== null && Object.getPrototypeOf(Object.getPrototypeOf(state)) !== null) return null;
+    const properties = Object.getOwnPropertyDescriptors(state), selected = Object.create(null);
+    for (const key of ['available', 'visible', 'sessionOwner', 'navigationOwner', 'sampleOwner']) {
+      const descriptor = properties[key];
+      if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value')) return null;
+      selected[key] = descriptor.value;
+    }
+    const source = selected.sampleOwner, keys = ['backendId', 'jobId', 'buildId', 'snapshotId', 'assemblyId'];
+    if (!source || typeof source !== 'object' || Array.isArray(source)
+      || Object.getPrototypeOf(source) !== null && Object.getPrototypeOf(Object.getPrototypeOf(source)) !== null) return null;
+    const descriptors = Object.getOwnPropertyDescriptors(source), names = Reflect.ownKeys(descriptors);
+    if (names.length !== keys.length || names.some(key => typeof key !== 'string' || !keys.includes(key))) return null;
+    const owner = Object.create(null);
+    for (const key of keys) {
+      const descriptor = descriptors[key];
+      if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value')) return null;
+      owner[key] = descriptor.value;
+    }
+    owner.sessionOwner = selected.sessionOwner; owner.navigationOwner = selected.navigationOwner;
+    return { state: selected, owner };
   }
   function picker(suffix, entries, value) {
     const control = el(suffix), next = JSON.stringify(entries);
@@ -116,6 +149,20 @@ export function setupProjectPhysicsObservation({ container, getContext = () => (
       : snapshot.phase === 'finished' ? t('有限观察已结束，共 {0} 个样本。', samples.length)
       : snapshot.phase === 'recording' ? t('正在记录物理移动：{0} 个样本。', samples.length) : t('等待本次任务的物理观察记录。');
     text('Status', snapshot?.limited && snapshot.phase === 'incomplete' ? status + ' ' + t('记录未完成：任务中断或观察数据未通过验证。') : status); el('Status').dataset.phase = snapshot?.phase || ''; el('Status').dataset.limited = String(snapshot?.limited === true);
+    let ownsDiagram = usable;
+    if (ownsDiagram && selectionOwner) {
+      try {
+        const captured = selectionContext();
+        ownsDiagram = Boolean(captured) && Object.keys(selectionOwner).every(key => selectionOwner[key] === captured.owner[key]);
+      } catch { ownsDiagram = false; }
+    }
+    if (ownsDiagram && selected) {
+      const nextDiagram = `${snapshot.assemblyId}:${selectedSignature}`;
+      if (diagramSignature !== nextDiagram) {
+        diagramModel = createProjectPhysics2DSampleDiagram(snapshot, selected.sequence); diagramSignature = nextDiagram;
+      }
+      diagram.setModel(diagramModel);
+    } else { diagramSignature = ''; diagramModel = null; diagram.clear(); }
     if (selected) {
       el('Detail').dataset.sequence = String(selected.sequence);
       text('Heading', t('样本 {0} · 访问 {1} · 第 {2} 步', selected.sequence, selected.visitIndex, selected.stepIndex));
@@ -164,9 +211,32 @@ export function setupProjectPhysicsObservation({ container, getContext = () => (
       catch { clear(); render(); return; }
       const next = admitted ? JSON.stringify(admitted) : '';
       if (next !== signature) { signature = next; snapshot = admitted; if (!snapshot) clear(); }
+      selectionOwner = null;
+      try {
+        const captured = selectionContext();
+        if (snapshot && captured && captured.state.sessionOwner === sessionOwner && captured.state.navigationOwner === navigationOwner
+          && captured.owner.assemblyId === snapshot.assemblyId) selectionOwner = Object.freeze(captured.owner);
+      } catch { /* Legacy display remains available without a selection port owner. */ }
       render();
     },
+    selectSample(request) {
+      if (disposed || !snapshot) return false;
+      let captured, selected;
+      try {
+        captured = selectionContext();
+        if (!captured || !canUse(captured.state) || captured.state.sessionOwner !== sessionOwner || captured.state.navigationOwner !== navigationOwner
+          || !selectionOwner || Object.keys(selectionOwner).some(key => selectionOwner[key] !== captured.owner[key])) return false;
+        selected = resolveProjectPhysics2DObservationSelection(snapshot, request, captured.owner);
+      } catch { return false; }
+      if (!selected) return false;
+      // A rejected identity never reaches render's ordinary first-item fallback.
+      if (instance !== selected.instanceId || step !== selected.stepKey || sequence !== String(selected.sequence)) invalidate();
+      instance = selected.instanceId; step = selected.stepKey; sequence = String(selected.sequence);
+      render(); el('Sample').focus();
+      if (typeof el('Sample').scrollIntoView === 'function') el('Sample').scrollIntoView({ block: 'nearest' });
+      return true;
+    },
     refresh: render,
-    dispose() { if (disposed) return; disposed = true; clear(); for (const [suffix, fn] of handlers) el(suffix).removeEventListener('change', fn); if (typeof unsubscribe === 'function') unsubscribe(); container.replaceChildren(); },
+    dispose() { if (disposed) return; disposed = true; clear(); for (const [suffix, fn] of handlers) el(suffix).removeEventListener('change', fn); if (typeof unsubscribe === 'function') unsubscribe(); diagram.dispose(); container.replaceChildren(); },
   });
 }

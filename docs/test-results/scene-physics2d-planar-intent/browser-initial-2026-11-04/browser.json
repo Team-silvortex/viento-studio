@@ -1,0 +1,151 @@
+{
+  "startedAt": "2026-11-04T12:26:14.458Z",
+  "steps": [
+    "The planar intent and existing event-audio starter options show exact ordinary GDScript source in Chinese, English and Japanese at 390px. Mode, path, focus, source and reachable Create/Cancel controls persist; cancelling writes nothing.",
+    "Create opens an ordinary unsaved TXT draft; Save adds exactly its source and registration while preserving all existing author files.",
+    "The same saved ordinary TXT is explicitly referenced and bound to two independent character instances with four literal action parameters each. Cancel writes nothing; review and Apply change a draft; ordinary Save persists each binding; reopening restores both identities and all parameter values."
+  ],
+  "screenshots": [
+    "planar-intent-starter-desktop.png",
+    "planar-intent-starter-zh-CN-390.png",
+    "planar-intent-starter-en-390.png",
+    "planar-intent-starter-ja-390.png",
+    "planar-intent-binding-zh-CN-390.png",
+    "planar-intent-binding-en-390.png",
+    "planar-intent-binding-ja-390.png"
+  ],
+  "jobs": [],
+  "errors": [],
+  "dialogs": [
+    "今回のスクリプト作成設定を破棄しますか？エディターの内容は変更されません。",
+    "丢弃本次脚本选择与审阅？已保存的引用会保留。",
+    "丢弃本次行为表单修改？原文草稿不会改变。"
+  ],
+  "layout": {
+    "script-zh-CN": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / 平面运动意图",
+      "description": "绑定到 controls 为 none 且未启用重力的角色实例。left_action、right_action、up_action、down_action 默认使用 ui_left、ui_right、ui_up、ui_down，动作须已注册；模板不创建按键映射。每次物理回调提交二维方向，下一项目步只采纳该角色首个请求，对角线统一归一化，未提交时归零。只提供运动意图，不直接修改位置或绕过碰撞；退出时停止处理。"
+    },
+    "script-en": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / Planar movement intent",
+      "description": "Bind to a character with controls=none and no gravity. left_action, right_action, up_action and down_action default to ui_left, ui_right, ui_up and ui_down; actions must already be registered. This template does not create key mappings. Each physics callback submits a 2D direction; only the first request for this character is accepted for the next project step. Diagonal input is normalized, and a step without a submission uses zero input. The script provides intent only: it never changes positions directly or bypasses collision. Processing stops on exit."
+    },
+    "script-ja": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / 平面移動意図",
+      "description": "controls が none で重力を使用しないキャラクターにバインドします。left_action、right_action、up_action、down_action の既定値は ui_left、ui_right、ui_up、ui_down で、アクションは登録済みである必要があります。このテンプレートはキー割り当てを作成しません。物理コールバックごとに2D方向を送り、次のプロジェクトステップでは同じキャラクターの最初の要求のみ採用します。斜め入力は正規化し、送信のないステップはゼロ入力になります。位置を直接変更したり衝突を迂回したりせず、移動意図だけを渡します。終了時に処理を停止します。"
+    },
+    "binding-zh-CN": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-en": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-ja": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    }
+  },
+  "limitations": [
+    "Real Chrome with HTTP editor and disposable author files. This smoke verifies authoring only; native planar movement is not verified by this browser test.",
+    "No installed Tauri, Android, Bevy, automatic physics-body creation, automatic binding, live parameter discovery or native execution is claimed."
+  ],
+  "sources": {
+    "engine/godot-planar-intent-script.mjs": "7bf625aec66384c814f7f52d6e6e6578923d09731286e8d6f65ecab9ad83ed4f",
+    "engine/script-authoring.mjs": "f0682f1e1ebb7b004e3c3e74d3965f582c4c6146c89371a0275931ecfbfcf8c7",
+    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+    "web/modules/app-scene-behaviors.js": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+    "web/scene-behaviors.css": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+    "web/i18n/en.js": "2ec57f2c5905b48b9a56d17d27a20f2b1084c6e308a5be843b61176ec4f78e84",
+    "web/i18n/ja.js": "d056997c9cd609279e6b1ec23f0b9eee223ea781530f0b474c3ac1ac242f9afb",
+    "scripts/tests/planar-intent-authoring-smoke.mjs": "c2e6dc2a085ad92bd9f119f09d91e5051a19f0a4863445f7802a96f4b7cdb349"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "physicsPath": "documents/physics/scene-0.json",
+    "firstInstanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+    "secondInstanceId": "79797979-7979-4979-8979-000000000003",
+    "firstBodyId": "70707070-7070-4070-8070-000000000010",
+    "secondBodyId": "79797979-7979-4979-8979-000000000004",
+    "manifestPath": "documents/behaviors/demo.json",
+    "firstParameters": {
+      "left_action": "ui_left",
+      "right_action": "ui_right",
+      "up_action": "ui_up",
+      "down_action": "ui_down"
+    },
+    "secondParameters": {
+      "left_action": "ui_right",
+      "right_action": "ui_left",
+      "up_action": "ui_up",
+      "down_action": "ui_down"
+    }
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "script": {
+    "objectId": "55a1fceb-47af-4b62-b4bd-3f94b95a5f57",
+    "starterId": "godot-planar-intent",
+    "sha256": "f175c15f5101c54953da2098f05ec9663a75840e0ef4487e5f4188d9c266ba33"
+  },
+  "bindings": [
+    {
+      "bindingId": "b12dd9f3-349e-4d78-9c74-23324b3a991e",
+      "sourceId": "55a1fceb-47af-4b62-b4bd-3f94b95a5f57",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "parameters": {
+        "left_action": "ui_left",
+        "right_action": "ui_right",
+        "up_action": "ui_up",
+        "down_action": "ui_down"
+      }
+    },
+    {
+      "bindingId": "8310b65d-ae09-420c-a0ad-6183614c3050",
+      "sourceId": "55a1fceb-47af-4b62-b4bd-3f94b95a5f57",
+      "instanceId": "79797979-7979-4979-8979-000000000003",
+      "parameters": {
+        "left_action": "ui_right",
+        "right_action": "ui_left",
+        "up_action": "ui_up",
+        "down_action": "ui_down"
+      }
+    }
+  ],
+  "authorSnapshot": {
+    "beforeCount": 47,
+    "afterCount": 49,
+    "unchangedExisting": 45,
+    "changedExisting": 2,
+    "addedCount": 2
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-04T12:26:21.292Z"
+}

@@ -1,0 +1,71 @@
+✔ no eligible characters preserve exact historical generated files, metadata and fingerprints (163.201381ms)
+✔ eligible controls-none planar bodies add only bounded derived chains while all original scripts stay byte exact (299.813095ms)
+✖ inventory rejects orphaned, extra, redirected or forged derived chains before every historical main view (95.12186ms)
+✖ real planar stop requests use the sole solver and record actual requested motion and contacts (4238.017299ms)
+✖ real planar slide requests use the sole solver and record actual requested motion and contacts (4243.343144ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 2
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9174.189748
+
+✖ failing tests:
+
+test at scripts/tests/project-planar-intent-godot.test.mjs:82:1
+✖ inventory rejects orphaned, extra, redirected or forged derived chains before every historical main view (95.12186ms)
+  AssertionError [ERR_ASSERTION]: validateGodotPlatformControlInventory
+      at async TestContext.<anonymous> (file://<repo>/scripts/tests/project-planar-intent-godot.test.mjs:99:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Invalid generated platform control inventory.
+        at buildError (file://<repo>/scripts/adapters/node-build-snapshot.mjs:25:74)
+        at invalid (file://<repo>/scripts/backends/godot4-physics-platform-control-inventory.mjs:17:31)
+        at validateGodotPlatformControlInventory (file://<repo>/scripts/backends/godot4-physics-platform-control-inventory.mjs:86:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file://<repo>/scripts/tests/project-planar-intent-godot.test.mjs:99:7)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-planar-intent-godot.test.mjs:104:43
+✖ real planar stop requests use the sole solver and record actual requested motion and contacts (4238.017299ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(samples.every(row => Math.abs(row.requestedMotion[0] - 2 / Math.sqrt(1.25)) < 1e-5 && Math.abs(row.requestedMotion[1] - 1 / Math.sqrt(1.25)) < 1e-5))
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/project-planar-intent-godot.test.mjs:108:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-planar-intent-godot.test.mjs:104:43
+✖ real planar slide requests use the sole solver and record actual requested motion and contacts (4243.343144ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(samples.every(row => Math.abs(row.requestedMotion[0] - 2 / Math.sqrt(1.25)) < 1e-5 && Math.abs(row.requestedMotion[1] - 1 / Math.sqrt(1.25)) < 1e-5))
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/project-planar-intent-godot.test.mjs:108:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

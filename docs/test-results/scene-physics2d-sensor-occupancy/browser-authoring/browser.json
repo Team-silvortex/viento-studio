@@ -1,0 +1,128 @@
+{
+  "startedAt": "2026-11-04T11:18:58.643Z",
+  "steps": [
+    "The sensor occupancy and existing event-audio starter options show exact ordinary GDScript source in Chinese, English and Japanese at 390px. Mode, path, focus, source and reachable Create/Cancel controls persist; cancelling writes nothing.",
+    "Create opens an ordinary unsaved TXT draft; Save adds exactly its source and registration while preserving all existing author files.",
+    "Manage existing behavior explicitly registers one script reference. The ordinary behavior editor adds one sensor binding and two explicit String parameters, retains every existing binding, and preserves focus/review in three languages. Cancel discards the first binding review. Apply changes only a draft; Save changes only the behavior JSON.",
+    "Reopening the saved behavior restores the same sensor UUID, script identity and both literal event names. An unchanged review grants no Apply ticket and closing writes nothing.",
+    "Reopening restores the sensor UUID and both literal String parameters. Unchanged review cannot apply. No other author script, scene or physics declaration changes."
+  ],
+  "screenshots": [
+    "sensor-occupancy-starter-desktop.png",
+    "sensor-occupancy-starter-zh-CN-390.png",
+    "sensor-occupancy-starter-en-390.png",
+    "sensor-occupancy-starter-ja-390.png",
+    "sensor-occupancy-binding-zh-CN-390.png",
+    "sensor-occupancy-binding-en-390.png",
+    "sensor-occupancy-binding-ja-390.png"
+  ],
+  "jobs": [],
+  "errors": [],
+  "dialogs": [
+    "今回のスクリプト作成設定を破棄しますか？エディターの内容は変更されません。",
+    "丢弃本次脚本选择与审阅？已保存的引用会保留。",
+    "丢弃本次行为表单修改？原文草稿不会改变。"
+  ],
+  "layout": {
+    "script-zh-CN": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / 触发区占用",
+      "description": "绑定到物理触发区实例。首个有效物理体进入时发布 occupied_event（默认 physics.occupied），最后一个离开或被移除时发布 vacant_event（默认 physics.vacant）；载荷为触发区自身实例编号。事件名留空禁用对应方向，双非空不能同名。按实际物理体对象去重，初始重叠也会纳入，同批变动合并为最终占用状态，不逐帧发布；关闭时清理且不补发离开。"
+    },
+    "script-en": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / Sensor occupancy",
+      "description": "Bind to a physics sensor instance. Publish occupied_event (physics.occupied by default) when the first eligible physics body enters and vacant_event (physics.vacant by default) when the last body leaves or is removed; both carry the sensor's own instance ID. Leave an event name blank to disable that direction; two nonempty names must differ. Track actual body objects, include initial overlaps, and coalesce each delivery batch to its final occupied state. No per-frame publications; closing disconnects without a synthetic exit."
+    },
+    "script-ja": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / トリガーの占有状態",
+      "description": "物理トリガーのインスタンスにバインドします。最初の対象物理ボディが入ると occupied_event（既定 physics.occupied）、最後のボディが出るか削除されると vacant_event（既定 physics.vacant）を発行し、トリガー自身のインスタンスIDを値にします。イベント名を空にするとその方向を無効にでき、両方指定する場合は異なる名前にします。実際のボディ単位で重複を除き、初期の重なりも含め、同じ配信バッチ内の変更を最終的な占有状態にまとめます。毎フレームは発行せず、終了時は接続を解除して退出イベントを補いません。"
+    },
+    "binding-zh-CN": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-en": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-ja": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    }
+  },
+  "limitations": [
+    "Real Chrome with HTTP editor and disposable author files. This smoke verifies authoring only; native occupancy behavior is not verified by this browser test.",
+    "No installed Tauri, Android, Bevy, new physical sensor declaration, automatic binding, live parameter discovery or native execution is claimed."
+  ],
+  "sources": {
+    "engine/godot-physics-sensor-occupancy-script.mjs": "ed2cab92919908e95333d0fb455957bdf1d47feb63b098fa676cb95f7bec1107",
+    "engine/script-authoring.mjs": "b5bada48de9b75dbdc6e50177d7bd8436470db8e9e186009bd65df8958b3d7cb",
+    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+    "web/modules/app-scene-behaviors.js": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+    "web/scene-behaviors.css": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+    "web/i18n/en.js": "479e8da7c19ae3d77546ee11f4fef6cafe87277ed18d6426179879937e162721",
+    "web/i18n/ja.js": "dd92e24ff1ba09f0280a00d3357e0998f39a2975dbf399af7e9bed31facde485",
+    "scripts/tests/sensor-occupancy-authoring-smoke.mjs": "f513f80ca83bf2d0c93fa166c413662bb329b2fa46cdc0d951373f4a53ba72d1"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "physicsPath": "documents/physics/scene-0.json",
+    "sensorInstanceId": "70707070-7070-4070-8070-000000000002",
+    "sensorBodyId": "70707070-7070-4070-8070-000000000011",
+    "manifestPath": "documents/behaviors/demo.json",
+    "parameters": {
+      "occupied_event": "physics.occupied",
+      "vacant_event": "physics.vacant"
+    }
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "script": {
+    "objectId": "4b346d8b-8dda-4ea7-9301-86d1ebb07e75",
+    "starterId": "godot-physics-sensor-occupancy",
+    "sha256": "fc10a78b5b81e643bdfd6c43f3d8eae2e687e9a60ba7c4cb30f5b93528b8d59b"
+  },
+  "binding": {
+    "bindingId": "a86d942f-7972-4f1a-b598-4b9827aa38c8",
+    "sourceId": "4b346d8b-8dda-4ea7-9301-86d1ebb07e75",
+    "instanceId": "70707070-7070-4070-8070-000000000002",
+    "parameters": {
+      "occupied_event": "physics.occupied",
+      "vacant_event": "physics.vacant"
+    }
+  },
+  "authorSnapshot": {
+    "beforeCount": 47,
+    "afterCount": 49,
+    "unchangedExisting": 45,
+    "changedExisting": 2,
+    "addedCount": 2
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-04T11:19:05.003Z"
+}

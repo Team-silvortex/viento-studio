@@ -1,3 +1,4 @@
+import { validateGodotPlanarIntentInventory } from './godot4-physics-planar-intent-inventory.mjs';
 // Authenticate the optional control layer before any historical scene entry
 // is normalized. This module owns no generator, execution process or writes.
 import fs from 'node:fs/promises';
@@ -33,6 +34,7 @@ export async function validateGodotPlatformControlInventory(directory, signal) {
   const optional = async (name, limit) => { try { return await read(name, limit); } catch (error) { if (error.code === 'ENOENT') return null; throw error; } };
   try {
     signal?.throwIfAborted();
+    const planar = await validateGodotPlanarIntentInventory(directory, signal);
     const [manifestBytes, port, horizontalHelper, verticalHelper, assemblyBytes, dropManifest] = await Promise.all([
       optional(controlInventoryName, 8192), optional(controlPortName), ...controlHelpers.map(name => optional(name)),
       optional('assembly.json', 4 * 1024 * 1024), optional('drop-through-project.json', 8192),
@@ -48,10 +50,11 @@ export async function validateGodotPlatformControlInventory(directory, signal) {
       const id = row.sceneId;
       if (!uuid(id)) invalid();
       const prefix = `scenes/${id}`, wrapperName = `${prefix}/platform-control-scene.gd`;
-      const [backup, scene, main, motionBytes, verticalBytes] = await Promise.all([
+      const [backup, scene, rawMain, motionBytes, verticalBytes] = await Promise.all([
         optional(`${prefix}/platform-control-original.tscn.txt`), optional(wrapperName), read(`${prefix}/main.tscn`),
         optional(`${prefix}/platform-motion.json`), optional(`${prefix}/platform-vertical.json`),
       ]);
+      const main = planar?.mains.get(id) || rawMain;
       const touched = backup !== null || scene !== null || main.includes('platform-control');
       if (manifestBytes === null) { if (touched) invalid(); continue; }
       if (motionBytes === null) { if (touched) invalid(); continue; }

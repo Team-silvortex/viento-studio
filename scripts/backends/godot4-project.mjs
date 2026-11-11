@@ -1,3 +1,4 @@
+import { validateGodotPlanarIntentInventory } from './godot4-physics-planar-intent-inventory.mjs';
 // One engine-neutral assembly becomes one visible Godot project. Only known
 // host-generated files are relocated; author GDScript bytes remain untouched.
 import fs from 'node:fs/promises';
@@ -139,7 +140,7 @@ export async function generateGodotAssemblyProject(input) {
   put('project.tscn', Buffer.from(`[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://${instanceControl ? 'project-animation-target-runtime.gd' : stateControl ? 'project-animation-state-trigger-runtime.gd' : animationControl ? 'project-completion-runtime.gd' : 'project-runtime.gd'}" id="1"]\n\n[node name="VientoProject" type="Node2D"]\nscript = ExtResource("1")\n`));
   put('assembly.json', json({ format: 'viento-godot-project', schemaVersion: instanceControl ? 12 : stateControl ? 11 : animationControl ? 8 : 5, assembly: plan.assembly, entrySceneId: plan.entrySceneId,
     scenes: rows, ...(stateControl ? { animationStateWrappers: [...stateWrappers.values()].sort((a, b) => a.scriptObjectId.localeCompare(b.scriptObjectId)) } : {}), behaviorSources: [...behaviorSources.values()].sort((a, b) => a.objectId.localeCompare(b.objectId)) }));
-  const generator = await fs.readFile(new URL('./godot4-project.mjs', import.meta.url));
+  const generator = await fs.readFile(new URL('./godot4-project-v0.20.mjs.txt', import.meta.url));
   return { files, resourceFiles, sourceMap: { format: 'viento-project-runtime-map', schemaVersion: 1, assembly: plan.assembly,
     entrySceneId: plan.entrySceneId, scenes: maps,
     ...(stateControl ? { animationStateWrappers: [...stateWrappers.values()] } : {}),
@@ -152,6 +153,7 @@ export async function generateGodotAssemblyProject(input) {
 
 /** Read only a bounded, generated inventory; author text never selects scripts. */
 export async function godotAssemblyScripts(directory, signal) {
+  await validateGodotPlanarIntentInventory(directory, signal);
   let value, bytes;
   try { bytes = await readBuildFile(path.join(directory, 'assembly.json'), 4 * 1024 * 1024, signal); value = JSON.parse(bytes); }
   catch (error) { if (error.code === 'ENOENT') return null; invalid(); }

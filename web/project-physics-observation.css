@@ -13,3 +13,21 @@
 .project-physics-contact { min-width: 0; padding: 12px; border: 1px solid #cbd8d2; border-radius: 8px; }
 .project-physics-observation .doc-btn { max-width: 100%; white-space: normal; text-align: start; }
 @media (max-width: 600px) { .project-physics-observation { padding: 10px; } .project-physics-filters { grid-template-columns: minmax(0, 1fr); } .project-physics-values { grid-template-columns: minmax(0, 1fr); gap: 2px; } .project-physics-values dd { margin-bottom: 8px; } .project-physics-actions { flex-direction: column; align-items: stretch; } }
+
+.project-physics-diagram { margin: 12px 0; min-width: 0; }
+.project-physics-diagram figcaption { font-weight: 650; }
+.project-physics-diagram-svg { box-sizing: border-box; display: block; width: 100%; max-width: 480px; height: auto; aspect-ratio: 1; margin-inline: auto; border: 1px solid #cbd8d2; border-radius: 8px; background: #fff; }
+.project-physics-diagram-svg line, .project-physics-diagram-svg polyline, .project-physics-diagram-svg rect, .project-physics-diagram-svg circle { vector-effect: non-scaling-stroke; stroke-width: 2; }
+.project-physics-diagram-svg [data-role="requested"], .project-physics-diagram-svg [data-role="requested-end"] { stroke: #946000; stroke-dasharray: 6 4; fill: none; }
+.project-physics-diagram-svg [data-role="actual"], .project-physics-diagram-svg [data-role="actual-end"] { stroke: #12658a; fill: none; }
+.project-physics-diagram-svg [data-role="before"] { stroke: #152b25; }
+.project-physics-diagram-svg [data-role="contact"] { stroke: #59236d; fill: #fff; }
+.project-physics-diagram-svg [data-role="normal"], .project-physics-diagram-svg [data-role="normal-head"] { stroke: #59236d; fill: none; }
+.project-physics-diagram-svg [data-role="normal"] { stroke-dasharray: 2 2; }
+.project-physics-diagram-svg text { fill: #492159; font-size: 12px; font-weight: 700; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
+.project-physics-diagram-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 0; list-style: none; }
+.project-physics-diagram-legend li { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.project-physics-diagram-legend li::before { content: ""; flex: 0 0 18px; border-top: 2px solid #152b25; }
+.project-physics-diagram-legend [data-legend="requested"]::before { border-color: #946000; border-top-style: dashed; }
+.project-physics-diagram-legend [data-legend="actual"]::before { border-color: #12658a; }
+.project-physics-diagram-legend [data-legend="contact"]::before, .project-physics-diagram-legend [data-legend="normal"]::before { border-color: #59236d; border-top-style: dotted; }

@@ -118,7 +118,7 @@ try {
   await enabled('#scriptCreateBtn');
   const beforeEditor = await evaluate(`(async()=>{const {appState:s}=await import('/web/modules/app-state.js');return {activePath:s.activePath,creating:s.isCreating,editing:s.isEditing,source:document.querySelector('#docSourceEditor').value};})()`);
   await openScript();
-  assert.equal(await evaluate(`document.querySelectorAll('#scriptCreateStarter option').length`), 2);
+  assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('#scriptCreateStarter option'), option => option.value)`), listScriptStarters().map(item => item.id));
   assert.equal(await evaluate(`Array.from(document.querySelectorAll('#scriptCreateType option')).some(item=>item.value==='script')`), false);
   assert.equal(await evaluate(`document.querySelector('#scriptCreateSource').textContent`), starter.content);
   assert.deepEqual(await authorTree(root), initial);
@@ -145,7 +145,7 @@ try {
   assert.deepEqual(await authorTree(root), initial);
   assert.deepEqual(await evaluate(`(async()=>{const {appState:s}=await import('/web/modules/app-state.js');return {activePath:s.activePath,creating:s.isCreating,editing:s.isEditing,source:document.querySelector('#docSourceEditor').value};})()`), beforeEditor);
   assert.equal(await evaluate(`window.__scriptSaves.length`), 0);
-  report.steps.push('A project without a script document type offers two known GDScript starters. Full source preview and selected fields persist in Chinese, English and Japanese at 390px with visible Return/Create/Cancel. Cancel changes no editor state or author files.');
+  report.steps.push('A project without a script document type offers all catalogued starters. Full source preview and selected fields persist in Chinese, English and Japanese at 390px with visible Return/Create/Cancel. Cancel changes no editor state or author files.');
   await call('Emulation.clearDeviceMetricsOverride'); await evaluate(`(await import('/web/i18n/index.js')).applyLanguage('zh-CN')`);
   await openScript(); await click('#scriptCreateApply');
   await wait(()=>evaluate(`!document.querySelector('#scriptCreateDialog').open&&(await import('/web/modules/app-state.js')).appState.isCreating`),'ordinary new TXT draft');

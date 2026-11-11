@@ -1,0 +1,49 @@
+{
+  "format": "viento-planar-intent-native-proof",
+  "schemaVersion": 1,
+  "startedAt": "2026-11-04T12:33:35.529Z",
+  "sources": {
+    "engine/godot-planar-intent-script.mjs": "7bf625aec66384c814f7f52d6e6e6578923d09731286e8d6f65ecab9ad83ed4f",
+    "engine/script-authoring.mjs": "f0682f1e1ebb7b004e3c3e74d3965f582c4c6146c89371a0275931ecfbfcf8c7",
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/scene-physics2d.mjs": "15e58fd34e3352cfaa93f7fafff45fc6809ef508e621e0a151fc289bcb2aa58c",
+    "scripts/backends/godot4-adapter.mjs": "9fe4a1c9f1f04de0afe2f333b1b105912cb54469627363b9fe2d7444a03c3c81",
+    "scripts/backends/godot4-physics-planar-intent-projection.mjs": "2ba1933f67fc7511252f76100b32ff195b18359548997648c9f114d9eeba8128",
+    "scripts/backends/godot4-physics-planar-intent.mjs": "8d9c7f525e2980997ab72dc6a153fb49681453d79752c936e1a263666da306ed",
+    "scripts/backends/godot4-physics-planar-intent-inventory.mjs": "070f23597a6d080018e9bc99a91b47d0e10ef12eb60e3f49712f8351f6cff865",
+    "scripts/backends/godot4-input-map.mjs": "26734c72ad02d1a8b84c57c0e45aa02f997d951148a0c0e091b2fcfa9a6fd9b7",
+    "scripts/backends/godot4/physics-planar-intent-helper.gd": "56cf1f38ae4986d44f5761b465bdab23a9147ca8824a8f432701063d6146e547",
+    "scripts/backends/godot4/physics-planar-intent-port.gd": "bf91944f7aa6c7b3dc4665968588f25d70559bad66f7df406f60dc369591a561",
+    "scripts/backends/godot4/physics-planar-intent-scene.gd": "a91f06626374abbcb6cf8ec5f69b2fce0b924a05f968a026292e84ab8eca6ffe",
+    "engine/project-input-map.mjs": "516307e5aa03cc4a3673b745291b5721a8ca7536076637949dd03784da61705c",
+    "scripts/adapters/node-project-build.mjs": "45019753057954697f10bee01790c8cdcb1d54c5d4cd9f20d92b7ed5158dfdda",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-backend-project.mjs": "18c87cb33ee032ed6f73e2e80147e64866c28241b43f9d2aa23e96cd5275a749",
+    "scripts/adapters/node-backend-project-delivery.mjs": "7bd862e5dd2fd86f8ac11172ce63cb426f71b5bace1ea9c8211385f85fd4d427",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/tests/helpers/scene-physics2d-planar-intent-author-fixture.mjs": "3ce16d3dbb07aaf461414661adbe3c823cc030a82c0e55d224dd3b943382e14d",
+    "scripts/tests/scene-physics2d-planar-intent-smoke.mjs": "2365767f78fd6dae6c87c189058056701d2ba6695fd8b4db9be614cd961541ab"
+  },
+  "cases": [],
+  "limitations": [
+    "Real Linux Godot headless run with ordinary saved author TXT; no installed Tauri, Android, window rendering or Bevy claim.",
+    "The p2 actions are defined in the saved project input map; a disposable authored test driver injects action states, not real keyboard-device events. No physics or runtime events are synthesized.",
+    "Selective resource packages preserve starter bytes, typed parameters and source relationships; destination type/template declarations are explicitly seeded."
+  ],
+  "tool": {
+    "executable": "<toolchains>/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+    "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "ok": false,
+  "failure": "AssertionError [ERR_ASSERTION]: [{\"severity\":\"error\",\"code\":\"build_physics_planar_intent_invalid\",\"message\":\"Invalid generated planar intent inventory.\",\"objectId\":\"12345678-1234-4234-8234-123456789abc\",\"sourcePath\":\"design-data/projects/demo.json\",\"propertyPath\":\"\"}]\n\nfalse !== true\n\n    at file://<app-root>scripts/tests/scene-physics2d-planar-intent-smoke.mjs:152:178\n    at async runCase (file://<app-root>scripts/tests/scene-physics2d-planar-intent-smoke.mjs:121:23)\n    at async file://<app-root>scripts/tests/scene-physics2d-planar-intent-smoke.mjs:126:3",
+  "finishedAt": "2026-11-04T12:33:44.134Z"
+}

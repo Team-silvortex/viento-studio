@@ -1,0 +1,35 @@
+Initial author verification excerpt, retained from the original 76-test run.
+The failure was the old platform endpoint catalog uniqueness assertion: the catalog already contained 24 distinct IDs, but this one assertion still expected 23.
+The subsequent fix changed that exact uniqueness count to 24. The full ID-order comparison, every frozen legacy record/source hash, and the previous occupancy entry were retained; no assertion was removed or broadened.
+The final 132-test author run and separate diagnostics/i18n run are recorded beside this excerpt.
+
+Original terminal output (paths redacted only):
+ℹ tests 76
+ℹ suites 0
+ℹ pass 75
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 489.180398
+
+✖ failing tests:
+
+test at scripts/tests/platform-endpoint-event-starter.test.mjs:42:1
+✖ platform endpoint starter adds one record and preserves all 19 complete previous records (1.279973ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  24 !== 23
+  
+      at TestContext.<anonymous> (file://<app-root>/scripts/tests/platform-endpoint-event-starter.test.mjs:46:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 24,
+    expected: 23,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

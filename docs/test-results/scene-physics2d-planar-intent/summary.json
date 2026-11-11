@@ -1,0 +1,149 @@
+{
+  "date": "2026-11-04",
+  "baseCommit": "00c06ffe9bad9389f3d4aeb344064b07ec522bb6",
+  "applicationVersion": "0.2.8",
+  "delivery": "unreleased-working-tree",
+  "executionAdapter": "0.41.0",
+  "appCheck": {
+    "command": "npm run check -- --app-only",
+    "exitCode": 0,
+    "tests": 9037,
+    "pass": 8376,
+    "skip": 661,
+    "fail": 0,
+    "cancelled": 0,
+    "durationMs": 470439.534168,
+    "scope": "Production and *.test.mjs files were frozen before this complete run. The independent native smoke subsequently gained an exact source-body assertion, passed again, and was syntax-checked separately; its final source hash is included."
+  },
+  "author": {
+    "tests": 132,
+    "pass": 132,
+    "skip": 0,
+    "fail": 0
+  },
+  "diagnosticsAndI18n": {
+    "tests": 24,
+    "pass": 22,
+    "skip": 2,
+    "fail": 0
+  },
+  "backendGenerated": {
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "pureCases": 4,
+    "nativeCases": 7,
+    "expectedInventoryRejections": 60,
+    "observedSamples": 181,
+    "nativeCaseRecords": 7,
+    "mixedDerivedScripts": 9,
+    "mixedDerivedUidCompanions": 9
+  },
+  "adapter": {
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0
+  },
+  "portComponent": {
+    "nodeTests": 1,
+    "nativeCases": 8,
+    "assertions": 170,
+    "fakeHost": true,
+    "scope": "Real Godot component contract, not generated project or solver evidence."
+  },
+  "starterNative": {
+    "checked": 24,
+    "expectedFailures": 18
+  },
+  "compatibility": {
+    "tests": 61,
+    "pass": 22,
+    "skip": 39,
+    "fail": 0
+  },
+  "nativeWorkflow": {
+    "report": "native-source-verified-2026-11-04/native.json",
+    "sourceFiles": 22,
+    "authorFilesUnchanged": 57,
+    "importedDocuments": 19,
+    "buildPhases": [
+      {
+        "phase": "import",
+        "status": "succeeded"
+      },
+      {
+        "phase": "script-check",
+        "status": "succeeded"
+      }
+    ],
+    "delivery": {
+      "bytes": 302733,
+      "sha256": "2ae2fa262b59c5431614623f4db2d192d2fca848816faeb29f0d62a80fdf8d64",
+      "originalAuthorOffline": true,
+      "restoredAuthorOffline": true,
+      "originalBuildOffline": true
+    }
+  },
+  "browserWorkflow": {
+    "report": "browser-initial-2026-11-04/browser.json",
+    "sourceFiles": 10,
+    "ok": true
+  },
+  "boundaries": [
+    "Node totals and native assertions overlap and are not combined into coverage.",
+    "Native input states are injected; physical keyboard, installed Tauri and other target platforms are not verified.",
+    "No author schema, Rust/WASM or project/physics observation wire upgrade.",
+    "Legacy evidence and atlas records preserved at their original review times."
+  ],
+  "sources": {
+    "engine/godot-planar-intent-script.mjs": "7bf625aec66384c814f7f52d6e6e6578923d09731286e8d6f65ecab9ad83ed4f",
+    "engine/project-input-map.mjs": "516307e5aa03cc4a3673b745291b5721a8ca7536076637949dd03784da61705c",
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/scene-physics2d.mjs": "15e58fd34e3352cfaa93f7fafff45fc6809ef508e621e0a151fc289bcb2aa58c",
+    "engine/script-authoring.mjs": "f0682f1e1ebb7b004e3c3e74d3965f582c4c6146c89371a0275931ecfbfcf8c7",
+    "scripts/adapters/node-backend-project-delivery.mjs": "7bd862e5dd2fd86f8ac11172ce63cb426f71b5bace1ea9c8211385f85fd4d427",
+    "scripts/adapters/node-backend-project.mjs": "18c87cb33ee032ed6f73e2e80147e64866c28241b43f9d2aa23e96cd5275a749",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-project-build.mjs": "45019753057954697f10bee01790c8cdcb1d54c5d4cd9f20d92b7ed5158dfdda",
+    "scripts/backends/godot4-adapter.mjs": "9fe4a1c9f1f04de0afe2f333b1b105912cb54469627363b9fe2d7444a03c3c81",
+    "scripts/backends/godot4-input-map.mjs": "26734c72ad02d1a8b84c57c0e45aa02f997d951148a0c0e091b2fcfa9a6fd9b7",
+    "scripts/backends/godot4-physics-input-replay.mjs": "f05f634653d1c974815d9e9b07f4f6714f87915ceaa83efda67d6cc621859baf",
+    "scripts/backends/godot4-physics-planar-intent-inventory.mjs": "3e9fb05b284cd190d5a813d815f5f3eb0c49a3a6cd7eb29a61fd8aa71a3cd612",
+    "scripts/backends/godot4-physics-planar-intent-projection.mjs": "2ba1933f67fc7511252f76100b32ff195b18359548997648c9f114d9eeba8128",
+    "scripts/backends/godot4-physics-planar-intent.mjs": "8d9c7f525e2980997ab72dc6a153fb49681453d79752c936e1a263666da306ed",
+    "scripts/backends/godot4-physics-platform-control-inventory-v0.40.mjs.txt": "af086b9467fc05946735a0e1367b8e5169e1e661d5d4bca7bba51ee248534169",
+    "scripts/backends/godot4-physics-platform-control-inventory.mjs": "70fcd72f89f70ed5fce895df60ecb1d00b669483c057e433e470f10fd5b71e9d",
+    "scripts/backends/godot4-physics-platform-control-v0.40.mjs.txt": "878d2a7f9e99128ff7b2b6ed9d398dc90bc43a020ef2782213f8c7e04d1a7cfb",
+    "scripts/backends/godot4-physics-platform-control.mjs": "4b6780c73c5323384b58c0b554aac129eaba425a7cba663fc3f1f14b0114b724",
+    "scripts/backends/godot4-physics-platform-events.mjs": "c3d23e474cc3149d3e97a57cca008dc55af627619a4a0a4596986b7a9b7a858b",
+    "scripts/backends/godot4-physics-platform-vertical-inventory.mjs": "4be18575bc45eed5d0b134b8750e592a6a31537d268ef40db1b699b23086491c",
+    "scripts/backends/godot4-project-v0.20.mjs.txt": "5fcd0644543fed8e63c4d33bbc860126b3a0e47fc5767e645ba4ebd80e9f9fda",
+    "scripts/backends/godot4-project.mjs": "97c5d6b171f63660fd21067938c8ef2291df57a8ac056f45a8a5db0342ca0131",
+    "scripts/backends/godot4/physics-planar-intent-helper.gd": "6c3bb8f36542fc1265ab15dd2c5f4d55c2a7e3deda5145e24a9c0dbdfce3d24f",
+    "scripts/backends/godot4/physics-planar-intent-port.gd": "bf91944f7aa6c7b3dc4665968588f25d70559bad66f7df406f60dc369591a561",
+    "scripts/backends/godot4/physics-planar-intent-scene.gd": "a91f06626374abbcb6cf8ec5f69b2fce0b924a05f968a026292e84ab8eca6ffe",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/tests/godot4-adapter.test.mjs": "8c5bb56a9967c906a160382cc64cb78795ea310801fe8e35c0186e37e2a43a43",
+    "scripts/tests/helpers/scene-physics2d-planar-intent-author-fixture.mjs": "3ce16d3dbb07aaf461414661adbe3c823cc030a82c0e55d224dd3b943382e14d",
+    "scripts/tests/planar-intent-authoring-smoke.mjs": "c2e6dc2a085ad92bd9f119f09d91e5051a19f0a4863445f7802a96f4b7cdb349",
+    "scripts/tests/planar-intent-port.test.mjs": "65d0c14fafd58aa4d3601c5020332f4661427f407596585170edc522e523ad73",
+    "scripts/tests/planar-intent-starter.test.mjs": "71e383fe744c0c61a48f7d68216218f6f947e991996be19990a11697a8ce7e63",
+    "scripts/tests/project-input-action-planar-diagnostics.test.mjs": "317d8e12c1225f531055e27c1f57b951f3b842c815a0461d2b436b0cce5b1ccd",
+    "scripts/tests/project-planar-intent-godot.test.mjs": "66aa19856e99494c5c9ef83aedb67b6729616b44708e7d2a86cbba903ca54d8e",
+    "scripts/tests/runtime-instance-backends.test.mjs": "ac16426c1250cec5fa62f00fbaef9e56ec143a73020967f170a800bce015f6c3",
+    "scripts/tests/scene-physics2d-planar-intent-smoke.mjs": "3ce9113d297bd3f37aa4e0b441a9340dd2e823d31a1dd587018a6e6ca3b8e3ce",
+    "scripts/tests/script-authoring-host.test.mjs": "0b436f6996dd9901fd548832ec0e36a878e7c07c587e09d2205c064b7770dd4b",
+    "scripts/tests/script-create-ui.test.mjs": "37b566e0fc528960f2f2e1867e30b460f63e96a48ea59d883fa6b8ec614f0c78",
+    "web/i18n/en.js": "2ec57f2c5905b48b9a56d17d27a20f2b1084c6e308a5be843b61176ec4f78e84",
+    "web/i18n/ja.js": "d056997c9cd609279e6b1ec23f0b9eee223ea781530f0b474c3ac1ac242f9afb",
+    "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+    "web/modules/app-scene-behaviors.js": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/scene-behaviors.css": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f"
+  }
+}

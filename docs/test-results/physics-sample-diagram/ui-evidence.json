@@ -1,0 +1,83 @@
+{
+  "format": "viento-physics-sample-diagram-ui-proof",
+  "schemaVersion": 1,
+  "scope": "Node VM/controller and SVG DOM contract, geometry, invalidation, source/selection guards and three languages; does not prove browser layout or native engine execution.",
+  "nodeVersion": "v24.21.0",
+  "command": "node --test scripts/tests/project-physics-diagram-ui.test.mjs scripts/tests/project-physics-observation-ui.test.mjs scripts/tests/project-physics-observation-build-ui.test.mjs scripts/tests/project-physics-case-ui.test.mjs scripts/tests/project-physics2d-observation-selection.test.mjs scripts/tests/project-physics2d-sample-diagram.test.mjs scripts/tests/project-physics-replay-ui.test.mjs scripts/tests/project-physics-case-documents-ui.test.mjs scripts/tests/project-physics-replay-documents-ui.test.mjs scripts/tests/i18n.test.mjs scripts/tests/i18n-coverage.test.mjs scripts/tests/i18n-diagnostics.test.mjs",
+  "final": {
+    "tests": 105,
+    "passed": 105,
+    "failed": 0,
+    "skipped": 0,
+    "log": "ui-final-105.log"
+  },
+  "earlier": [
+    {
+      "log": "ui-initial-existing-40.log",
+      "tests": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "meaning": "Existing sample selection and source guards with the new production wiring, before adding diagram-specific tests."
+    },
+    {
+      "log": "ui-initial-failure-48.log",
+      "tests": 48,
+      "passed": 46,
+      "failed": 2,
+      "skipped": 0,
+      "meaning": "New contact/normal count assertions also matched legend li elements because legend and actual SVG geometry shared data-role. Normal-free samples counted one legend, and four contacts counted four SVG circles plus one legend. Fix: legend uses data-legend; SVG geometry alone retains data-role. Exact count, identity and geometry assertions were retained."
+    },
+    {
+      "log": "ui-intermediate-104.log",
+      "tests": 104,
+      "passed": 104,
+      "failed": 0,
+      "skipped": 0,
+      "meaning": "Passed after distinguishing legend markers, before adding assembly identity to the observer diagram cache and the explicit same-byte sample/different-assembly regression."
+    }
+  ],
+  "sourceHashTiming": "SHA-256 captured after the final successful 105-test command; this is not a before-and-after execution hash guard.",
+  "sources": {
+    "web/modules/app-project-physics-diagram.js": "f93f694c7284f0b6df5602e94cf5eea505c0b3801ba308e3ca7366e411a97de8",
+    "web/modules/app-project-physics-observation.js": "c3d554010538ab89916c600326da2347f055dbd7a4de47370a080ec7eb3bcceb",
+    "web/project-physics-observation.css": "42e8f9926811b976de9e105f04d3c7874025da77f105a169b2887be99f087395",
+    "web/i18n/en.js": "ad10c018582ec3419769d3600a34112bdc42ea13411244a186de243ab4cf20ec",
+    "web/i18n/ja.js": "c072b20c2658ab51a663ab30dc46168b82f3025192f5daca61959be276316036",
+    "scripts/tests/dialog-harness.mjs": "ec34ce9d98a3eb5a4a27ea0a0b4ed510dade5af194e3c360b19c77b102d80aa3",
+    "engine/project-physics2d-sample-diagram.mjs": "5d3c5d3510ab8f8c3c5dfdfa3b9c589b0c57d0e6ab91c43515abaf15dcfbff21",
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/project-physics2d-observation-selection.mjs": "86ac1d8b5e759f7f3b83a103f3ae7ddef379b6cb5db2c16cc1383431d8a80498",
+    "engine/project-runtime-contracts.mjs": "e4f365f530d6dec4f2a09426b33f9048af957830a7e50de4ad7bed324ee4f74d",
+    "scripts/tests/project-physics-diagram-ui.test.mjs": "57eea874aba566325adf4b09be1602cf785724d50dd8076b09716641461fbe40",
+    "scripts/tests/project-physics-observation-ui.test.mjs": "61aab7836be67ef8c5301e8a24a4b10c20c83238700d1b9b87691b8e69f99e56",
+    "scripts/tests/project-physics-observation-build-ui.test.mjs": "65389c8cb89aba0d4a9fe7a9f8e301882d3ec21aaa0be06add8d402bdfefd7d3",
+    "scripts/tests/project-physics-case-ui.test.mjs": "f51f0d564ceb61654a32d65b2d274704fb17da77255c8b62aefacac61bce098b",
+    "scripts/tests/project-physics2d-observation-selection.test.mjs": "024d32e7e0c659b0b889beb27845de0d49c61bd91fbfd0b26ee38816c79e9f4d",
+    "scripts/tests/project-physics2d-sample-diagram.test.mjs": "8c6c087f43a240624fb5a9c3a8eef09f4185a2c52d21fce2b3e713f588b2c435",
+    "scripts/tests/project-physics-replay-ui.test.mjs": "f4f83efe57e714e92e3086f7a5f2009382355932fe5ed13efb6eb1107ec9621e",
+    "scripts/tests/project-physics-case-documents-ui.test.mjs": "c84d7175aa61e17db9a7e881c17cf4aefa627f39e241a2ebbe7d4606870b80a3",
+    "scripts/tests/project-physics-replay-documents-ui.test.mjs": "1032bca63af015a7e725d3fe9d8a115479da00533b75b88b9e93d459c0426a2d",
+    "scripts/tests/i18n.test.mjs": "4674ef57b895e1a3e7889a4adbd8e3fd61cb8ea90068c8b822824885173e4d2e",
+    "scripts/tests/i18n-coverage.test.mjs": "ece3de5128940ec2322ade2b4df284e206d52558f764e2fdcd10cde6285e907e",
+    "scripts/tests/i18n-diagnostics.test.mjs": "9afce6184f6ac3d9a5a314bea0b3abe070b0852c988f6c524b95b2ba3d2c1ff0"
+  },
+  "changedThisTask": [
+    "web/modules/app-project-physics-diagram.js",
+    "web/modules/app-project-physics-observation.js",
+    "web/project-physics-observation.css",
+    "web/i18n/en.js",
+    "web/i18n/ja.js",
+    "scripts/tests/dialog-harness.mjs",
+    "scripts/tests/project-physics-diagram-ui.test.mjs",
+    "scripts/tests/project-physics-observation-ui.test.mjs"
+  ],
+  "limitations": [
+    "No new runtime or author writes, network calls, navigation actions or collision solving are introduced by the renderer.",
+    "Original numeric panel and separately admitted source navigation remain independent.",
+    "Extreme projection loss is announced; actual and requested zero flags use original numeric vectors.",
+    "Diagram endpoints are not an observed trajectory, wall reconstruction, persistent contact or grounded-state proof.",
+    "Normal arrows have fixed drawing length, not a scene-distance length; travel/remainder remain numeric.",
+    "Browser/native end-to-end evidence belongs to a separately executed smoke and is not included in these Node counts."
+  ]
+}

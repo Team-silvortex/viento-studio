@@ -1,0 +1,37 @@
+{
+  "scope": "Release 0.2.9 native sensor occupancy starter timing revalidation only. Three consecutive fresh Godot component harnesses; does not replace the original failed 17-test run.",
+  "date": "2026-11-11",
+  "change": "Only settle() waiting changed from two process_frame signals to physics_frame then process_frame; all original assertions retained.",
+  "cause": "process_frame ticks may both precede the next _physics_process after unpausing or reenabling a node; the physics callback owns the pending occupancy flush.",
+  "productionSourceUnchanged": true,
+  "oldTestReconstructedExactly": true,
+  "testSha256": "20ab9e6a39608ff779a53297d03f6e3a89168ab620cf6b55f7fe5908e212435e",
+  "productionSourceSha256": "ed2cab92919908e95333d0fb455957bdf1d47feb63b098fa676cb95f7bec1107",
+  "runs": [
+    {
+      "run": 1,
+      "nodeTests": 2,
+      "passed": 2,
+      "nativeChecks": 28,
+      "expectedNativeRejections": 18,
+      "evidenceDirectory": "sensor-run-1"
+    },
+    {
+      "run": 2,
+      "nodeTests": 2,
+      "passed": 2,
+      "nativeChecks": 28,
+      "expectedNativeRejections": 18,
+      "evidenceDirectory": "sensor-run-2"
+    },
+    {
+      "run": 3,
+      "nodeTests": 2,
+      "passed": 2,
+      "nativeChecks": 28,
+      "expectedNativeRejections": 18,
+      "evidenceDirectory": "sensor-run-3"
+    }
+  ],
+  "previousEvidenceUntouched": true
+}

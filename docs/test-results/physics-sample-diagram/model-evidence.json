@@ -1,0 +1,46 @@
+{
+  "format": "viento-physics2d-sample-diagram-model-evidence",
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "command": "node --test scripts/tests/project-physics2d-sample-diagram.test.mjs",
+  "execution": "Approved escalated environment; source and test files remained frozen after the run.",
+  "result": {
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0
+  },
+  "log": "model-unit.log",
+  "sourceHashes": {
+    "engine/project-physics2d-sample-diagram.mjs": "5d3c5d3510ab8f8c3c5dfdfa3b9c589b0c57d0e6ab91c43515abaf15dcfbff21",
+    "scripts/tests/project-physics2d-sample-diagram.test.mjs": "8c6c087f43a240624fb5a9c3a8eef09f4185a2c52d21fce2b3e713f588b2c435"
+  },
+  "api": "createProjectPhysics2DSampleDiagram(observation, sequence)",
+  "contract": {
+    "admission": "Complete validateProjectPhysics2DObservation admission; invalid observation or missing exact sequence returns null.",
+    "raw": "Independent deeply frozen complete admitted selected sample and assemblyId; no author geometry or host authority.",
+    "points": "before [0,0]; requestedMotion and displacement endpoints relative to before; independent native contact positions relative to before; normalized unit normals.",
+    "scale": "All positions use one binary scale 2^projection.scaleExponent and stay finite in [-1,1]. Consumers use projected points directly. Fixed bounds [-1.25,1.25] on both axes.",
+    "degradation": "A genuine nonzero coordinate projected to zero by an extreme scale ratio sets projection.degraded; raw sample values remain unchanged.",
+    "exclusions": [
+      "No DOM or I/O",
+      "No collision solving",
+      "No inferred continuous path or contact-point trajectory",
+      "No additional travel/remainder geometry"
+    ]
+  },
+  "coverage": [
+    "Exact selected row, complete identity/raw precision, deep freezing and independence from caller mutation",
+    "Requested and actual endpoints share before origin while positionAfter stays available separately",
+    "At most four independent contact points and normalized normals; original travel/remainder and raw normals retained",
+    "Ordinary translation invariance",
+    "Zero and subnormal-only motion including Number.MIN_VALUE without an arbitrary scale floor",
+    "Huge absolute positions with small requests without absolute endpoint addition",
+    "Overflow-safe contact subtraction and explicit underflow degradation",
+    "Finite MAX_VALUE vectors and power-of-two rounding boundaries without clipping",
+    "One hundred deterministic extreme-range coordinate combinations, preserving admitted raw samples",
+    "Malformed or missing sequence rejection without fallback",
+    "Full observation validation including malformed unselected rows and source identities",
+    "No getter/serializer execution; custom prototypes, sparse arrays, cycles, symbols and hidden properties rejected"
+  ]
+}

@@ -1,3 +1,4 @@
+import { resolveProjectPhysics2DObservationSelection } from '../../engine/project-physics2d-observation-selection.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -10,7 +11,8 @@ import ja from '../../web/i18n/ja.js';
 async function fixture(t, options = {}) {
   let dictionary = {}, languageChanged = () => {}, subscriptions = 0;
   const calls = [], context = { available: true, visible: true, sessionOwner: 'job:build:snapshot:assembly', navigationOwner: 'dialog:1', canOpenSource: true, canContinueSource: true };
-  const h = await dialogHarness('app-project-physics-observation', { validateProjectPhysics2DObservation,
+  context.sampleOwner = { backendId: 'org.viento.godot4', jobId: 'physics-job', buildId: 'physics-build', snapshotId: 'sha256:' + 'c'.repeat(64), assemblyId: id(1) };
+  const h = await dialogHarness('app-project-physics-observation', { validateProjectPhysics2DObservation, resolveProjectPhysics2DObservationSelection,
     t: (key, ...values) => (dictionary[key] || key).replace(/\{(\d+)\}/g, (_, index) => values[index] ?? ''),
     onLanguageChange(callback) { languageChanged = callback; subscriptions++; return () => { languageChanged = () => {}; subscriptions--; }; } });
   const container = h.document.createElement('div'); container.isConnected = true; h.document.body.append(container);
@@ -124,4 +126,120 @@ test('observation module stays read-only, translated and responsive with one sty
   for(const match of source.matchAll(/'([^'\n]*[\u3400-\u9fff][^'\n]*)'/g)){assert.ok(en[match[1]],'English: '+match[1]);assert.ok(ja[match[1]],'Japanese: '+match[1]);}
   const css=await fs.readFile(new URL('../../web/project-physics-observation.css',import.meta.url),'utf8');assert.match(css,/@media \(max-width: 600px\)/);assert.match(css,/overflow-wrap: anywhere/);
   const html=await fs.readFile(new URL('../../web/index.html',import.meta.url),'utf8');assert.equal(html.match(/href="\/web\/project-physics-observation.css"/g)?.length,1);
+});
+
+const sampleRequest = (h, row) => ({ sessionOwner: h.context.sessionOwner, navigationOwner: h.context.navigationOwner, ...h.context.sampleOwner,
+  visitIndex: row.visitIndex, sceneId: row.sceneId, instanceId: row.instanceId, stepIndex: row.stepIndex, sequence: row.sequence });
+
+test('guarded sample selection changes only filters and focus, then uses the existing separately admitted source action', async t => {
+  const h = await fixture(t), samples = [sample(1), sample(2, { instance: 1 }), sample(3, { step: 2 }), sample(4, { visit: 2 })];
+  h.set(snapshot({ samples }));
+  const scrolled = [];
+  h.el('Sample').scrollIntoView = options => scrolled.push({ target: h.el('Sample'), block: options.block, sequence: h.el('Sample').value });
+  h.el('Detail').scrollIntoView = () => assert.fail('A long detail article must not scroll the focused sample selector out of view.');
+  for (const row of [samples[1], samples[3], samples[2]]) {
+    assert.equal(h.observer.selectSample(sampleRequest(h, row)), true);
+    assert.equal(h.el('Instance').value, row.instanceId);
+    assert.equal(h.el('Step').value, `${row.visitIndex}:${row.sceneId}:${row.stepIndex}`);
+    assert.equal(h.el('Sample').value, String(row.sequence));
+    assert.equal(h.el('Detail').dataset.sequence, String(row.sequence));
+    assert.equal(h.document.activeElement, h.el('Sample')); assert.equal(h.calls.length, 0);
+    assert.equal(scrolled.at(-1).target, h.document.activeElement); assert.equal(scrolled.at(-1).block, 'nearest');
+    assert.equal(scrolled.at(-1).sequence, String(row.sequence));
+  }
+  assert.equal(scrolled.length, 3);
+  h.el('Open').click(); await flushDialogs(); assert.deepEqual(h.calls[0].source, samples[2].source);
+});
+
+test('invalid, stale, forged or absent exact selection never falls back, focuses, scrolls or opens a source', async t => {
+  const h = await fixture(t), rows = [sample(1), sample(2, { step: 2 })]; h.set(snapshot({ samples: rows }));
+  h.change('Sample', '2'); h.el('Open').focus();
+  let scrolled = 0, invoked = 0; for (const suffix of ['Sample', 'Detail']) h.el(suffix).scrollIntoView = () => { scrolled++; };
+  const selected = () => [h.el('Instance').value, h.el('Step').value, h.el('Sample').value, h.el('Detail').dataset.sequence];
+  const before = selected(), initial = sampleRequest(h, rows[0]);
+  const requests = [null, {}, { ...initial, sequence: 3 }, { ...initial, instanceId: id(21) }, { ...initial, sceneId: id(3) },
+    { ...initial, visitIndex: 2 }, { ...initial, snapshotId: 'sha256:' + 'e'.repeat(64) }, { ...initial, navigationOwner: 'dialog:2' },
+    { ...initial, extra: true }, Object.create(initial)];
+  const accessor = { ...initial }; Object.defineProperty(accessor, 'sequence', { enumerable: true, get() { invoked++; return 1; } }); requests.push(accessor);
+  const serializer = { ...initial, toJSON() { invoked++; return initial; } }; requests.push(serializer);
+  for (const request of requests) {
+    assert.equal(h.observer.selectSample(request), false); assert.deepEqual(selected(), before);
+    assert.equal(h.document.activeElement, h.el('Open')); assert.equal(scrolled, 0); assert.equal(h.calls.length, 0);
+  }
+  assert.equal(invoked, 0);
+  for (const change of ['session', 'navigation', 'job', 'build', 'snapshot', 'assembly', 'backend', 'hidden', 'unavailable', 'detached']) {
+    const g = await fixture(t); g.set(snapshot({ samples: rows })); g.change('Sample', '2'); const request = sampleRequest(g, rows[0]);
+    if (change === 'session') g.context.sessionOwner = 'other'; else if (change === 'navigation') g.context.navigationOwner = 'other';
+    else if (change === 'hidden') g.context.visible = false; else if (change === 'unavailable') g.context.available = false;
+    else if (change === 'detached') g.container.isConnected = false;
+    else g.context.sampleOwner[change === 'snapshot' ? 'snapshotId' : change === 'assembly' ? 'assemblyId' : change === 'backend' ? 'backendId' : change + 'Id'] += '-changed';
+    assert.equal(g.observer.selectSample(request), false, change); assert.equal(g.el('Sample').value, '2', change);
+    // Even a freshly forged request cannot rebind an old snapshot if a host
+    // accidentally reuses its session string with different run identities.
+    assert.equal(g.observer.selectSample(sampleRequest(g, rows[0])), false, change + ' rebound');
+  }
+});
+
+test('selection context accessors are rejected without reading or altering the current sample', async t => {
+  for (const field of ['available', 'visible', 'sessionOwner', 'navigationOwner', 'sampleOwner']) {
+    const h = await fixture(t); h.set(snapshot()); const request = sampleRequest(h, sample(1)); let invoked = 0;
+    const prior = h.context[field]; Object.defineProperty(h.context, field, { enumerable: true, get() { invoked++; return prior; } });
+    assert.equal(h.observer.selectSample(request), false); assert.equal(invoked, 0); assert.equal(h.el('Sample').value, '1');
+  }
+  const h = await fixture(t); h.set(snapshot()); const request = sampleRequest(h, sample(1)); let invoked = 0;
+  Object.defineProperty(h.context.sampleOwner, 'jobId', { enumerable: true, get() { invoked++; return 'physics-job'; } });
+  assert.equal(h.observer.selectSample(request), false); assert.equal(invoked, 0);
+});
+
+test('legal sample switches revoke a pending source ticket while append, translation and repeated selection retain exact identity', async t => {
+  const gate = deferred(), h = await fixture(t, { onOpen: () => gate.promise }), rows = [sample(1), sample(2, { step: 2 })];
+  h.set(snapshot({ samples: rows })); h.el('Open').click(); assert.equal(h.calls[0].isCurrent(), true);
+  assert.equal(h.observer.selectSample(sampleRequest(h, rows[1])), true); assert.equal(h.calls[0].isCurrent(), false);
+  gate.resolve(false); await flushDialogs(); assert.equal(h.el('Navigation').hidden, true);
+  h.set(snapshot({ samples: [...rows, sample(3, { step: 3 })] }));
+  for (const dictionary of [en, ja, {}]) { h.language(dictionary); assert.equal(h.el('Sample').value, '2'); assert.equal(h.el('Detail').dataset.sequence, '2'); }
+  assert.equal(h.observer.selectSample(sampleRequest(h, rows[1])), true); assert.equal(h.calls.length, 1);
+  h.set(null); assert.equal(h.observer.selectSample(sampleRequest(h, rows[1])), false);
+  h.observer.dispose(); assert.equal(h.observer.selectSample(sampleRequest(h, rows[1])), false);
+  assert.equal(h.runtime.setupProjectPhysicsObservation().selectSample({}), false);
+});
+
+test('the diagram follows the admitted selected sample while polling and language changes preserve geometry and source guards', async t => {
+  const gate = deferred(), h = await fixture(t, { onOpen: () => gate.promise }), rows = [sample(1), sample(2, { step: 2 })];
+  rows[1].positionAfter = [11, 23]; rows[1].displacement = [1, 3]; h.set(snapshot({ phase: 'recording', samples: rows }));
+  h.change('Sample', '2'); const root = h.el('Diagram').querySelector('svg'), actual = root.querySelector('[data-role="actual"]');
+  assert.equal(root.dataset.sequence, '2'); assert.equal(actual.getAttribute('x2'), '174'); assert.equal(actual.getAttribute('y2'), '202');
+  h.el('Sample').focus(); h.el('Open').click(); assert.equal(h.calls[0].isCurrent(), true);
+  h.set(snapshot({ phase: 'finished', samples: [...rows, sample(3, { step: 3 })] }));
+  for (const dictionary of [en, ja, {}]) {
+    h.language(dictionary); assert.equal(h.el('Diagram').querySelector('svg'), root); assert.equal(root.querySelector('[data-role="actual"]'), actual);
+    assert.equal(h.document.activeElement, h.el('Sample')); assert.equal(h.calls[0].isCurrent(), true);
+  }
+  gate.resolve(true); await flushDialogs(); assert.equal(h.calls.length, 1);
+  h.change('Sample', '1'); assert.notEqual(h.el('Diagram').querySelector('svg'), root); assert.equal(h.el('Diagram').querySelector('svg').dataset.sequence, '1');
+});
+
+test('diagram clearing follows invalid data, hidden or detached views and run identity mismatches without changing invalid selections', async t => {
+  for (const change of ['null', 'invalid', 'unselected-invalid', 'hidden', 'unavailable', 'detached', 'session', 'job', 'build', 'snapshot', 'assembly', 'backend']) {
+    const h = await fixture(t); h.set(snapshot()); assert.ok(h.el('Diagram').querySelector('svg'));
+    if (change === 'null') h.set(null);
+    else if (change === 'invalid') { const value = snapshot(); value.samples[0].displacement[0] = 200; h.set(value); }
+    else if (change === 'unselected-invalid') { const value = snapshot({ samples: [sample(1), sample(2, { step: 2 })] }); value.samples[1].contacts[0].normal = [0, 0]; h.set(value); }
+    else if (change === 'hidden') h.context.visible = false;
+    else if (change === 'unavailable') h.context.available = false;
+    else if (change === 'detached') h.container.isConnected = false;
+    else if (change === 'session') h.context.sessionOwner = 'new-job';
+    else h.context.sampleOwner[change === 'snapshot' ? 'snapshotId' : change === 'assembly' ? 'assemblyId' : change === 'backend' ? 'backendId' : change + 'Id'] += '-different';
+    h.observer.refresh(); assert.equal(h.el('Diagram').querySelector('svg'), null, change); assert.equal(h.el('Diagram').hidden, true, change);
+  }
+});
+
+
+test('identical raw samples in a different admitted assembly never reuse the old assembly diagram model', async t => {
+  const h = await fixture(t); h.set(snapshot()); const first = h.el('Diagram').querySelector('svg');
+  assert.equal(first.dataset.assemblyId, id(1));
+  h.context.sampleOwner.assemblyId = id(90); h.set(snapshot({ assemblyId: id(90) }));
+  const second = h.el('Diagram').querySelector('svg');
+  assert.notEqual(second, first); assert.equal(second.dataset.assemblyId, id(90)); assert.equal(second.dataset.sequence, '1');
+  assert.equal(h.el('Sample').value, '1'); assert.equal(h.calls.length, 0);
 });

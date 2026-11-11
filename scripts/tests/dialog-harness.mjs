@@ -1,3 +1,4 @@
+import { projectRuntimeUuid, freezeProjectRuntimeData } from '../../engine/project-runtime-contracts.mjs';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { validateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
 import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
@@ -154,7 +155,7 @@ export async function dialogHarness(module, overrides = {}) {
   const runtime = vm.createContext({
     document, window, URL, Blob, TextEncoder, SCENE_PREVIEW_API_PATH, WORLD_API_PATH, PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS,
     setProjectPhysics2DInputReplayRange: (value, ...args) => setProjectPhysics2DInputReplayRange(JSON.parse(JSON.stringify(value)), ...args),
-    validateProjectPhysics2DObservation: value => validateProjectPhysics2DObservation(JSON.parse(JSON.stringify(value))),
+    validateProjectPhysics2DObservation: value => validateProjectPhysics2DObservation(JSON.parse(JSON.stringify(value))), projectRuntimeUuid, freezeProjectRuntimeData,
     validateProjectPhysics2DReplayCase: value => validateProjectPhysics2DReplayCase(JSON.parse(JSON.stringify(value))),
     validateProjectPhysics2DInputReplay: value => validateProjectPhysics2DInputReplay(JSON.parse(JSON.stringify(value))),
     captureSceneAnimationSpriteLayout: value => captureSceneAnimationSpriteLayout(JSON.parse(JSON.stringify(value))), scenePreviewImageDimensions,
@@ -214,7 +215,22 @@ export async function dialogHarness(module, overrides = {}) {
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(projectionCreator, runtime);
   }
+  if (['app-project-build', 'app-project-physics-observation', 'app-project-physics-diagram'].includes(module)) {
+    const diagramModel = (await fs.readFile(new URL('../../engine/project-physics2d-sample-diagram.mjs', import.meta.url), 'utf8'))
+      .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(`(() => { ${diagramModel}\nglobalThis.createProjectPhysics2DSampleDiagram = createProjectPhysics2DSampleDiagram; })()`, runtime);
+    if (module !== 'app-project-physics-diagram') {
+      const renderer = (await fs.readFile(new URL('../../web/modules/app-project-physics-diagram.js', import.meta.url), 'utf8'))
+        .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
+      vm.runInContext(`(() => { ${renderer}\nglobalThis.setupProjectPhysicsDiagram = setupProjectPhysicsDiagram; })()`, runtime);
+    }
+  }
   if (module === 'app-project-build') {
+    // Production modules share one browser realm. Run the actual strict helper
+    // in this VM as well: no clone/serializer may pre-read selection getters.
+    const selection = (await fs.readFile(new URL('../../engine/project-physics2d-observation-selection.mjs', import.meta.url), 'utf8'))
+      .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(`(() => { ${selection}\nglobalThis.resolveProjectPhysics2DObservationSelection = resolveProjectPhysics2DObservationSelection; })()`, runtime);
     const problems = (await fs.readFile(new URL('../../web/modules/app-project-problems.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(problems, runtime);

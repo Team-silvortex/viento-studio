@@ -1,0 +1,4305 @@
+{
+  "format": "viento-sensor-occupancy-native-proof",
+  "schemaVersion": 1,
+  "startedAt": "2026-11-04T11:16:58.601Z",
+  "sources": {
+    "engine/godot-physics-sensor-occupancy-script.mjs": "ed2cab92919908e95333d0fb455957bdf1d47feb63b098fa676cb95f7bec1107",
+    "engine/godot-physics-sensor-script.mjs": "5642ff8caf896cd0a4abf3bbb5157f01d4ac9665ae6393cc895cedb83a7bd475",
+    "engine/godot-platform-control-script.mjs": "85c2ebfa732f9a7e13655771658b1392400c6ef4c16a7406f690a389200f7879",
+    "engine/script-authoring.mjs": "b5bada48de9b75dbdc6e50177d7bd8436470db8e9e186009bd65df8958b3d7cb",
+    "engine/project-event-positions.mjs": "5d9332db81883d46110770ef95d93ffcfe788c019e29f296eeeb7c99ea7a4809",
+    "engine/project-runtime-events.mjs": "d3469f337098da222a5f7fde65aa71417ba3fc593359daf3dbbe3012d00242b0",
+    "engine/scene-physics2d.mjs": "15e58fd34e3352cfaa93f7fafff45fc6809ef508e621e0a151fc289bcb2aa58c",
+    "scripts/backends/godot4-adapter.mjs": "1c310bd4479c9de737ec2314ed797acda7b261508c3f47d4f81dcaebe5669563",
+    "scripts/backends/godot4-physics-platform-control.mjs": "878d2a7f9e99128ff7b2b6ed9d398dc90bc43a020ef2782213f8c7e04d1a7cfb",
+    "scripts/backends/godot4/physics-platform-control-helper.gd": "35a21e393e25ed4236b503a477e50a69c8324b838c904f9cdcc7943af1621e69",
+    "scripts/adapters/node-project-build.mjs": "45019753057954697f10bee01790c8cdcb1d54c5d4cd9f20d92b7ed5158dfdda",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-backend-project.mjs": "18c87cb33ee032ed6f73e2e80147e64866c28241b43f9d2aa23e96cd5275a749",
+    "scripts/adapters/node-backend-project-delivery.mjs": "7bd862e5dd2fd86f8ac11172ce63cb426f71b5bace1ea9c8211385f85fd4d427",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/tests/helpers/scene-physics2d-sensor-occupancy-author-fixture.mjs": "bb7dc2c00ac134ee27a3c05a9f4241a063362c758b5cb43f8772ee65b2d67519",
+    "scripts/tests/scene-physics2d-sensor-occupancy-smoke.mjs": "8bcb869536bbc0e9bf77d5dd19cefc5e2fe1d3a78670ff268ec7eb7da3001d65"
+  },
+  "cases": [
+    {
+      "name": "two-occupants-two-filtered-platforms",
+      "passed": true,
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.40.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.observe2d",
+          "physics.one-way-platform2d",
+          "physics.character-contacts2d",
+          "physics.platform-motion2d",
+          "physics.platform-events2d",
+          "runtime.execution-clock",
+          "runtime.execution-frames",
+          "runtime.audio-requests",
+          "physics.platform-vertical2d",
+          "physics.platform-control2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "b1cc3e0fd060f7d6b1fdffb611d87497ba81993f011340bbf45a27c03578452f"
+      },
+      "authorFiles": 57,
+      "authorSha256": "82adff01a6f0fb2b2891f256698b45a6a6748ab53ce523575dfbc19e78df50de",
+      "authorUnchanged": true,
+      "generatedUnchanged": true,
+      "probes": [
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 0,
+              "position": [
+                600,
+                400
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 0,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 0,
+              "position": [
+                600,
+                400
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 1,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 4,
+              "position": [
+                600,
+                404
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 2,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 8,
+              "position": [
+                600,
+                408
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 3,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 12,
+              "position": [
+                600,
+                412
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 4,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 16,
+              "position": [
+                600,
+                416
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 5,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 20,
+              "position": [
+                600,
+                420
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 6,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 24,
+              "position": [
+                600,
+                424
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 7,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 28,
+              "position": [
+                600,
+                428
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 8,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 32,
+              "position": [
+                600,
+                432
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 9,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 36,
+              "position": [
+                600,
+                436
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 10,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 11,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 12,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 13,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 14,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 15,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 2,
+              "position": [
+                802,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 16,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 4,
+              "position": [
+                804,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 17,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 6,
+              "position": [
+                806,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 18,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 19,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 44,
+              "position": [
+                600,
+                444
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 20,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 48,
+              "position": [
+                600,
+                448
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 21,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 52,
+              "position": [
+                600,
+                444
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 22,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 56,
+              "position": [
+                600,
+                440
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 23,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 60,
+              "position": [
+                600,
+                436
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 24,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 64,
+              "position": [
+                600,
+                432
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 25,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 68,
+              "position": [
+                600,
+                428
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 26,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 72,
+              "position": [
+                600,
+                424
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 27,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 76,
+              "position": [
+                600,
+                420
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 28,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 80,
+              "position": [
+                600,
+                416
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 29,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 84,
+              "position": [
+                600,
+                412
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 8,
+              "position": [
+                808,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 30,
+          "visit": 1
+        }
+      ],
+      "eventPositions": {
+        "format": "viento-project-event-positions",
+        "schemaVersion": 1,
+        "phase": "finished",
+        "counts": {
+          "published": 5,
+          "settled": 5,
+          "pending": 0,
+          "deliveries": 10,
+          "handled": 10,
+          "skipped": 0,
+          "pendingDeliveries": 0
+        },
+        "retention": {
+          "limit": 32,
+          "total": 5,
+          "retained": 5,
+          "dropped": 0,
+          "pending": 0,
+          "settled": 5,
+          "firstSequence": 1,
+          "lastSequence": 5
+        },
+        "items": [
+          {
+            "sequence": 1,
+            "name": "physics.occupied",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 0,
+                    "physicsFrame": 2
+                  },
+                  "executionFrameIndex": 5
+                }
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 0,
+                    "physicsFrame": 2
+                  },
+                  "executionFrameIndex": 6
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 0,
+                "physicsFrame": 2
+              },
+              "executionFrameIndex": 4
+            }
+          },
+          {
+            "sequence": 2,
+            "name": "physics.vacant",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 2,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 25,
+                    "physicsFrame": 20
+                  },
+                  "executionFrameIndex": 8
+                }
+              },
+              {
+                "subscriptionId": 4,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 25,
+                    "physicsFrame": 20
+                  },
+                  "executionFrameIndex": 9
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 25,
+                "physicsFrame": 20
+              },
+              "executionFrameIndex": 7
+            }
+          },
+          {
+            "sequence": 3,
+            "name": "physics.occupied",
+            "value": "98989898-9898-4898-8898-000000000001",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "98989898-9898-4898-8898-000000000004",
+              "instanceId": "98989898-9898-4898-8898-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/2"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 35,
+                    "physicsFrame": 24
+                  },
+                  "executionFrameIndex": 11
+                }
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 35,
+                    "physicsFrame": 24
+                  },
+                  "executionFrameIndex": 12
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 35,
+                "physicsFrame": 24
+              },
+              "executionFrameIndex": 10
+            }
+          },
+          {
+            "sequence": 4,
+            "name": "physics.occupied",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 45,
+                    "physicsFrame": 28
+                  },
+                  "executionFrameIndex": 15
+                }
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 45,
+                    "physicsFrame": 28
+                  },
+                  "executionFrameIndex": 16
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 45,
+                "physicsFrame": 28
+              },
+              "executionFrameIndex": 13
+            }
+          },
+          {
+            "sequence": 5,
+            "name": "physics.vacant",
+            "value": "98989898-9898-4898-8898-000000000001",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "98989898-9898-4898-8898-000000000004",
+              "instanceId": "98989898-9898-4898-8898-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/2"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 2,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 45,
+                    "physicsFrame": 28
+                  },
+                  "executionFrameIndex": 17
+                }
+              },
+              {
+                "subscriptionId": 4,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 45,
+                    "physicsFrame": 28
+                  },
+                  "executionFrameIndex": 18
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 45,
+                "physicsFrame": 28
+              },
+              "executionFrameIndex": 14
+            }
+          }
+        ]
+      },
+      "projectEvents": {
+        "sequence": 5,
+        "entries": [
+          {
+            "sequence": 1,
+            "name": "physics.occupied",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled"
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled"
+              }
+            ]
+          },
+          {
+            "sequence": 2,
+            "name": "physics.vacant",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 2,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled"
+              },
+              {
+                "subscriptionId": 4,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled"
+              }
+            ]
+          },
+          {
+            "sequence": 3,
+            "name": "physics.occupied",
+            "value": "98989898-9898-4898-8898-000000000001",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "98989898-9898-4898-8898-000000000004",
+              "instanceId": "98989898-9898-4898-8898-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/2"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled"
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled"
+              }
+            ]
+          },
+          {
+            "sequence": 4,
+            "name": "physics.occupied",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled"
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled"
+              }
+            ]
+          },
+          {
+            "sequence": 5,
+            "name": "physics.vacant",
+            "value": "98989898-9898-4898-8898-000000000001",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "98989898-9898-4898-8898-000000000004",
+              "instanceId": "98989898-9898-4898-8898-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/2"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 2,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled"
+              },
+              {
+                "subscriptionId": 4,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "scene-exit-and-reentry-reset-without-vacant-tail",
+      "passed": true,
+      "authorUnchanged": true,
+      "authorSha256": "85e93d51eb4a86b457a21d2bd66f2d8a2508b259d94898f234e697abdffdfeb4",
+      "probes": [
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 0,
+              "position": [
+                600,
+                400
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 0,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 0,
+              "position": [
+                600,
+                400
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 1,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 4,
+              "position": [
+                600,
+                404
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 2,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 8,
+              "position": [
+                600,
+                408
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 3,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 12,
+              "position": [
+                600,
+                412
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 4,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 16,
+              "position": [
+                600,
+                416
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 5,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 20,
+              "position": [
+                600,
+                420
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 6,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 24,
+              "position": [
+                600,
+                424
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 7,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 28,
+              "position": [
+                600,
+                428
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 8,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 32,
+              "position": [
+                600,
+                432
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 9,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 36,
+              "position": [
+                600,
+                436
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 10,
+          "visit": 1
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 0,
+              "position": [
+                600,
+                400
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": true
+            }
+          ],
+          "step": 0,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 0,
+              "position": [
+                600,
+                400
+              ],
+              "running": false
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 1,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 4,
+              "position": [
+                600,
+                404
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 2,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 8,
+              "position": [
+                600,
+                408
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 3,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 12,
+              "position": [
+                600,
+                412
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 4,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 16,
+              "position": [
+                600,
+                416
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 5,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 20,
+              "position": [
+                600,
+                420
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 6,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 24,
+              "position": [
+                600,
+                424
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 7,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 28,
+              "position": [
+                600,
+                428
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 8,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 32,
+              "position": [
+                600,
+                432
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 9,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 36,
+              "position": [
+                600,
+                436
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 10,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 40,
+              "position": [
+                600,
+                440
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 11,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 44,
+              "position": [
+                600,
+                444
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 12,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 48,
+              "position": [
+                600,
+                448
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 13,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 52,
+              "position": [
+                600,
+                444
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 14,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 56,
+              "position": [
+                600,
+                440
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 15,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 60,
+              "position": [
+                600,
+                436
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 16,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 64,
+              "position": [
+                600,
+                432
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 17,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 68,
+              "position": [
+                600,
+                428
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 18,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 72,
+              "position": [
+                600,
+                424
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 19,
+          "visit": 3
+        },
+        {
+          "platforms": [
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "phase": 76,
+              "position": [
+                600,
+                420
+              ],
+              "running": true
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "phase": 0,
+              "position": [
+                800,
+                400
+              ],
+              "running": false
+            }
+          ],
+          "step": 20,
+          "visit": 3
+        }
+      ],
+      "eventPositions": {
+        "format": "viento-project-event-positions",
+        "schemaVersion": 1,
+        "phase": "finished",
+        "counts": {
+          "published": 2,
+          "settled": 2,
+          "pending": 0,
+          "deliveries": 4,
+          "handled": 4,
+          "skipped": 0,
+          "pendingDeliveries": 0
+        },
+        "retention": {
+          "limit": 32,
+          "total": 2,
+          "retained": 2,
+          "dropped": 0,
+          "pending": 0,
+          "settled": 2,
+          "firstSequence": 1,
+          "lastSequence": 2
+        },
+        "items": [
+          {
+            "sequence": 1,
+            "name": "physics.occupied",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 0,
+                    "physicsFrame": 2
+                  },
+                  "executionFrameIndex": 5
+                }
+              },
+              {
+                "subscriptionId": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 0,
+                    "physicsFrame": 2
+                  },
+                  "executionFrameIndex": 6
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 0,
+                "physicsFrame": 2
+              },
+              "executionFrameIndex": 4
+            }
+          },
+          {
+            "sequence": 2,
+            "name": "physics.occupied",
+            "value": "70707070-7070-4070-8070-000000000002",
+            "origin": {
+              "visitIndex": 3,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "70707070-7070-4070-8070-000000000005",
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                "propertyPath": "/bindings/1"
+              }
+            },
+            "deliveries": [
+              {
+                "subscriptionId": 5,
+                "origin": {
+                  "visitIndex": 3,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000006",
+                  "instanceId": "79797979-7979-4979-8979-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/3"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 24,
+                    "physicsFrame": 20
+                  },
+                  "executionFrameIndex": 17
+                }
+              },
+              {
+                "subscriptionId": 7,
+                "origin": {
+                  "visitIndex": 3,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "98989898-9898-4898-8898-000000000008",
+                  "instanceId": "83838383-8383-4838-8838-000000000001",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:39f2bbde4218566512362b486fb30fade8c22db7c7378e2c33470d483d763287",
+                    "propertyPath": "/bindings/4"
+                  }
+                },
+                "status": "handled",
+                "delivered": {
+                  "clock": {
+                    "idleFrame": 24,
+                    "physicsFrame": 20
+                  },
+                  "executionFrameIndex": 18
+                }
+              }
+            ],
+            "published": {
+              "clock": {
+                "idleFrame": 24,
+                "physicsFrame": 20
+              },
+              "executionFrameIndex": 16
+            }
+          }
+        ]
+      },
+      "publications": [
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.occupied",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [
+            {
+              "bindingId": "98989898-9898-4898-8898-000000000006",
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 1
+            },
+            {
+              "bindingId": "98989898-9898-4898-8898-000000000008",
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 3
+            }
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "70707070-7070-4070-8070-000000000002",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.occupied",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [
+            {
+              "bindingId": "98989898-9898-4898-8898-000000000006",
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 5
+            },
+            {
+              "bindingId": "98989898-9898-4898-8898-000000000008",
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 7
+            }
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "70707070-7070-4070-8070-000000000002",
+          "visitIndex": 3
+        }
+      ],
+      "visits": [
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                90,
+                100
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                100,
+                100
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                1200,
+                500
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                600,
+                436
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                110,
+                100
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                800,
+                400
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "98989898-9898-4898-8898-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                300,
+                100
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.16666666666666666,
+          "event": "scene-exit",
+          "nextSceneId": "12345678-1234-4234-8234-123456789abd",
+          "protocol": 4,
+          "reason": "switch",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "12345678-1234-4234-8234-123456789abd",
+          "visitIndex": 2
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0,
+          "event": "scene-exit",
+          "nextSceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "protocol": 4,
+          "reason": "switch",
+          "sceneId": "12345678-1234-4234-8234-123456789abd",
+          "visitIndex": 2
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 3
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                90,
+                100
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                100,
+                100
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                1200,
+                500
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                600,
+                420
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "79797979-7979-4979-8979-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                110,
+                100
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "83838383-8383-4838-8838-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                800,
+                400
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "98989898-9898-4898-8898-000000000001",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                300,
+                100
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.3333333333333333,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 3
+        }
+      ]
+    },
+    {
+      "name": "selective-author-migration-and-offline-generated-delivery",
+      "passed": true,
+      "importedDocuments": 19,
+      "originalAuthorUnchanged": true,
+      "restoredAuthorUnchanged": true,
+      "scriptBytes": 5918,
+      "scriptSha256": "1187da342114d239d5cb0e004434eb0cf749a94f559b3366bc6ade4f7f2e075d",
+      "manifestSha256": "64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+      "package": {
+        "bytes": 75160,
+        "sha256": "682146eaaf934ad233ddf1e6046bb6282f9ecb411e0d8704db424aaf75c5de55"
+      },
+      "delivery": {
+        "bytes": 231931,
+        "sha256": "357aa5951fdb71873f51126b1ffe9ef7d37f1e66cbd8c62d3dc4b08038ca0ed0",
+        "originalAuthorOffline": true,
+        "restoredAuthorOffline": true,
+        "originalBuildOffline": true
+      },
+      "cancelledAfterReady": true,
+      "cancellation": {
+        "status": "cancelled",
+        "sessionsCleaned": true,
+        "frozenProjectUnchanged": true
+      },
+      "host": {
+        "status": "succeeded",
+        "eventPositions": {
+          "format": "viento-project-event-positions",
+          "schemaVersion": 1,
+          "phase": "finished",
+          "counts": {
+            "published": 5,
+            "settled": 5,
+            "pending": 0,
+            "deliveries": 10,
+            "handled": 10,
+            "skipped": 0,
+            "pendingDeliveries": 0
+          },
+          "retention": {
+            "limit": 32,
+            "total": 5,
+            "retained": 5,
+            "dropped": 0,
+            "pending": 0,
+            "settled": 5,
+            "firstSequence": 1,
+            "lastSequence": 5
+          },
+          "items": [
+            {
+              "sequence": 1,
+              "name": "physics.occupied",
+              "value": "70707070-7070-4070-8070-000000000002",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "70707070-7070-4070-8070-000000000005",
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/1"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 1,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 0,
+                      "physicsFrame": 2
+                    },
+                    "executionFrameIndex": 5
+                  }
+                },
+                {
+                  "subscriptionId": 3,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 0,
+                      "physicsFrame": 2
+                    },
+                    "executionFrameIndex": 6
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 0,
+                  "physicsFrame": 2
+                },
+                "executionFrameIndex": 4
+              }
+            },
+            {
+              "sequence": 2,
+              "name": "physics.vacant",
+              "value": "70707070-7070-4070-8070-000000000002",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "70707070-7070-4070-8070-000000000005",
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/1"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 2,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 26,
+                      "physicsFrame": 20
+                    },
+                    "executionFrameIndex": 8
+                  }
+                },
+                {
+                  "subscriptionId": 4,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 26,
+                      "physicsFrame": 20
+                    },
+                    "executionFrameIndex": 9
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 26,
+                  "physicsFrame": 20
+                },
+                "executionFrameIndex": 7
+              }
+            },
+            {
+              "sequence": 3,
+              "name": "physics.occupied",
+              "value": "98989898-9898-4898-8898-000000000001",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "98989898-9898-4898-8898-000000000004",
+                "instanceId": "98989898-9898-4898-8898-000000000001",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/2"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 1,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 35,
+                      "physicsFrame": 24
+                    },
+                    "executionFrameIndex": 11
+                  }
+                },
+                {
+                  "subscriptionId": 3,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 35,
+                      "physicsFrame": 24
+                    },
+                    "executionFrameIndex": 12
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 35,
+                  "physicsFrame": 24
+                },
+                "executionFrameIndex": 10
+              }
+            },
+            {
+              "sequence": 4,
+              "name": "physics.occupied",
+              "value": "70707070-7070-4070-8070-000000000002",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "70707070-7070-4070-8070-000000000005",
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/1"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 1,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 45,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 15
+                  }
+                },
+                {
+                  "subscriptionId": 3,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 45,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 16
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 45,
+                  "physicsFrame": 28
+                },
+                "executionFrameIndex": 13
+              }
+            },
+            {
+              "sequence": 5,
+              "name": "physics.vacant",
+              "value": "98989898-9898-4898-8898-000000000001",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "98989898-9898-4898-8898-000000000004",
+                "instanceId": "98989898-9898-4898-8898-000000000001",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/2"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 2,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 45,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 17
+                  }
+                },
+                {
+                  "subscriptionId": 4,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 45,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 18
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 45,
+                  "physicsFrame": 28
+                },
+                "executionFrameIndex": 14
+              }
+            }
+          ]
+        }
+      },
+      "offline": {
+        "probes": [
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 0,
+                "position": [
+                  600,
+                  400
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": true
+              }
+            ],
+            "step": 0,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 0,
+                "position": [
+                  600,
+                  400
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 1,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 4,
+                "position": [
+                  600,
+                  404
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 2,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 8,
+                "position": [
+                  600,
+                  408
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 3,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 12,
+                "position": [
+                  600,
+                  412
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 4,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 16,
+                "position": [
+                  600,
+                  416
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 5,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 20,
+                "position": [
+                  600,
+                  420
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 6,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 24,
+                "position": [
+                  600,
+                  424
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 7,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 28,
+                "position": [
+                  600,
+                  428
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 8,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 32,
+                "position": [
+                  600,
+                  432
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 9,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 36,
+                "position": [
+                  600,
+                  436
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 10,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 11,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 12,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 13,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 14,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 0,
+                "position": [
+                  800,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 15,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 2,
+                "position": [
+                  802,
+                  400
+                ],
+                "running": true
+              }
+            ],
+            "step": 16,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 4,
+                "position": [
+                  804,
+                  400
+                ],
+                "running": true
+              }
+            ],
+            "step": 17,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 6,
+                "position": [
+                  806,
+                  400
+                ],
+                "running": true
+              }
+            ],
+            "step": 18,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 40,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": false
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": true
+              }
+            ],
+            "step": 19,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 44,
+                "position": [
+                  600,
+                  444
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 20,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 48,
+                "position": [
+                  600,
+                  448
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 21,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 52,
+                "position": [
+                  600,
+                  444
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 22,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 56,
+                "position": [
+                  600,
+                  440
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 23,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 60,
+                "position": [
+                  600,
+                  436
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 24,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 64,
+                "position": [
+                  600,
+                  432
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 25,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 68,
+                "position": [
+                  600,
+                  428
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 26,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 72,
+                "position": [
+                  600,
+                  424
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 27,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 76,
+                "position": [
+                  600,
+                  420
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 28,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 80,
+                "position": [
+                  600,
+                  416
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 29,
+            "visit": 1
+          },
+          {
+            "platforms": [
+              {
+                "instanceId": "79797979-7979-4979-8979-000000000001",
+                "phase": 84,
+                "position": [
+                  600,
+                  412
+                ],
+                "running": true
+              },
+              {
+                "instanceId": "83838383-8383-4838-8838-000000000001",
+                "phase": 8,
+                "position": [
+                  808,
+                  400
+                ],
+                "running": false
+              }
+            ],
+            "step": 30,
+            "visit": 1
+          }
+        ],
+        "eventPositions": {
+          "format": "viento-project-event-positions",
+          "schemaVersion": 1,
+          "phase": "finished",
+          "counts": {
+            "published": 5,
+            "settled": 5,
+            "pending": 0,
+            "deliveries": 10,
+            "handled": 10,
+            "skipped": 0,
+            "pendingDeliveries": 0
+          },
+          "retention": {
+            "limit": 32,
+            "total": 5,
+            "retained": 5,
+            "dropped": 0,
+            "pending": 0,
+            "settled": 5,
+            "firstSequence": 1,
+            "lastSequence": 5
+          },
+          "items": [
+            {
+              "sequence": 1,
+              "name": "physics.occupied",
+              "value": "70707070-7070-4070-8070-000000000002",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "70707070-7070-4070-8070-000000000005",
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/1"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 1,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 0,
+                      "physicsFrame": 2
+                    },
+                    "executionFrameIndex": 5
+                  }
+                },
+                {
+                  "subscriptionId": 3,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 0,
+                      "physicsFrame": 2
+                    },
+                    "executionFrameIndex": 6
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 0,
+                  "physicsFrame": 2
+                },
+                "executionFrameIndex": 4
+              }
+            },
+            {
+              "sequence": 2,
+              "name": "physics.vacant",
+              "value": "70707070-7070-4070-8070-000000000002",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "70707070-7070-4070-8070-000000000005",
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/1"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 2,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 28,
+                      "physicsFrame": 20
+                    },
+                    "executionFrameIndex": 8
+                  }
+                },
+                {
+                  "subscriptionId": 4,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 28,
+                      "physicsFrame": 20
+                    },
+                    "executionFrameIndex": 9
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 28,
+                  "physicsFrame": 20
+                },
+                "executionFrameIndex": 7
+              }
+            },
+            {
+              "sequence": 3,
+              "name": "physics.occupied",
+              "value": "98989898-9898-4898-8898-000000000001",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "98989898-9898-4898-8898-000000000004",
+                "instanceId": "98989898-9898-4898-8898-000000000001",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/2"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 1,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 37,
+                      "physicsFrame": 24
+                    },
+                    "executionFrameIndex": 11
+                  }
+                },
+                {
+                  "subscriptionId": 3,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 37,
+                      "physicsFrame": 24
+                    },
+                    "executionFrameIndex": 12
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 37,
+                  "physicsFrame": 24
+                },
+                "executionFrameIndex": 10
+              }
+            },
+            {
+              "sequence": 4,
+              "name": "physics.occupied",
+              "value": "70707070-7070-4070-8070-000000000002",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "70707070-7070-4070-8070-000000000005",
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/1"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 1,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 47,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 15
+                  }
+                },
+                {
+                  "subscriptionId": 3,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 47,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 16
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 47,
+                  "physicsFrame": 28
+                },
+                "executionFrameIndex": 13
+              }
+            },
+            {
+              "sequence": 5,
+              "name": "physics.vacant",
+              "value": "98989898-9898-4898-8898-000000000001",
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "98989898-9898-4898-8898-000000000004",
+                "instanceId": "98989898-9898-4898-8898-000000000001",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "design-data/behaviors/demo.json",
+                  "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                  "propertyPath": "/bindings/2"
+                }
+              },
+              "deliveries": [
+                {
+                  "subscriptionId": 2,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000006",
+                    "instanceId": "79797979-7979-4979-8979-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/3"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 47,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 17
+                  }
+                },
+                {
+                  "subscriptionId": 4,
+                  "origin": {
+                    "visitIndex": 1,
+                    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                    "bindingId": "98989898-9898-4898-8898-000000000008",
+                    "instanceId": "83838383-8383-4838-8838-000000000001",
+                    "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                    "source": {
+                      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                      "sourcePath": "design-data/behaviors/demo.json",
+                      "sourceRevision": "sha256:64213dfde6a9be7e62f9b208c58d5cf6bb37c5b713297e842e828c9a05402bec",
+                      "propertyPath": "/bindings/4"
+                    }
+                  },
+                  "status": "handled",
+                  "delivered": {
+                    "clock": {
+                      "idleFrame": 47,
+                      "physicsFrame": 28
+                    },
+                    "executionFrameIndex": 18
+                  }
+                }
+              ],
+              "published": {
+                "clock": {
+                  "idleFrame": 47,
+                  "physicsFrame": 28
+                },
+                "executionFrameIndex": 14
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Real Linux Godot headless execution with ordinary author TXT; no installed Tauri, Android, window rendering or Bevy claim.",
+    "The native probe moves genuine frozen CharacterBody2D nodes at named steps to create independently observable Area2D transitions. It does not fabricate runtime protocol frames.",
+    "Starter reflection / duplicate signals / body destruction edge cases have a separate native test. This report covers integration, author migration and generated-project delivery."
+  ],
+  "tool": {
+    "executable": "<toolchains>/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+    "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "passed": 3,
+  "failed": 0,
+  "finishedAt": "2026-11-04T11:17:35.630Z"
+}

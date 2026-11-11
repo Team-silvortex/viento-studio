@@ -246,6 +246,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <p id="projectBuildPhysicsCaseError" role="alert" hidden></p></details>
     <section id="projectBuildPhysicsCaseResult" class="build-case-result" hidden aria-labelledby="projectBuildPhysicsCaseTitle"><h3 id="projectBuildPhysicsCaseTitle" data-i18n="物理验收结果"></h3>
     <p id="projectBuildPhysicsCaseSummary" role="status" aria-live="polite"></p><ul id="projectBuildPhysicsCaseChecks"></ul></section>
+    <p id="projectBuildPhysicsCaseSelectionStatus" class="build-hint" role="status" aria-live="polite" hidden></p>
     <details id="projectBuildCaseEditor" class="build-control-editor" hidden><summary data-i18n="编辑运行验收"></summary>
     <p id="projectBuildCaseSceneHint" class="build-hint" data-i18n="按实例和步骤检查位置或状态；运行使用冻结构建，保存用例需明确操作。执行完成与验收通过分别显示。"></p>
     <p id="projectBuildCaseProjectHint" class="build-hint" data-i18n="用例绑定入口场景，可被使用该场景的其他项目复用。运行使用冻结场景；保存校验当前作者场景，两者可能不同。" hidden></p>
@@ -293,7 +294,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     steps: Array.from({ length: 30 }, (_, index) => ({ left: false, right: index < 18, up: false, down: false, jump: index === 6 })) });
   el('projectBuildPhysicsReplayProgram').value = JSON.stringify(defaultPhysicsReplay(), null, 2);
   let physicsReplayError = '', physicsDocuments = null;
-  let physicsCaseError = '', physicsCaseDocuments = null;
+  let physicsCaseError = '', physicsCaseDocuments = null, physicsCaseSelectionRevision = 0;
   // Construct once: polling and language changes must not replace the focused cell.
   const physicsTimeline = el('projectBuildPhysicsTimeline');
   const physicsActionLabels = { left: '向左', right: '向右', up: '向上', down: '向下', jump: '跳跃' };
@@ -311,7 +312,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
         let program; try { program = readPhysicsReplay(); } catch { return; }
         const updated = setProjectPhysics2DInputReplayRange(program, action, step, step, !program.steps[step][action]);
         el('projectBuildPhysicsReplayProgram').value = JSON.stringify(updated, null, 2);
-        physicsReplayError = ''; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase();
+        physicsReplayError = ''; physicsCaseSelectionRevision++; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase();
       });
       cell.addEventListener('focus', () => { physicsTimelineFocus = PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS.indexOf(action) * 30 + step; });
       cell.addEventListener('keydown', event => {
@@ -416,39 +417,34 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
           positionAfter: { value: row.positionAfter, tolerance: [0.01, 0.01] } })) });
     } catch { return null; }
   }
-  function renderPhysicsCase() {
-    const supported = hasPhysicsReplayCapability() && physicsReplayBuildSupported();
-    physicsCaseDocuments?.render();
-    el('projectBuildPhysicsCaseEditor').hidden = !supported;
-    el('projectBuildPhysicsCaseRun').hidden = !supported;
-    el('projectBuildPhysicsCaseRun').disabled = !supported || !mayStart('run', 'headless') || Boolean(physicsCaseDocuments && !physicsCaseDocuments.runAllowed());
-    el('projectBuildPhysicsCaseSample').disabled = !supported || !mayStart('run', 'headless') || !sampledPhysicsCase();
-    el('projectBuildPhysicsCaseError').hidden = !physicsCaseError;
-    el('projectBuildPhysicsCaseError').textContent = physicsCaseError ? t(physicsCaseError) : '';
-    const list = el('projectBuildPhysicsCaseChecks'); list.replaceChildren();
-    const result = el('projectBuildPhysicsCaseResult'); result.hidden = true;
-    const targets = el('projectBuildPhysicsCaseInstances'); targets.replaceChildren();
-    const sampled = sampledPhysicsCase();
-    for (const check of sampled?.checks || []) {
-      const option = document.createElement('option'); option.value = check.instanceId; targets.append(option);
-    }
-    const job = physicsCaseOwnedJob(), verification = job?.physicsVerification;
-    if (!verification || getContext().dirty || getContext().creating || getContext().busy) return;
+  // Acceptance facts and the current drafts are checked again at each click.
+  // The observer receives only a sample identity, never an acceptance verdict.
+  function checkedPhysicsCaseResult() {
+    const job = physicsCaseOwnedJob(), build = matchedBuild(), context = getContext();
+    const verification = job?.physicsVerification;
+    if (!verification || context.dirty || context.creating || context.busy
+      || physicsDocuments && !physicsDocuments.runAllowed() || physicsCaseDocuments && !physicsCaseDocuments.runAllowed()) return null;
     try {
+      const caseText = el('projectBuildPhysicsCaseProgram').value, inputText = el('projectBuildPhysicsReplayProgram').value;
       const definition = validateProjectPhysics2DReplayCase(verification.definition);
       if (canonicalJson(definition) !== canonicalJson(physicsCaseRead()) || canonicalJson(definition.program) !== canonicalJson(readPhysicsReplay())
         || canonicalJson(definition.program) !== canonicalJson(validateProjectPhysics2DInputReplay(job.physicsControl?.program))
-        || !/^sha256:[a-f0-9]{64}$/.test(verification.sha256 || '') || !/^sha256:[a-f0-9]{64}$/.test(job.physicsControl?.sha256 || '')) return;
+        || !/^sha256:[a-f0-9]{64}$/.test(verification.sha256 || '') || !/^sha256:[a-f0-9]{64}$/.test(job.physicsControl?.sha256 || '')) return null;
       const evaluation = verification.evaluation;
       if (!evaluation || !['passed', 'failed', 'incomplete'].includes(evaluation.status) || !Array.isArray(evaluation.checks)
         || evaluation.status !== 'incomplete' && (job.status !== 'succeeded' || job.physicsControl?.complete !== true)
-        || evaluation.status === 'incomplete' && evaluation.checks.length !== 0) return;
+        || evaluation.status === 'incomplete' && evaluation.checks.length !== 0) return null;
+      let observation = null, samples = [];
       if (evaluation.status !== 'incomplete') {
-        const observation = validateProjectPhysics2DObservation(job.physics);
-        if (observation.phase !== 'finished' || observation.limited || observation.assemblyId !== selected) return;
-        const checks = definition.checks.map(check => {
-          const sample = observation.samples.find(row => row.sceneId === matchedBuild()?.entrySceneId && row.instanceId === check.instanceId && row.stepIndex === check.stepIndex);
-          if (!sample) throw new Error('missing sample');
+        try { observation = validateProjectPhysics2DObservation(job.physics); }
+        catch { return { unlocatable: true }; }
+        if (observation.phase !== 'finished' || observation.limited || observation.assemblyId !== selected) return { unlocatable: true };
+        const checks = [];
+        for (const check of definition.checks) {
+          const matches = observation.samples.filter(row => row.visitIndex === 1 && row.sceneId === build.entrySceneId
+            && row.instanceId === check.instanceId && row.stepIndex === check.stepIndex);
+          if (matches.length !== 1) return { unlocatable: true };
+          const sample = matches[0]; samples.push(sample);
           const result = { instanceId: check.instanceId, stepIndex: check.stepIndex, passed: true };
           if (check.positionAfter) {
             const expected = check.positionAfter.value, tolerance = check.positionAfter.tolerance, actual = sample.positionAfter;
@@ -460,23 +456,101 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
             const passed = actual === check.contact.exists;
             result.contact = { ...check.contact, actual, passed }; result.passed &&= passed;
           }
-          return result;
-        });
-        if (canonicalJson(evaluation) !== canonicalJson({ status: checks.every(check => check.passed) ? 'passed' : 'failed', checks })) return;
+          checks.push(result);
+        }
+        if (canonicalJson(evaluation) !== canonicalJson({ status: checks.every(check => check.passed) ? 'passed' : 'failed', checks })) return null;
       }
-      el('projectBuildPhysicsCaseSummary').textContent = t({ passed: '物理验收通过', failed: '物理验收未通过', incomplete: '物理验收未完成' }[evaluation.status]);
-      for (const check of evaluation.checks) {
-        const item = node('li', t('实例 {0} · 第 {1} 步 · {2}', check.instanceId, check.stepIndex, t(check.passed ? '检查通过' : '检查未通过')), 'build-case-check');
-        if (check.positionAfter) item.append(node('p', t('位置：预期 {0} ± {1}，实际 {2} · {3}',
-          JSON.stringify(check.positionAfter.expected), JSON.stringify(check.positionAfter.tolerance), JSON.stringify(check.positionAfter.actual),
-          t(check.positionAfter.passed ? '检查通过' : '检查未通过')), 'build-monospace'));
-        if (check.contact) item.append(node('p', t('扫掠碰撞（{0}）：预期 {1}，实际 {2} · {3}', check.contact.bodyId || t('任意碰撞体'),
-          t(check.contact.exists ? '有碰撞' : '无碰撞'), t(check.contact.actual ? '有碰撞' : '无碰撞'),
-          t(check.contact.passed ? '检查通过' : '检查未通过')), 'build-monospace'));
-        list.append(item);
-      }
-      result.hidden = false;
-    } catch { /* A stale or malformed result never becomes an acceptance claim. */ }
+      const observed = observation ? physicsObservation() : null;
+      const owner = JSON.stringify([dialogSession, acceptedBackend, selected, job.id, build.id, build.snapshotId,
+        context.path || '', context.sceneDraftToken || '', physicsCaseSelectionRevision, caseText, inputText, verification.sha256, job.physicsControl.sha256,
+        observed?.sessionOwner || '', observed?.owner || '', evaluation, samples]);
+      return { job, build, definition, evaluation, samples, observed, owner };
+    } catch { return null; }
+  }
+  let physicsCaseRowsOwner = '', physicsCaseRowsEpoch = 0, physicsCaseRows = [];
+  function clearPhysicsCaseRows() {
+    if (physicsCaseRowsOwner || physicsCaseRows.length) physicsCaseRowsEpoch++;
+    physicsCaseRowsOwner = ''; physicsCaseRows = [];
+    if (el('projectBuildPhysicsCaseChecks').children.length) el('projectBuildPhysicsCaseChecks').replaceChildren();
+  }
+  const physicsCaseSelectionAllowed = () => !checkingTool() && !physicsDocuments?.isBusy()
+    && !physicsCaseDocuments?.isBusy() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy();
+  function renderPhysicsCase() {
+    const supported = hasPhysicsReplayCapability() && physicsReplayBuildSupported();
+    physicsCaseDocuments?.render();
+    el('projectBuildPhysicsCaseEditor').hidden = !supported;
+    el('projectBuildPhysicsCaseRun').hidden = !supported;
+    el('projectBuildPhysicsCaseRun').disabled = !supported || !mayStart('run', 'headless') || Boolean(physicsCaseDocuments && !physicsCaseDocuments.runAllowed());
+    el('projectBuildPhysicsCaseSample').disabled = !supported || !mayStart('run', 'headless') || !sampledPhysicsCase();
+    el('projectBuildPhysicsCaseError').hidden = !physicsCaseError;
+    el('projectBuildPhysicsCaseError').textContent = physicsCaseError ? t(physicsCaseError) : '';
+    const list = el('projectBuildPhysicsCaseChecks'), result = el('projectBuildPhysicsCaseResult');
+    const status = el('projectBuildPhysicsCaseSelectionStatus'); status.hidden = true; status.textContent = '';
+    result.hidden = true;
+    const targets = el('projectBuildPhysicsCaseInstances'); targets.replaceChildren();
+    const sampled = sampledPhysicsCase();
+    for (const check of sampled?.checks || []) {
+      const option = document.createElement('option'); option.value = check.instanceId; targets.append(option);
+    }
+    const checked = checkedPhysicsCaseResult();
+    if (!checked || checked.unlocatable) {
+      clearPhysicsCaseRows();
+      if (checked?.unlocatable) { status.hidden = false; status.textContent = t('物理样本不可定位：验收未完成或记录不完整。'); }
+      return;
+    }
+    const { evaluation, samples, observed } = checked;
+    if (physicsCaseRowsOwner !== checked.owner) {
+      clearPhysicsCaseRows(); physicsCaseRowsOwner = checked.owner;
+      const epoch = physicsCaseRowsEpoch;
+      physicsCaseRows = evaluation.checks.map((check, index) => {
+        const item = node('li', '', 'build-case-check'), label = node('p'); item.append(label);
+        item.dataset.instanceId = check.instanceId; item.dataset.stepIndex = String(check.stepIndex); item.dataset.passed = String(check.passed);
+        const position = check.positionAfter ? node('p', '', 'build-monospace') : null;
+        const contact = check.contact ? node('p', '', 'build-monospace') : null;
+        if (position) item.append(position); if (contact) item.append(contact);
+        let button = null;
+        const sample = samples[index];
+        if (sample && observed && typeof physicsObserver.selectSample === 'function') {
+          button = node('button', '', 'doc-btn doc-btn-ghost build-physics-case-sample'); button.type = 'button'; item.append(button);
+          const owner = checked.owner;
+          const request = { sessionOwner: observed.sessionOwner, navigationOwner: observed.owner,
+            backendId: checked.job.backendId, jobId: checked.job.id, buildId: checked.build.id, snapshotId: checked.build.snapshotId,
+            assemblyId: selected, visitIndex: sample.visitIndex, sceneId: sample.sceneId,
+            instanceId: sample.instanceId, stepIndex: sample.stepIndex, sequence: sample.sequence };
+          button.addEventListener('click', () => {
+            // Detached buttons and a previous context never regain authority,
+            // even if a later draft or task returns to identical bytes (ABA).
+            if (epoch !== physicsCaseRowsEpoch || !list.contains(button) || !physicsCaseSelectionAllowed()) return;
+            const current = checkedPhysicsCaseResult();
+            if (!current || current.unlocatable || current.owner !== owner || physicsCaseRowsOwner !== owner) {
+              clearPhysicsCaseRows();
+              if (dialog.open) { status.hidden = false; status.textContent = t('当前物理样本已变化，请刷新验收结果后重试。'); }
+              return;
+            }
+            if (epoch !== physicsCaseRowsEpoch || !list.contains(button)) return;
+            if (physicsObserver.selectSample(request) !== true) {
+              status.hidden = false; status.textContent = t('当前物理样本已变化，请刷新验收结果后重试。');
+            }
+          });
+        }
+        list.append(item); return { check, item, label, position, contact, button };
+      });
+    }
+    el('projectBuildPhysicsCaseSummary').textContent = t({ passed: '物理验收通过', failed: '物理验收未通过', incomplete: '物理验收未完成' }[evaluation.status]);
+    for (const row of physicsCaseRows) {
+      const { check } = row;
+      row.label.textContent = t('实例 {0} · 第 {1} 步 · {2}', check.instanceId, check.stepIndex, t(check.passed ? '检查通过' : '检查未通过'));
+      if (row.position) row.position.textContent = t('位置：预期 {0} ± {1}，实际 {2} · {3}',
+        JSON.stringify(check.positionAfter.expected), JSON.stringify(check.positionAfter.tolerance), JSON.stringify(check.positionAfter.actual),
+        t(check.positionAfter.passed ? '检查通过' : '检查未通过'));
+      if (row.contact) row.contact.textContent = t('扫掠碰撞（{0}）：预期 {1}，实际 {2} · {3}', check.contact.bodyId || t('任意碰撞体'),
+        t(check.contact.exists ? '有碰撞' : '无碰撞'), t(check.contact.actual ? '有碰撞' : '无碰撞'), t(check.contact.passed ? '检查通过' : '检查未通过'));
+      if (row.button) { row.button.textContent = t('查看本步物理样本'); row.button.disabled = !physicsCaseSelectionAllowed(); }
+    }
+    if (evaluation.status === 'incomplete' || physicsCaseRows.some(row => !row.button)) {
+      status.hidden = false; status.textContent = t('物理样本不可定位：验收未完成或记录不完整。');
+    }
+    result.hidden = false;
   }
   let controlError = '', controlTarget = '', controlTargetOwner = '';
   const hasProjectControl = () => {
@@ -1029,7 +1103,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     getContext: () => {
       const observed = physicsObservation();
       return { available: Boolean(observed), visible: dialog.open && activeTab === 'build', sessionOwner: observed?.sessionOwner || '',
-        navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource(), canContinueSource: ownsRuntimeSourceContext() };
+        navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource(), canContinueSource: ownsRuntimeSourceContext(),
+        sampleOwner: observed ? { backendId: data.backend.id, jobId: data.job.id, buildId: matchedBuild().id,
+          snapshotId: matchedBuild().snapshotId, assemblyId: selected } : null };
     },
     onOpen: async (source, { isCurrent }) => {
       if (!mayOpenRuntimeSource() || !isCurrent()) return false;
@@ -1615,10 +1691,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsCaseDocuments?.isBusy() || caseSuites?.isBusy() || backendProjects?.isBusy?.() || delivery?.isBusy(),
       offline: catalogUnavailable() }),
     getText: () => el('projectBuildPhysicsReplayProgram').value,
-    setText: text => { el('projectBuildPhysicsReplayProgram').value = text; physicsReplayError = ''; },
+    setText: text => { physicsCaseSelectionRevision++; el('projectBuildPhysicsReplayProgram').value = text; physicsReplayError = ''; },
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理物理回放文档'))).payload,
-    onChange: render,
+    onChange: () => { physicsCaseSelectionRevision++; render(); },
   });
   physicsCaseDocuments = setupPhysicsCaseDocuments({
     container: el('projectBuildPhysicsCaseDocuments'),
@@ -1628,10 +1704,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsDocuments?.isBusy() || caseSuites?.isBusy() || backendProjects?.isBusy?.() || delivery?.isBusy(),
       offline: catalogUnavailable() }),
     getText: () => el('projectBuildPhysicsCaseProgram').value,
-    setText: text => { el('projectBuildPhysicsCaseProgram').value = text; physicsCaseError = ''; },
+    setText: text => { physicsCaseSelectionRevision++; el('projectBuildPhysicsCaseProgram').value = text; physicsCaseError = ''; },
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理物理验收文档'))).payload,
-    onChange: render,
+    onChange: () => { physicsCaseSelectionRevision++; render(); },
   });
   const projectSuiteAvailable = () => Boolean(runtimeCasePlan() && (!projectTarget() || data?.backend?.capabilities?.includes('project.runtime-case-suite')));
   async function runSuite({ suiteDocumentId, expectedVersion }) {
@@ -1769,14 +1845,14 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   el('projectBuildControl').addEventListener('click', () => void submit('run', 'headless', true));
   el('projectBuildPhysicsReplay').addEventListener('click', () => void submit('run', 'headless', false, false, true));
   el('projectBuildPhysicsCaseRun').addEventListener('click', () => void submit('run', 'headless', false, false, false, true));
-  el('projectBuildPhysicsCaseProgram').addEventListener('input', () => { physicsCaseError = ''; physicsCaseDocuments?.changed(); renderPhysicsCase(); });
+  el('projectBuildPhysicsCaseProgram').addEventListener('input', () => { physicsCaseError = ''; physicsCaseSelectionRevision++; physicsCaseDocuments?.changed(); renderPhysicsCase(); });
   el('projectBuildPhysicsCaseInput').addEventListener('click', () => {
     try {
       const current = el('projectBuildPhysicsCaseProgram').value;
       let value = current.trim() ? JSON.parse(current) : { format: 'viento-physics2d-replay-case', schemaVersion: 1, checks: [] };
       if (!value || typeof value !== 'object' || Array.isArray(value) || !Array.isArray(value.checks)) throw new Error('invalid');
       value.program = readPhysicsReplay(); el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2);
-      physicsCaseDocuments?.changed(); physicsCaseError = ''; renderPhysicsCase();
+      physicsCaseSelectionRevision++; physicsCaseDocuments?.changed(); physicsCaseError = ''; renderPhysicsCase();
     } catch { physicsCaseError = '物理验收格式或输入不匹配，请检查定义并明确复制当前输入。'; renderPhysicsCase(); }
   });
   el('projectBuildPhysicsCaseUseInput').addEventListener('click', () => {
@@ -1784,14 +1860,14 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       const value = physicsCaseRead();
       if (physicsDocuments && !physicsDocuments.confirmReplace()) return;
       el('projectBuildPhysicsReplayProgram').value = JSON.stringify(value.program, null, 2);
-      physicsDocuments?.generated(); physicsReplayError = ''; physicsCaseError = ''; render();
+      physicsCaseSelectionRevision++; physicsDocuments?.generated(); physicsReplayError = ''; physicsCaseError = ''; render();
     } catch { physicsCaseError = '物理验收格式或输入不匹配，请检查定义并明确复制当前输入。'; renderPhysicsCase(); }
   });
   el('projectBuildPhysicsCaseSample').addEventListener('click', () => {
     const value = sampledPhysicsCase();
     if (!value || !mayStart('run', 'headless')) return;
     if (el('projectBuildPhysicsCaseProgram').value.trim() && !window.confirm(t('生成会替换验收草稿，继续吗？'))) return;
-    el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2); physicsCaseDocuments?.generated(); physicsCaseError = ''; renderPhysicsCase();
+    el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2); physicsCaseSelectionRevision++; physicsCaseDocuments?.generated(); physicsCaseError = ''; renderPhysicsCase();
   });
   el('projectBuildPhysicsCaseAdd').addEventListener('click', () => {
     try {
@@ -1804,14 +1880,14 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (contact === 'yes' || contact === 'no') { check.contact = { exists: contact === 'yes' }; const body = el('projectBuildPhysicsCaseBody').value.trim(); if (body) check.contact.bodyId = body; }
       value.checks = value.checks.filter(row => row.instanceId !== check.instanceId || row.stepIndex !== check.stepIndex).concat(check);
       value = validateProjectPhysics2DReplayCase(value);
-      el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2); physicsCaseDocuments?.changed(); physicsCaseError = ''; renderPhysicsCase();
+      el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2); physicsCaseSelectionRevision++; physicsCaseDocuments?.changed(); physicsCaseError = ''; renderPhysicsCase();
     } catch { physicsCaseError = '检查无效，请核对实例、步骤、位置、容差和碰撞体编号。'; renderPhysicsCase(); }
   });
   el('projectBuildPhysicsReplayExample').addEventListener('click', () => {
     if (!mayStart('run', 'headless') || !hasPhysicsReplayCapability() || !physicsReplayBuildSupported()) { render(); return; }
     if (physicsDocuments && !physicsDocuments.confirmReplace()) return;
     const input = el('projectBuildPhysicsReplayProgram'); input.value = JSON.stringify(defaultPhysicsReplay(), null, 2);
-    physicsDocuments?.generated(); physicsReplayError = ''; renderPhysicsReplay(); renderPhysicsCase(); input.focus(); input.selectionStart = input.selectionEnd = 0;
+    physicsCaseSelectionRevision++; physicsDocuments?.generated(); physicsReplayError = ''; renderPhysicsReplay(); renderPhysicsCase(); input.focus(); input.selectionStart = input.selectionEnd = 0;
   });
   function editPhysicsRange(pressed) {
     let program; try { program = readPhysicsReplay(); } catch { renderPhysicsReplay(); return; }
@@ -1825,13 +1901,13 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     const updated = setProjectPhysics2DInputReplayRange(program, action, start - 1, end - 1, pressed);
     if (program.steps.slice(start - 1, end).some(step => step[action] !== pressed)) {
       el('projectBuildPhysicsReplayProgram').value = JSON.stringify(updated, null, 2);
-      physicsDocuments?.changed();
+      physicsCaseSelectionRevision++; physicsDocuments?.changed();
     }
     physicsReplayError = ''; error.hidden = true; renderPhysicsReplay(); renderPhysicsCase();
   }
   el('projectBuildPhysicsRangePress').addEventListener('click', () => editPhysicsRange(true));
   el('projectBuildPhysicsRangeRelease').addEventListener('click', () => editPhysicsRange(false));
-  el('projectBuildPhysicsReplayProgram').addEventListener('input', () => { physicsReplayError = ''; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase(); });
+  el('projectBuildPhysicsReplayProgram').addEventListener('input', () => { physicsReplayError = ''; physicsCaseSelectionRevision++; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase(); });
   el('projectBuildCaseRun').addEventListener('click', () => void submit('run', 'headless', false, true));
   el('projectBuildCaseGenerate').addEventListener('click', () => {
     if (!mayStart('run', 'headless')) { render(); return; }

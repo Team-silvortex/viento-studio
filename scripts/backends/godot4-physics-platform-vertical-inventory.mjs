@@ -1,3 +1,4 @@
+import { validateGodotPlanarIntentInventory } from './godot4-physics-planar-intent-inventory.mjs';
 // Authenticate the vertical projection before historical inventory readers
 // normalize its scene entry. This module never generates or writes files.
 import fs from 'node:fs/promises';
@@ -25,6 +26,7 @@ export async function validateGodotPlatformVerticalInventory(directory, signal) 
   const optional = async (name, limit) => { try { return await read(name, limit); } catch (error) { if (error.code === 'ENOENT') return null; throw error; } };
   try {
     signal?.throwIfAborted();
+    const planar = await validateGodotPlanarIntentInventory(directory, signal);
     const controls = await validateGodotPlatformControlInventory(directory, signal);
     const manifestBytes = await optional(verticalInventoryName, 8192);
     const helpers = await Promise.all(verticalNames.map(name => optional(name)));
@@ -41,7 +43,7 @@ export async function validateGodotPlatformVerticalInventory(directory, signal) 
       const [documentBytes, backup, scene, rawMain] = await Promise.all([
         optional(`${prefix}/platform-vertical.json`), optional(backupName), optional(sceneName), read(`${prefix}/main.tscn`),
       ]);
-      const main = controls?.mains.get(id) || rawMain;
+      const main = controls?.mains.get(id) || planar?.mains.get(id) || rawMain;
       const touched = documentBytes !== null || backup !== null || scene !== null || main.includes('platform-vertical');
       if (!touched) continue;
       if (manifestBytes === null || documentBytes === null || backup === null || scene === null

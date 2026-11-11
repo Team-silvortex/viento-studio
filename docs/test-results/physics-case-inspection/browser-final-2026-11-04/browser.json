@@ -1,0 +1,266 @@
+{
+  "startedAt": "2026-11-04T12:00:38.086Z",
+  "steps": [
+    "Native case check 1 selected sequence 4, visit 1, step 4, exact position and mapped contacts without mutating HTTP requests.",
+    "Native case check 2 selected sequence 1, visit 1, step 1, exact position and mapped contacts without mutating HTTP requests.",
+    "Native case check 1 selected sequence 4, visit 1, step 4, exact position and mapped contacts without mutating HTTP requests."
+  ],
+  "screenshots": [
+    "case-desktop.png",
+    "failure.png"
+  ],
+  "jobs": [
+    {
+      "kind": "plan",
+      "id": "3f5d1fff-4e57-4838-a478-8885d1355510",
+      "status": "succeeded"
+    },
+    {
+      "kind": "build",
+      "id": "a64c7b43-1a81-4bfa-99ce-ef0d51bb607c",
+      "status": "succeeded",
+      "buildId": "94b9eb5f-1a33-4a73-8eb9-9c4093af5ae3"
+    },
+    {
+      "kind": "run",
+      "id": "926353ec-90b9-4201-9d7e-05b8fa9db6bf",
+      "status": "succeeded",
+      "buildId": "94b9eb5f-1a33-4a73-8eb9-9c4093af5ae3",
+      "snapshotId": "sha256:c4bd9432dbfc1603a6a412cb8f05a0f41fb16180532f8201574f149d1f0a298d"
+    },
+    {
+      "kind": "run",
+      "id": "1d13c47a-4579-4873-9e7a-e9443bfe95b0",
+      "status": "succeeded",
+      "buildId": "94b9eb5f-1a33-4a73-8eb9-9c4093af5ae3",
+      "snapshotId": "sha256:c4bd9432dbfc1603a6a412cb8f05a0f41fb16180532f8201574f149d1f0a298d"
+    }
+  ],
+  "errors": [],
+  "dialogs": [],
+  "layout": {},
+  "limitations": [
+    "Real isolated Chrome/HTTP editor and native headless Godot; installed Tauri, Android and Bevy were not tested.",
+    "Only finite character sweeps are observed; source edits remain an unsaved disposable draft."
+  ],
+  "sources": {
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/project-physics2d-replay-case.mjs": "1caca248e84429fce7f87546020a110e29ce64b8bc1f22f026bb887745c8c02c",
+    "engine/project-physics2d-observation-selection.mjs": "86ac1d8b5e759f7f3b83a103f3ae7ddef379b6cb5db2c16cc1383431d8a80498",
+    "engine/project-physics2d-input-replay.mjs": "7e6a3ea069ca751b17ee53fd3b723804a86c8895538a6dc12ca1ed5666cba453",
+    "engine/project-physics2d-replay-contract.mjs": "18b3e336fd19ea6c139ed5f5666784ec42921a7718ed69eaef80f9e7e8086fdd",
+    "web/modules/app-project-build.js": "2666f3e084f5a15db94883d431e6d8ed6b0dc30403dbe7336a153c5b4591d257",
+    "web/modules/app-project-physics-observation.js": "57de39d6220fb565aaac54e876478acf578e707505b231c799c261243bf6b977",
+    "web/i18n/en.js": "6c2bf1d7f6adf2c7df0716a95611a003cb03da41daacb4b3a599a5cd5be35189",
+    "web/i18n/ja.js": "22f1c48e1a96e045ae2e86c4de76475796301f2e134dd4d194b013bb6aba2b61",
+    "scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs": "fd9ff292c16246e4c4e7c757444e8cdbabe6112d8eabe9deb9d61105c94b6e75",
+    "scripts/tests/physics-case-inspection-smoke.mjs": "df194f6fbdc56cd15a86b100e4252319b06d0f27134d6384eef570d944366243"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "assemblyId": "12345678-1234-4234-8234-123456789abc",
+    "physicsPath": "documents/physics/scene-0.json",
+    "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "case": {
+    "jobId": "1d13c47a-4579-4873-9e7a-e9443bfe95b0",
+    "buildId": "94b9eb5f-1a33-4a73-8eb9-9c4093af5ae3",
+    "snapshotId": "sha256:c4bd9432dbfc1603a6a412cb8f05a0f41fb16180532f8201574f149d1f0a298d",
+    "evaluation": {
+      "status": "failed",
+      "checks": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "stepIndex": 4,
+          "passed": true,
+          "positionAfter": {
+            "expected": [
+              116,
+              179.99913024902344
+            ],
+            "tolerance": [
+              0.01,
+              0.01
+            ],
+            "actual": [
+              116,
+              179.99913024902344
+            ],
+            "passed": true
+          },
+          "contact": {
+            "exists": true,
+            "bodyId": "70707070-7070-4070-8070-000000000012",
+            "actual": true,
+            "passed": true
+          }
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "stepIndex": 1,
+          "passed": false,
+          "positionAfter": {
+            "expected": [
+              9999,
+              9999
+            ],
+            "tolerance": [
+              0,
+              0
+            ],
+            "actual": [
+              104,
+              178.272216796875
+            ],
+            "passed": false
+          },
+          "contact": {
+            "exists": false,
+            "actual": false,
+            "passed": true
+          }
+        }
+      ]
+    },
+    "samples": [
+      {
+        "bodyId": "70707070-7070-4070-8070-000000000010",
+        "contacts": [
+          {
+            "collider": {
+              "bodyId": "70707070-7070-4070-8070-000000000012",
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "70707070-7070-4070-8070-000000000001",
+                "sourcePath": "documents/physics/scene-0.json",
+                "sourceRevision": "sha256:25d0bf38942451460423bb10c362b32f99b63d629b7233fa3cf48e68d95124f3",
+                "propertyPath": "/bodies/2",
+                "sourceRange": {
+                  "start": 992,
+                  "end": 1323,
+                  "encoding": "utf-16",
+                  "propertyPath": "/bodies/2",
+                  "exact": true
+                }
+              }
+            },
+            "normal": [
+              0,
+              -1
+            ],
+            "position": [
+              123.359375,
+              190
+            ],
+            "remainder": [
+              2.65625,
+              0.7230902910232544
+            ],
+            "travel": [
+              1.34375,
+              0.365798681974411
+            ]
+          }
+        ],
+        "deltaSeconds": 0.01666666666666666,
+        "event": "sample",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "positionAfter": [
+          116,
+          179.99913024902344
+        ],
+        "positionBefore": [
+          112,
+          179.63333129882812
+        ],
+        "protocol": 1,
+        "requestedMotion": [
+          4,
+          1.0888890027999878
+        ],
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sequence": 4,
+        "stepIndex": 4,
+        "timeSeconds": 0.06666666666666664,
+        "visitIndex": 1,
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "response": "slide",
+        "source": {
+          "objectId": "70707070-7070-4070-8070-000000000001",
+          "sourcePath": "documents/physics/scene-0.json",
+          "sourceRevision": "sha256:25d0bf38942451460423bb10c362b32f99b63d629b7233fa3cf48e68d95124f3",
+          "propertyPath": "/bodies/0",
+          "sourceRange": {
+            "start": 139,
+            "end": 652,
+            "encoding": "utf-16",
+            "propertyPath": "/bodies/0",
+            "exact": true
+          }
+        },
+        "displacement": [
+          4,
+          0.3657989501953125
+        ]
+      },
+      {
+        "bodyId": "70707070-7070-4070-8070-000000000010",
+        "contacts": [],
+        "deltaSeconds": 0.01666666666666666,
+        "event": "sample",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "positionAfter": [
+          104,
+          178.272216796875
+        ],
+        "positionBefore": [
+          100,
+          178
+        ],
+        "protocol": 1,
+        "requestedMotion": [
+          4,
+          0.27222225069999695
+        ],
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sequence": 1,
+        "stepIndex": 1,
+        "timeSeconds": 0.01666666666666666,
+        "visitIndex": 1,
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "response": "slide",
+        "source": {
+          "objectId": "70707070-7070-4070-8070-000000000001",
+          "sourcePath": "documents/physics/scene-0.json",
+          "sourceRevision": "sha256:25d0bf38942451460423bb10c362b32f99b63d629b7233fa3cf48e68d95124f3",
+          "propertyPath": "/bodies/0",
+          "sourceRange": {
+            "start": 139,
+            "end": 652,
+            "encoding": "utf-16",
+            "propertyPath": "/bodies/0",
+            "exact": true
+          }
+        },
+        "displacement": [
+          4,
+          0.272216796875
+        ]
+      }
+    ]
+  },
+  "ok": false,
+  "failure": "AssertionError [ERR_ASSERTION]: {\"text\":\"查看本步物理样本\",\"inside\":true,\"noOverflow\":false}\n\nfalse !== true\n\n    at file://<repository>scripts/tests/physics-case-inspection-smoke.mjs:114:184",
+  "pageFailure": {
+    "text": "Viento Studio\n0.2.8\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n输入映射\n×\n全部（13）\n角色 / ACTOR（1）\n场景 / SCENE（2）\n行为绑定 / BEHAVIOR（2）\n行为源码 / SCRIPT（3）\nAUDIO（1）\nPROJECT ASSEMBLY（1）\nANIMATION（2）\n2D PHYSICS / 二维物理（1）\n当前显示 13 个文档（共 13 个） （静态生成 2026/11/4 20:00:38）\n分类 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n可编辑\n分类 场景 / SCENE（2）\n场景 / SCENE（2）\naudio\n场景 / Scene · 场景 / Scene\n可编辑\ndemo\n场景 / Scene · 场景 / Scene\n可编辑\n分类 ANIMATION（2）\nANIMATION（2）\nscene-0\nAnimation · Animation\n可编辑\nscene-1\nAnimation · Animation\n可编辑\n分类 PROJECT ASSEMBLY（1）\nPROJECT ASSEMBLY（1）\ndemo\nProject assembly · Project assembly\n可编辑\n分类 AUDIO（1）\nAUDIO（1）\ndemo\nAudio · Audio\n可编辑\n分类 行为绑定 / BEHAVIOR（2）\n行为绑定 / BEHAVIOR（2）\ndemo\n行为绑定 / Behavior · 行为绑定 / Behavior\n可编辑\nsecond\n行为绑定 / Behavior · 行为绑定 / Behavior\n可编辑\n分类 2D PHYSICS / 二维物理（1）\n2D PHYSICS / 二维物理（1）\nscene-0\n2D Physics / 二维物理 · 2D Physics / 二维物理\n可编辑\n分类 行为源码 / SCRIPT（3）\n行为源码 / SCRIPT（3）\ncheckpoint\n行为源码 / Script · 行为源码 / Script\n可编辑\nsecond\n行为源码 / Script · 行为源码 / Script\n可编辑\nsensor\n行为源码 / Script · 行为源码 / Script\n可编辑\n类型：2D PHYSICS / 二维物理\n分组：2D PHYSICS / 二维物理\n路径：DOCS-STANDARD/DOCUMENTS/PHYSICS/SCENE-0.JSON\nscene-0\n2D Physics / 二维物理 · 2D Physics / 二维物理 · json\n新建文档\n开始编辑\n刷新预览\n新建场景配方\n新建脚本\n源文件：documents/physics/scene-0.json\nscene-0\n分类：2D PHYSICS / 二维物理\n2D PHYSICS / 二维物理\n类型：2D PHYSICS / 二维物理\n文件信息\n内容\nformat\nviento-scene-physics2d\nschemaVersion\n3\nsceneObjectId\ndddddddd-dddd-4ddd-8ddd-dddddddddddd\nbodies\nid\n70707070-7070-4070-8070-000000000010\ninstanceId\nbbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\nkind\ncharacter\nshape\nkind\nbox\nsize\n20\n20\noffset\n0\n0\nlayer\n1\nmask\n1\ncollisionResponse\nslide\ncharacterMotion\nkind\nplatformer\ngravity\n980\njumpSpeed\n120\nmaxFallSpeed\n1200\nid\n70707070-7070-4070-8070-000000000011\ninstanceId\n70707070-7070-4070-8070-000000000002\nkind\nsensor\nshape\nkind\nbox\nsize\n8\n50\noffset\n0\n0\nlayer\n2\nmask\n1\nid\n70707070-7070-4070-8070-000000000012\ninstanceId\n70707070-7070-4070-8070-000000000003\nkind\nstatic\nshape\nkind\nbox\nsize\n1000\n20\noffset\n0\n0\nlayer\n1\nmask\n1\nid\n72727272-7272-4272-8272-000000000002\ninstanceId\n72727272-7272-4272-8272-000000000001\nkind\nstatic\nshape\nkind\nbox\nsize\n10\n60\noffset\n0\n0\nlayer\n1\nmask\n1\n构建与运行\n\nGodot 4 · 0.40.0\n\n返回编辑器\n\n从已保存的场景生成独立产物。关闭面板后任务继续，可随时返回查看。\n\n已声明能力：构建场景 · 无头逻辑测试 · 独立窗口预览 · 窗口截图\n\n工具身份尚未检查。\n\n检查工具身份\n构建目标\n项目组装 · Two-scene project · documents/projects/demo.json\nSecond scene with shared actors and audio · documents/scenes/audio.json\nIndependent GDScript Behaviors · documents/scenes/demo.json\n刷新状态\n项目组装\n检查计划\n构建项目\n无头测试\n物理输入回放\n运行物理验收\n窗口预览\n编辑物理输入回放\n\n物理输入回放：已完成 · 30 步 · sha256:8cbad984bef844a5097fcb0cce7d7012c22aaf83c7c909729509f10bd3e05c77。完成只表示输入流程与采样结束，不表示玩法验收通过。\n\n编辑物理验收\n物理验收结果\n\n物理验收未通过\n\n实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1 · 第 4 步 · 检查通过\n\n位置：预期 [116,179.99913024902344] ± [0.01,0.01]，实际 [116,179.99913024902344] · 检查通过\n\n扫掠碰撞（70707070-7070-4070-8070-000000000012）：预期 有碰撞，实际 有碰撞 · 检查通过\n\n查看本步物理样本\n\n实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1 · 第 1 步 · 检查未通过\n\n位置：预期 [9999,9999] ± [0,0]，实际 [104,178.272216796875] · 检查未通过\n\n扫掠碰撞（任意碰撞体）：预期 无碰撞，实际 无碰撞 · 检查通过\n\n查看本步物理样本\n\n运行场景 · 已完成\n\n后端工程\n\n这里列出当前及以前服务为此场景记录的后端工程。查看详情不会切换运行工程；请明确设为运行工程。\n\n当前运行工程：94b9eb5f-1a33-4a73-8eb9-9c4093af5ae3；来源快照：sha256:c4bd9432dbfc1603a6a412cb8f05a0f41fb16180532f8201574f149d1f0a298d\n\n选择后端工程\nTwo-scene project · 本次服务工程 · 构建完成 · 93af5ae3\n查看工程详情\n设为运行工程\n\n来源：本次服务生成。\n\n工程文件已核对；这不代表当前工具可用，运行时仍会重新核对。\n\n本次服务最多自动保留 3 份未改变的工程；修改过的工程与历史工程会保留。\n\n构建计划\n\nTwo-scene project · 1 个场景 · 4 个角色 · 1 个资源\n\n快照：sha256:c4bd9432dbfc1603a6a412cb8f05a0f41fb16180532f8201574f149d1f0a298d\n\n新设计先检查计划再构建；历史工程需明确设为运行工程。所有测试、控制与预览使用当前运行工程的冻结快照，无头测试不验证画面。\n\n当前任务问题\n\n当前任务：运行场景 · 已完成\n后端：Godot 4\n场景：Two-scene project\n\n任务身份详情\n问题级别\n全部级别\n错误\n警告\n信息\n筛选当前任务问题\n\n显示 0 / 0 条 · 错误 0 · 警告 0 · 信息 0\n\n当前任务没有报告问题。这不代表已完成全部验证。\n\n当前保留 7 条原始运行事件摘要；内容见原始细节。\n\n运行对象\n\n只读查看本次运行收到的对象状态与位置样本；控制回放按步骤采样，不代表实时坐标。\n\n运行对象来自当前场景；访问记录仅记录本次运行，不会切换编辑内容。\n\n当前场景：Independent GDScript Behaviors · 第 1 次访问\n\n场景访问记录\n\n第 1 次 · Independent GDScript Behaviors · 场景运行结束\n\n本次访问时长：0.49999999999999983 秒\n\n打开场景原文\n\n已收到结束位置样本。\n\n查找运行对象\n\n显示 4 / 4 个运行对象\n\nTraveler / 旅人 / 旅人\n\n实例标识：bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\n\n对象标识：aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n状态：静止\n\n位置样本：(124.99962615966797, 179.9997100830078)\n\n结束样本\n\n打开实例声明\nTraveler / 旅人 / 旅人\n\n实例标识：70707070-7070-4070-8070-000000000002\n\n对象标识：aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n状态：静止\n\n位置样本：(115, 180)\n\n结束样本\n\n打开实例声明\nTraveler / 旅人 / 旅人\n\n实例标识：70707070-7070-4070-8070-000000000003\n\n对象标识：aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n状态：静止\n\n位置样本：(300, 200)\n\n结束样本\n\n打开实例声明\nTraveler / 旅人 / 旅人\n\n实例标识：72727272-7272-4272-8272-000000000001\n\n对象标识：aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n状态：静止\n\n位置样本：(140, 160)\n\n结束样本\n\n打开实例声明\n会话共享状态\n\n只读查看本次项目运行的共享状态。切换场景时保留，重新运行后清空；此处不会修改游戏状态。\n\n状态修订 0 · 显示 0 / 0 个键\n\n按状态键筛选\n\n当前没有共享状态键。\n\n项目事件记录\n\n只读查看本次运行的事件发布和处理记录。切换场景时保留记录，重新运行后清空；此处不会发布事件。\n\n发布序号 0 · 显示 0 / 0 条事件\n\n按事件名称筛选\n\n当前没有项目事件。\n\n事件位置观察\n\n只读显示已确认的发布与投递回执位置。未确认只表示缺少回执，回调可能已经执行并产生影响。\n\n事件位置观察已结束。\n\n保留 0 / 共 0 条发布，已移出 0 条；已保留发布的首末序号：— / —。\n\n尚无事件发布位置。\n\n声音控制记录\n\n只读显示实际执行的声音命令，不代表当前播放状态或可听见的声音。切换场景时保留记录，重新运行后清空。\n\n命令序号 0 · 显示 0 / 0 条声音命令\n\n按音轨或资源标识筛选\n\n当前没有已执行的声音命令。\n\n二维物理运行观察\n\n仅记录本次有限测试中角色内置移动的碰撞扫描，最多 256 个样本。不是持续接触、传感器或着地状态；不会修改场景或运行对象位置。\n\n有限观察已结束，共 30 个样本。\n\n按实例筛选\n全部实例\nbbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\n按访问与步筛选\n全部访问与步\n访问 1 · 第 1 步 · 0.016666667 秒\n访问 1 · 第 2 步 · 0.033333333 秒\n访问 1 · 第 3 步 · 0.05 秒\n访问 1 · 第 4 步 · 0.066666667 秒\n访问 1 · 第 5 步 · 0.083333333 秒\n访问 1 · 第 6 步 · 0.1 秒\n访问 1 · 第 7 步 · 0.11666667 秒\n访问 1 · 第 8 步 · 0.13333333 秒\n访问 1 · 第 9 步 · 0.15 秒\n访问 1 · 第 10 步 · 0.16666667 秒\n访问 1 · 第 11 步 · 0.18333333 秒\n访问 1 · 第 12 步 · 0.2 秒\n访问 1 · 第 13 步 · 0.21666667 秒\n访问 1 · 第 14 步 · 0.23333333 秒\n访问 1 · 第 15 步 · 0.25 秒\n访问 1 · 第 16 步 · 0.26666667 秒\n访问 1 · 第 17 步 · 0.28333333 秒\n访问 1 · 第 18 步 · 0.3 秒\n访问 1 · 第 19 步 · 0.31666667 秒\n访问 1 · 第 20 步 · 0.33333333 秒\n访问 1 · 第 21 步 · 0.35 秒\n访问 1 · 第 22 步 · 0.36666667 秒\n访问 1 · 第 23 步 · 0.38333333 秒\n访问 1 · 第 24 步 · 0.4 秒\n访问 1 · 第 25 步 · 0.41666667 秒\n访问 1 · 第 26 步 · 0.43333333 秒\n访问 1 · 第 27 步 · 0.45 秒\n访问 1 · 第 28 步 · 0.46666667 秒\n访问 1 · 第 29 步 · 0.48333333 秒\n访问 1 · 第 30 步 · 0.5 秒\n选择物理样本\n样本 4 · 访问 1 · 第 4 步\n上一个样本\n下一个样本\n样本 4 · 访问 1 · 第 4 步\n\n场景 dddddddd-dddd-4ddd-8ddd-dddddddddddd · 实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1 · 对象 aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa · 物理体 70707070-7070-4070-8070-000000000010\n\n响应方式\n沿碰撞面滑动\n场景时间（秒）\n0.066666667\n步长（秒）\n0.016666667\n请求位移\n[4, 1.088889]\n实际位移\n[4, 0.36579895]\n移动前位置\n[112, 179.63333]\n移动后位置\n[116, 179.99913]\n\n物理来源：documents/physics/scene-0.json · /bodies/0\n\n打开角色物理原文\n本次移动的碰撞扫描\n碰撞扫描 1\n\n碰撞体 70707070-7070-4070-8070-000000000012 · 实例 70707070-7070-4070-8070-000000000003 · 对象 aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n接触位置（场景坐标）\n[123.35938, 190]\n法线\n[0, -1]\n扫描已走位移\n[1.34375, 0.36579868]\n扫描剩余位移\n[2.65625, 0.72309029]\n\n物理来源：documents/physics/scene-0.json · /bodies/2\n\n打开碰撞体物理原文\n\n日志：保留 26719 / 共 26719 个 UTF-16 代码单元，上限 32768；较早部分已移出 0 个。\n\n原始事件摘要：保留 7 / 共 7 条，上限 128；已移出 0 条。此处不是项目事件账本。\n\n原始细节与日志"
+  },
+  "finishedAt": "2026-11-04T12:01:02.298Z"
+}

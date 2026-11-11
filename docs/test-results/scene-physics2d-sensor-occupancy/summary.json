@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-04",
+  "applicationVersion": "0.2.8",
+  "baseline": "00c06ffe9bad9389f3d4aeb344064b07ec522bb6",
+  "scope": "Unreleased sensor occupancy ordinary author starter; source only, no application version, author schema, Rust/WASM, runtime wire protocol or Godot 0.40 adapter upgrade.",
+  "starterId": "godot-physics-sensor-occupancy",
+  "scriptSha256": "fc10a78b5b81e643bdfd6c43f3d8eae2e687e9a60ba7c4cb30f5b93528b8d59b",
+  "results": {
+    "starterAndAuthoring": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0
+    },
+    "godotStarterHarness": {
+      "checks": 28,
+      "expectedRejections": 18
+    },
+    "nativeProject": {
+      "passed": 3,
+      "failed": 0,
+      "sourceSnapshotUnchanged": true,
+      "tool": {
+        "executable": "<toolchains>/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+        "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+        "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+        "platform": "linux",
+        "arch": "x64"
+      }
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/156.0.8078.73",
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "width": 390,
+      "sourceSnapshotUnchanged": true,
+      "authorSnapshot": {
+        "beforeCount": 47,
+        "afterCount": 49,
+        "unchangedExisting": 45,
+        "changedExisting": 2,
+        "addedCount": 2
+      }
+    },
+    "legacyBrowserWorkflow": {
+      "ok": true,
+      "browser": "Chrome/156.0.8078.73",
+      "sourceSnapshotUnchanged": true,
+      "deliveryBytes": 17599,
+      "deliverySha256": "2b468857a4d72e880867dfa3d96cb48476c488899c4c82f9edc02606b57b78cf",
+      "godotImportExitCode": 0
+    },
+    "i18n": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "catalogRegression": {
+      "tests": 111,
+      "passed": 106,
+      "failed": 0,
+      "skipped": 5,
+      "legacySnapshotBlocksPreserved": true
+    },
+    "appInitial": {
+      "tests": 8997,
+      "passed": 8341,
+      "failed": 4,
+      "skipped": 652,
+      "reason": "Exact catalog extension lists and counts had not yet included the new starter; all frozen legacy content hashes were retained."
+    },
+    "appFinal": {
+      "command": "npm run check -- --app-only",
+      "exitCode": 0,
+      "tests": 8997,
+      "pass": 8345,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 652,
+      "todo": 0,
+      "durationMs": 465817.08166
+    }
+  },
+  "limitations": [
+    "No installed Tauri or target Android/Windows/macOS acceptance.",
+    "Godot-only ordinary author script, no Bevy physics implementation.",
+    "PhysicsBody2D UUID metadata is eligibility, not registry identity authentication.",
+    "Edge notifications coalesce each dispatch turn; no occupancy count history or replay for late subscribers.",
+    "Native integration uses ordinary author probes moving actual nodes, not product input replay.",
+    "App conditional skips are reported separately from actual engine/browser runs."
+  ]
+}

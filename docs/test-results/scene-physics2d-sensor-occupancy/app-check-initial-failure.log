@@ -1,0 +1,126 @@
+Excerpt of initial full check (exit 1); successful individual test lines omitted.
+
+
+> viento-studio@0.2.8 check
+> node scripts/check-project.mjs --app-only
+
+版本一致性检查通过：0.2.8（构建 0.2.8）
+语法检查通过：1522 个 JavaScript 文件
+API 契约预检通过
+<node> failed with exit code 1. ﹣ actual ordered branches select one declared first match and otherwise use the last fallback (0.73737ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ actual ordered branches select one reordered first match and otherwise use the last fallback (0.112674ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ unmatched conditions including cross-type ne preserve the state and live subscription until a later matching event (0.080502ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ a matching self-edge restarts once, entering a new state does not cascade, and natural completion returns once (0.070163ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ ordered event group unmatched at a natural completion safe point retains existing scheduling semantics (0.083308ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ ordered event group matching at a natural completion safe point retains existing scheduling semantics (0.082446ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ failure entering the first matching branch stops execution without attempting the fallback (0.072016ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ explicit firstMatch with no transitions compiles and activates without event subscriptions (0.083007ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ v3 exact floating thresholds and encoded Unicode strings choose the corresponding branch (0.115529ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ v3 BOM/CRLF source survives independent ZIP delivery after author and build removal (0.15307ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+ℹ tests 8997
+ℹ suites 0
+ℹ pass 8341
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 652
+ℹ todo 0
+ℹ duration_ms 457425.908524
+
+✖ failing tests:
+
+test at scripts/tests/character-contact-event-starter.test.mjs:42:1
+✖ contact starter adds one catalog entry while preserving every previous record and source byte (1.751715ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'godot-physics-sensor-occupancy',
+      'godot-character-contact-events',
+      'godot-character-drop-through',
+      'godot-platform-control',
+      'godot-platform-endpoint-events',
+      'godot-character-intent'
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/character-contact-event-starter.test.mjs:45:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'godot-physics-sensor-occupancy', 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-character-intent' ],
+    expected: [ 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-character-intent' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/character-drop-through-starter.test.mjs:42:1
+✖ drop-through starter adds exactly one record while preserving all 18 previous records byte-for-byte (1.976211ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'godot-physics-sensor-occupancy',
+      'godot-character-drop-through',
+      'godot-platform-control',
+      'godot-platform-endpoint-events',
+      'godot-character-intent'
+    ]
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/character-drop-through-starter.test.mjs:45:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'godot-physics-sensor-occupancy', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-character-intent' ],
+    expected: [ 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-character-intent' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/character-motion-event-starters.test.mjs:40:1
+✖ new character event and audio starters preserve every existing catalog record and ordinary source byte (1.989686ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'godot-physics-sensor-occupancy',
+      'godot-character-motion-events',
+      'godot-character-contact-events',
+      'godot-character-drop-through',
+      'godot-platform-control',
+      'godot-platform-endpoint-events',
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/character-motion-event-starters.test.mjs:42:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'godot-physics-sensor-occupancy', 'godot-character-motion-events', 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-project-event-audio', 'godot-character-intent' ],
+    expected: [ 'godot-character-motion-events', 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-project-event-audio', 'godot-character-intent' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/platform-endpoint-event-starter.test.mjs:42:1
+✖ platform endpoint starter adds one record and preserves all 19 complete previous records (1.186301ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  23 !== 22
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/platform-endpoint-event-starter.test.mjs:45:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 23,
+    expected: 22,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

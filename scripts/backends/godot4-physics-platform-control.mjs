@@ -38,8 +38,8 @@ export async function generateGodotPhysicsPlatformControlProject(input) {
     sceneIds: selected.map(scene => scene.scene.objectId) }, null, 2) + '\n');
   generated.files.set(controlInventoryName, manifest);
   generated.backend = { ...generated.backend, version: '0.40.0', capabilities: [...new Set([...generated.backend.capabilities, PLATFORM_CONTROL_CAPABILITY])],
-    sha256: buildHash(Buffer.concat([Buffer.from(generated.backend.sha256), await fs.readFile(new URL('./godot4-physics-platform-control.mjs', import.meta.url)),
-      await fs.readFile(new URL('./godot4-physics-platform-control-inventory.mjs', import.meta.url)), Buffer.from(helper), port, Buffer.from(wrapper), manifest])) };
+    sha256: buildHash(Buffer.concat([Buffer.from(generated.backend.sha256), await fs.readFile(new URL('./godot4-physics-platform-control-v0.40.mjs.txt', import.meta.url)),
+      await fs.readFile(new URL('./godot4-physics-platform-control-inventory-v0.40.mjs.txt', import.meta.url)), Buffer.from(helper), port, Buffer.from(wrapper), manifest])) };
   return generated;
 }
 export async function godotPhysicsPlatformControlAssemblyScripts(directory, signal) {

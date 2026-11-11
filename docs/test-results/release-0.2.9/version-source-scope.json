@@ -1,0 +1,57 @@
+{
+  "release": "0.2.9",
+  "createdAt": "2026-11-04T13:44:43.930668+00:00",
+  "node": "v24.21.0",
+  "platform": "linux-x86_64",
+  "command": "node --test scripts/tests/version.test.mjs scripts/tests/source-archive.test.mjs",
+  "result": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "installer": {
+    "androidVersionCode": 1002009,
+    "macOSBundleVersion": "1.2.9",
+    "identifier": "io.viento.studio"
+  },
+  "scope": [
+    "7 version consistency/grammar/installer tests",
+    "1 real temporary source archive round trip preserving both Rust crates, Bevy authoring crate and official examples while excluding caches/private state",
+    "No full repository source archive produced by this targeted regression",
+    "No installer build, local installation, runtime protocol migration or author project changes"
+  ],
+  "attempts": [
+    {
+      "result": "automatic approval timeout",
+      "testProcessStarted": false
+    },
+    {
+      "result": "shell PATH whitespace command error",
+      "exitCode": 127,
+      "testProcessStarted": false,
+      "log": "version-source-first-failure.log"
+    },
+    {
+      "result": "passed",
+      "log": "version-source.log"
+    }
+  ],
+  "sourceSha256": {
+    "VERSION": "2f2b333be8858cb384114251b668bb1c9e45a0bb8393600b7ad4093d0e8e72f6",
+    "package.json": "f7b68b6a6087093d79564b2f8d6006c7efd1958c3173879b47946d29e2d7ae1c",
+    "package-lock.json": "963a22afaee7822f30f5eefa163f87e5eb9d2559a1535c25a91d85f3cd0abf9f",
+    "src-tauri/tauri.conf.json": "5acd1e31b8c6890639206a8e3cb96bc8bf708bb395ea25f55b362ccb94889dce",
+    "src-tauri/tauri.android.conf.json": "6e83649785ab1137a05c04430c0a067c2ce2f3e967ccb6f39d2a7f59c124a744",
+    "src-tauri/Cargo.toml": "94dd4d0925f472a1275f676daa9b02fb66b000bd5d231d79d9b436bc3661aa18",
+    "src-tauri/Cargo.lock": "3a0debeee34cf4e6fd7b05ed0f9270729602133a6d0f87c2802e6b766d40da65",
+    "web/index.html": "0162df4531a7e01f1c801a804e6c1c4c93226fbce45775ff2867aa7d0b9b1c7d",
+    "desktop/ui/index.html": "b942014c177c652befa1ea8d153c5973eaa47ce961ab77da9cec79d4b36957a0",
+    "desktop/version.mjs": "18bf50f95f3ef79bfd7cbe6e42e34f2446d939e7f853f6051dcc2cd6c16cd8d5",
+    "desktop/package-source.py": "82297a3ccfbcf9dbb7c21648ffdcfb5e264926c754e2f99679e49842fd93305e",
+    "scripts/tests/version.test.mjs": "811f5d49fb9470e4fe04feffa4f0f49450a1cb17d5e7e0ab2aa0aacb2eb0ccdf",
+    "scripts/tests/source-archive.test.mjs": "c694807d590a790834a75a41772a1a67469b393cb7c241ce011116e04aa6e5be",
+    "scripts/backends/godot4-adapter.mjs": "9fe4a1c9f1f04de0afe2f333b1b105912cb54469627363b9fe2d7444a03c3c81"
+  }
+}
