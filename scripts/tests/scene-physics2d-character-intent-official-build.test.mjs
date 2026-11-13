@@ -21,7 +21,7 @@ test('official Godot import and script-check cover intent, one-way platforms and
   const captured = await captureBuildSnapshot(author.author, author.assemblyId);
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
   const generated = await adapter.generate(captured.plan);
-  assert.equal(generated.backend.version, '0.46.0');
+  assert.equal(generated.backend.version, '0.47.0');
   assert.ok(generated.backend.capabilities.includes('physics.character-intent2d'));
   assert.ok(generated.backend.capabilities.includes('physics.character-drop-through2d'));
   assert.ok(generated.backend.capabilities.includes('physics.platform-motion2d'));
@@ -32,13 +32,13 @@ test('official Godot import and script-check cover intent, one-way platforms and
     await fs.writeFile(path.join(directory, name), bytes);
   }
   // Validation checks the .gd.txt historical copies byte-for-byte; they are
-  // retained as data, not executable scripts. All 51 generated .gd files,
+  // retained as data, not executable scripts. All 52 generated .gd files,
   // including the original contact bridge, must be compiled by script-check.
   const intentScripts = await godotPhysicsCharacterIntentAssemblyScripts(directory);
   const scripts = await godotPhysicsPlatformControlAssemblyScripts(directory);
   assert.ok(intentScripts.every(name => scripts.includes(name)));
   const allScripts = [...generated.files.keys()].filter(name => name.endsWith('.gd'));
-  assert.equal(allScripts.length, 51);
+  assert.equal(allScripts.length, 52);
   assert.equal(new Set(scripts).size, scripts.length);
   assert.deepEqual(allScripts.filter(name => !scripts.includes(name)), []);
   for (const name of ['movement-contacts-helper.gd', 'character-intent-original-contacts.gd',

@@ -1,6 +1,6 @@
 # Viento Studio
 
-Viento 是面向原创设定与游戏创作的实验性 IDE，正在打通 **设定 → 投影 → 场景实现 → 组装构建 → 工程交付**。工程独立保存类型、模板、正文、元数据与素材；编辑器提供内置创作工具，语义核心和执行后端分别维护。
+Viento 是面向原创设定、多媒介叙事与游戏创作的实验性 IDE，正在打通 **设定 → 投影 → 场景实现 → 组装构建 → 工程交付**。工程独立保存类型、模板、正文、元数据与素材；编辑器提供内置创作工具，语义核心和执行后端分别维护。
 
 原生方向是 **Nuislang、ns-nova 与 yalivia runtime**。目前使用 Web / Tauri 宿主，通过 Godot 4 验证二维创作与运行闭环，通过 Bevy 无头通道检验引擎间的接口边界。原生执行和 GUI 迁移仍在开发路线内。
 
@@ -8,11 +8,12 @@ Viento 是面向原创设定与游戏创作的实验性 IDE，正在打通 **设
 
 ## 当前状态
 
-当前源码版本为 **0.2.10**：二维工作流新增世界工作平面、运行主相机与边界、屏幕 HUD、场景导航与关卡重试、参数选择辅助，以及可编辑的俯视收集参考游戏；物理输入回放可按角色实例独立配置。本机 Linux 已安装版本仍为 **0.2.0**；源码发布不等于更新安装。版本、平台与验证范围见 [当前状态](docs/STATUS.md)，交付内容和升版检查见 [0.2.10 记录](docs/RELEASE_0.2.10.md)及[发布检查](docs/test-results/release-0.2.10/README.md)。
+当前源码版本为 **0.3.0**：新增影视起始模板、行为绑定配置复制、首次行为创建的脚本往返和菜单目标按名称接线；Godot 项目组装接通同场景重启、暂停／恢复及键鼠运行菜单。既有二维场景、相机、HUD、物理回放与参考游戏继续保留。本机 Linux 已安装版本仍为 **0.2.0**；源码发布不等于更新安装。版本、平台与验证范围见 [当前状态](docs/STATUS.md)，本版内容见 [0.3.0 记录](docs/RELEASE_0.3.0.md)，0.3.0 发布验证见[发布检查](docs/test-results/release-0.3.0/README.md)。
 
 | 创作环节 | 已有能力与操作指南 |
 | --- | --- |
 | 设定与资料 | [工程模板](docs/PROJECT_TEMPLATES.md)、Markdown / 文本 / JSON / YAML 的源码与[字段编辑](docs/FIELD_EDITING.md)、对象关系、中英日界面、[图片／视频／音频](docs/MEDIA_RESOURCES.md) |
+| 影视策划 | [影视模板与工作流](docs/FILM_WORKFLOW.md)：人物、剧本场次、分镜、拍摄地点、道具、制作计划与素材迁移；当前不含剪辑或成片渲染 |
 | 设定投影 | 同一 OC 的独立 [RPG、视觉小说、文学与戏剧投影](docs/OBJECT_PROJECTIONS.md)，保留原对象身份与属性来源 |
 | 二维场景 | 实例、分组、布局与草稿预览，[片段配方](docs/SCENE_COMPOSITION.md)、[行为](docs/SCENE_BEHAVIORS.md)、[声音](docs/SCENE_AUDIO.md)、[动画](docs/SCENE_ANIMATION.md)和[物理](docs/SCENE_PHYSICS2D.md)各自提供编辑入口 |
 | 项目运行 | Godot [多场景组装](docs/PROJECT_ASSEMBLY.md)、切换、[共享状态](docs/PROJECT_SHARED_STATE.md)、[事件](docs/PROJECT_EVENTS.md)，以及独立运行观察与[验收用例](docs/RUNTIME_CASES.md) |

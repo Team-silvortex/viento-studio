@@ -1,0 +1,92 @@
+extends Node
+
+@export var event_name: String = "game.complete"
+@export var target_scene_id: String = ""
+@export var payload_filter: String = ""
+var _project
+var _subscription: int = 0
+var _active := false
+var _accepted := false
+
+func _object_valid(value) -> bool:
+	return typeof(value) == TYPE_OBJECT and is_instance_valid(value)
+
+func _uuid(value: String) -> bool:
+	var pattern := RegEx.new()
+	pattern.compile("^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$")
+	return value.length() == 36 and pattern.search(value) != null
+
+func _event_name_valid(value: String) -> bool:
+	var pattern := RegEx.new()
+	pattern.compile("^[A-Za-z][A-Za-z0-9_.-]{0,63}$")
+	var matched = pattern.search(value)
+	return value.length() <= 64 and not value in ["constructor", "prototype", "__proto__"] and matched != null and matched.get_string() == value
+
+func _filter_valid(value: String) -> bool:
+	if value.to_utf8_buffer().size() > 4096:
+		return false
+	for index in range(value.length()):
+		var code := value.unicode_at(index)
+		if code < 0 or code > 0x10ffff or (code >= 0xd800 and code <= 0xdfff):
+			return false
+	return true
+
+func _ready() -> void:
+	_disconnect()
+	if not _event_name_valid(event_name) or not _uuid(target_scene_id) or not _filter_valid(payload_filter):
+		_fail("Choose a project event, a target member scene UUID and a bounded scalar text filter.")
+		return
+	if not has_meta("viento_project"):
+		_fail("Bind this script in a project assembly run.")
+		return
+	var project = get_meta("viento_project")
+	if not _object_valid(project):
+		_fail("The visit-bound project event port is unavailable.")
+		return
+	for method in ["subscribe_event", "unsubscribe_event", "request_scene"]:
+		if not project.has_method(method):
+			_fail("The project event and scene request port has an unsupported contract.")
+			return
+	_project = project
+	_active = true
+	_accepted = false
+	var token = _project.subscribe_event(event_name, _on_event)
+	if typeof(token) != TYPE_INT or token <= 0:
+		_fail("Cannot subscribe to the requested project event.")
+		return
+	_subscription = token
+
+func _on_event(value) -> bool:
+	# A captured batch can still deliver after the first request was accepted.
+	# Ignoring those deliveries is normal handling, never a fatal callback error.
+	if not _active or _accepted:
+		return true
+	if _subscription == 0 or not _object_valid(_project):
+		_fail("The project event subscription is no longer available.")
+		return false
+	if not payload_filter.is_empty() and (typeof(value) != TYPE_STRING or value != payload_filter):
+		return true
+	var accepted = _project.request_scene(target_scene_id)
+	if typeof(accepted) != TYPE_BOOL:
+		_fail("The scene request port returned an invalid result.")
+		return false
+	_accepted = accepted
+	# A false request is a normal refusal. Only a new matching publication may
+	# try again. The coordinator applies accepted navigation after FIFO delivery.
+	return true
+
+func _disconnect() -> void:
+	var project = _project
+	var subscription := _subscription
+	_project = null
+	_subscription = 0
+	_active = false
+	if subscription != 0 and _object_valid(project) and project.has_method("unsubscribe_event"):
+		project.unsubscribe_event(subscription)
+
+func _fail(message: String) -> void:
+	_disconnect()
+	push_error("Event scene navigation: " + message)
+
+func _exit_tree() -> void:
+	_disconnect()

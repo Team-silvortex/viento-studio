@@ -67,6 +67,6 @@ test('inventory11 admits 32 scenes and 256 distinct original/wrapper scripts wit
   const paths=[...inventory.behaviorSources.map(row=>row.path),...inventory.animationStateWrappers.map(row=>row.path),...inventory.scenes.flatMap(row=>row.runtimeScripts)];
   for(const file of paths){const destination=path.join(directory,file);await fs.mkdir(path.dirname(destination),{recursive:true});await fs.writeFile(destination,'extends Node\n');}
   await fs.writeFile(path.join(directory,'assembly.json'),bytes);
-  const scripts=await godotAssemblyScripts(directory);assert.equal(new Set(scripts).size,scripts.length);assert.equal(scripts.length,684);
+  const scripts=await godotAssemblyScripts(directory);assert.equal(new Set(scripts).size,scripts.length);assert.equal(scripts.length,685);
   for(const file of paths)assert.ok(scripts.includes(file),file);
 });

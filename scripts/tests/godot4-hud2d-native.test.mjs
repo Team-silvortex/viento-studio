@@ -219,7 +219,7 @@ async function treeHashes(directory) {
 test('HUD project ZIP retains authored label/bar and runs offline after original author and build paths disappear', native, async t => {
   const author = await authorHUD(t), before = await treeHashes(author.author), output = path.join(author.temporary, 'build');
   const built = await buildProject({ root: author.author, targetId: author.assemblyId, tool: executable, output, timeoutMs: 60000 });
-  assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built)); assert.equal(built.record.backend.version, '0.46.0');
+  assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built)); assert.equal(built.record.backend.version, '0.47.0');
   const snapshot = JSON.parse(await fs.readFile(path.join(output, 'snapshot.json'))), generated = await adapter.generate(snapshot.plan), inspect = () => inspectBackendProject({ buildDirectory: output });
   const delivery = await planBackendProjectDelivery({ inspection: await inspect(), assertCurrent: inspect }), zip = path.join(author.temporary, 'hud-project.zip');
   await writeExportZip(delivery, zip); const verified = await verifyBackendProjectDelivery(zip), relocated = path.join(author.temporary, 'relocated'); await fs.mkdir(relocated);

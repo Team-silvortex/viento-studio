@@ -426,6 +426,7 @@ export function createProjectBuildService(root, {
     // ring, including frames observed while cancellation terminates the tool.
     if (event.runtime) job.runtime = clone(event.runtime);
     if (event.physics && job.kind === 'run') job.physics = clone(event.physics);
+    if (event.pause && job.kind === 'run') job.pause = clone(event.pause);
     if (event.executionClock && job.kind === 'run') job.executionClock = clone(event.executionClock);
     if (event.executionFrames && job.kind === 'run') job.executionFrames = clone(event.executionFrames);
     if (event.eventPositions && job.kind === 'run') job.eventPositions = clone(event.eventPositions);
@@ -511,6 +512,7 @@ export function createProjectBuildService(root, {
         if (result.record?.physics) job.physics = clone(result.record.physics);
         if (result.record?.physicsControl) job.physicsControl = clone(result.record.physicsControl);
         if (result.record?.physicsVerification) job.physicsVerification = clone(result.record.physicsVerification);
+        if (result.record?.pause) job.pause = clone(result.record.pause);
         if (result.record?.executionClock) job.executionClock = clone(result.record.executionClock);
         if (result.record?.executionFrames) job.executionFrames = clone(result.record.executionFrames);
         if (result.record?.eventPositions) job.eventPositions = clone(result.record.eventPositions);

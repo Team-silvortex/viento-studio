@@ -22,7 +22,7 @@ test('builtin project packages are closed, parseable and independent of the phys
   const packages = [...catalog.templates, ...catalog.compatibilityTemplates];
   assert.equal(new Set(packages.map(item => item.packageId)).size, packages.length);
   assert.deepEqual(catalog.templates.map(item => item.packageId), [
-    'org.viento.blank', 'org.viento.oc-game', 'org.viento.oc-literature', 'org.viento.oc-drama', 'org.viento.software-design',
+    'org.viento.blank', 'org.viento.oc-game', 'org.viento.oc-literature', 'org.viento.oc-drama', 'org.viento.oc-film', 'org.viento.software-design',
   ]);
   assert.ok(catalog.templates.some(item => item.packageId === catalog.defaultTemplate));
   assert.equal(catalog.templates.find(item => item.packageId === catalog.defaultTemplate).documentTypes.length, 1);
@@ -43,6 +43,60 @@ test('builtin project packages are closed, parseable and independent of the phys
   const legacy = catalog.compatibilityTemplates.find(item => item.packageId === catalog.legacyTemplate);
   assert.deepEqual(PROJECT_DEFAULTS.documentTypes, legacy.documentTypes);
   assert.equal(createHash('sha256').update(canonicalJson(legacy)).digest('hex'), '30545b1162327ee60172cdbe0255a3f85729f668d036a7ff358be8259fe1dc90');
+});
+
+test('adding film preserves every existing starter and compatibility package exactly', () => {
+  const expected = {
+    'org.viento.blank': 'ea28edcb46ca9807a6547970f2769a98e337bd932f07593a5a7a41e250e4ee18',
+    'org.viento.oc-game': 'f8349c5f930f50a276ae4a150b68a9343052f69e67b7cb4489149c9862d9465c',
+    'org.viento.oc-literature': '80fb30367da7d98bfee47c28580bcb4b4c39cee17f55da744f9ac0e055274b2e',
+    'org.viento.oc-drama': '9feed52072e3f6858b4ebe786b7a229f59191008c012245802a1b11af93f65cd',
+    'org.viento.software-design': 'a7789fe04034e7d8e7cdda9877ce16084d6834428e8db359f09b179683ce6287',
+    'org.viento.oc-narrative': '30545b1162327ee60172cdbe0255a3f85729f668d036a7ff358be8259fe1dc90',
+  };
+  const packages = new Map([...catalog.templates, ...catalog.compatibilityTemplates].map(item => [item.packageId, item]));
+  for (const [id, digest] of Object.entries(expected)) {
+    assert.ok(packages.has(id), id);
+    assert.equal(createHash('sha256').update(canonicalJson(packages.get(id))).digest('hex'), digest, id);
+  }
+});
+
+test('film uses ordinary prose and structured document types without requesting a game runtime', () => {
+  const film = catalog.templates.find(item => item.packageId === 'org.viento.oc-film');
+  assert.ok(film);
+  assert.equal(film.version, '1.0.0');
+  assert.equal(film.label, '影视');
+  assert.equal(english[film.label], 'Film & television');
+  assert.equal(japanese[film.label], '映像制作');
+  assert.deepEqual(Object.keys(film).sort(), ['format', 'schemaVersion', 'packageId', 'version', 'label', 'description', 'documentTypes', 'templates'].sort());
+  assert.deepEqual(film.documentTypes.map(({ id, directory, parserProfile, template }) => ({ id, directory, parserProfile, template })), [
+    { id: 'document', directory: '', parserProfile: 'structured', template: 'document.md' },
+    { id: 'character', directory: 'characters', parserProfile: 'structured', template: 'character.md' },
+    { id: 'outline', directory: 'outlines', parserProfile: 'prose', template: 'outline.md' },
+    { id: 'scene', directory: 'scenes', parserProfile: 'prose', template: 'scene.md' },
+    { id: 'shot', directory: 'shots', parserProfile: 'structured', template: 'shot.md' },
+    { id: 'location', directory: 'locations', parserProfile: 'structured', template: 'location.md' },
+    { id: 'production-plan', directory: 'production-plans', parserProfile: 'structured', template: 'production-plan.md' },
+    { id: 'prop', directory: 'props', parserProfile: 'structured', template: 'prop.md' },
+  ]);
+  assert.match(film.templates['character.md'], /背景与经历/);
+  assert.ok(!film.documentTypes.some(item => item.id === 'backstory'));
+  const body = '# 雨夜来客\n\nINT. 车站 - 夜\n\n00:00:01:12\n\n人物甲：你是谁？\n\n人物乙：旅人。\n\n人物甲：我也是。\n\n（窗外：雨声渐强）\n';
+  for (const id of ['outline', 'scene']) {
+    const definition = film.documentTypes.find(item => item.id === id);
+    const parsed = parseSourceContent(body, definition.template, definition);
+    assert.deepEqual(parsed.fields, { _header: '雨夜来客' }, id);
+    assert.deepEqual(parsed.blocks.filter(block => block.type === 'paragraph').map(block => block.text), [
+      'INT. 车站 - 夜', '00:00:01:12', '人物甲：你是谁？', '人物乙：旅人。', '人物甲：我也是。', '（窗外：雨声渐强）',
+    ], id);
+  }
+  const shot = film.documentTypes.find(item => item.id === 'shot');
+  const source = '\uFEFF# 雨夜分镜\r\n\r\n镜头号：S001\r\n预计时长：0\r\n景别：近景\r\n\r\n## 画面与动作\r\n\r\n她凝视镜外。\r\n';
+  const parsed = parseSourceContent(source, shot.template, shot);
+  assert.equal(parsed.fields.镜头号, 'S001');
+  assert.equal(parsed.fields.预计时长, '0');
+  assert.equal(parsed.fields.景别, '近景');
+  assert.equal(parsed.parseError, undefined);
 });
 
 test('game, literature and drama templates have independent roles and keep dialogue in prose', () => {
@@ -132,6 +186,7 @@ test('native project selection, field editing and archive restore use a self-con
     ['org.viento.oc-game', 'item', '\uFEFF# 解谜道具\r\n自定义容量：0\r\n用途：解谜\r\n'],
     ['org.viento.oc-literature', 'chapter', '\uFEFF# 旅途\r\n\r\n她说：别走。\r\n\r\n他说：我会回来。\r\n'],
     ['org.viento.oc-drama', 'scene', '\uFEFF# 第一场\r\n\r\n（灯光亮起）\r\n\r\n人物甲：别走。\r\n\r\n人物乙：我会回来。\r\n'],
+    ['org.viento.oc-film', 'scene', '\uFEFF# 雨夜来客\r\n\r\nINT. 车站 - 夜\r\n\r\n00:00:01:12\r\n\r\n人物甲：别走。\r\n\r\n人物乙：我会回来。\r\n\r\n人物甲：我等你。\r\n'],
   ]) {
     const work = packages.get(packageId), type = work.documentTypes.find(item => item.id === typeId);
     const sourcePath = `documents/${type.directory}/example.md`;

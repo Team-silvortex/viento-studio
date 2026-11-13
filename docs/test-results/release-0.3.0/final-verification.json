@@ -1,0 +1,101 @@
+{
+  "format": "viento-release-verification",
+  "version": "0.3.0",
+  "checkedAt": "2026-11-13T09:59:41.514648+00:00",
+  "ok": true,
+  "commitParent": "c46631350f53ee60e0a70523684274f08b4c73b4",
+  "application": {
+    "command": [
+      "npm",
+      "run",
+      "check",
+      "--",
+      "--app-only"
+    ],
+    "counts": {
+      "tests": 9759,
+      "pass": 9059,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 700,
+      "todo": 0
+    },
+    "sourceFiles": 2319,
+    "sourceHashesUnchangedDuringFullRun": true,
+    "postRunOnlyChange": "One trailing newline byte removed from scripts/tests/helpers/project-pause-observer.gd; all production implementation bytes unchanged; subsequent actual native and offline tests use the cleaned helper.",
+    "postRunChangeReceipt": "observer-cleanup.json"
+  },
+  "versionAndSourceArchive": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "skip": 0,
+    "androidVersionCode": 1003000,
+    "macOSBundleVersion": "1.3.0",
+    "applicationIdentifier": "io.viento.studio"
+  },
+  "postCleanupNative": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "skip": 0,
+    "scope": [
+      "Real keyboard pause/resume with frozen gameplay, callbacks, animation and PCM playback",
+      "Standard delivered project ZIP repeats keyboard flow after original author/build paths become unavailable"
+    ],
+    "log": "pause-observer-native.log",
+    "fullEvidence": "pause-observer-native.tar.gz"
+  },
+  "preservation": {
+    "baselineFiles": 17701,
+    "missing": 0,
+    "oldEvidenceFilesUnchanged": 15126,
+    "officialExampleFilesUnchanged": 164,
+    "ignoredAssetsAndRegistrationsVerified": 78,
+    "atlasOnlyExpectedReleaseEdits": true,
+    "functionDeliveryPromotions": 7,
+    "deliveryCellsPromoted": 22,
+    "otherThreeMaturityDimensionsUnchanged": true
+  },
+  "atlas": {
+    "ok": true,
+    "mode": "check",
+    "architectures": 11,
+    "functions": 205,
+    "implementations": 622,
+    "bindings": 837,
+    "cells": 3348,
+    "dependencyEdges": 649,
+    "workflows": 170,
+    "historicalChains": 50,
+    "referencedFiles": 3200
+  },
+  "documents": {
+    "protectedDocuments": 172,
+    "oldHeadings": 1513,
+    "links": 7458,
+    "brokenLinks": 0,
+    "missingOldHeadings": 0,
+    "missingOldAnchors": 0,
+    "sourcesStableDuringReview": true
+  },
+  "index": {
+    "sevenFeatureEvidenceFiles": 1189,
+    "inventoryChecks": {
+      "inventoryFiles": 24,
+      "checks": 1014,
+      "uniqueReferencedFiles": 920
+    },
+    "bytePreservingAttributesConfirmed": true,
+    "details": "evidence-index-audit.json"
+  },
+  "diffCheck": {
+    "workingTree": "passed",
+    "staged": "passed"
+  },
+  "limits": [
+    "Source commit and push only; no new installer build, installation, tag or GitHub release.",
+    "700 skipped tests remain skipped. App-only is not native Rust/mobile/full desktop packaging verification.",
+    "Prior topic receipts retain their development versions and original bytes; installed acceptance remains 0.2.0."
+  ]
+}

@@ -1,0 +1,74 @@
+extends Node
+
+@export var kind: String = "collect"
+@export var player_instance_id: String = ""
+@export var event_name: String = ""
+var _project
+var _area: Area2D
+var _instance_id: String = ""
+var _event_name: String = ""
+var _active := false
+var _used := false
+
+func _object_valid(value) -> bool:
+	return typeof(value) == TYPE_OBJECT and is_instance_valid(value)
+
+func _uuid(value) -> bool:
+	if typeof(value) != TYPE_STRING or value.length() != 36:
+		return false
+	var pattern := RegEx.new()
+	pattern.compile("^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$")
+	return pattern.search(value) != null
+
+func _ready() -> void:
+	_disconnect()
+	_used = false
+	if not kind in ["collect", "hazard", "exit"] or not _uuid(player_instance_id):
+		_fail("Choose collect, hazard or exit and the player's instance UUID.")
+		return
+	if not get_parent() is Area2D or not has_meta("viento_project") or not has_meta("viento_instance_id"):
+		_fail("Bind this script to a physical sensor in a project run.")
+		return
+	var project = get_meta("viento_project")
+	var instance_id = get_meta("viento_instance_id")
+	if not _object_valid(project) or not project.has_method("publish_event") or not _uuid(instance_id):
+		_fail("The project event port or sensor identity is unavailable.")
+		return
+	_project = project
+	_area = get_parent() as Area2D
+	_instance_id = instance_id
+	_event_name = event_name if not event_name.is_empty() else "game." + kind
+	if _area.connect("body_entered", _body_entered) != OK:
+		_fail("Cannot subscribe to sensor entry.")
+		return
+	_active = true
+
+func _body_entered(body: Node2D) -> void:
+	if not _active or (kind == "collect" and _used) or not _object_valid(body) or not body is PhysicsBody2D:
+		return
+	if not body.has_meta("viento_instance_id") or body.get_meta("viento_instance_id") != player_instance_id:
+		return
+	var accepted = _project.publish_event(_event_name, _instance_id) if _object_valid(_project) else false
+	if typeof(accepted) != TYPE_BOOL or not accepted:
+		_fail("The project rejected the sensor event.")
+		return
+	if kind == "collect":
+		_used = true
+		_area.hide()
+		_area.set_deferred("monitoring", false)
+
+func _disconnect() -> void:
+	_active = false
+	if is_instance_valid(_area) and _area.body_entered.is_connected(_body_entered):
+		_area.body_entered.disconnect(_body_entered)
+	_area = null
+	_project = null
+	_instance_id = ""
+	_event_name = ""
+
+func _fail(message: String) -> void:
+	_disconnect()
+	push_error("Topdown zone: " + message)
+
+func _exit_tree() -> void:
+	_disconnect()

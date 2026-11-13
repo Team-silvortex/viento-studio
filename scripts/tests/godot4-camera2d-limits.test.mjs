@@ -17,10 +17,10 @@ test('bounded cameras use an opt-in outer helper and preserve unbounded camera a
     limits: { left: -1000.5, top: -800.25, right: 1000.75, bottom: 800.5 } });
   cameraOn(plan, 1, { mode: 'fixed', center: [20, 50], zoom: .5 });
   const before = structuredClone(plan), generated = await adapter.generate(plan); assert.deepEqual(plan, before);
-  assert.equal(generated.backend.version, '0.46.0'); assert.ok(generated.backend.capabilities.includes('scene.camera2d.limits2d'));
-  assert.equal(adapter.descriptor.version, '0.46.0'); assert.ok(adapter.descriptor.capabilities.includes('scene.camera2d.limits2d'));
+  assert.equal(generated.backend.version, '0.47.0'); assert.ok(generated.backend.capabilities.includes('scene.camera2d.limits2d'));
+  assert.equal(adapter.descriptor.version, '0.49.0'); assert.ok(adapter.descriptor.capabilities.includes('scene.camera2d.limits2d'));
   assert.deepEqual(generated.sourceMap, old.sourceMap);
-  for (const [name, bytes] of old.files) if (!name.startsWith('retry-') && !['project.godot', 'execution-clock-original.godot'].includes(name)) assert.deepEqual(generated.files.get(name), bytes, name);
+  for (const [name, bytes] of old.files) if (!name.startsWith('retry-') && !['project.godot', 'execution-clock-original.godot', 'restart-project.json', 'restart-original.godot', 'restart-original-clock.godot'].includes(name)) assert.deepEqual(generated.files.get(name), bytes, name);
   const base = JSON.parse(generated.files.get(`scenes/${first.scene.objectId}/camera2d.json`));
   assert.equal(base.schemaVersion, 1); assert.equal(Object.hasOwn(base.camera, 'limits'), false);
   assert.deepEqual(JSON.parse(generated.files.get(`scenes/${first.scene.objectId}/camera2d-limits.json`)), plan.scenes[0].camera2d.document);
@@ -54,7 +54,7 @@ test('bounded inventory rejects script drift, unpaired declarations, wrong targe
 });
 test('unbounded projects neither generate nor admit a limits helper or v2 declaration', async t => {
   const plan = cameraOn(cameraProject(), 0, { mode: 'fixed', center: [30, 50], zoom: 1 }), generated = await adapter.generate(plan), directory = await cameraStage(t, generated);
-  assert.equal(generated.backend.version, '0.46.0'); assert.equal(generated.backend.capabilities.includes('scene.camera2d.limits2d'), false);
+  assert.equal(generated.backend.version, '0.47.0'); assert.equal(generated.backend.capabilities.includes('scene.camera2d.limits2d'), false);
   assert.equal([...generated.files.keys()].some(name => name.includes('camera2d-limits')), false);
   const file = path.join(directory, 'camera2d-limits-scene.gd'); await fs.writeFile(file, await fs.readFile(new URL('../backends/godot4/camera2d-limits-scene.gd', import.meta.url)));
   await assert.rejects(validateGodotCamera2DInventory(directory), invalid); await fs.rm(file);

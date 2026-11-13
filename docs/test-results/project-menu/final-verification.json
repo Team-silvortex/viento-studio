@@ -1,0 +1,461 @@
+{
+  "format": "viento-project-menu-verification",
+  "schemaVersion": 1,
+  "ok": true,
+  "checkedAt": "2026-11-13T07:37:17.988670+00:00",
+  "version": "0.2.10",
+  "nextRelease": "0.3.0",
+  "installedVersion": "0.2.0",
+  "commit": "c46631350f53ee60e0a70523684274f08b4c73b4",
+  "releaseActions": {
+    "versionChanged": false,
+    "committed": false,
+    "pushed": false,
+    "installed": false
+  },
+  "capability": {
+    "optional": [
+      "project.menu",
+      "project.pause"
+    ],
+    "descriptorVersion": "0.49.0",
+    "menuGeneratedVersion": "0.49.0",
+    "pauseOnlyGeneratedVersion": "0.48.0",
+    "ordinaryGeneratedVersion": "0.47.0",
+    "businessProtocolsUnchanged": [
+      4,
+      7,
+      10,
+      11
+    ],
+    "authorFormatChanged": false,
+    "transactionFormatChanged": false,
+    "bevySupported": false,
+    "pausedCommands": [
+      "resume",
+      "finish"
+    ],
+    "sceneCommands": [
+      "scene",
+      "retry",
+      "restart",
+      "finish"
+    ]
+  },
+  "focused": {
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "scripts/tests/backend-capabilities.test.mjs",
+      "scripts/tests/godot-project-menu-parameters.test.mjs",
+      "scripts/tests/godot4-adapter.test.mjs",
+      "scripts/tests/godot4-project-menu.test.mjs",
+      "scripts/tests/godot4-project-pause.test.mjs",
+      "scripts/tests/godot4-scene-restart.test.mjs",
+      "scripts/tests/project-menu-authoring.test.mjs",
+      "scripts/tests/project-menu-capabilities.test.mjs",
+      "scripts/tests/project-menu-diagnostics.test.mjs",
+      "scripts/tests/project-menu.test.mjs"
+    ],
+    "startedAt": "2026-11-13T07:31:49.070354+00:00",
+    "endedAt": "2026-11-13T07:31:52.845436+00:00",
+    "returncode": 0,
+    "counts": {
+      "tests": 83,
+      "pass": 83,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "log": "checks/focused-final.log"
+  },
+  "backendNumericCapability": {
+    "cases": 87,
+    "commonResults": 84,
+    "backendUnderflowRefusals": 3,
+    "report": "checks/final-capability/report.json",
+    "limitation": "Generic Double semantics unchanged; final Godot menu rejects nonzero numeric tokens its parser would silently turn to zero. All-zero mantissas normalized only in a parsing copy, original items_json retained.",
+    "historicalNumericLossDiagnostic": "checks/numeric-loss-diagnostic/report.json",
+    "historicalAdmissionOnly": "checks/initial-admission82/",
+    "realNumericAndInventoryTests": {
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "log": "checks/backend-tests.tap.log"
+    }
+  },
+  "browser": {
+    "ok": true,
+    "browser": "Chrome/156.0.8078.73",
+    "screenshots": 11,
+    "layoutChecks": 9,
+    "errors": [],
+    "sourceFiles": 28,
+    "sourcesUnchanged": true,
+    "authorFiles": 104,
+    "registeredDocuments": 36,
+    "assets": 9,
+    "preservedExistingBindings": 13,
+    "report": "browser/browser.json",
+    "archiveReport": "browser/author-archive.json",
+    "archive": "browser/author-final.viento.zip",
+    "standardAuthorDataFiles": 103,
+    "archiveEntriesIncludingManifest": 104,
+    "readmeSidecar": 1,
+    "ignoredAssetsAndRecordsCovered": 18,
+    "recoveredByActualRust": true,
+    "archiveBytes": 95588,
+    "archiveSha256": "4f15c9a7ec8fd6063edc76138790f72bd20ede75e26275a9510401e513b1a696"
+  },
+  "native": {
+    "tests": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "sourceFilesPreserved": 14,
+    "sourceHashesUnchanged": true,
+    "authorFilesPreserved": 104,
+    "mainWindow": [
+      {
+        "mode": "full",
+        "stages": 13,
+        "samples": 442,
+        "visits": 7,
+        "screenshots": 18,
+        "events": 114,
+        "pauseFrames": 6
+      },
+      {
+        "mode": "paused-finish",
+        "stages": 4,
+        "samples": 69,
+        "visits": 2,
+        "screenshots": 4,
+        "events": 22,
+        "pauseFrames": 1
+      },
+      {
+        "mode": "paused-escape",
+        "stages": 4,
+        "samples": 65,
+        "visits": 2,
+        "screenshots": 4,
+        "events": 22,
+        "pauseFrames": 1
+      },
+      {
+        "mode": "paused-close",
+        "stages": 4,
+        "samples": 66,
+        "visits": 2,
+        "screenshots": 4,
+        "events": 22,
+        "pauseFrames": 1
+      }
+    ],
+    "offline": {
+      "stages": 13,
+      "samples": 436,
+      "visits": 7,
+      "screenshots": 18,
+      "events": 112,
+      "pauseFrames": 6,
+      "originalPathsUnavailable": true
+    },
+    "sceneRestart": {
+      "stages": 3,
+      "samples": 109,
+      "visits": 3,
+      "screenshots": 3,
+      "events": 14,
+      "pauseFrames": 0
+    },
+    "sceneRestartChangedRelativeToUi": [
+      "documents/behaviors/start.json"
+    ],
+    "uiSourceUnchangedByRestart": true,
+    "screenshots": 51,
+    "rawEvidenceFiles": 126,
+    "rawEvidenceBytes": 15897442,
+    "storedEvidenceBytes": 6314741,
+    "compressedFiles": 4,
+    "log": "native/test-run.log",
+    "inventory": "native/evidence-inventory.json",
+    "readme": "native/README.md",
+    "buildArchive": "native/menu.viento-build.zip",
+    "buildArchiveSha256": "a876dc2b730b7632a241dfb87102bc2226a4f4c72fc00bc13509adecaa7251a4",
+    "wmEnvironmentReport": "checks/wm-environment/report.json",
+    "scope": "Actual Godot Linux/Xvfb/Mesa software GL with XTest input, not physical device or installed Studio validation."
+  },
+  "legacyNative": {
+    "results": [
+      {
+        "name": "legacy",
+        "command": [
+          "xvfb-run",
+          "-a",
+          "-s",
+          "-screen 0 1280x800x24",
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "--test-concurrency=1",
+          "scripts/tests/godot4-camera2d-limits-native.test.mjs",
+          "scripts/tests/godot4-camera2d-native.test.mjs",
+          "scripts/tests/godot4-hud2d-native.test.mjs",
+          "scripts/tests/project-scene-switching-godot.test.mjs",
+          "scripts/tests/godot-project-pause-native.test.mjs"
+        ],
+        "startedAt": "2026-11-13T07:27:24.820987+00:00",
+        "returncode": 0,
+        "endedAt": "2026-11-13T07:33:22.233979+00:00",
+        "counts": {
+          "tests": 25,
+          "pass": 25,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "animation",
+        "command": [
+          "xvfb-run",
+          "-a",
+          "-s",
+          "-screen 0 1280x800x24",
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "--test-concurrency=1",
+          "scripts/tests/animation-selectors-godot.test.mjs",
+          "scripts/tests/animation-combinations-godot.test.mjs"
+        ],
+        "startedAt": "2026-11-13T07:27:24.821244+00:00",
+        "returncode": 0,
+        "endedAt": "2026-11-13T07:31:13.070716+00:00",
+        "counts": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      }
+    ],
+    "sourceFiles": 2303,
+    "sourcesUnchanged": true,
+    "changedSources": [],
+    "ok": true,
+    "report": "checks/legacy-native-summary.json",
+    "sourceBefore": "checks/legacy-sources-before.json",
+    "sourceAfter": "checks/legacy-sources-after.json"
+  },
+  "application": {
+    "version": "0.2.10",
+    "startedAt": "2026-11-13T07:25:53.659016+00:00",
+    "command": [
+      "npm",
+      "run",
+      "check",
+      "--",
+      "--app-only"
+    ],
+    "sourceFiles": 2303,
+    "returncode": 0,
+    "endedAt": "2026-11-13T07:35:08.892617+00:00",
+    "sourcesUnchanged": true,
+    "changedSources": [],
+    "counts": {
+      "tests": 9670,
+      "pass": 8971,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 699,
+      "todo": 0
+    },
+    "log": "checks/application.log",
+    "before": "checks/application-sources-before.json",
+    "after": "checks/application-sources-after.json"
+  },
+  "preservation": {
+    "oldEvidence": {
+      "count": 14559,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": [],
+      "expectedCount": 14559,
+      "expectedCountMatches": true
+    },
+    "oldBackendGdText": {
+      "count": 89,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": [],
+      "expectedCount": 89,
+      "expectedCountMatches": true
+    },
+    "releaseDocs": {
+      "count": 51,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "historyDocs": {
+      "count": 15,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "canonicalSample": {
+      "count": 98,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": [],
+      "expectedCount": 98,
+      "expectedCountMatches": true
+    },
+    "previousPauseAuthorAll": {
+      "count": 102,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": [],
+      "expectedCount": 102,
+      "expectedCountMatches": true,
+      "baselineKind": "Unchanged previous browser.json report, covering all ignored asset files as well as tracked evidence."
+    },
+    "previousPauseAuthorZip": {
+      "count": 1,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": [],
+      "expectedCount": 1,
+      "expectedCountMatches": true
+    },
+    "atlasFunctions": {
+      "count": 201,
+      "currentCount": 202,
+      "addedCount": 1,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "atlasImplementations": {
+      "count": 610,
+      "currentCount": 614,
+      "addedCount": 4,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "atlasBindings": {
+      "count": 825,
+      "currentCount": 829,
+      "addedCount": 4,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "atlasEvidence": {
+      "count": 3824,
+      "currentCount": 3859,
+      "addedCount": 35,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "atlasWorkflows": {
+      "count": 166,
+      "currentCount": 167,
+      "addedCount": 1,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "atlasCells": {
+      "count": 3300,
+      "currentCount": 3316,
+      "addedCount": 16,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    },
+    "atlasDependencies": {
+      "count": 635,
+      "currentCount": 639,
+      "addedCount": 4,
+      "changedCount": 0,
+      "changed": [],
+      "missingCount": 0,
+      "missing": []
+    }
+  },
+  "preservationReport": "checks/preservation-summary.json",
+  "preservationRaw": {
+    "path": "checks/preservation.json.gz",
+    "rawSha256": "a6d171015692f49932a6de70a0dff647830f862e7e00b8e25d459d7d9781545b",
+    "storedSha256": "9beb43166aef449396117d8cd5aca0a279de9f42e68048850e51feb09b87b59f"
+  },
+  "atlas": {
+    "functions": 202,
+    "implementations": 614,
+    "bindings": 829,
+    "cells": 3316,
+    "dependencies": 639,
+    "workflows": 167,
+    "evidence": 3859,
+    "historicalCellsPreserved": true,
+    "newDeliveryScore": 2,
+    "referencedFiles": 3167
+  },
+  "documentation": {
+    "protectedDocuments": 168,
+    "oldHeadings": 1466,
+    "oldExplicitAnchors": 400,
+    "relativeLinks": 7331,
+    "dynamicAtlasRoutes": 172,
+    "broken": [],
+    "sourcesUnchangedDuringReview": true,
+    "report": "checks/doc-links.json"
+  },
+  "limitations": [
+    "Browser authors a reference-game copy, not an entire game from blank.",
+    "Paused menus support only resume and finish; navigation/restart require a separate controlled transaction.",
+    "Scene menus do not freeze gameplay polling; title and result pages should be separate members.",
+    "No persistent save, thirty-minute gameplay, standalone engine-free distribution, font closure, Bevy parity or installation acceptance.",
+    "Hardware GPU, physical-device input and speaker-hearing were not tested."
+  ],
+  "postCheckSources": {
+    "report": "checks/post-check-sources.json",
+    "retainedSourcesUnchanged": true,
+    "removedGeneratedCache": [
+      {
+        "path": "scripts/tests/helpers/__pycache__/project-menu-keyboard.cpython-314.pyc",
+        "bytes": 33318,
+        "sha256": "2226b1354b40ce23d006305061308f141872faff3f72f957283eb9a9e2179764",
+        "reason": "Generated Python import cache created by this validation only; removed after full and legacy source guards completed. No author, implementation or test source changed."
+      }
+    ]
+  }
+}

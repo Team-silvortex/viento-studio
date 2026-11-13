@@ -1,3 +1,6 @@
+import { sceneMenuCapabilities } from './scene-menu-capability.mjs';
+import { scenePauseCapabilities } from './scene-pause-capability.mjs';
+import { sceneRestartCapabilities } from './scene-restart-capability.mjs';
 // Frozen project envelope admission is independent of author parsing and host IO.
 import { canonicalJson } from './canonical-json.mjs';
 import { validateProjectInputMap } from './project-input-map.mjs';
@@ -59,6 +62,9 @@ export function validateProjectAssemblyPlan(input) {
     if (Object.hasOwn(scene, 'physics')) validateScenePhysics2DPlan(scene);
     if (Object.hasOwn(scene, 'camera2d')) validateSceneCamera2DPlan(scene);
     if (Object.hasOwn(scene, 'hud2d')) validateSceneHUD2DPlan(scene);
+    if (sceneRestartCapabilities(scene.behaviors).some(capability => !scene.requiredCapabilities.includes(capability))) return fail();
+    if (sceneMenuCapabilities(scene.behaviors).some(capability => !scene.requiredCapabilities.includes(capability))) return fail();
+    if (scenePauseCapabilities(scene.behaviors).some(capability => !scene.requiredCapabilities.includes(capability))) return fail();
     ids.add(scene.scene.objectId); paths.add(scene.scene.sourcePath);
     for (const capability of scene.requiredCapabilities) {
       if (typeof capability !== 'string' || capability.length > 128 || !/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/.test(capability)) return fail();

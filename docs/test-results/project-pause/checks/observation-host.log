@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: build UI shows admitted pause, release wait, resume and incomplete states without issuing gameplay writes
+ok 1 - build UI shows admitted pause, release wait, resume and incomplete states without issuing gameplay writes
+  ---
+  duration_ms: 467.950202
+  type: 'test'
+  ...
+# Subtest: build UI hides stale or malformed pause receipts and receipts belonging to another run snapshot or visit
+ok 2 - build UI hides stale or malformed pause receipts and receipts belonging to another run snapshot or visit
+  ---
+  duration_ms: 861.71809
+  type: 'test'
+  ...
+# Subtest: a paused real child still reaches the host wall-clock timeout and persists its accepted pause row
+ok 3 - a paused real child still reaches the host wall-clock timeout and persists its accepted pause row
+  ---
+  duration_ms: 2723.920983
+  type: 'test'
+  ...
+# Subtest: abort after an accepted pause row stops a real child and retains the incomplete visit and pause evidence
+ok 4 - abort after an accepted pause row stops a real child and retains the incomplete visit and pause evidence
+  ---
+  duration_ms: 136.28354
+  type: 'test'
+  ...
+# Subtest: repeated pause-observer failure kills the real child without replaying or losing the accepted row
+ok 5 - repeated pause-observer failure kills the real child without replaying or losing the accepted row
+  ---
+  duration_ms: 133.564887
+  type: 'test'
+  ...
+# Subtest: an unterminated pause row admitted during timeout finalization survives repeated observer errors
+ok 6 - an unterminated pause row admitted during timeout finalization survives repeated observer errors
+  ---
+  duration_ms: 2611.485079
+  type: 'test'
+  ...
+# Subtest: pause transport is independent of unchanged business envelopes and ends while paused without a false resume
+ok 7 - pause transport is independent of unchanged business envelopes and ends while paused without a false resume
+  ---
+  duration_ms: 6.87829
+  type: 'test'
+  ...
+# Subtest: streaming preserves fragmented prefixes, CRLF, Unicode and noise without swallowing delegated frames
+ok 8 - streaming preserves fragmented prefixes, CRLF, Unicode and noise without swallowing delegated frames
+  ---
+  duration_ms: 3.990767
+  type: 'test'
+  ...
+# Subtest: fresh pause admissions require a ready current visit, exact identity, sequence, phases, times and bounded rows
+ok 9 - fresh pause admissions require a ready current visit, exact identity, sequence, phases, times and bounded rows
+  ---
+  duration_ms: 9.186092
+  type: 'test'
+  ...
+# Subtest: resume release barrier and focus cancellation keep clocks fixed; running permits monotonic progress
+ok 10 - resume release barrier and focus cancellation keep clocks fixed; running permits monotonic progress
+  ---
+  duration_ms: 1.156826
+  type: 'test'
+  ...
+# Subtest: bounded retention never resets admission sequence and allows a later scene to reset only its local clock
+ok 11 - bounded retention never resets admission sequence and allows a later scene to reset only its local clock
+  ---
+  duration_ms: 3.874128
+  type: 'test'
+  ...
+# Subtest: query rejects forged retention, state, current visits and frozen time while returning detached DTOs
+ok 12 - query rejects forged retention, state, current visits and frozen time while returning detached DTOs
+  ---
+  duration_ms: 2.948026
+  type: 'test'
+  ...
+# Subtest: observer exceptions stop further admission, retain the last accepted row and finalize incomplete exactly once
+ok 13 - observer exceptions stop further admission, retain the last accepted row and finalize incomplete exactly once
+  ---
+  duration_ms: 0.985143
+  type: 'test'
+  ...
+# Subtest: delegated finalization exceptions cannot masquerade as a completed pause observation or replay retained input
+ok 14 - delegated finalization exceptions cannot masquerade as a completed pause observation or replay retained input
+  ---
+  duration_ms: 0.908128
+  type: 'test'
+  ...
+# Subtest: EOF completion and current visit follow newly admitted delegated tail frames without replay
+ok 15 - EOF completion and current visit follow newly admitted delegated tail frames without replay
+  ---
+  duration_ms: 1.71125
+  type: 'test'
+  ...
+# Subtest: query cannot invent a first resume; final business clocks cannot move during pause or run backwards
+ok 16 - query cannot invent a first resume; final business clocks cannot move during pause or run backwards
+  ---
+  duration_ms: 3.227021
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5763.030932

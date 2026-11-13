@@ -89,7 +89,7 @@ async function run(name, f, options = {}) {
   const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool,
     output: path.join(f.temporary, 'execution-frames-build'), timeoutMs: 60000 });
   assert.equal(built.ok, true, json(built.record?.diagnostics || built));
-  assert.equal(built.record.backend.version, '0.46.0');
+  assert.equal(built.record.backend.version, '0.47.0');
   const afterBuild = await authorHashes(f.author); assert.deepEqual(afterBuild, before);
   const result = await runProjectBuild({ buildDirectory: built.buildDirectory, tool, headless: true, smoke: false,
     timeoutMs: 60000, ...options, onProgress: event => {

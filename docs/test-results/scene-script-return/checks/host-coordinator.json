@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "status": "frozen",
+  "ownedFiles": [
+    "web/modules/app-scene-script-return-host.js",
+    "scripts/tests/scene-script-return-host.test.mjs",
+    "scripts/tests/scene-script-return-coordinator-ui.test.mjs"
+  ],
+  "tests": {
+    "tests": 30,
+    "pass": 30,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "hostTests": 16,
+  "coordinatorTests": 14,
+  "log": "/tmp/viento-scene-script-return-host-coordinator-final.log",
+  "sources": {
+    "web/modules/app-scene-script-return-host.js": "701d1f9958a12b53d005451377f08af19ea27d6866609d1e917154e34473a0cb",
+    "scripts/tests/scene-script-return-host.test.mjs": "c75ccd22f1e84faf5fd01e7d1a7a145140fd16cf6a91d60e9dd10221f5086ccd",
+    "web/modules/app-scene-script-return.js": "f9235e61c136731240db913e1e9048dd5d3105b72a4a31ebdc795417bb13742c",
+    "scripts/tests/scene-script-return-coordinator-ui.test.mjs": "2ff081ddda6303b4f401dcea32f7e546b055e07d3156138e5d26452e76c868a6",
+    "web/modules/app-studio-system.js": "76dc1765cd864c0f0df165fe96e6f61314fb3f71a89ffa1986107e1f5ec8e95d",
+    "web/modules/app-script-create.js": "53c1040464c35efe980d90e990265c6a130f623cc65091512f38697b2a10a7d3",
+    "web/modules/app-runtime.js": "763b1997c50af06593c7e12a7c202e6b67126ecd795f82db65a112d8a176a054",
+    "scripts/tests/dialog-harness.mjs": "7c82ec383ae6db53a3913ab7eb630953dc5fbc94cabab42bab059e911975e621",
+    "scripts/tests/editor-harness.mjs": "e965cc2ea42f1477c53843370b553d457c8f1018f4032dc67d4ff10ea31b2049"
+  },
+  "readOnlyReview": {
+    "findingsCorrected": [
+      "Disabled module service wiring now requires both scripts and build active.",
+      "Disposed coordinator ignores late chooser callbacks."
+    ],
+    "saveHooks": "captured after final normalized path/content, actual receipt recorded before source/create session transition",
+    "remainingFindings": []
+  },
+  "harnessScope": "Actual coordinator VM plus actual Node-imported host; only the returnSource options data object crosses realms through the existing function port. No global location workaround or empty production-validator stub."
+}

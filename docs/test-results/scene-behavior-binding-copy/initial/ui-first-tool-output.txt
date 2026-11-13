@@ -1,0 +1,41 @@
+✔ binding copy lists stable scene instance identities with no inferred target or document change (41.439706ms)
+✔ choosing and translating a copy target preserves existing form focus selection and approved review (111.718326ms)
+✖ explicit copy duplicates the current raw form for one chosen instance and leaves references literal (109.830254ms)
+✔ copied and original forms remain independent across later parameter event and script edits (70.704648ms)
+✔ copying unfinished numeric text does not parse repair or approve the form (93.272096ms)
+✔ an explicit copy to the same instance is distinct and still needs ordinary candidate review (36.658176ms)
+✔ empty forged and silently replaced targets cannot allocate an identity or mutate an approved form (244.136807ms)
+✔ UUID allocation failures preserve the selected form and an already approved ordinary proposal (192.280582ms)
+✔ the 32 binding limit blocks copy even when disabled controls receive a direct event (56.653605ms)
+✔ copy is locked while the source opens or an ordinary candidate check is pending (58.169601ms)
+✔ changed source ownership and withdrawn host availability cannot copy a stale form (179.81178ms)
+✔ copy resets target selection and allocates each subsequent copy its own stable binding identity (73.366838ms)
+✔ source helper callbacks and detached ordinary row controls cannot target copied rows or revoke their review (68.926685ms)
+✔ cancel and reopen discard copied forms without applying or changing the original source bytes (43.879724ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1387.750089
+
+✖ failing tests:
+
+test at scripts/tests/scene-behavior-binding-copy-ui.test.mjs:99:1
+✖ explicit copy duplicates the current raw form for one chosen instance and leaves references literal (109.830254ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Object.is(copied.parameters.negative_zero, -0))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-binding-copy-ui.test.mjs:115:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

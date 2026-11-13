@@ -67,7 +67,7 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
     const manifest = JSON.parse(viaAdapter.files.get('platform-control-project.json'));
     assert.deepEqual(manifest, { format: 'viento-godot-platform-control-project', schemaVersion: 1,
       sceneIds: movingScenes.map(scene => scene.scene.objectId) });
-    assert.equal(viaAdapter.backend.version, '0.46.0');
+    assert.equal(viaAdapter.backend.version, '0.47.0');
   }
   // Current scheduling observation keeps the frozen finite-budget artifacts.
   for (const [name, bytes] of f.generated.files) {

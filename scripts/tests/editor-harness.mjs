@@ -1,3 +1,4 @@
+import { createSceneScriptReturnHost } from '../../web/modules/app-scene-script-return-host.js';
 import { prepareCompositionDraftApply } from '../../engine/scene-composition-create.mjs';
 import { revealSourceOffset } from '../../web/modules/app-source-reveal.js';
 import { prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
@@ -87,6 +88,8 @@ export async function editorHarness(overrides = {}) {
     window: { confirm: () => false },
     API_PATHS, API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion, getDocTemplate, DOC_TYPE_TEMPLATE_DEFS, createBlockDraft, serializeBlockDraft, serializeSourceDraft,
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
+    inspectSceneBehaviorCreation: async () => { throw new Error('Behavior creation directory is not configured in this editor harness'); },
+    createSceneScriptReturnHost: options => createSceneScriptReturnHost({ ...options, getContext: () => structuredClone(options.getContext()) }),
     prepareCompositionDraftApply: (context, catalog, proposal) => prepareCompositionDraftApply(structuredClone(context), structuredClone(catalog), proposal),
     prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
     inspectSceneBehaviorReferenceDirectory: async () => { throw new Error('Behavior references are not configured in this editor harness'); },

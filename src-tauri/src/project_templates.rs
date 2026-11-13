@@ -309,7 +309,7 @@ mod tests {
     fn packages_are_closed_and_reject_ambiguous_or_escaping_templates() {
         let catalog = catalog().unwrap();
         assert_eq!(catalog.default_template, "org.viento.blank");
-        assert_eq!(catalog.templates.len(), 5);
+        assert_eq!(catalog.templates.len(), 6);
         assert_eq!(catalog.compatibility_templates.len(), 1);
         assert!(!list().unwrap()["templates"]
             .as_array()

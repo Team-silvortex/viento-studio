@@ -1,0 +1,137 @@
+{
+  "format": "viento-object-projection",
+  "schemaVersion": 1,
+  "title": "Traveler / Topdown player",
+  "sourceObjectId": "c011ec70-2026-4113-8113-000000000010",
+  "template": {
+    "packageId": "org.viento.projection.rpg-player",
+    "version": "1.0.0",
+    "digest": "sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd",
+    "snapshot": {
+      "id": "org.viento.projection.rpg-player",
+      "version": "1.0.0",
+      "label": "RPG 玩家角色",
+      "family": "game",
+      "lineage": [
+        {
+          "id": "org.viento.projection.character",
+          "version": "1.0.0"
+        },
+        {
+          "id": "org.viento.projection.game",
+          "version": "1.0.0"
+        },
+        {
+          "id": "org.viento.projection.rpg",
+          "version": "1.0.0"
+        }
+      ],
+      "fields": [
+        {
+          "id": "role",
+          "label": "角色定位",
+          "type": "string",
+          "default": "",
+          "limits": {
+            "maxLength": 4096
+          }
+        },
+        {
+          "id": "width",
+          "label": "宽度",
+          "type": "number",
+          "default": 80,
+          "limits": {
+            "min": 1,
+            "max": 2048
+          }
+        },
+        {
+          "id": "height",
+          "label": "高度",
+          "type": "number",
+          "default": 80,
+          "limits": {
+            "min": 1,
+            "max": 2048
+          }
+        },
+        {
+          "id": "color",
+          "label": "颜色",
+          "type": "string",
+          "default": "#ffffff",
+          "limits": {
+            "maxLength": 4096
+          }
+        },
+        {
+          "id": "speed",
+          "label": "移动速度",
+          "type": "number",
+          "default": 160,
+          "limits": {
+            "min": 0,
+            "max": 2000
+          }
+        },
+        {
+          "id": "controls",
+          "label": "移动控制",
+          "type": "enum",
+          "default": "arrows",
+          "options": [
+            "arrows",
+            "none"
+          ]
+        },
+        {
+          "id": "image",
+          "label": "图片",
+          "type": "image",
+          "default": ""
+        },
+        {
+          "id": "level",
+          "label": "等级",
+          "type": "number",
+          "default": 1,
+          "limits": {
+            "min": 1,
+            "max": 999
+          }
+        },
+        {
+          "id": "health",
+          "label": "生命值",
+          "type": "number",
+          "default": 100,
+          "limits": {
+            "min": 0,
+            "max": 1000000
+          }
+        }
+      ],
+      "runtime": {
+        "kind": "scene2d-actor",
+        "width": "width",
+        "height": "height",
+        "color": "color",
+        "speed": "speed",
+        "controls": "controls",
+        "image": "image"
+      }
+    }
+  },
+  "configuration": {
+    "role": "",
+    "width": 40,
+    "height": 40,
+    "color": "#ffffff",
+    "speed": 260,
+    "controls": "arrows",
+    "image": "c011ec70-2026-4113-8113-000000000200",
+    "level": 1,
+    "health": 100
+  }
+}

@@ -24,7 +24,8 @@ const defaultSceneReader = (plan, options) => {
 // Child wire frames remain unchanged inside a visit envelope. A scene-exit is
 // a project boundary, never a forged child finished (which means two smoke
 // steps in the legacy audio contract). Re-entering creates a new child reader.
-export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds, retainedEvents = PROJECT_RUNTIME_MAX_EVENTS } = {}) {
+export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds, retainedEvents = PROJECT_RUNTIME_MAX_EVENTS, allowSceneRestart = false } = {}) {
+  if (typeof allowSceneRestart !== 'boolean') throw Object.assign(new TypeError('Scene restart admission must be explicit.'), { errorCode: 'runtime_project_invalid' });
   if (!Number.isInteger(retainedEvents) || retainedEvents < 1 || retainedEvents > PROJECT_RUNTIME_MAX_EVENTS) {
     throw Object.assign(new TypeError('Retained project runtime events must be between 1 and 4096.'), { errorCode: 'runtime_project_invalid' });
   }
@@ -271,7 +272,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
       if (!currentIdentity(frame) || !current.ready || eventBus?.pendingCount || animationCompletions?.pendingCount || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId', 'reason', 'elapsedSeconds', 'actors', ...(switching ? ['nextSceneId'] : [])])
         || animationStates?.hasScene(frame.sceneId) && (!current.stateSnapshot || current.stateSnapshot.reason !== frame.reason || current.stateSnapshot.timeSeconds !== frame.elapsedSeconds)
         || !['switch', 'finished'].includes(frame.reason) || !time(frame.elapsedSeconds) || !time(totalSeconds + frame.elapsedSeconds)
-        || switching && (!scenes.has(frame.nextSceneId) || frame.nextSceneId === frame.sceneId || visitCount >= PROJECT_RUNTIME_MAX_VISITS)
+        || switching && (!scenes.has(frame.nextSceneId) || !allowSceneRestart && frame.nextSceneId === frame.sceneId || visitCount >= PROJECT_RUNTIME_MAX_VISITS)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.elapsedSeconds
         || animationTime() !== null && animationTime() > frame.elapsedSeconds
         || !actorStates(current.plan, frame.actors)

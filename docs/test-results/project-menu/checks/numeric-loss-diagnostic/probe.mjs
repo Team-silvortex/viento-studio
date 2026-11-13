@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
+const executable='/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64';
+const directory='/tmp/viento-menu-parse-probe';
+const run=spawnSync(executable,['--path',directory,'--headless','--script','res://menu-double.gd'],{env:{...process.env,XDG_DATA_HOME:directory+'/xdg/data',XDG_CONFIG_HOME:directory+'/xdg/config',XDG_CACHE_HOME:directory+'/xdg/cache'},encoding:'utf8'});
+await fs.writeFile('/tmp/viento-menu-double-native.log',run.stdout+run.stderr);
+const bytes=value=>{const b=new ArrayBuffer(8);new DataView(b).setFloat64(0,value,true);return Buffer.from(b).toString('hex');};
+const rows=run.stdout.split('\n').filter(x=>x.startsWith('MENU_DOUBLE:')).map(line=>{const row=JSON.parse(line.slice(12));const expected=JSON.parse(row.literal),roundtrip=JSON.parse(row.serialized);return {...row,jsBytesLittleEndian:bytes(expected),roundtripBytesLittleEndian:bytes(roundtrip),parsedBytesAgree:row.bytesLittleEndian===bytes(expected),serializationRoundtrip:Object.is(expected,roundtrip)};});
+const result={exitCode:run.status,count:rows.length,parseAllAgree:rows.every(x=>x.parsedBytesAgree),roundtripAllAgree:rows.every(x=>x.serializationRoundtrip),rows};
+await fs.writeFile('/tmp/viento-menu-double-parity.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));

@@ -1,12 +1,12 @@
 # Viento Studio 桌面版
 
-当前源码版本 **0.2.8**，功能范围见[版本记录](../docs/RELEASE_0.2.8.md)。本次只交付源码，本机 Linux x86_64 AppImage 仍为 **0.2.0**，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前源码版本 **0.3.0**，功能范围见[版本记录](../docs/RELEASE_0.3.0.md)。本次只交付源码，本机 Linux x86_64 AppImage 仍为 **0.2.0**，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
 2026-10-24 本机安装更新到 **0.2.0**。原生验收发现交互问题后，修复已重新打包并安装；首轮、诊断及最终复测分别保留包摘要和来源。实测包括作品库与导出、三语和编辑媒体、配方生成与有限 Godot 无头链，以及新建状态表中的手动试算和用例 JSON 编辑；各项是否在同一包上复测以[本轮记录](../docs/test-results/native-installed-0.2.0/README.md)为准。此前 [0.1.1 安装验收](../docs/test-results/native-installed-0.1.1/README.md)和[0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留原时点；其他平台不由本机结果外推。
 
 Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁移需要完整保留 `src-tauri/vendor`。补丁来源、兼容原因和优化回归见 [安全修复记录](../docs/SECURITY_GLIB_b.2.9.md)。
 
-0.2.8 后续源码修复将 ZIP 库更新为 9.0.5，并在桌面及移动导入时开启双头一致性校验；合法旧包继续核对正文、素材与身份。修复范围及安装边界见 [ZIP 安全记录](../docs/SECURITY_ZIP_2026-11-04.md)。
+0.2.9 已收录的安全修复将 ZIP 库更新为 9.0.5，并在桌面及移动导入时开启双头一致性校验；合法旧包继续核对正文、素材与身份。修复范围及安装边界见 [ZIP 安全记录](../docs/SECURITY_ZIP_2026-11-04.md)。
 
 桌面版使用 Tauri 2。安装后从应用图标启动，在作品库首页新建、打开或导入作品，然后进入现有文档编辑器。Node.js 24.20.0 与转换器随应用提供，使用者无需安装 Node.js、Python、Rust 或手动启动服务。
 
@@ -15,7 +15,7 @@ Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁
 当前桌面版新建通用 v3 项目，正文、模板、元数据和素材分别保存，项目清单定义类型和模板。本机作品默认保存在系统应用数据目录的 `io.viento.studio/workspaces/`，完整备份放在同级 `backups/`。旧 v1、v2 项目原位兼容。详见 [通用项目结构](../docs/GENERIC_PROJECTS.md) 和 [本机数据目录](../docs/LOCAL_DATA_STORAGE.md)。
 
 - **打开已有文件夹**：选择含 `workspace.json` 的作品目录；无清单的旧 `design-data/` 目录也可登记。
-- **新建作品库**：在当前开发源码中选择名称、工程模板和保存位置，创建 v3 项目：`documents/`、`templates/`、`metadata/`、`assets/` 和 `.viento/`。正文为空，默认只有通用文档；可选择游戏、文学、戏剧或软件设计，类型和模板复制进工程后独立维护。文件选择器默认进入应用的 `workspaces/`，应用不内置具体作品的数据。
+- **新建作品库**：在当前开发源码中选择名称、工程模板和保存位置，创建 v3 项目：`documents/`、`templates/`、`metadata/`、`assets/` 和 `.viento/`。正文为空，默认只有通用文档；可选择游戏、文学、戏剧、影视或软件设计，类型和模板复制进工程后独立维护。文件选择器默认进入应用的 `workspaces/`，应用不内置具体作品的数据。
 - **导出备份**：生成标准 ZIP 格式的 `.viento.zip`，携带公共清单、正文、模板、元数据和完整素材，逐文件记录大小与 SHA-256。外置素材在包内归入默认 `assets/`。
 - **导入迁移包**：在新文件夹中恢复并校验全部内容，不覆盖已有作品。v1、v2、v3 包均支持；损坏或不一致时回滚本次导入。
 - **移动作品库**：关闭编辑窗口后移动作品文件夹，再从首页打开。单独绑定的外置素材需要另行连接，或使用完整备份一并迁移。

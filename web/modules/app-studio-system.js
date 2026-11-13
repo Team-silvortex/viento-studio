@@ -1,3 +1,4 @@
+import { setupSceneScriptReturn } from './app-scene-script-return.js';
 import { setupInputMap } from './app-input-map.js';
 import { setupScriptUsage } from './app-script-usage.js';
 import { setupAnimationStateScriptEdit } from './app-animation-state-script-edit.js';
@@ -65,11 +66,20 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
   if (active(IDS.settings)) { await setupSettings(settings ?? ports.settings ?? {}); initialized.push(IDS.settings); }
   if (ports.inputMap && typeof setupInputMap === 'function') controllers.set(IDS.document, setupInputMap(Object.freeze({ ...ports.inputMap })));
   if (typeof setupSceneCompositionCreate === 'function') mount(IDS.compositionCreate, setupSceneCompositionCreate, options('compositionCreate'));
+  let scriptCreation = null, behaviorBuild = null;
+  const returnPorts = options('scripts').sceneReturn;
+  const scriptReturn = active(IDS.scripts) && active(IDS.build) && returnPorts?.host && typeof setupSceneScriptReturn === 'function' ? setupSceneScriptReturn({
+    host: returnPorts.host, inspect: returnPorts.inspect,
+    openScript: request => scriptCreation?.open?.(request) === true,
+    suspendBehavior: intent => behaviorBuild?.suspendBehaviorCreation?.(intent) || false,
+    resumeBehavior: (ticket, request) => behaviorBuild?.resumeBehaviorCreation?.(ticket, request) || false,
+    discardBehavior: ticket => behaviorBuild?.discardBehaviorCreation?.(ticket) === true,
+  }) : null;
   if (typeof setupScriptCreate === 'function') mount(IDS.scripts, ports => {
     // Script tools share registration, but receive separate source ports.
     // Keep one registry/controller entry so refresh cannot replace creation.
-    const { editStateTable, usage, ...creationPorts } = ports;
-    const creation = setupScriptCreate(Object.freeze(creationPorts));
+    const { editStateTable, usage, sceneReturn, ...creationPorts } = ports;
+    const creation = setupScriptCreate(Object.freeze(creationPorts)); scriptCreation = creation;
     const editing = editStateTable && typeof setupAnimationStateScriptEdit === 'function'
       ? setupAnimationStateScriptEdit(Object.freeze({ ...editStateTable })) : null;
     const usageReader = usage && typeof setupScriptUsage === 'function'
@@ -82,7 +92,9 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
   if (typeof setupSceneAnimation === 'function') mount(IDS.sceneAnimation, setupSceneAnimation, options('sceneAnimation'));
   if (typeof setupSceneAudio === 'function') mount(IDS.sceneAudio, setupSceneAudio, options('sceneAudio'));
   mount(IDS.world, setupWorldBrowser, options('world'));
-  mount(IDS.build, setupProjectBuild, options('build'));
+  const buildPorts = { ...options('build') }; delete buildPorts.requestScriptCreation;
+  if (scriptReturn) buildPorts.requestScriptCreation = intent => scriptReturn.request(intent);
+  behaviorBuild = mount(IDS.build, setupProjectBuild, Object.freeze(buildPorts));
   mount(IDS.project, setupProjectSettings, options('project'));
   const exports = mount(IDS.export, setupExport, options('export'));
   const exportAsset = typeof exports?.exportAsset === 'function' ? (...args) => exports.exportAsset(...args) : undefined;
@@ -130,6 +142,7 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
     return snapshot();
   }
   function refreshMedia() {
+    scriptReturn?.refresh();
     controllers.get(IDS.document)?.refresh?.();
     controllers.get(IDS.compositionCreate)?.refresh?.();
     controllers.get(IDS.scripts)?.refresh?.();

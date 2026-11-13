@@ -209,7 +209,7 @@ test('bounded camera project ZIP retains full limits and runs offline after the 
   await write(`metadata/documents/${documentId}.json`, { ...record, id: documentId, sourcePath, relations: [{ kind: 'references', targetId: author.sceneIds[0], slot: 'scene' }] });
   const sceneRecord = await read(`metadata/documents/${author.sceneIds[0]}.json`); sceneRecord.relations.push({ kind: 'references', targetId: documentId, slot: 'camera2d' }); await write(`metadata/documents/${author.sceneIds[0]}.json`, sceneRecord);
   const before = await treeHashes(author.author), output = path.join(author.temporary, 'build'), built = await buildProject({ root: author.author, targetId: author.assemblyId, tool: executable, output, timeoutMs: 60000 });
-  assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built)); assert.equal(built.record.backend.version, '0.46.0');
+  assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built)); assert.equal(built.record.backend.version, '0.47.0');
   const snapshot = JSON.parse(await fs.readFile(path.join(output, 'snapshot.json'))), generated = await adapter.generate(snapshot.plan), inspect = () => inspectBackendProject({ buildDirectory: output });
   const delivery = await planBackendProjectDelivery({ inspection: await inspect(), assertCurrent: inspect }), zip = path.join(author.temporary, 'camera-limits.zip');
   await writeExportZip(delivery, zip); const verified = await verifyBackendProjectDelivery(zip), relocated = path.join(author.temporary, 'relocated'); await fs.mkdir(relocated);

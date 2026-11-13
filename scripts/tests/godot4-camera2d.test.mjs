@@ -12,9 +12,9 @@ test('optional camera generation changes only selected outer entries and preserv
   const plain = cameraProject(), old = await adapter.generate(plain), selected = cameraOn(structuredClone(plain), 0, { mode: 'follow', targetInstanceId: plain.scenes[0].actors[1].instanceId, offset: [-24, 16], zoom: 2 });
   const before = structuredClone(selected), generated = await adapter.generate(selected), repeated = await adapter.generate(selected);
   assert.deepEqual(selected, before); assert.deepEqual(generated.files, repeated.files); assert.deepEqual(generated.sourceMap, old.sourceMap);
-  assert.equal(generated.backend.version, '0.46.0'); assert.ok(generated.backend.capabilities.includes('scene.camera2d'));
+  assert.equal(generated.backend.version, '0.47.0'); assert.ok(generated.backend.capabilities.includes('scene.camera2d'));
   for (const [name, bytes] of old.files) {
-    if (name.startsWith('retry-')) continue;
+    if (name.startsWith('retry-') || ['restart-project.json', 'restart-original.godot', 'restart-original-clock.godot'].includes(name)) continue;
     if (['project.godot', 'execution-clock-original.godot'].includes(name)) assert.notDeepEqual(generated.files.get('retry-' + (name === 'project.godot' ? 'original.godot' : 'original-clock.godot')), old.files.get('retry-' + (name === 'project.godot' ? 'original.godot' : 'original-clock.godot')), name);
     else assert.deepEqual(generated.files.get(name), bytes, name);
   }

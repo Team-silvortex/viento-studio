@@ -1,0 +1,114 @@
+TAP version 13
+# Subtest: real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group
+not ok 1 - real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group
+  ---
+  duration_ms: 19019.283977
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:80:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    9 !== 21
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 21
+  actual: 9
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:93:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves
+ok 2 - real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves
+  ---
+  duration_ms: 279.250422
+  type: 'test'
+  ...
+# Subtest: real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match
+ok 3 - real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match
+  ---
+  duration_ms: 16594.747969
+  type: 'test'
+  ...
+# Subtest: real a matching all group with rejected entry does not attempt a matching any branch or fallback
+ok 4 - real a matching all group with rejected entry does not attempt a matching any branch or fallback
+  ---
+  duration_ms: 16391.561454
+  type: 'test'
+  ...
+# Subtest: real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects
+ok 5 - real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects
+  ---
+  duration_ms: 283.660427
+  type: 'test'
+  ...
+# Subtest: real v5 BOM/CRLF group controller retains p10 entries completion and immutable author bytes in an independent ZIP
+ok 6 - real v5 BOM/CRLF group controller retains p10 entries completion and immutable author bytes in an independent ZIP
+  ---
+  duration_ms: 30504.897224
+  type: 'test'
+  ...
+# Subtest: real shared-state guards preserve exact typed comparisons and treat missing or mismatched values as false even for ne
+not ok 7 - real shared-state guards preserve exact typed comparisons and treat missing or mismatched values as false even for ne
+  ---
+  duration_ms: 22656.976853
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-selectors-godot.test.mjs:73:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    9 !== 16
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 16
+  actual: 9
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-selectors-godot.test.mjs:87:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: real mixed firstMatch groups read shared state at callback time and keep payload and fallback branches independent
+ok 8 - real mixed firstMatch groups read shared state at callback time and keep payload and fallback branches independent
+  ---
+  duration_ms: 19382.382969
+  type: 'test'
+  ...
+# Subtest: real first matching project-state branch failure never attempts its valid fallback
+ok 9 - real first matching project-state branch failure never attempts its valid fallback
+  ---
+  duration_ms: 17610.900831
+  type: 'test'
+  ...
+# Subtest: real selected controllers see persistent shared state after scene reentry while old visit ports are revoked
+ok 10 - real selected controllers see persistent shared state after scene reentry while old visit ports are revoked
+  ---
+  duration_ms: 16527.81832
+  type: 'test'
+  ...
+# Subtest: real v4 declines an otherwise complete legacy port without read_state before any subscriptions or animation calls
+ok 11 - real v4 declines an otherwise complete legacy port without read_state before any subscriptions or animation calls
+  ---
+  duration_ms: 16826.522004
+  type: 'test'
+  ...
+# Subtest: real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery
+ok 12 - real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery
+  ---
+  duration_ms: 29716.202668
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 10
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 206234.342021

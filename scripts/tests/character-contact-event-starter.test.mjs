@@ -42,8 +42,8 @@ const legacy = {
 test('contact starter adds one catalog entry while preserving every previous record and source byte', () => {
   const all = listScriptStarters();
   // Drop-through and platform endpoints are separately verified catalog extensions.
-  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), ['godot-action-scene-switch', 'godot-event-scene-switch', 'godot-action-scene-retry', 'godot-physics-sensor-occupancy', starterId, 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-character-intent', 'godot-planar-intent']);
-  assert.equal(all.length, Object.keys(legacy).length + 10);
+  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), ['godot-action-scene-switch', 'godot-event-scene-switch', 'godot-action-scene-retry', 'godot-action-scene-restart', 'godot-project-pause', 'godot-project-menu', 'godot-physics-sensor-occupancy', starterId, 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-character-intent', 'godot-planar-intent']);
+  assert.equal(all.length, Object.keys(legacy).length + 13);
   assert.equal(new Set(all.map(row => row.id)).size, all.length);
   for (const [id, expected] of Object.entries(legacy)) assert.equal(hash(JSON.stringify(all.find(row => row.id === id))), expected, id);
   const row = all.find(item => item.id === starterId);

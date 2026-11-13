@@ -1,0 +1,724 @@
+TAP version 13
+# Subtest: v2 exports one external image/video/audio as exact original bytes
+ok 1 - v2 exports one external image/video/audio as exact original bytes
+  ---
+  duration_ms: 240.149671
+  type: 'test'
+  ...
+# Subtest: v3 exports one external image/video/audio as exact original bytes
+ok 2 - v3 exports one external image/video/audio as exact original bytes
+  ---
+  duration_ms: 194.87039
+  type: 'test'
+  ...
+# Subtest: original filenames distinguish registry stems, uploaded names, repeated extensions and portable fallback
+ok 3 - original filenames distinguish registry stems, uploaded names, repeated extensions and portable fallback
+  ---
+  duration_ms: 0.549934
+  type: 'test'
+  ...
+# Subtest: UUID-named uploads keep the authored filename and reject unknown IDs or arbitrary paths
+ok 4 - UUID-named uploads keep the authored filename and reject unknown IDs or arbitrary paths
+  ---
+  duration_ms: 162.535485
+  type: 'test'
+  ...
+# Subtest: missing, changed and linked resources cannot publish a raw export; a repaired file can retry
+ok 5 - missing, changed and linked resources cannot publish a raw export; a repaired file can retry
+  ---
+  duration_ms: 166.621242
+  type: 'test'
+  ...
+# Subtest: raw export rejects source replacement and metadata changes between planning and publication
+ok 6 - raw export rejects source replacement and metadata changes between planning and publication
+  ---
+  duration_ms: 147.208543
+  type: 'test'
+  ...
+# Subtest: doc-site-server.mjs: authenticated raw downloads use their real MIME, names and ranges
+ok 7 - doc-site-server.mjs: authenticated raw downloads use their real MIME, names and ranges
+  ---
+  duration_ms: 514.304987
+  type: 'test'
+  ...
+# Subtest: browse-server.mjs: authenticated raw downloads use their real MIME, names and ranges
+ok 8 - browse-server.mjs: authenticated raw downloads use their real MIME, names and ranges
+  ---
+  duration_ms: 378.831622
+  type: 'test'
+  ...
+# Subtest: cancelling a raw export during open waits for file cleanup and keeps original bytes
+ok 9 - cancelling a raw export during open waits for file cleanup and keeps original bytes
+  ---
+  duration_ms: 268.079249
+  type: 'test'
+  ...
+# Subtest: cancelling a raw export during read waits for file cleanup and keeps original bytes
+ok 10 - cancelling a raw export during read waits for file cleanup and keeps original bytes
+  ---
+  duration_ms: 278.612377
+  type: 'test'
+  ...
+# Subtest: cancelling a raw export during close waits for file cleanup and keeps original bytes
+ok 11 - cancelling a raw export during close waits for file cleanup and keeps original bytes
+  ---
+  duration_ms: 291.627579
+  type: 'test'
+  ...
+# Subtest: document exports include owned stories, exact sources and referenced external media in both formats
+ok 12 - document exports include owned stories, exact sources and referenced external media in both formats
+  ---
+  duration_ms: 259.231532
+  type: 'test'
+  ...
+# Subtest: JSON and YAML typed fields export using the generic layout and media bindings
+ok 13 - JSON and YAML typed fields export using the generic layout and media bindings
+  ---
+  duration_ms: 183.795472
+  type: 'test'
+  ...
+# Subtest: concurrent Chinese, English and Japanese exports localize instructions while preserving authored bytes
+ok 14 - concurrent Chinese, English and Japanese exports localize instructions while preserving authored bytes
+  ---
+  duration_ms: 228.77322
+  type: 'test'
+  ...
+# Subtest: explicit audio bindings export a player even when the source does not embed the audio
+ok 15 - explicit audio bindings export a player even when the source does not embed the audio
+  ---
+  duration_ms: 153.239084
+  type: 'test'
+  ...
+# Subtest: sharing carries declared asset IDs recognized by the md reference index
+ok 16 - sharing carries declared asset IDs recognized by the md reference index
+  ---
+  duration_ms: 338.883605
+  type: 'test'
+  ...
+# Subtest: sharing carries declared asset IDs recognized by the txt reference index
+ok 17 - sharing carries declared asset IDs recognized by the txt reference index
+  ---
+  duration_ms: 352.491543
+  type: 'test'
+  ...
+# Subtest: sharing carries declared asset IDs recognized by the json reference index
+ok 18 - sharing carries declared asset IDs recognized by the json reference index
+  ---
+  duration_ms: 327.293177
+  type: 'test'
+  ...
+# Subtest: sharing carries declared asset IDs recognized by the yaml reference index
+ok 19 - sharing carries declared asset IDs recognized by the yaml reference index
+  ---
+  duration_ms: 332.825521
+  type: 'test'
+  ...
+# Subtest: multiple attachment roles share one player per document while keeping each owned story complete
+ok 20 - multiple attachment roles share one player per document while keeping each owned story complete
+  ---
+  duration_ms: 156.067493
+  type: 'test'
+  ...
+# Subtest: declared missing assets reject sharing, then retry succeeds after the reference is repaired
+ok 21 - declared missing assets reject sharing, then retry succeeds after the reference is repaired
+  ---
+  duration_ms: 165.204722
+  type: 'test'
+  ...
+# Subtest: sharing retains indexed legacy image paths, relative links and unregistered local images
+ok 22 - sharing retains indexed legacy image paths, relative links and unregistered local images
+  ---
+  duration_ms: 350.386322
+  type: 'test'
+  ...
+# Subtest: v2 relative image references resolve against the original document directory
+ok 23 - v2 relative image references resolve against the original document directory
+  ---
+  duration_ms: 309.407246
+  type: 'test'
+  ...
+# Subtest: v3 relative image references resolve against the original document directory
+ok 24 - v3 relative image references resolve against the original document directory
+  ---
+  duration_ms: 331.603449
+  type: 'test'
+  ...
+# Subtest: sharing preserves distinct percent and space filenames, registered identities and renamed aliases
+ok 25 - sharing preserves distinct percent and space filenames, registered identities and renamed aliases
+  ---
+  duration_ms: 197.166565
+  type: 'test'
+  ...
+# Subtest: owned stories retain nested heading levels in HTML and Markdown shares
+ok 26 - owned stories retain nested heading levels in HTML and Markdown shares
+  ---
+  duration_ms: 160.242289
+  type: 'test'
+  ...
+# Subtest: v2 complete project packages preserve migration contract, metadata and all external media
+ok 27 - v2 complete project packages preserve migration contract, metadata and all external media
+  ---
+  duration_ms: 207.962894
+  type: 'test'
+  ...
+# Subtest: v3 complete project packages preserve migration contract, metadata and all external media
+ok 28 - v3 complete project packages preserve migration contract, metadata and all external media
+  ---
+  duration_ms: 176.679036
+  type: 'test'
+  ...
+# Subtest: missing assets, traversal, symlinks and changed source snapshots cannot produce a successful export
+ok 29 - missing assets, traversal, symlinks and changed source snapshots cannot produce a successful export
+  ---
+  duration_ms: 199.071362
+  type: 'test'
+  ...
+# Subtest: complete exports reject directory aliases and file-directory conflicts without changing project bytes
+ok 30 - complete exports reject directory aliases and file-directory conflicts without changing project bytes
+  ---
+  duration_ms: 487.6882
+  type: 'test'
+  ...
+# Subtest: editor and native v2/v3 archives round-trip with exact sources, metadata and external media
+ok 31 - editor and native v2/v3 archives round-trip with exact sources, metadata and external media
+  ---
+  duration_ms: 539.249267
+  type: 'test'
+  ...
+# Subtest: HTTP export supports edit and browse modes, authenticated creation, binary download and cleanup
+ok 32 - HTTP export supports edit and browse modes, authenticated creation, binary download and cleanup
+  ---
+  duration_ms: 961.210549
+  type: 'test'
+  ...
+# Subtest: consecutive browser exports recycle completed downloads instead of exhausting the three-job limit
+ok 33 - consecutive browser exports recycle completed downloads instead of exhausting the three-job limit
+  ---
+  duration_ms: 425.66765
+  type: 'test'
+  ...
+# Subtest: releasing or expiring an export cannot remove a file being downloaded
+ok 34 - releasing or expiring an export cannot remove a file being downloaded
+  ---
+  duration_ms: 244.852082
+  type: 'test'
+  ...
+# Subtest: export range requests keep their real status in diagnostics and remain retryable
+ok 35 - export range requests keep their real status in diagnostics and remain retryable
+  ---
+  duration_ms: 416.089583
+  type: 'test'
+  ...
+# Subtest: pending and interrupted exports remain protected from automatic quota eviction
+ok 36 - pending and interrupted exports remain protected from automatic quota eviction
+  ---
+  duration_ms: 225.418181
+  type: 'test'
+  ...
+# Subtest: export entry blocks unsaved and new drafts without changing editor state
+ok 37 - export entry blocks unsaved and new drafts without changing editor state
+  ---
+  duration_ms: 1.794547
+  type: 'test'
+  ...
+# Subtest: expired and interrupted jobs release temporary disk space while retaining source files
+ok 38 - expired and interrupted jobs release temporary disk space while retaining source files
+  ---
+  duration_ms: 269.828572
+  type: 'test'
+  ...
+# Subtest: language changes update retained UI references while preserving authored labels and interpolation values
+ok 39 - language changes update retained UI references while preserving authored labels and interpolation values
+  ---
+  duration_ms: 1.417721
+  type: 'test'
+  ...
+# Subtest: English and Japanese catalogues preserve all message parameters
+ok 40 - English and Japanese catalogues preserve all message parameters
+  ---
+  duration_ms: 19.804172
+  type: 'test'
+  ...
+# Subtest: unknown messages cannot resolve inherited object properties in either catalogue
+ok 41 - unknown messages cannot resolve inherited object properties in either catalogue
+  ---
+  duration_ms: 0.395401
+  type: 'test'
+  ...
+# Subtest: desktop language preferences require the local session and stay outside the project
+ok 42 - desktop language preferences require the local session and stay outside the project
+  ---
+  duration_ms: 483.131193
+  type: 'test'
+  ...
+# Subtest: inline images and videos parse at the start, in prose and fields, but never inside code
+ok 43 - inline images and videos parse at the start, in prose and fields, but never inside code
+  ---
+  duration_ms: 4.735742
+  type: 'test'
+  ...
+# Subtest: media URLs reject executable, remote and escaping sources while preserving local encoded names
+ok 44 - media URLs reject executable, remote and escaping sources while preserving local encoded names
+  ---
+  duration_ms: 0.449613
+  type: 'test'
+  ...
+# Subtest: stable media URL forms normalize UUID casing to the registered identity
+ok 45 - stable media URL forms normalize UUID casing to the registered identity
+  ---
+  duration_ms: 0.162509
+  type: 'test'
+  ...
+# Subtest: audio references render in prose, custom fields and structured media without autoplay or source loss
+ok 46 - audio references render in prose, custom fields and structured media without autoplay or source loss
+  ---
+  duration_ms: 6.204891
+  type: 'test'
+  ...
+# Subtest: JSON and YAML insertion preserves existing source bytes, comments and structured values
+ok 47 - JSON and YAML insertion preserves existing source bytes, comments and structured values
+  ---
+  duration_ms: 11.567814
+  type: 'test'
+  ...
+# Subtest: media insertion keeps indented YAML maps valid, including BOM, comments and existing lists
+ok 48 - media insertion keeps indented YAML maps valid, including BOM, comments and existing lists
+  ---
+  duration_ms: 7.223605
+  type: 'test'
+  ...
+# Subtest: media insertion preserves an existing YAML flow list: indented map with BOM/CRLF
+ok 49 - media insertion preserves an existing YAML flow list: indented map with BOM/CRLF
+  ---
+  duration_ms: 1.690509
+  type: 'test'
+  ...
+# Subtest: media insertion preserves an existing YAML flow list: indented flow map
+ok 50 - media insertion preserves an existing YAML flow list: indented flow map
+  ---
+  duration_ms: 1.487154
+  type: 'test'
+  ...
+# Subtest: media insertion preserves an existing YAML flow list: list on a separate indented line
+ok 51 - media insertion preserves an existing YAML flow list: list on a separate indented line
+  ---
+  duration_ms: 1.939031
+  type: 'test'
+  ...
+# Subtest: media insertion accepts an empty YAML document: document end and BOM/CRLF
+ok 52 - media insertion accepts an empty YAML document: document end and BOM/CRLF
+  ---
+  duration_ms: 1.564751
+  type: 'test'
+  ...
+# Subtest: media insertion accepts an empty YAML document: YAML directive
+ok 53 - media insertion accepts an empty YAML document: YAML directive
+  ---
+  duration_ms: 1.108385
+  type: 'test'
+  ...
+# Subtest: media insertion accepts an empty YAML document: start marker without a final newline
+ok 54 - media insertion accepts an empty YAML document: start marker without a final newline
+  ---
+  duration_ms: 0.827301
+  type: 'test'
+  ...
+# Subtest: reused media survives consecutive structured insertion, save, reopen, index and both export formats
+ok 55 - reused media survives consecutive structured insertion, save, reopen, index and both export formats
+  ---
+  duration_ms: 1129.195287
+  type: 'test'
+  ...
+# Subtest: preview tolerates cyclic YAML aliases and interrupted imports leave no partial files
+ok 56 - preview tolerates cyclic YAML aliases and interrupted imports leave no partial files
+  ---
+  duration_ms: 158.557168
+  type: 'test'
+  ...
+# Subtest: concurrent imports reuse identical bytes, keep names independent of paths and clean rejected uploads
+ok 57 - concurrent imports reuse identical bytes, keep names independent of paths and clean rejected uploads
+  ---
+  duration_ms: 167.889277
+  type: 'test'
+  ...
+# Subtest: audio imports share registry formats, reuse existing audio and reject mislabeled or oversized files
+ok 58 - audio imports share registry formats, reuse existing audio and reject mislabeled or oversized files
+  ---
+  duration_ms: 264.441348
+  type: 'test'
+  ...
+# Subtest: imports respect an external asset store and reject linked destination directories
+ok 59 - imports respect an external asset store and reject linked destination directories
+  ---
+  duration_ms: 312.09133
+  type: 'test'
+  ...
+# Subtest: image: authenticated upload, structured insertion, save, rebuild and relocation keep working asset IDs
+ok 60 - image: authenticated upload, structured insertion, save, rebuild and relocation keep working asset IDs
+  ---
+  duration_ms: 1127.391331
+  type: 'test'
+  ...
+# Subtest: audio: authenticated upload, structured insertion, save, rebuild and relocation keep working asset IDs
+ok 61 - audio: authenticated upload, structured insertion, save, rebuild and relocation keep working asset IDs
+  ---
+  duration_ms: 1125.656371
+  type: 'test'
+  ...
+# Subtest: media import locks editing navigation without discarding the source draft
+ok 62 - media import locks editing navigation without discarding the source draft
+  ---
+  duration_ms: 18.56524
+  type: 'test'
+  ...
+# Subtest: draft preview requests cannot consume the allowance for document reads and writes
+ok 63 - draft preview requests cannot consume the allowance for document reads and writes
+  ---
+  duration_ms: 388.690169
+  type: 'test'
+  ...
+# Subtest: definition adoption: generated templates reject an unusable hidden directory in preview and apply
+ok 64 - definition adoption: generated templates reject an unusable hidden directory in preview and apply
+  ---
+  duration_ms: 324.427517
+  type: 'test'
+  ...
+# Subtest: definition adoption: generated templates reject an unusable nested hidden directory in preview and apply
+ok 65 - definition adoption: generated templates reject an unusable nested hidden directory in preview and apply
+  ---
+  duration_ms: 294.479043
+  type: 'test'
+  ...
+# Subtest: definition adoption: generated templates reject an unusable reserved directory in preview and apply
+ok 66 - definition adoption: generated templates reject an unusable reserved directory in preview and apply
+  ---
+  duration_ms: 298.00574
+  type: 'test'
+  ...
+# Subtest: definition adoption: generated templates reject an unusable nested reserved directory in preview and apply
+ok 67 - definition adoption: generated templates reject an unusable nested reserved directory in preview and apply
+  ---
+  duration_ms: 296.681174
+  type: 'test'
+  ...
+# Subtest: definition adoption: generated templates reject an unusable overlong UTF-8 directory in preview and apply
+ok 68 - definition adoption: generated templates reject an unusable overlong UTF-8 directory in preview and apply
+  ---
+  duration_ms: 288.555617
+  type: 'test'
+  ...
+# Subtest: definition adoption: v2 generated templates support preview, repair, creation, rebuilding and export without rewriting old data
+ok 69 - definition adoption: v2 generated templates support preview, repair, creation, rebuilding and export without rewriting old data
+  ---
+  duration_ms: 904.141056
+  type: 'test'
+  ...
+# Subtest: definition adoption: v3 generated templates support preview, repair, creation, rebuilding and export without rewriting old data
+ok 70 - definition adoption: v3 generated templates support preview, repair, creation, rebuilding and export without rewriting old data
+  ---
+  duration_ms: 873.317088
+  type: 'test'
+  ...
+# Subtest: definition adoption: missing, malformed and oversized template files fail before changing the manifest or originals
+ok 71 - definition adoption: missing, malformed and oversized template files fail before changing the manifest or originals
+  ---
+  duration_ms: 374.435778
+  type: 'test'
+  ...
+# Subtest: definition adoption: changes in the same millisecond retain independent recovery journals
+ok 72 - definition adoption: changes in the same millisecond retain independent recovery journals
+  ---
+  duration_ms: 233.738294
+  type: 'test'
+  ...
+# Subtest: definition adoption: manifest write failure preserves the previous project, releases the lock and permits an immediate retry
+ok 73 - definition adoption: manifest write failure preserves the previous project, releases the lock and permits an immediate retry
+  ---
+  duration_ms: 227.910239
+  type: 'test'
+  ...
+# Subtest: project snapshot: generated template revision belongs to the displayed manifest
+ok 74 - project snapshot: generated template revision belongs to the displayed manifest
+  ---
+  duration_ms: 242.810434
+  type: 'test'
+  ...
+# Subtest: project snapshot: stale generated form cannot undo a concurrent rule change
+ok 75 - project snapshot: stale generated form cannot undo a concurrent rule change
+  ---
+  duration_ms: 242.849026
+  type: 'test'
+  ...
+# Subtest: project snapshot: file-backed template revision belongs to the displayed manifest
+ok 76 - project snapshot: file-backed template revision belongs to the displayed manifest
+  ---
+  duration_ms: 224.130897
+  type: 'test'
+  ...
+# Subtest: project snapshot: stale file-backed form cannot undo a concurrent rule change
+ok 77 - project snapshot: stale file-backed form cannot undo a concurrent rule change
+  ---
+  duration_ms: 234.996827
+  type: 'test'
+  ...
+# Subtest: project snapshot: reopening and editing only a label keeps template bytes and explicit parser rules
+ok 78 - project snapshot: reopening and editing only a label keeps template bytes and explicit parser rules
+  ---
+  duration_ms: 164.289529
+  type: 'test'
+  ...
+# Subtest: resource package closes object relationships, owned stories, inline media and non-media bindings
+ok 79 - resource package closes object relationships, owned stories, inline media and non-media bindings
+  ---
+  duration_ms: 313.06988
+  type: 'test'
+  ...
+# Subtest: round trip into another project preserves identities and raw content, then reuses identical files
+ok 80 - round trip into another project preserves identities and raw content, then reuses identical files
+  ---
+  duration_ms: 455.563384
+  type: 'test'
+  ...
+# Subtest: individual assets retain arbitrary binary bytes, metadata, paths and an external destination store
+ok 81 - individual assets retain arbitrary binary bytes, metadata, paths and an external destination store
+  ---
+  duration_ms: 389.4041
+  type: 'test'
+  ...
+# Subtest: deselecting dependencies records requirements and rejects incomplete imports
+ok 82 - deselecting dependencies records requirements and rejects incomplete imports
+  ---
+  duration_ms: 347.844512
+  type: 'test'
+  ...
+# Subtest: stale catalogue, changed registered bytes, missing files and changed target reject without publishing
+ok 83 - stale catalogue, changed registered bytes, missing files and changed target reject without publishing
+  ---
+  duration_ms: 376.524586
+  type: 'test'
+  ...
+# Subtest: conflicting paths or changed identities never overwrite target data
+ok 84 - conflicting paths or changed identities never overwrite target data
+  ---
+  duration_ms: 355.118111
+  type: 'test'
+  ...
+# Subtest: interrupted import at prepared fences readers and resumes from durable verified payload
+ok 85 - interrupted import at prepared fences readers and resumes from durable verified payload
+  ---
+  duration_ms: 448.050796
+  type: 'test'
+  ...
+# Subtest: interrupted import at file fences readers and resumes from durable verified payload
+ok 86 - interrupted import at file fences readers and resumes from durable verified payload
+  ---
+  duration_ms: 434.59556
+  type: 'test'
+  ...
+# Subtest: interrupted import at manifest fences readers and resumes from durable verified payload
+ok 87 - interrupted import at manifest fences readers and resumes from durable verified payload
+  ---
+  duration_ms: 521.415817
+  type: 'test'
+  ...
+# Subtest: v2 to v3 maps source roots while preserving metadata extensions and ownership identities
+ok 88 - v2 to v3 maps source roots while preserving metadata extensions and ownership identities
+  ---
+  duration_ms: 437.798077
+  type: 'test'
+  ...
+# Subtest: service expires previews and cancellation removes its private staging files
+ok 89 - service expires previews and cancellation removes its private staging files
+  ---
+  duration_ms: 339.195797
+  type: 'test'
+  ...
+# Subtest: dependency graph handles reference cycles, duplicate roots and missing identities
+ok 90 - dependency graph handles reference cycles, duplicate roots and missing identities
+  ---
+  duration_ms: 0.396703
+  type: 'test'
+  ...
+# Subtest: custom parsing rules and template dependencies travel with an object, preserving target configuration extensions
+ok 91 - custom parsing rules and template dependencies travel with an object, preserving target configuration extensions
+  ---
+  duration_ms: 391.054667
+  type: 'test'
+  ...
+# Subtest: a package without dependencies imports after matching dependencies are supplied
+ok 92 - a package without dependencies imports after matching dependencies are supplied
+  ---
+  duration_ms: 447.873344
+  type: 'test'
+  ...
+# Subtest: registered and unregistered case aliases, occupied identity and symlink destinations are rejected
+ok 93 - registered and unregistered case aliases, occupied identity and symlink destinations are rejected
+  ---
+  duration_ms: 650.828268
+  type: 'test'
+  ...
+# Subtest: package inspection rejects content corruption
+ok 94 - package inspection rejects content corruption
+  ---
+  duration_ms: 194.040219
+  type: 'test'
+  ...
+# Subtest: package inspection rejects missing corruption
+ok 95 - package inspection rejects missing corruption
+  ---
+  duration_ms: 169.035574
+  type: 'test'
+  ...
+# Subtest: package inspection rejects extra corruption
+ok 96 - package inspection rejects extra corruption
+  ---
+  duration_ms: 184.389395
+  type: 'test'
+  ...
+# Subtest: package inspection rejects symlink corruption
+ok 97 - package inspection rejects symlink corruption
+  ---
+  duration_ms: 167.360995
+  type: 'test'
+  ...
+# Subtest: package inspection rejects format corruption
+ok 98 - package inspection rejects format corruption
+  ---
+  duration_ms: 163.257624
+  type: 'test'
+  ...
+# Subtest: package inspection rejects duplicate-id corruption
+ok 99 - package inspection rejects duplicate-id corruption
+  ---
+  duration_ms: 174.623523
+  type: 'test'
+  ...
+# Subtest: package inspection rejects fingerprint corruption
+ok 100 - package inspection rejects fingerprint corruption
+  ---
+  duration_ms: 169.072344
+  type: 'test'
+  ...
+# Subtest: recovery preserves an unexpectedly edited destination and leaves the journal intact
+ok 101 - recovery preserves an unexpectedly edited destination and leaves the journal intact
+  ---
+  duration_ms: 319.690549
+  type: 'test'
+  ...
+# Subtest: HTTP catalogue, authenticated preview/import, download and read-only viewer use the same package contract
+ok 102 - HTTP catalogue, authenticated preview/import, download and read-only viewer use the same package contract
+  ---
+  duration_ms: 1099.233789
+  type: 'test'
+  ...
+# Subtest: all six registered asset kinds import without format conversion
+ok 103 - all six registered asset kinds import without format conversion
+  ---
+  duration_ms: 407.107499
+  type: 'test'
+  ...
+# Subtest: a resource package imported into a project remains compatible with native full-project migration
+ok 104 - a resource package imported into a project remains compatible with native full-project migration
+  ---
+  duration_ms: 401.111633
+  type: 'test'
+  ...
+# Subtest: cancelling during a late ZIP open closes its file before staging is released
+ok 105 - cancelling during a late ZIP open closes its file before staging is released
+  ---
+  duration_ms: 177.339388
+  type: 'test'
+  ...
+# Subtest: templates accept arbitrary OC fields, ignore sidecars and reject malformed structured input
+ok 106 - templates accept arbitrary OC fields, ignore sidecars and reject malformed structured input
+  ---
+  duration_ms: 370.324442
+  type: 'test'
+  ...
+# Subtest: registration preserves raw bytes and stable IDs; indexing never accepts changed content as the original
+ok 107 - registration preserves raw bytes and stable IDs; indexing never accepts changed content as the original
+  ---
+  duration_ms: 57.028036
+  type: 'test'
+  ...
+# Subtest: separate application/workspace roots support editing, external media, offline metadata and legacy/ID URLs
+ok 108 - separate application/workspace roots support editing, external media, offline metadata and legacy/ID URLs
+  ---
+  duration_ms: 915.346186
+  type: 'test'
+  ...
+# Subtest: reference indexes include image, video and audio paths in every source format, including renamed aliases
+ok 109 - reference indexes include image, video and audio paths in every source format, including renamed aliases
+  ---
+  duration_ms: 322.396872
+  type: 'test'
+  ...
+# Subtest: reference indexes exclude fenced code examples while retaining bare IDs and explicit attachments
+ok 110 - reference indexes exclude fenced code examples while retaining bare IDs and explicit attachments
+  ---
+  duration_ms: 281.106888
+  type: 'test'
+  ...
+# Subtest: v1 registration retains workspace identity and the old manifest; unsupported versions do not mutate sources
+ok 111 - v1 registration retains workspace identity and the old manifest; unsupported versions do not mutate sources
+  ---
+  duration_ms: 11.285367
+  type: 'test'
+  ...
+# Subtest: ambiguous registry identities and unsafe paths fail before replacing existing metadata
+ok 112 - ambiguous registry identities and unsafe paths fail before replacing existing metadata
+  ---
+  duration_ms: 12.991777
+  type: 'test'
+  ...
+# Subtest: registration refuses symlinked metadata directories without writing outside the workspace
+ok 113 - registration refuses symlinked metadata directories without writing outside the workspace
+  ---
+  duration_ms: 1.134754
+  type: 'test'
+  ...
+# Subtest: read-only preview serves a separate workspace and refuses write requests
+ok 114 - read-only preview serves a separate workspace and refuses write requests
+  ---
+  duration_ms: 420.097648
+  type: 'test'
+  ...
+# Subtest: registration keeps a live lock and recovers a lock whose owner no longer exists
+ok 115 - registration keeps a live lock and recovers a lock whose owner no longer exists
+  ---
+  duration_ms: 10.820344
+  type: 'test'
+  ...
+# Subtest: reusing a renamed asset alias cannot write a conflicting registry
+ok 116 - reusing a renamed asset alias cannot write a conflicting registry
+  ---
+  duration_ms: 11.928769
+  type: 'test'
+  ...
+# Subtest: automatic workspace names and manifests stay compatible with the native importer
+ok 117 - automatic workspace names and manifests stay compatible with the native importer
+  ---
+  duration_ms: 7.316802
+  type: 'test'
+  ...
+# Subtest: image references support any asset folder and encoded filenames
+ok 118 - image references support any asset folder and encoded filenames
+  ---
+  duration_ms: 295.129249
+  type: 'test'
+  ...
+# Subtest: custom standardization output cannot prune application files or an external asset store
+ok 119 - custom standardization output cannot prune application files or an external asset store
+  ---
+  duration_ms: 411.313019
+  type: 'test'
+  ...
+1..119
+# tests 119
+# suites 0
+# pass 119
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19134.477561

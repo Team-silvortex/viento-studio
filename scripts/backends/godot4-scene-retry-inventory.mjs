@@ -3,6 +3,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { buildError, readBuildFile } from '../adapters/node-build-snapshot.mjs';
+import { validateGodotSceneRestartInventory } from './godot4-scene-restart-inventory.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { retryInventoryName, retryOriginalSettingsName, retryOriginalClockSettingsName, retryProjectScript, retryProjectScene,
   retrySourceURL, retryInnerEntry, retrySettings, retryProjectHost, retryProjectSource, retryProjectMain, retryInventory } from './godot4-scene-retry-projection.mjs';
@@ -13,18 +14,20 @@ export async function validateGodotSceneRetryInventory(directory, signal) {
   const optional = async name => { try { return await read(name); } catch (error) { if (error.code === 'ENOENT') return null; throw error; } };
   try {
     signal?.throwIfAborted();
+    const restart = await validateGodotSceneRestartInventory(directory, signal);
     const manifest = await optional(retryInventoryName), owned = [];
     for (const row of await fs.readdir(directory, { withFileTypes: true })) if (row.name.startsWith('retry-')) {
       if (!row.isFile()) invalid(); owned.push(row.name);
     }
     if (manifest === null) {
-      if (owned.length || (await optional('project.godot'))?.includes('res://retry-project.tscn')) invalid();
+      if (restart !== null || owned.length || (await optional('project.godot'))?.includes('res://retry-project.tscn')) invalid();
       return null;
     }
-    const [original, clock, actual, actualClock, script, main, template] = await Promise.all([
+    const [original, clock, outerActual, outerActualClock, script, main, template] = await Promise.all([
       read(retryOriginalSettingsName), optional(retryOriginalClockSettingsName), read('project.godot'), optional('execution-clock-original.godot'),
       read(retryProjectScript), read(retryProjectScene), fs.readFile(retrySourceURL),
     ]);
+    const actual = restart ? restart.innerSettings : outerActual, actualClock = restart ? restart.innerClockSettings : outerActualClock;
     const entry = retryInnerEntry(original), host = retryProjectHost(await read(entry)); await read(host);
     if (!manifest.equals(retryInventory(original, clock, entry, host)) || !actual.equals(retrySettings(original))
       || !script.equals(retryProjectSource(template, host)) || !main.equals(retryProjectMain()) || (clock === null) !== (actualClock === null)) invalid();
@@ -38,6 +41,6 @@ export async function validateGodotSceneRetryInventory(directory, signal) {
       else retained.push(name);
     }
     if (JSON.stringify(retained.sort()) !== JSON.stringify(expected.sort())) invalid();
-    return { scripts: [retryProjectScript], innerSettings: original, innerClockSettings: clock };
+    return { scripts: [retryProjectScript, ...(restart?.scripts || [])], innerSettings: original, innerClockSettings: clock };
   } catch (error) { if (error?.name === 'AbortError' || signal?.aborted) throw error; invalid(); }
 }

@@ -1,3 +1,4 @@
+import { createSceneScriptReturnHost } from './app-scene-script-return-host.js';
 import { inspectProjectInputMap } from '../../engine/project-input-map.mjs';
 import { createScriptUsageSourceHost } from './app-script-usage-source.js';
 import { createAnimationStateScriptSourceHost } from './app-animation-state-script-source.js';
@@ -92,6 +93,7 @@ import {
   writeDoc,
   loadDocumentFields,
   inspectSceneBehaviorAuthoring,
+  inspectSceneBehaviorCreation,
   inspectSceneBehaviorReferenceDirectory,
   inspectSceneAudioCreation,
   inspectSceneAudioDirectory,
@@ -105,6 +107,7 @@ import {
 } from './app-doc-service.js';
 
 let studioSystem = null;
+let sceneScriptReturnHost = null;
 let sourceIndentationController = null;
 let sourcePositionController = null;
 let sourceDiagnosticController = null;
@@ -3809,6 +3812,20 @@ function applyInputMapDraft(proposal, { isCurrent = () => true } = {}) {
   return Object.freeze({ applied: true, sourcePath: owner.path, content: proposal.content, focus() { editEditorEl?.focus?.({ preventScroll: true }); } });
 }
 
+function sceneScriptReturnContext() {
+  const context = documentCreateContext();
+  return { editable: context.editable, busy: context.busy, dirty: context.dirty, creating: context.creating,
+    workspaceId: state.workspace?.id || '', editorSession: String(editorLoadToken),
+    sourcePath: state.isCreating ? getCreateInputPath() : canonicalizeSourcePath(state.activeEditSource || getSourcePath(getActiveDoc())),
+    content: getCurrentEditContent() };
+}
+function captureSceneScriptSave() { try { return sceneScriptReturnHost?.captureSave() || null; } catch { return null; } }
+function noteSceneScriptSaved(ticket, sourcePath, sourceRevision) {
+  // A navigation receipt is observational; it cannot change ordinary Save's
+  // outcome, even if the optional flow is absent or its receipt is rejected.
+  try { sceneScriptReturnHost?.saved(ticket, { sourcePath, sourceRevision }); } catch {}
+}
+
 function scriptCreateContext() { return documentCreateContext(); }
 function compositionCreateContext() { return documentCreateContext(); }
 
@@ -4526,6 +4543,7 @@ async function saveNewDoc() {
   }
 
   const content = getCurrentEditContent();
+  const returnSave = captureSceneScriptSave();
   setEditorStatus(APP_ERROR_MESSAGES.savingSource);
   if (editSaveBtnEl) {
     editSaveBtnEl.disabled = true;
@@ -4547,6 +4565,7 @@ async function saveNewDoc() {
 
     const createdSource = sourcePath;
     const createdVersion = normalizeEditSessionVersion(payload?.version);
+    noteSceneScriptSaved(returnSave, createdSource, createdVersion);
     // Keep a usable editor for the persisted file even if rebuilding fails.
     const createdDoc = normalizeDocFromIndex({
       path: createdSource,
@@ -4625,6 +4644,7 @@ async function saveExistingDoc(options = {}) {
   }
 
   const content = getCurrentEditContent();
+  const returnSave = captureSceneScriptSave();
   setEditorStatus(APP_ERROR_MESSAGES.savingSource);
   if (editSaveBtnEl) {
     editSaveBtnEl.disabled = true;
@@ -4650,6 +4670,7 @@ async function saveExistingDoc(options = {}) {
       requestLabel: APP_REQUEST_LABELS.saveDoc,
     });
 
+    noteSceneScriptSaved(returnSave, sourcePath, normalizeEditSessionVersion(payload?.version));
     if (payload?.currentVersion) {
       const latestVersion = normalizeEditSessionVersion(payload.currentVersion);
       if (latestVersion) {
@@ -6008,12 +6029,13 @@ async function initApp(options = {}) {
     inspectUsage: payload => inspectScriptUsage(payload),
     navigateSource: (source, { isCurrent }) => openScriptUsageSource(source, { isCurrent }),
   });
+  sceneScriptReturnHost = createSceneScriptReturnHost({ getContext: sceneScriptReturnContext, openSource: openAuthorSource });
   studioSystem = await setupStudioSystem({
     settings: options.settings,
     features: options.features,
     ports: {
       inputMap: { getContext: inputMapContext, applyDraft: applyInputMapDraft },
-      scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft, editStateTable: animationStateScriptSourceHost, usage: scriptUsageSourceHost },
+      scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft, editStateTable: animationStateScriptSourceHost, usage: scriptUsageSourceHost, sceneReturn: { host: sceneScriptReturnHost, inspect: inspectSceneBehaviorCreation } },
       compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
       sceneAudio: audioSourceHost,
       sceneAnimation: animationSourceHost,

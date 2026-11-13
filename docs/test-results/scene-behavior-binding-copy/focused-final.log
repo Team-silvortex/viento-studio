@@ -1,0 +1,790 @@
+TAP version 13
+# Subtest: native preferences and the shared browser/API registry accept the same language IDs
+ok 1 - native preferences and the shared browser/API registry accept the same language IDs
+  ---
+  duration_ms: 3.614007
+  type: 'test'
+  ...
+# Subtest: translation catalogues have identical keys, no duplicate entries and intact parameters
+ok 2 - translation catalogues have identical keys, no duplicate entries and intact parameters
+  ---
+  duration_ms: 53.572465
+  type: 'test'
+  ...
+# Subtest: marked interface messages are covered in English and Japanese
+ok 3 - marked interface messages are covered in English and Japanese
+  ---
+  duration_ms: 712.824776
+  type: 'test'
+  ...
+# Subtest: nested interface diagnostics switch language while paths, punctuation and UI-like authored names stay literal
+ok 4 - nested interface diagnostics switch language while paths, punctuation and UI-like authored names stay literal
+  ---
+  duration_ms: 2.094103
+  type: 'test'
+  ...
+# Subtest: message tracking does not confuse fullwidth or whitespace-distinct authored filenames
+ok 5 - message tracking does not confuse fullwidth or whitespace-distinct authored filenames
+  ---
+  duration_ms: 0.95753
+  type: 'test'
+  ...
+# Subtest: invalid or unknown diagnostic descriptors fall back to literal diagnostics without interpreting parameters
+ok 6 - invalid or unknown diagnostic descriptors fall back to literal diagnostics without interpreting parameters
+  ---
+  duration_ms: 0.36575
+  type: 'test'
+  ...
+# Subtest: HTTP template, field and export failures provide translated reasons without changing project data
+ok 7 - HTTP template, field and export failures provide translated reasons without changing project data
+  ---
+  duration_ms: 635.626628
+  type: 'test'
+  ...
+# Subtest: language changes update retained UI references while preserving authored labels and interpolation values
+ok 8 - language changes update retained UI references while preserving authored labels and interpolation values
+  ---
+  duration_ms: 1.74966
+  type: 'test'
+  ...
+# Subtest: English and Japanese catalogues preserve all message parameters
+ok 9 - English and Japanese catalogues preserve all message parameters
+  ---
+  duration_ms: 18.40852
+  type: 'test'
+  ...
+# Subtest: unknown messages cannot resolve inherited object properties in either catalogue
+ok 10 - unknown messages cannot resolve inherited object properties in either catalogue
+  ---
+  duration_ms: 0.429335
+  type: 'test'
+  ...
+# Subtest: desktop language preferences require the local session and stay outside the project
+ok 11 - desktop language preferences require the local session and stay outside the project
+  ---
+  duration_ms: 585.77142
+  type: 'test'
+  ...
+# Subtest: binding copy lists stable scene instance identities with no inferred target or document change
+ok 12 - binding copy lists stable scene instance identities with no inferred target or document change
+  ---
+  duration_ms: 46.933532
+  type: 'test'
+  ...
+# Subtest: choosing and translating a copy target preserves existing form focus selection and approved review
+ok 13 - choosing and translating a copy target preserves existing form focus selection and approved review
+  ---
+  duration_ms: 146.364128
+  type: 'test'
+  ...
+# Subtest: explicit copy duplicates the current raw form for one chosen instance and leaves references literal
+ok 14 - explicit copy duplicates the current raw form for one chosen instance and leaves references literal
+  ---
+  duration_ms: 175.23518
+  type: 'test'
+  ...
+# Subtest: copied and original forms remain independent across later parameter event and script edits
+ok 15 - copied and original forms remain independent across later parameter event and script edits
+  ---
+  duration_ms: 100.238297
+  type: 'test'
+  ...
+# Subtest: copying unfinished numeric text does not parse repair or approve the form
+ok 16 - copying unfinished numeric text does not parse repair or approve the form
+  ---
+  duration_ms: 111.640945
+  type: 'test'
+  ...
+# Subtest: an explicit copy to the same instance is distinct and still needs ordinary candidate review
+ok 17 - an explicit copy to the same instance is distinct and still needs ordinary candidate review
+  ---
+  duration_ms: 45.152843
+  type: 'test'
+  ...
+# Subtest: empty forged and silently replaced targets cannot allocate an identity or mutate an approved form
+ok 18 - empty forged and silently replaced targets cannot allocate an identity or mutate an approved form
+  ---
+  duration_ms: 328.713499
+  type: 'test'
+  ...
+# Subtest: UUID allocation failures preserve the selected form and an already approved ordinary proposal
+ok 19 - UUID allocation failures preserve the selected form and an already approved ordinary proposal
+  ---
+  duration_ms: 245.494268
+  type: 'test'
+  ...
+# Subtest: the 32 binding limit blocks copy even when disabled controls receive a direct event
+ok 20 - the 32 binding limit blocks copy even when disabled controls receive a direct event
+  ---
+  duration_ms: 69.522525
+  type: 'test'
+  ...
+# Subtest: copy is locked while the source opens or an ordinary candidate check is pending
+ok 21 - copy is locked while the source opens or an ordinary candidate check is pending
+  ---
+  duration_ms: 71.171173
+  type: 'test'
+  ...
+# Subtest: changed source ownership and withdrawn host availability cannot copy a stale form
+ok 22 - changed source ownership and withdrawn host availability cannot copy a stale form
+  ---
+  duration_ms: 182.878194
+  type: 'test'
+  ...
+# Subtest: copy resets target selection and allocates each subsequent copy its own stable binding identity
+ok 23 - copy resets target selection and allocates each subsequent copy its own stable binding identity
+  ---
+  duration_ms: 77.183785
+  type: 'test'
+  ...
+# Subtest: source helper callbacks and detached ordinary row controls cannot target copied rows or revoke their review
+ok 24 - source helper callbacks and detached ordinary row controls cannot target copied rows or revoke their review
+  ---
+  duration_ms: 69.239383
+  type: 'test'
+  ...
+# Subtest: cancel and reopen discard copied forms without applying or changing the original source bytes
+ok 25 - cancel and reopen discard copied forms without applying or changing the original source bytes
+  ---
+  duration_ms: 46.490346
+  type: 'test'
+  ...
+# Subtest: copy selects the explicit repeated instance and retains authored parameters, references and signal order
+ok 26 - copy selects the explicit repeated instance and retains authored parameters, references and signal order
+  ---
+  duration_ms: 2.521946
+  type: 'test'
+  ...
+# Subtest: copy snapshots the latest supplied local draft, including unfinished or semantically invalid fields
+ok 27 - copy snapshots the latest supplied local draft, including unfinished or semantically invalid fields
+  ---
+  duration_ms: 0.403779
+  type: 'test'
+  ...
+# Subtest: long authored text remains a local draft without being truncated to semantic scalar limits
+ok 28 - long authored text remains a local draft without being truncated to semantic scalar limits
+  ---
+  duration_ms: 2.306947
+  type: 'test'
+  ...
+# Subtest: every returned draft is detached from caller data and from another copy
+ok 29 - every returned draft is detached from caller data and from another copy
+  ---
+  duration_ms: 0.558639
+  type: 'test'
+  ...
+# Subtest: the owner may explicitly choose the same instance or a different script-bearing binding
+ok 30 - the owner may explicitly choose the same instance or a different script-bearing binding
+  ---
+  duration_ms: 0.357556
+  type: 'test'
+  ...
+# Subtest: missing or colliding identities and unavailable instance or script sources fail without mutation
+ok 31 - missing or colliding identities and unavailable instance or script sources fail without mutation
+  ---
+  duration_ms: 2.398352
+  type: 'test'
+  ...
+# Subtest: binding and row limits permit a final thirty-second binding, never an over-budget copy
+ok 32 - binding and row limits permit a final thirty-second binding, never an over-budget copy
+  ---
+  duration_ms: 3.86959
+  type: 'test'
+  ...
+# Subtest: catalog limits support repeated definitions without unbounded or duplicate entries
+ok 33 - catalog limits support repeated definitions without unbounded or duplicate entries
+  ---
+  duration_ms: 1.749871
+  type: 'test'
+  ...
+# Subtest: bounded Unicode text is retained literally while invalid Unicode, values and field types are rejected
+ok 34 - bounded Unicode text is retained literally while invalid Unicode, values and field types are rejected
+  ---
+  duration_ms: 1.166918
+  type: 'test'
+  ...
+# Subtest: exact data records reject extra fields, inherited data, symbols, sparse arrays and serializers
+ok 35 - exact data records reject extra fields, inherited data, symbols, sparse arrays and serializers
+  ---
+  duration_ms: 0.972747
+  type: 'test'
+  ...
+# Subtest: accessors at every input boundary are rejected without invoking them
+ok 36 - accessors at every input boundary are rejected without invoking them
+  ---
+  duration_ms: 0.660513
+  type: 'test'
+  ...
+# Subtest: null-prototype data records and dense arrays work without inherited serializers
+ok 37 - null-prototype data records and dense arrays work without inherited serializers
+  ---
+  duration_ms: 0.214458
+  type: 'test'
+  ...
+# Subtest: interface only advises until an explicit rename or add; empty missing slots mean full animation
+ok 38 - interface only advises until an explicit rename or add; empty missing slots mean full animation
+  ---
+  duration_ms: 19.003347
+  type: 'test'
+  ...
+# Subtest: missing targets exclude incompatible types and never overwrite an existing parameter
+ok 39 - missing targets exclude incompatible types and never overwrite an existing parameter
+  ---
+  duration_ms: 8.782133
+  type: 'test'
+  ...
+# Subtest: duplicate names block add and rename while values remain untouched
+ok 40 - duplicate names block add and rename while values remain untouched
+  ---
+  duration_ms: 5.909405
+  type: 'test'
+  ...
+# Subtest: invalid clip strings are hints and empty values remain valid without trimming or replacement
+ok 41 - invalid clip strings are hints and empty values remain valid without trimming or replacement
+  ---
+  duration_ms: 3.45426
+  type: 'test'
+  ...
+# Subtest: unavailable, modified, unsupported, incompatible and absent interfaces preserve ordinary rows
+ok 42 - unavailable, modified, unsupported, incompatible and absent interfaces preserve ordinary rows
+  ---
+  duration_ms: 7.427326
+  type: 'test'
+  ...
+# Subtest: source, binding, row identity and contract withdrawal invalidate old action buttons
+ok 43 - source, binding, row identity and contract withdrawal invalidate old action buttons
+  ---
+  duration_ms: 25.96401
+  type: 'test'
+  ...
+# Subtest: pending checks disable helper mutations; changing row names before click cannot reuse a stale selection
+ok 44 - pending checks disable helper mutations; changing row names before click cannot reuse a stale selection
+  ---
+  duration_ms: 4.40674
+  type: 'test'
+  ...
+# Subtest: language refresh keeps values, pending selection, focused row and caret positions
+ok 45 - language refresh keeps values, pending selection, focused row and caret positions
+  ---
+  duration_ms: 11.973058
+  type: 'test'
+  ...
+# Subtest: 32-row budget keeps all existing values and disables bulk add
+ok 46 - 32-row budget keeps all existing values and disables bulk add
+  ---
+  duration_ms: 16.771145
+  type: 'test'
+  ...
+# Subtest: all parameter interface messages have English and Japanese translations
+ok 47 - all parameter interface messages have English and Japanese translations
+  ---
+  duration_ms: 0.960094
+  type: 'test'
+  ...
+# Subtest: reference helper is optional and unavailable capability never affects ordinary parameter rows
+ok 48 - reference helper is optional and unavailable capability never affects ordinary parameter rows
+  ---
+  duration_ms: 18.36288
+  type: 'test'
+  ...
+# Subtest: load offers named local instances but requires an explicit assembly even when there is only one
+ok 49 - load offers named local instances but requires an explicit assembly even when there is only one
+  ---
+  duration_ms: 21.174259
+  type: 'test'
+  ...
+# Subtest: members and actions are scoped to the explicitly loaded assembly and selection alone never inserts
+ok 50 - members and actions are scoped to the explicitly loaded assembly and selection alone never inserts
+  ---
+  duration_ms: 11.66424
+  type: 'test'
+  ...
+# Subtest: explicit insertion re-reads the scoped catalog and changes only the chosen String row
+ok 51 - explicit insertion re-reads the scoped catalog and changes only the chosen String row
+  ---
+  duration_ms: 22.538462
+  type: 'test'
+  ...
+# Subtest: a missing input map gives an explicit empty action view while manual text and local instances stay usable
+ok 52 - a missing input map gives an explicit empty action view while manual text and local instances stay usable
+  ---
+  duration_ms: 7.637946
+  type: 'test'
+  ...
+# Subtest: stale, forged, mismatched and failed revalidation never inserts or modifies existing values
+ok 53 - stale, forged, mismatched and failed revalidation never inserts or modifies existing values
+  ---
+  duration_ms: 34.431967
+  type: 'test'
+  ...
+# Subtest: every source, binding, row and value change during insertion revokes the pending operation
+ok 54 - every source, binding, row and value change during insertion revokes the pending operation
+  ---
+  duration_ms: 98.687897
+  type: 'test'
+  ...
+# Subtest: observing an ordinary check pending and then ready cancels earlier helper reads and insertion
+ok 55 - observing an ordinary check pending and then ready cancels earlier helper reads and insertion
+  ---
+  duration_ms: 7.85519
+  type: 'test'
+  ...
+# Subtest: silently editing a target value during revalidation ends with a stale hint and keeps that text
+ok 56 - silently editing a target value during revalidation ends with a stale hint and keeps that text
+  ---
+  duration_ms: 4.804579
+  type: 'test'
+  ...
+# Subtest: late loads cannot populate a reset, closed, changed binding or disposed panel
+ok 57 - late loads cannot populate a reset, closed, changed binding or disposed panel
+  ---
+  duration_ms: 12.042303
+  type: 'test'
+  ...
+# Subtest: silent or forged selections cannot insert values and pending reads do not disable ordinary row editing
+ok 58 - silent or forged selections cannot insert values and pending reads do not disable ordinary row editing
+  ---
+  duration_ms: 17.386076
+  type: 'test'
+  ...
+# Subtest: failed refresh disables old choices and permits retry without touching text or review
+ok 59 - failed refresh disables old choices and permits retry without touching text or review
+  ---
+  duration_ms: 13.222776
+  type: 'test'
+  ...
+# Subtest: language refresh preserves names, references, destination, incomplete input and focus
+ok 60 - language refresh preserves names, references, destination, incomplete input and focus
+  ---
+  duration_ms: 11.848776
+  type: 'test'
+  ...
+# Subtest: all fixed reference helper messages have English and Japanese translations
+ok 61 - all fixed reference helper messages have English and Japanese translations
+  ---
+  duration_ms: 0.864692
+  type: 'test'
+  ...
+# Subtest: existing behavior edits preserve identities typed values and every unrelated source byte
+ok 62 - existing behavior edits preserve identities typed values and every unrelated source byte
+  ---
+  duration_ms: 10.880236
+  type: 'test'
+  ...
+# Subtest: same-shape parameter and signal changes touch leaf tokens and do not normalize key order escapes or unchanged number spelling
+ok 63 - same-shape parameter and signal changes touch leaf tokens and do not normalize key order escapes or unchanged number spelling
+  ---
+  duration_ms: 3.65858
+  type: 'test'
+  ...
+# Subtest: parameter and event structural edits replace only their chosen containers and preserve CRLF and tab indentation
+ok 64 - parameter and event structural edits replace only their chosen containers and preserve CRLF and tab indentation
+  ---
+  duration_ms: 2.919525
+  type: 'test'
+  ...
+# Subtest: append insert remove and reorder preserve stable raw bindings and permit multiple behaviors on one instance
+ok 65 - append insert remove and reorder preserve stable raw bindings and permit multiple behaviors on one instance
+  ---
+  duration_ms: 6.369136
+  type: 'test'
+  ...
+# Subtest: structural operations reuse irregular separators and compact single-binding author layout
+ok 66 - structural operations reuse irregular separators and compact single-binding author layout
+  ---
+  duration_ms: 1.957216
+  type: 'test'
+  ...
+# Subtest: instance and source selection are neutral declarations while the original backend and language stay fixed
+ok 67 - instance and source selection are neutral declarations while the original backend and language stay fixed
+  ---
+  duration_ms: 3.27145
+  type: 'test'
+  ...
+# Subtest: typed parameter signal identity and count rules come from the existing behavior contract
+ok 68 - typed parameter signal identity and count rules come from the existing behavior contract
+  ---
+  duration_ms: 16.871288
+  type: 'test'
+  ...
+# Subtest: unknown future malformed duplicate or oversized source remains untouched and cannot gain a proposal
+ok 69 - unknown future malformed duplicate or oversized source remains untouched and cannot gain a proposal
+  ---
+  duration_ms: 3.556494
+  type: 'test'
+  ...
+# Subtest: proposal snapshots deeply freeze caller data and reject getters sparse arrays pollution and serializer execution
+ok 70 - proposal snapshots deeply freeze caller data and reject getters sparse arrays pollution and serializer execution
+  ---
+  duration_ms: 4.365167
+  type: 'test'
+  ...
+# Subtest: source admission checks relative JSON paths tokens Unicode revisions and exact fields
+ok 71 - source admission checks relative JSON paths tokens Unicode revisions and exact fields
+  ---
+  duration_ms: 0.747801
+  type: 'test'
+  ...
+# Subtest: private brand and current source identity prevent forged stale or cross-session apply
+ok 72 - private brand and current source identity prevent forged stale or cross-session apply
+  ---
+  duration_ms: 2.278526
+  type: 'test'
+  ...
+# Subtest: prepare captures source before its async digest and returns a frozen complete candidate
+ok 73 - prepare captures source before its async digest and returns a frozen complete candidate
+  ---
+  duration_ms: 2.426624
+  type: 'test'
+  ...
+# Subtest: entry is specific to existing behavior JSON and semantic-host availability, without execution-tool dependencies
+ok 74 - entry is specific to existing behavior JSON and semantic-host availability, without execution-tool dependencies
+  ---
+  duration_ms: 54.277765
+  type: 'test'
+  ...
+# Subtest: opening shows fixed scene/backend/language and preserves the exact source and untouched draft
+ok 75 - opening shows fixed scene/backend/language and preserves the exact source and untouched draft
+  ---
+  duration_ms: 25.047188
+  type: 'test'
+  ...
+# Subtest: typed false, zero and empty text survive review and apply only to the current unsaved source
+ok 76 - typed false, zero and empty text survive review and apply only to the current unsaved source
+  ---
+  duration_ms: 83.806759
+  type: 'test'
+  ...
+# Subtest: unfinished input survives binding changes and three-language rerender without a proposal or write
+ok 77 - unfinished input survives binding changes and three-language rerender without a proposal or write
+  ---
+  duration_ms: 53.685414
+  type: 'test'
+  ...
+# Subtest: text parameter CRLF and carriage returns stay exact across open, language changes and unrelated edits
+ok 78 - text parameter CRLF and carriage returns stay exact across open, language changes and unrelated edits
+  ---
+  duration_ms: 40.510483
+  type: 'test'
+  ...
+# Subtest: valid alternate JSON key order retains exact untouched source while allowing a leaf edit
+ok 79 - valid alternate JSON key order retains exact untouched source while allowing a leaf edit
+  ---
+  duration_ms: 29.220228
+  type: 'test'
+  ...
+# Subtest: one script remains independently bound to multiple instances and changing a source or instance is explicit
+ok 80 - one script remains independently bound to multiple instances and changing a source or instance is explicit
+  ---
+  duration_ms: 35.189962
+  type: 'test'
+  ...
+# Subtest: adding a binding allocates one stable identity and removing preserves surviving identities and last-binding minimum
+ok 81 - adding a binding allocates one stable identity and removing preserves surviving identities and last-binding minimum
+  ---
+  duration_ms: 66.466032
+  type: 'test'
+  ...
+# Subtest: new parameter and signal rows permit typed editing and removal without losing sibling data
+ok 82 - new parameter and signal rows permit typed editing and removal without losing sibling data
+  ---
+  duration_ms: 113.533922
+  type: 'test'
+  ...
+# Subtest: duplicate or reserved parameter names, incomplete numbers and duplicate signals cannot be approved
+ok 83 - duplicate or reserved parameter names, incomplete numbers and duplicate signals cannot be approved
+  ---
+  duration_ms: 282.743111
+  type: 'test'
+  ...
+# Subtest: input changes and silent DOM changes revoke approval including after language changes
+ok 84 - input changes and silent DOM changes revoke approval including after language changes
+  ---
+  duration_ms: 129.541992
+  type: 'test'
+  ...
+# Subtest: dependency changes and forged same-revision catalogs reject candidate approval without dropping edits
+ok 85 - dependency changes and forged same-revision catalogs reject candidate approval without dropping edits
+  ---
+  duration_ms: 145.52055
+  type: 'test'
+  ...
+# Subtest: unknown catalog versions, missing dependencies and malformed source snapshots fail closed
+ok 86 - unknown catalog versions, missing dependencies and malformed source snapshots fail closed
+  ---
+  duration_ms: 91.529335
+  type: 'test'
+  ...
+# Subtest: a normal JSON, unknown behavior schema or duplicate JSON keys cannot be rewritten through an accidentally enabled entry
+ok 87 - a normal JSON, unknown behavior schema or duplicate JSON keys cannot be rewritten through an accidentally enabled entry
+  ---
+  duration_ms: 28.563555
+  type: 'test'
+  ...
+# Subtest: cloned proposals never become an approved review
+ok 88 - cloned proposals never become an approved review
+  ---
+  duration_ms: 32.043843
+  type: 'test'
+  ...
+# Subtest: late source reads cannot enter a closed, changed or disposed session
+ok 89 - late source reads cannot enter a closed, changed or disposed session
+  ---
+  duration_ms: 56.796915
+  type: 'test'
+  ...
+# Subtest: late dependency checks cannot approve a changed form, source, capability, closed session or newer opening
+ok 90 - late dependency checks cannot approve a changed form, source, capability, closed session or newer opening
+  ---
+  duration_ms: 222.816329
+  type: 'test'
+  ...
+# Subtest: apply passes a live source/form guard that rejects edits or closing while the host waits
+ok 91 - apply passes a live source/form guard that rejects edits or closing while the host waits
+  ---
+  duration_ms: 177.013528
+  type: 'test'
+  ...
+# Subtest: failed or mismatched application receipts retain the form and never report successful application
+ok 92 - failed or mismatched application receipts retain the form and never report successful application
+  ---
+  duration_ms: 86.297246
+  type: 'test'
+  ...
+# Subtest: close and Escape require explicit discard for a dirty form and never write the author source
+ok 93 - close and Escape require explicit discard for a dirty form and never write the author source
+  ---
+  duration_ms: 27.270463
+  type: 'test'
+  ...
+# Subtest: busy state disables all mutations and explicit handlers also refuse synthetic clicks
+ok 94 - busy state disables all mutations and explicit handlers also refuse synthetic clicks
+  ---
+  duration_ms: 47.271933
+  type: 'test'
+  ...
+# Subtest: binding and row budgets disable additions while preserving current content
+ok 95 - binding and row budgets disable additions while preserving current content
+  ---
+  duration_ms: 49.839582
+  type: 'test'
+  ...
+# Subtest: dynamic source text is displayed literally and every new fixed message has both translations
+ok 96 - dynamic source text is displayed literally and every new fixed message has both translations
+  ---
+  duration_ms: 41.701618
+  type: 'test'
+  ...
+# Subtest: audio ID picker is opt-in and does not affect ordinary editing when its capability or port is missing
+ok 97 - audio ID picker is opt-in and does not affect ordinary editing when its capability or port is missing
+  ---
+  duration_ms: 109.845653
+  type: 'test'
+  ...
+# Subtest: loading tracks exposes authored ordering, roles, full IDs and source without changing text, dirty state or review
+ok 98 - loading tracks exposes authored ordering, roles, full IDs and source without changing text, dirty state or review
+  ---
+  duration_ms: 30.415916
+  type: 'test'
+  ...
+# Subtest: any string name accepts explicit insertion while selecting alone preserves an approved review
+ok 99 - any string name accepts explicit insertion while selecting alone preserves an approved review
+  ---
+  duration_ms: 71.11325
+  type: 'test'
+  ...
+# Subtest: audio selections and unfinished text survive language changes and binding switches without guessing a default
+ok 100 - audio selections and unfinished text survive language changes and binding switches without guessing a default
+  ---
+  duration_ms: 71.693929
+  type: 'test'
+  ...
+# Subtest: empty, forged and failed track directories preserve form and review and permit an explicit retry
+ok 101 - empty, forged and failed track directories preserve form and review and permit an explicit retry
+  ---
+  duration_ms: 219.088989
+  type: 'test'
+  ...
+# Subtest: track loading only locks its controls, prevents duplicate reads and permits checking or applying ordinary edits
+ok 102 - track loading only locks its controls, prevents duplicate reads and permits checking or applying ordinary edits
+  ---
+  duration_ms: 77.060185
+  type: 'test'
+  ...
+# Subtest: late directory reads never populate a closed, reopened, disposed or differently owned source
+ok 103 - late directory reads never populate a closed, reopened, disposed or differently owned source
+  ---
+  duration_ms: 152.843394
+  type: 'test'
+  ...
+# Subtest: loading across form edits or a binding change only offers choices in the current row and retains all entered text
+ok 104 - loading across form edits or a binding change only offers choices in the current row and retains all entered text
+  ---
+  duration_ms: 54.492329
+  type: 'test'
+  ...
+# Subtest: parameter identity prevents detached row controls from filling another row after removal, type change or binding change
+ok 105 - parameter identity prevents detached row controls from filling another row after removal, type change or binding change
+  ---
+  duration_ms: 161.743166
+  type: 'test'
+  ...
+# Subtest: reloading does not write selected values and failure disables old choices without dropping approved edits
+ok 106 - reloading does not write selected values and failure disables old choices without dropping approved edits
+  ---
+  duration_ms: 64.777222
+  type: 'test'
+  ...
+# Subtest: forged option values and silently replaced choices cannot write arbitrary text through the track picker
+ok 107 - forged option values and silently replaced choices cannot write arbitrary text through the track picker
+  ---
+  duration_ms: 43.639937
+  type: 'test'
+  ...
+# Subtest: audio ID picker strings and status remain translated while current text and selection survive
+ok 108 - audio ID picker strings and status remain translated while current text and selection survive
+  ---
+  duration_ms: 45.986638
+  type: 'test'
+  ...
+# Subtest: animation clip discovery is opt-in and lists duplicate names with source range and full IDs only for string parameters
+ok 109 - animation clip discovery is opt-in and lists duplicate names with source range and full IDs only for string parameters
+  ---
+  duration_ms: 69.771126
+  type: 'test'
+  ...
+# Subtest: only explicit clip insertion changes an arbitrary text parameter and ordinary review applies an unsaved draft
+ok 110 - only explicit clip insertion changes an arbitrary text parameter and ordinary review applies an unsaved draft
+  ---
+  duration_ms: 78.550771
+  type: 'test'
+  ...
+# Subtest: clip reads selections errors and translations preserve focused incomplete input and an unrelated approved review
+ok 111 - clip reads selections errors and translations preserve focused incomplete input and an unrelated approved review
+  ---
+  duration_ms: 80.143339
+  type: 'test'
+  ...
+# Subtest: missing animation and empty legacy clip catalog have distinct messages without touching an approved review
+ok 112 - missing animation and empty legacy clip catalog have distinct messages without touching an approved review
+  ---
+  duration_ms: 206.210582
+  type: 'test'
+  ...
+# Subtest: old clip responses and detached insertion buttons cannot target another row binding source or reopened session
+ok 113 - old clip responses and detached insertion buttons cannot target another row binding source or reopened session
+  ---
+  duration_ms: 228.848679
+  type: 'test'
+  ...
+# Subtest: a changed clip list revokes selection without writing and silent or forged choice never inserts
+ok 114 - a changed clip list revokes selection without writing and silent or forged choice never inserts
+  ---
+  duration_ms: 21.019903
+  type: 'test'
+  ...
+# Subtest: all fixed animation clip picker messages have unambiguous English and Japanese keys
+ok 115 - all fixed animation clip picker messages have unambiguous English and Japanese keys
+  ---
+  duration_ms: 0.709192
+  type: 'test'
+  ...
+# Subtest: completion starter parameters use the same generic clip picker for both string rows and retain ordinary review and cancellation
+ok 116 - completion starter parameters use the same generic clip picker for both string rows and retain ordinary review and cancellation
+  ---
+  duration_ms: 83.518788
+  type: 'test'
+  ...
+# Subtest: declared script parameters can be explicitly renamed and filled without changing another binding or writing before review
+ok 117 - declared script parameters can be explicitly renamed and filled without changing another binding or writing before review
+  ---
+  duration_ms: 75.857506
+  type: 'test'
+  ...
+# Subtest: contract hints and target selection preserve an existing approval and language focus until rename is explicit
+ok 118 - contract hints and target selection preserve an existing approval and language focus until rename is explicit
+  ---
+  duration_ms: 55.134546
+  type: 'test'
+  ...
+# Subtest: advisory contract statuses and field withdrawal/restoration do not block ordinary dependency approval
+ok 119 - advisory contract statuses and field withdrawal/restoration do not block ordinary dependency approval
+  ---
+  duration_ms: 153.92184
+  type: 'test'
+  ...
+# Subtest: source switch, binding switch and close invalidate old helper actions without losing values
+ok 120 - source switch, binding switch and close invalidate old helper actions without losing values
+  ---
+  duration_ms: 75.302653
+  type: 'test'
+  ...
+# Subtest: typed scalar and incomplete text survive missing-slot additions while interface warnings remain advisory
+ok 121 - typed scalar and incomplete text survive missing-slot additions while interface warnings remain advisory
+  ---
+  duration_ms: 34.315653
+  type: 'test'
+  ...
+# Subtest: state clip configuration stays local until explicit application, ordinary review and source draft apply
+ok 122 - state clip configuration stays local until explicit application, ordinary review and source draft apply
+  ---
+  duration_ms: 93.948359
+  type: 'test'
+  ...
+# Subtest: state clip configuration cancels with ordinary form, and a script dependency change rejects review
+ok 123 - state clip configuration cancels with ordinary form, and a script dependency change rejects review
+  ---
+  duration_ms: 111.953327
+  type: 'test'
+  ...
+# Subtest: an empty retry binding stays empty until explicit defaults, then named choices use the existing review and draft path
+ok 124 - an empty retry binding stays empty until explicit defaults, then named choices use the existing review and draft path
+  ---
+  duration_ms: 169.335579
+  type: 'test'
+  ...
+# Subtest: adding missing retry defaults preserves existing values, unknown rows and unfinished numeric text
+ok 125 - adding missing retry defaults preserves existing values, unknown rows and unfinished numeric text
+  ---
+  duration_ms: 178.271185
+  type: 'test'
+  ...
+# Subtest: old Add and Rename controls cannot follow a different binding, source or reopened dialog
+ok 126 - old Add and Rename controls cannot follow a different binding, source or reopened dialog
+  ---
+  duration_ms: 89.52353
+  type: 'test'
+  ...
+# Subtest: withdrawing reference, sound and animation helpers leaves retry defaults and ordinary review available
+ok 127 - withdrawing reference, sound and animation helpers leaves retry defaults and ordinary review available
+  ---
+  duration_ms: 44.442494
+  type: 'test'
+  ...
+# Subtest: fresh advisory contract withdrawal, revival and changed defaults revoke old helper controls without revoking an ordinary proposal
+ok 128 - fresh advisory contract withdrawal, revival and changed defaults revoke old helper controls without revoking an ordinary proposal
+  ---
+  duration_ms: 111.920775
+  type: 'test'
+  ...
+# Subtest: only current refreshed defaults may be explicitly added, and all-animation contracts retain their existing note
+ok 129 - only current refreshed defaults may be explicitly added, and all-animation contracts retain their existing note
+  ---
+  duration_ms: 89.555979
+  type: 'test'
+  ...
+# Subtest: an advisory change on another source preserves the active source helper and its pending rename choice
+ok 130 - an advisory change on another source preserves the active source helper and its pending rename choice
+  ---
+  duration_ms: 44.835684
+  type: 'test'
+  ...
+1..130
+# tests 130
+# suites 0
+# pass 130
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6825.261215

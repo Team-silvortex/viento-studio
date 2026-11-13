@@ -1,0 +1,337 @@
+{
+  "archivedAt": "2026-11-13T09:26:05.700999+00:00",
+  "cwd": "/home/chiharukiryu/cdev/viento-studio",
+  "commands": [
+    {
+      "command": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node --check scripts/tests/scene-script-return-authoring-smoke.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "env VIENTO_SCRIPT_RETURN_OUTPUT=/tmp/viento-script-return-browser-final VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64 /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node scripts/tests/scene-script-return-authoring-smoke.mjs > /tmp/viento-script-return-final.log 2>&1",
+      "exitCode": 0
+    },
+    {
+      "command": "env VIENTO_SCRIPT_RETURN_OUTPUT=/tmp/viento-script-return-browser-run1 VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64 /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node scripts/tests/scene-script-return-authoring-smoke.mjs > /tmp/viento-script-return-run1.log 2>&1",
+      "exitCode": 1,
+      "acceptedAsFinalPass": false
+    }
+  ],
+  "driver": {
+    "path": "scripts/tests/scene-script-return-authoring-smoke.mjs",
+    "sha256": "fe5cd1add86054dcc9ae59cf6c76bad6ae0bd606302a188c024b494315c604a7",
+    "unchangedThroughFinalRun": true
+  },
+  "tools": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "chrome": "Chrome/156.0.8078.73",
+    "godot": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+      "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+    }
+  },
+  "final": {
+    "caseCount": 3,
+    "cases": [
+      {
+        "name": "success",
+        "passed": true,
+        "documentCount": 4,
+        "authorFileCount": 10,
+        "inspectCount": 3
+      },
+      {
+        "name": "cancel",
+        "passed": true,
+        "documentCount": 2,
+        "authorFileCount": 6,
+        "inspectCount": 5
+      },
+      {
+        "name": "changed-source",
+        "passed": true,
+        "documentCount": 3,
+        "authorFileCount": 8,
+        "inspectCount": 4
+      }
+    ],
+    "productionSources": 549,
+    "productionSourceChanges": 0,
+    "browserExceptions": 0,
+    "screenshots": 17,
+    "authorFileCopies": 24,
+    "planCount": 1,
+    "godotBuildCount": 1,
+    "godotHeadlessRunCount": 1,
+    "behaviorEvents": [
+      {
+        "arguments": [
+          "dock",
+          0
+        ],
+        "bindingId": "6bff9f17-9154-433d-b5c6-75e63aff76de",
+        "event": "behavior",
+        "instanceId": "915a1295-059a-4024-913f-cdddcdb90d4b",
+        "name": "context_ready",
+        "objectId": "f007085e-312f-4835-8fb1-64aae9a2b360",
+        "protocol": 3
+      }
+    ]
+  },
+  "limitations": [
+    "Each case initializes the official blank template layout with zero authored documents, registered documents or assets; desktop-library folder selection, installed Tauri and Android are outside this browser case.",
+    "Definitions, two-instance scenes, official ordinary TXT drafts and behavior manifests are created with real Studio controls. The signal starter and generated Godot source are never edited by the driver.",
+    "The changed-source case uses the real ordinary document HTTP API and optimistic version check to simulate another editor, then restores the exact original scene bytes through that same API.",
+    "Only the successful case performs one Godot plan, one build and one headless run. This verifies a first-behavior continuation, not a complete game or native input workflow."
+  ],
+  "exactCopiedFiles": [
+    {
+      "path": "browser/browser.json",
+      "bytes": 436834,
+      "sha256": "da13424246b8c47e186a2ceafbbfaf2399f2f88adbef5179ea210dfde6559e91"
+    },
+    {
+      "path": "browser/cancel/author-final/documents/definition.md",
+      "bytes": 75,
+      "sha256": "8282e8b2748630467288aec03a3bb5ce60109ce8431be38a7d12e6cbe82d3c36"
+    },
+    {
+      "path": "browser/cancel/author-final/documents/scenes/context.json",
+      "bytes": 784,
+      "sha256": "688b3da9bce3b6328d982f69910f3d62c485335239a81fd4db4d4b435c552ebd"
+    },
+    {
+      "path": "browser/cancel/author-final/metadata/documents/04377357-1a50-4441-a587-9a7f6bfb391b.json",
+      "bytes": 370,
+      "sha256": "58c982dea76d17a727bfef27f738c0d7ecb58478fef56cbdb26f2ea13b058f32"
+    },
+    {
+      "path": "browser/cancel/author-final/metadata/documents/528053c1-dfc6-4885-9694-28df1e6d6bce.json",
+      "bytes": 246,
+      "sha256": "48e467e9f45165e607b626fc9c97dabd5ddadbcee6e6a1ccf6e45664eeee65a4"
+    },
+    {
+      "path": "browser/cancel/author-final/templates/document.md",
+      "bytes": 16,
+      "sha256": "4d9c3e64dcabffe398f14117d5172ff467c4ec5a24c55e0910b099e5a95f3266"
+    },
+    {
+      "path": "browser/cancel/author-final/workspace.json",
+      "bytes": 502,
+      "sha256": "4a043afb3562bb1b394c3d924e2cabc887cda9006bc645dd7895650206bd17e8"
+    },
+    {
+      "path": "browser/cancel-restored-en-390.png",
+      "bytes": 93061,
+      "sha256": "c8b3cbe93c746ec79ca35e3c607da873f6a054cbd6b48fdcd96816dbd48bea3a"
+    },
+    {
+      "path": "browser/cancel-restored-ja-390.png",
+      "bytes": 116215,
+      "sha256": "569995a7c046947032793112450b1a5a531f86d1beeecc0d2f8b6b55cb8413de"
+    },
+    {
+      "path": "browser/cancel-restored-zh-CN-390.png",
+      "bytes": 93883,
+      "sha256": "35f2df64d85d0e8b47ae853fe3316da9ab7ab1baea94999d30e4a0e62729f9d2"
+    },
+    {
+      "path": "browser/changed-source/author-final/documents/definition.md",
+      "bytes": 75,
+      "sha256": "8282e8b2748630467288aec03a3bb5ce60109ce8431be38a7d12e6cbe82d3c36"
+    },
+    {
+      "path": "browser/changed-source/author-final/documents/scenes/context.json",
+      "bytes": 784,
+      "sha256": "d1e1c3a07d773d8e2ccb1f4823a6d5a93ed4b13473bcb7bcf4a0ff9af09627db"
+    },
+    {
+      "path": "browser/changed-source/author-final/documents/scripts/context.txt",
+      "bytes": 194,
+      "sha256": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42"
+    },
+    {
+      "path": "browser/changed-source/author-final/metadata/documents/68989031-38fe-4b01-a98d-b926d06bfba8.json",
+      "bytes": 246,
+      "sha256": "2b10fb03758429f7aff4b5c53d1f343d36d57cf99e81b8492376cf481cbb5463"
+    },
+    {
+      "path": "browser/changed-source/author-final/metadata/documents/a187f382-bfd7-4375-9b6a-c602e89049ae.json",
+      "bytes": 370,
+      "sha256": "b4d4da18b4ced228b1c24c121f25a24a57aa18f04addb306549beaa448abe9ef"
+    },
+    {
+      "path": "browser/changed-source/author-final/metadata/documents/d30e4f14-40da-4f49-9051-14848fe603e7.json",
+      "bytes": 252,
+      "sha256": "13eba56527cf8495871d39df83487c809e953a914cef70cf291eaed2df5021f5"
+    },
+    {
+      "path": "browser/changed-source/author-final/templates/document.md",
+      "bytes": 16,
+      "sha256": "4d9c3e64dcabffe398f14117d5172ff467c4ec5a24c55e0910b099e5a95f3266"
+    },
+    {
+      "path": "browser/changed-source/author-final/workspace.json",
+      "bytes": 510,
+      "sha256": "99445c523e06a5f84b47cdb6884178079df364647795f7d9d04e412cb84a9693"
+    },
+    {
+      "path": "browser/changed-source-recovered-en-390.png",
+      "bytes": 91920,
+      "sha256": "68ebde48f2ff47aefd5da9ec8575771d370b0215d3ed439e369ed2c43dba6d30"
+    },
+    {
+      "path": "browser/changed-source-recovered-ja-390.png",
+      "bytes": 107003,
+      "sha256": "10ddba51c6ca0e39b3d0b567baf17331ff5fda8fc200120c9a95d2ae2f468171"
+    },
+    {
+      "path": "browser/changed-source-recovered-zh-CN-390.png",
+      "bytes": 90881,
+      "sha256": "754cee58c4f65786b49f747958a598e90616c0812970d13f7af9c5fd8bb7b62c"
+    },
+    {
+      "path": "browser/changed-source-refused.png",
+      "bytes": 166460,
+      "sha256": "c53eb8ba2052c8d2ce9840a77b6fe850e283fb803a9fec1bc130b433408593cb"
+    },
+    {
+      "path": "browser/changed-source-saved-return-en-390.png",
+      "bytes": 98955,
+      "sha256": "379689b1f8bf6a96ec2756e5bda1b8f1e6c2dff07205db2808d93c92dcd7d664"
+    },
+    {
+      "path": "browser/changed-source-saved-return-ja-390.png",
+      "bytes": 116300,
+      "sha256": "8b5eb79c7e89470317e28fbcc08fc5ff02efce9ab03ae6a68b78034b8f9222f9"
+    },
+    {
+      "path": "browser/changed-source-saved-return-zh-CN-390.png",
+      "bytes": 110493,
+      "sha256": "d2790b280b69a5136748a499a069e2d3668c9b2c4f3a7a813d8e103e003bf0ad"
+    },
+    {
+      "path": "browser/success/author-final/documents/behaviors/context.json",
+      "bytes": 535,
+      "sha256": "95c33b94a848279cd93f8fc77c57d62cb7eeb7db55128c760da332858beb9925"
+    },
+    {
+      "path": "browser/success/author-final/documents/definition.md",
+      "bytes": 75,
+      "sha256": "8282e8b2748630467288aec03a3bb5ce60109ce8431be38a7d12e6cbe82d3c36"
+    },
+    {
+      "path": "browser/success/author-final/documents/scenes/context.json",
+      "bytes": 784,
+      "sha256": "6425b2db2fa7ac91910425b96ad03bc6c13eab482fb1a4457406c0a22724b8cc"
+    },
+    {
+      "path": "browser/success/author-final/documents/scripts/context.txt",
+      "bytes": 194,
+      "sha256": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42"
+    },
+    {
+      "path": "browser/success/author-final/metadata/documents/4b7a8ee4-13fd-432a-9b08-d1932f1c7d94.json",
+      "bytes": 451,
+      "sha256": "94b44941507ed30e8c42ae2349690b38fabd3426552773f505aa8dadab49f569"
+    },
+    {
+      "path": "browser/success/author-final/metadata/documents/5a5232da-7de4-4fda-89cb-5b36f1359eaa.json",
+      "bytes": 489,
+      "sha256": "46c55289640d94bd249bdbd79a434231acc91f6643d7da0e323799f4df74b534"
+    },
+    {
+      "path": "browser/success/author-final/metadata/documents/ebb014d3-7b06-48a9-920f-9b9978722aad.json",
+      "bytes": 252,
+      "sha256": "63513a0964297b23f38a8385d22a4b5b3da6e3029081e7efc3b08b899d773c7d"
+    },
+    {
+      "path": "browser/success/author-final/metadata/documents/f007085e-312f-4835-8fb1-64aae9a2b360.json",
+      "bytes": 246,
+      "sha256": "a1755fdd0adbeefe8715a310979fda04574c4739dfa5b2e568739034d4ca8d61"
+    },
+    {
+      "path": "browser/success/author-final/templates/document.md",
+      "bytes": 16,
+      "sha256": "4d9c3e64dcabffe398f14117d5172ff467c4ec5a24c55e0910b099e5a95f3266"
+    },
+    {
+      "path": "browser/success/author-final/workspace.json",
+      "bytes": 503,
+      "sha256": "9028db7a20499398919901441332b3a3318cf7e95bbbaa68bd7b178fa8dad751"
+    },
+    {
+      "path": "browser/success-godot-event.png",
+      "bytes": 198285,
+      "sha256": "60530f376ebcc33e8d436d51d2267e4927445f35a465c12625257b58ac203c85"
+    },
+    {
+      "path": "browser/success-returned-en-390.png",
+      "bytes": 92120,
+      "sha256": "ee0703c9c165282fed09626ca9efde5f1b7f1fbee4fab89832b1f116786b3e3f"
+    },
+    {
+      "path": "browser/success-returned-ja-390.png",
+      "bytes": 106555,
+      "sha256": "faa64a5d50255a68e148e2643b4717bdd31ef394dfed96b3e16efcbba34353f8"
+    },
+    {
+      "path": "browser/success-returned-zh-CN-390.png",
+      "bytes": 90333,
+      "sha256": "33d7adf164505763f671a70bf76a0be3d2257afada205a45b24b0b7492c1a5d5"
+    },
+    {
+      "path": "browser/success-saved-return-en-390.png",
+      "bytes": 99000,
+      "sha256": "9c89d8ba6a1bbedb538c783d7c239cd6637393b081a99a6b139c2054db370ba8"
+    },
+    {
+      "path": "browser/success-saved-return-ja-390.png",
+      "bytes": 116288,
+      "sha256": "ef8e672092c70cfbf601a764fa8ae33b22ecba98d44c14c299d18c1cfd7a99e5"
+    },
+    {
+      "path": "browser/success-saved-return-zh-CN-390.png",
+      "bytes": 111126,
+      "sha256": "d6517ac4fde757d868e1ee8847ff311af0b979bd0e7b7024e6e21ef50b8cc5a6"
+    }
+  ],
+  "compressedLogsAndFailedSources": [
+    {
+      "path": "browser/command.log.gz",
+      "rawBytes": 2051,
+      "rawSha256": "e3457a63161fc567697e569df6a9bf28641e618915dccfc89b65ebbafd0b8a92",
+      "storedBytes": 812,
+      "storedSha256": "b3c0600cacd38d1a02305067c0cd2d6e44e2e4f28b1ff7f108f1f9e48c64b912",
+      "gzipMtime": 0
+    },
+    {
+      "path": "failed/run1/browser.json.gz",
+      "rawBytes": 540941,
+      "rawSha256": "e797acfc87302ae701d2c24447f0815444d48a90c1eda983fd653299f47e9269",
+      "storedBytes": 82675,
+      "storedSha256": "0be6a361e0f404f951688c459a71a095e84c4504c2b48ac4c544202bb9041413",
+      "gzipMtime": 0
+    },
+    {
+      "path": "failed/run1/command.log.gz",
+      "rawBytes": 7233,
+      "rawSha256": "84e86428626825c4d9d53b30b2c0e4930dce86af73be968385c47ea8589c71b9",
+      "storedBytes": 2301,
+      "storedSha256": "17b1a7c5e9d6f468398770ca12f35c7613db10ad92dc1c3fa42c473c3adeecec",
+      "gzipMtime": 0
+    },
+    {
+      "path": "failed/run1/driver.mjs.txt.gz",
+      "rawBytes": 34411,
+      "rawSha256": "22e76196880ef3c21613e7fef4f7615fc7ebca20953e9e453434df0ed96fb1f9",
+      "storedBytes": 9145,
+      "storedSha256": "4f9a6ffd6e3ac924cad7e43369fc4c74087bd2bb2b5620296d3f66819a157172",
+      "gzipMtime": 0
+    }
+  ],
+  "failedRunDiagnosis": "failed/run1/diagnosis.json",
+  "otherEvidencePreserved": "Only the new browser, failed/run1 and checks/browser-driver.json paths are created. Existing topic README/checks and older film/menu evidence are not edited."
+}

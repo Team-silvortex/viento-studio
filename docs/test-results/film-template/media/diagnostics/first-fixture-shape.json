@@ -1,0 +1,234 @@
+{
+  "format": "viento-film-template-media-workflow",
+  "schemaVersion": 1,
+  "startedAt": "2026-11-13T07:49:57.046Z",
+  "commands": [
+    {
+      "command": "/tmp/viento-film-template-native/target/debug/workspace-archive",
+      "args": [
+        "templates"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"defaultTemplate\":\"org.viento.blank\",\"templates\":[{\"description\":\"从一个通用文档类型开始，按需添加自己的类型和模板。\",\"label\":\"空白工程\",\"packageId\":\"org.viento.blank\",\"version\":\"1.0.0\"},{\"description\":\"角色、能力、道具、关卡、任务、阵营与规则，适合游戏世界和玩法设计。\",\"label\":\"游戏\",\"packageId\":\"org.viento.oc-game\",\"version\":\"1.0.0\"},{\"description\":\"人物、大纲、篇章、地点、组织与设定，适合小说和其他文学创作。\",\"label\":\"文学\",\"packageId\":\"org.viento.oc-literature\",\"version\":\"1.0.0\"},{\"description\":\"人物、幕、场、舞台提示与道具，适合剧本和舞台叙事创作。\",\"label\":\"戏剧\",\"packageId\":\"org.viento.oc-drama\",\"version\":\"1.0.0\"},{\"description\":\"人物、剧本场次、分镜、拍摄地点、道具与制作计划，适合影视策划和拍摄、后期协作。\",\"label\":\"影视\",\"packageId\":\"org.viento.oc-film\",\"version\":\"1.0.0\"},{\"description\":\"组件、接口、流程与验证文档，用于设计和梳理软件工程。\",\"label\":\"软件设计\",\"packageId\":\"org.viento.software-design\",\"version\":\"1.0.0\"}]}\n",
+      "stderr": ""
+    },
+    {
+      "command": "/tmp/viento-film-template-native/target/debug/workspace-archive",
+      "args": [
+        "create",
+        "/tmp/viento-film-media-RFAsFH/original",
+        "Film Media Roundtrip",
+        "org.viento.oc-film"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"root\":\"/tmp/viento-film-media-RFAsFH/original/Film Media Roundtrip-E4fknp\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+      "args": [
+        "/home/chiharukiryu/cdev/viento-studio/scripts/ops/rebuild.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "standardized 0 files\nStatic index created: /tmp/viento-film-media-RFAsFH/original/Film Media Roundtrip-E4fknp/.viento/cache/indexes/documents.json\ndocs=0\n",
+      "stderr": ""
+    },
+    {
+      "command": "/usr/bin/ffmpeg",
+      "args": [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-f",
+        "lavfi",
+        "-i",
+        "color=c=0x88ccff:s=32x24:r=5",
+        "-t",
+        "0.4",
+        "-an",
+        "-c:v",
+        "mpeg4",
+        "-q:v",
+        "8",
+        "-movflags",
+        "+faststart",
+        "-y",
+        "/tmp/viento-film-media-RFAsFH/reference.mp4"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "/usr/bin/ffmpeg",
+      "args": [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-i",
+        "/tmp/viento-film-media-RFAsFH/reference.mp4",
+        "-f",
+        "null",
+        "-"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "http": [
+    {
+      "method": "POST",
+      "path": "/api/doc",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/doc",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/doc?path=documents%2Fscenes%2FS01.md",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/doc",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/assets/insert",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/doc?path=documents%2Fshots%2FS01-01.json",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/doc",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/rebuild",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/doc?path=documents%2Fscenes%2FS01.md",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/assets/insert",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/doc?path=documents%2Fshots%2FS01-01.json",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/assets/insert",
+      "status": 200
+    }
+  ],
+  "limitations": [
+    "Actual Rust workspace creation/export/import and HTTP editing/uploads on an empty temporary film project; no installed-app, Android-media, timeline editing or video rendering claim.",
+    "The tiny MP4 is generated and decoded by ffmpeg only to establish valid input bytes. Studio uploads, references, indexes and delivers it without transcoding."
+  ],
+  "sourcesBefore": {
+    "scripts/lib/project-templates.json": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4",
+    "scripts/lib/project-layout.mjs": "83d9b9ba4e13bc43a340293f5d87a6e17fba1bb0ab01a0b4ea80e944682bde48",
+    "engine/project.mjs": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
+    "engine/document-store.mjs": "b67d62b4f94e2fb48fa7e3546108a56776df57eb7dc65811aff4e53b5939dd46",
+    "engine/media-format.mjs": "74eecd0131bd9ca5b167bdf373eb183712287241d27b8dfe8b9cda0d8ed415d2",
+    "engine/media-insertion.mjs": "40426262aaa62a43caa5c6f771a6b16de5c80aeb2c543351f1288d01388d6d04",
+    "scripts/lib/media-assets.mjs": "b73fe62036b25f115f26f861250ca7fe28fc8a8b66ae17da688cc6a410d27965",
+    "scripts/lib/media-insertion.mjs": "27ffea2efc1564656b003a08e4cd7a3f87ef9c77858cfbea19f3ff8cb5ff42c9",
+    "scripts/lib/project-documents.mjs": "9f81f09f1e0f627bc229e01adae8967cf5562ee36c118b472fd729a20da6247f",
+    "scripts/lib/workspace.mjs": "4df3807d7ba9d7fb05ebab8e91b5c5071cfa3744bc41ddd6cc1e43fe29ca0bc9",
+    "scripts/lib/doc-api-service.mjs": "717ce0c94a70bea6ebeeda311aa257fdc326250356ba0c98566ab99a2fdd6f49",
+    "scripts/lib/doc-server-routes.mjs": "90a67813f9c7357c139f9fd8da2bb0ea2a3fff440f05deb58c8f8d21372135fd",
+    "scripts/adapters/node-document-storage.mjs": "74c2c13ede6919cbc70bbd7eae2d1931f05b1bb709450b4181330af1dadb994e",
+    "scripts/standardize-docs/doc-factory.mjs": "7a35eb57cfc94b90fa484acb18d1677130e8123938f7db24f9ea841d066eae0b",
+    "src-tauri/src/workspace.rs": "388f1b0f9905ee561ba7a4cafe7b91d3b341635832dff757c5368eebbbeff880",
+    "src-tauri/src/project_templates.rs": "efd68fbd807b76ef8b912cc5b941b93f88bf9c3ae30c37e1648f6708e10102ae",
+    "src-tauri/examples/workspace-archive.rs": "d10b0a82925eebd0659fc762e663b32c84708a6e3234fc5447b28a4b1add6682",
+    "scripts/tests/film-template-workflow.test.mjs": "6b27853830ecaa60701359c450d4f4b3132df19a71e262f4148e5443e81f0876"
+  },
+  "tool": {
+    "archive": {
+      "binary": "/tmp/viento-film-template-native/target/debug/workspace-archive",
+      "sha256": "3aa9e4d2158223b6c141e5527a6f5ecf7c3660b6c520091fb677d20800165d09"
+    },
+    "node": {
+      "binary": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+      "version": "v24.21.0"
+    }
+  },
+  "emptyAuthor": {
+    ".viento/workspace.json": "1bce15b707707d32150e437dc542c405c2c9364e0e7dfab505fb6c4ac13e6808",
+    "templates/character.md": "235d6230fa80099f6777bc618cd7d3afacd4cab3964841a8ab246a22b2249dd6",
+    "templates/document.md": "10f0149a8f0d0eef9d7a3852e81794c09b016ee8fa0ff5f29aec6f7f95369978",
+    "templates/location.md": "7d3a45dc37fe04fa0df15033bf38a31c5aac493da7db50d70d5f30f0774a5a39",
+    "templates/outline.md": "35441d0e4587dc6679e1829e3018ef3449485ff485e25c9b33d9fa94e6ec05df",
+    "templates/production-plan.md": "017b7e1c7761c94a2df85227b01c044f12de55ff9319e726b51bd4b687c10c06",
+    "templates/prop.md": "9aaba4473503427db2a179b93cdf76b9ba6757b4a4d3d3586e74a5e174409060",
+    "templates/scene.md": "4997c2849864379cd2567bc1437858c92f8c8f2598621b56172779d16f91bdb9",
+    "templates/shot.md": "e5658b25c249f47a97bb6d092a5c41f5000dc0492fd62705545ffc5865e0545d",
+    "workspace.json": "9480782feed2e921977f76f997f28b2612f6e217cf4322464f22a93bea4253a5"
+  },
+  "uploads": [
+    {
+      "asset": {
+        "id": "e7eba87c-49f3-47a5-a889-54523bcafbaf",
+        "name": "分镜参考.png",
+        "kind": "image",
+        "size": 68,
+        "status": "available",
+        "src": "asset:e7eba87c-49f3-47a5-a889-54523bcafbaf",
+        "url": "/asset-files/e7eba87c-49f3-47a5-a889-54523bcafbaf"
+      },
+      "bytes": 68,
+      "sha256": "0a97501e18a664a7d7ee7a1aeea061759a8833e1dbe6b6259d4b7c7746a4506c",
+      "reusedIdentity": true
+    },
+    {
+      "asset": {
+        "id": "9c0e8a89-d08e-4a78-8260-001da72a5a59",
+        "name": "对白参考.wav",
+        "kind": "audio",
+        "size": 844,
+        "status": "available",
+        "src": "asset:9c0e8a89-d08e-4a78-8260-001da72a5a59",
+        "url": "/asset-files/9c0e8a89-d08e-4a78-8260-001da72a5a59"
+      },
+      "bytes": 844,
+      "sha256": "2eeb55e08e1a51af2003fabdfc8572539de6c3f0fa1c182a5b3d3a4806b84db5",
+      "reusedIdentity": true
+    },
+    {
+      "asset": {
+        "id": "b8312d03-87ad-4c25-8c5d-31c1feebb7c8",
+        "name": "运动参考.mp4",
+        "kind": "video",
+        "size": 968,
+        "status": "available",
+        "src": "asset:b8312d03-87ad-4c25-8c5d-31c1feebb7c8",
+        "url": "/asset-files/b8312d03-87ad-4c25-8c5d-31c1feebb7c8"
+      },
+      "bytes": 968,
+      "sha256": "8229487a38d871b955a977fe45ea66cb7f56accaa3058443c28888a4825be744",
+      "reusedIdentity": true
+    }
+  ],
+  "ok": false,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   content: {\n+     sha256: '0a97501e18a664a7d7ee7a1aeea061759a8833e1dbe6b6259d4b7c7746a4506c',\n+     size: 68\n+   },\n+   format: 'viento-asset',\n    id: 'e7eba87c-49f3-47a5-a889-54523bcafbaf',\n    kind: 'image',\n+   legacyPaths: [],\n+   location: {\n+     path: 'media/images/e7eba87c-49f3-47a5-a889-54523bcafbaf.png',\n+     store: 'main'\n+   },\n    name: '分镜参考.png',\n+   tags: [],\n+   version: 1\n-   size: 68,\n-   src: 'asset:e7eba87c-49f3-47a5-a889-54523bcafbaf',\n-   status: 'available',\n-   url: '/asset-files/e7eba87c-49f3-47a5-a889-54523bcafbaf'\n  }\n\n    at inspect (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/film-template-workflow.test.mjs:115:16)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/film-template-workflow.test.mjs:121:27)\n    at async Test.run (node:internal/test_runner/test:1409:7)\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)",
+  "finishedAt": "2026-11-13T07:49:57.876Z"
+}

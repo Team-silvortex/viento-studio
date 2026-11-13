@@ -1,0 +1,382 @@
+{
+  "status": "passed",
+  "reviewedAtUtc": "2026-11-13T09:51:07.711167+00:00",
+  "scope": "Release content and nine application-version files; seven feature entrances checked against current implementation and preserved development evidence. No new complete regression or device validation claimed.",
+  "release": {
+    "path": "docs/RELEASE_0.3.0.md",
+    "bytes": 7228,
+    "sha256": "68797f76cd83c2a3a87c1fe3457d98562fdc5912502f98f56ba1b9805895d8a6"
+  },
+  "versionCheck": {
+    "status": "passed",
+    "command": "node --input-type=module -e import-and-call verifyReleaseVersions() plus installerVersions(\"0.3.0\")",
+    "files": [
+      {
+        "path": "VERSION",
+        "bytes": 6,
+        "sha256": "d915cc95d6ca8f47ae297713ed46d4e5c5d99ddd29fc3c61e263bdf305f2b5b0"
+      },
+      {
+        "path": "package.json",
+        "bytes": 2054,
+        "sha256": "df85042071c0d3a68faab9fd552faef7150dc6cadc0c6b3d074baabfe04f3376"
+      },
+      {
+        "path": "package-lock.json",
+        "bytes": 11303,
+        "sha256": "338dad65fdcb64d38071b7236a6821d7b44128c2c3ea73f83d565d6c2a49a1e9"
+      },
+      {
+        "path": "src-tauri/tauri.conf.json",
+        "bytes": 1728,
+        "sha256": "94c517fdcf7d71c6b5162557837ee8fc8608c418554b85386fc96c5f7ac8dc90"
+      },
+      {
+        "path": "src-tauri/tauri.android.conf.json",
+        "bytes": 802,
+        "sha256": "982dfeeea1248a669b4a190ddb0f8b3c52651978afa9e8b7286123732b45d115"
+      },
+      {
+        "path": "src-tauri/Cargo.toml",
+        "bytes": 1447,
+        "sha256": "745cf3ccf7bbfa5323abc0c1ebc86853f3fe3884661414d77fa504096cf52228"
+      },
+      {
+        "path": "src-tauri/Cargo.lock",
+        "bytes": 130112,
+        "sha256": "b51923a798e271460686df1e2c119cff50bd0b55b492ed54538b18689538bdd4"
+      },
+      {
+        "path": "web/index.html",
+        "bytes": 22633,
+        "sha256": "b72fa8ee4bb03568a5173f5dd9edd95716da540b188615faf60ded148bcaef91"
+      },
+      {
+        "path": "desktop/ui/index.html",
+        "bytes": 3747,
+        "sha256": "faec75e1045e6b24d355fff83763e2b4066fdf602a97176a11420a2cbf8bc106"
+      }
+    ],
+    "values": {
+      "VERSION": "0.3.0",
+      "package.json": "0.3.0",
+      "package-lock.json": "0.3.0",
+      "package-lock.json/packages/": "0.3.0",
+      "src-tauri/tauri.conf.json": "0.3.0",
+      "src-tauri/Cargo.toml": "0.3.0",
+      "src-tauri/Cargo.lock/viento-studio": "0.3.0",
+      "web/index.html": "0.3.0",
+      "desktop/ui/index.html": "0.3.0"
+    },
+    "installer": {
+      "androidVersionCode": 1003000,
+      "androidAutoIncrement": false,
+      "macOSBundleVersion": "1.3.0",
+      "identifier": "io.viento.studio",
+      "windowsAllowDowngrades": true
+    }
+  },
+  "features": [
+    {
+      "id": "binding-copy",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "web/modules/app-scene-behaviors.js",
+        "line": 448,
+        "match": "el('CopyBinding').addEventListener"
+      },
+      "rule": {
+        "path": "engine/scene-behavior-binding-copy.mjs",
+        "line": 63,
+        "match": "export function proposeSceneBehaviorBindingCopy"
+      },
+      "developmentEvidence": "docs/test-results/scene-behavior-binding-copy/README.md",
+      "boundaries": [
+        "explicit destination instance",
+        "new binding identity only; parameter UUID values are not rewritten",
+        "local draft then ordinary Check/Apply/Save"
+      ]
+    },
+    {
+      "id": "scene-restart",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "engine/script-authoring.mjs",
+        "line": 63,
+        "match": "id: 'godot-action-scene-restart'"
+      },
+      "backend": {
+        "path": "scripts/backends/godot4-scene-restart.mjs",
+        "line": 23,
+        "match": "version: '0.47.0'"
+      },
+      "developmentEvidence": "docs/test-results/scene-restart/README.md",
+      "boundaries": [
+        "Godot project assembly current-member restart",
+        "explicit state keys only",
+        "old visits/nodes revoked; cumulative execution budget retained"
+      ]
+    },
+    {
+      "id": "project-pause",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "engine/script-authoring.mjs",
+        "line": 65,
+        "match": "id: 'godot-project-pause'"
+      },
+      "backend": {
+        "path": "scripts/backends/godot4-project-pause.mjs",
+        "line": 24,
+        "match": "version: '0.48.0'"
+      },
+      "developmentEvidence": "docs/test-results/project-pause/README.md",
+      "boundaries": [
+        "focus return never resumes automatically",
+        "release gate before same-visit continuation",
+        "game clock freezes; wall/output/cumulative limits remain",
+        "Godot only in this increment"
+      ]
+    },
+    {
+      "id": "project-menu",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "engine/script-authoring.mjs",
+        "line": 67,
+        "match": "id: 'godot-project-menu'"
+      },
+      "backend": {
+        "path": "scripts/backends/godot4-project-menu.mjs",
+        "line": 24,
+        "match": "version: '0.49.0'"
+      },
+      "developmentEvidence": "docs/test-results/project-menu/README.md",
+      "boundaries": [
+        "bounded commands and at most eight items",
+        "scene navigation/retry/restart/finish; paused resume/finish only",
+        "separate from readonly HUD; release/focus/visit ownership"
+      ]
+    },
+    {
+      "id": "menu-target-authoring",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "web/modules/app-scene-behaviors.js",
+        "line": 178,
+        "match": "const menuTargets = setupSceneBehaviorMenuTargets"
+      },
+      "rule": {
+        "path": "engine/project-menu-item-edit.mjs",
+        "line": 101,
+        "match": "value.command === 'retry' ? { values: {} }"
+      },
+      "developmentEvidence": "docs/test-results/menu-target-authoring/README.md",
+      "boundaries": [
+        "exact official scene-mode advisory, explicit assembly/member selection",
+        "only current items_json row",
+        "existing lexical bytes preserved; new retry empty values object",
+        "current saved directory ownership and final ordinary dependency Check"
+      ]
+    },
+    {
+      "id": "scene-script-return",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "web/modules/app-scene-behavior-create.js",
+        "line": 25,
+        "match": "id=\"sceneBehaviorCreateNewScript\""
+      },
+      "composition": {
+        "path": "web/modules/app-studio-system.js",
+        "line": 96,
+        "match": "if (scriptReturn) buildPorts.requestScriptCreation"
+      },
+      "developmentEvidence": "docs/test-results/scene-script-return/README.md",
+      "boundaries": [
+        "first behavior creation only; existing dirty behavior source return not added",
+        "transient in-memory form only",
+        "actual write receipt and fresh directory revalidation",
+        "no auto-selected script, binding or relation"
+      ]
+    },
+    {
+      "id": "film-template",
+      "status": "supported-at-stated-scope",
+      "entry": {
+        "path": "scripts/lib/project-templates.json",
+        "line": 234,
+        "match": "\"packageId\": \"org.viento.oc-film\""
+      },
+      "developmentEvidence": "docs/test-results/film-template/README.md",
+      "boundaries": [
+        "eight empty-author starting document types; template package1.0.0 independent of application0.3.0",
+        "outline/scene prose; others structured; character background nested",
+        "scene label is not executable Scene2D/Scene3D",
+        "no editing timeline/render/exported film/Android media claim"
+      ]
+    }
+  ],
+  "versionLayerChecks": {
+    "application": "0.3.0",
+    "filmPackage": "1.0.0",
+    "godotDescriptor": "0.49.0",
+    "assemblyGeneratorNoPauseOrMenu": "0.47.0",
+    "assemblyGeneratorPause": "0.48.0",
+    "assemblyGeneratorMenu": "0.49.0",
+    "singleScene": "selects existing internal generator by content; not universally0.47",
+    "businessProtocols": [
+      4,
+      7,
+      10,
+      11
+    ],
+    "authorFormatAndTransactions": "unchanged by these increments",
+    "evidence": [
+      {
+        "path": "scripts/backends/godot4-adapter.mjs",
+        "line": 50,
+        "match": "version: '0.49.0'"
+      },
+      {
+        "path": "scripts/backends/godot4-adapter.mjs",
+        "line": 111,
+        "match": "if (detached.kind === 'project') await applyGodotSceneRestartProject"
+      },
+      {
+        "path": "scripts/backends/godot4-adapter.mjs",
+        "line": 80,
+        "match": "detached.requiredCapabilities.includes(PROJECT_PAUSE_CAPABILITY)"
+      },
+      {
+        "path": "scripts/backends/godot4-adapter.mjs",
+        "line": 79,
+        "match": "detached.requiredCapabilities.includes(PROJECT_MENU_CAPABILITY)"
+      }
+    ]
+  },
+  "validationClaims": {
+    "previousDevelopmentRun": {
+      "applicationAtExecution": "0.2.10",
+      "total": 9759,
+      "passed": 9059,
+      "conditionalSkipped": 700,
+      "failed": 0,
+      "relabelledAsRelease030": false
+    },
+    "newReleaseRun": "root-owned run still in progress; not inferred from old development result",
+    "releaseEvidence": "docs/test-results/release-0.3.0/README.md",
+    "links": [
+      {
+        "target": "SCENE_BEHAVIORS.md#复制当前绑定到场景实例",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/scene-behavior-binding-copy/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "SCENE_RESTART.md",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/scene-restart/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "PROJECT_PAUSE.md",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/project-pause/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "PROJECT_MENU.md",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/project-menu/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "PROJECT_MENU.md#按名称连接菜单按钮",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/menu-target-authoring/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "SCENE_BEHAVIORS.md#创建脚本后返回场景",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/scene-script-return/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "FILM_WORKFLOW.md",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/film-template/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/scene-script-return/README.md",
+        "fileExists": true
+      },
+      {
+        "target": "test-results/release-0.3.0/README.md",
+        "fileExists": false
+      },
+      {
+        "target": "ROADMAP.md",
+        "fileExists": true
+      },
+      {
+        "target": "MILESTONE_0.5.0.md",
+        "fileExists": true
+      }
+    ]
+  },
+  "installation": {
+    "desktopEntry": "/home/chiharukiryu/.local/share/applications/io.viento.studio.desktop",
+    "observedVersion": "0.2.0",
+    "sourceReleaseDoesNotClaimUpdatedInstaller": true,
+    "nativeMeaning": "Game execution evidence is real Godot; film Rust creation/archive evidence is independently scoped."
+  },
+  "limitationsConfirmed": [
+    "not a complete game authored from an empty project",
+    "no cross-launch persistence/savegame completion",
+    "no long-running continuous gameplay completion",
+    "no font closure or standalone engine-free game distribution completion",
+    "no Bevy parity added",
+    "no new installed Tauri/Android physical-device/other-system installation validation",
+    "film input decode and byte migration do not establish playback/editing/rendered movie output"
+  ],
+  "findings": [],
+  "resolvedWordingNotes": [
+    {
+      "severity": "low",
+      "issue": "Generator0.47 statement was broad enough to include single-scene generation",
+      "resolution": "Now explicitly limited to project assemblies, with content-selected single-scene internal layers stated.",
+      "authorizedBy": "root message permitting only two changes in new release note"
+    },
+    {
+      "severity": "low",
+      "issue": "All development native evidence could be mistaken for Godot although film also has real Rust archive/template checks",
+      "resolution": "Now says game runtime topics native evidence is Godot.",
+      "authorizedBy": "root message permitting only two changes in new release note"
+    }
+  ],
+  "writes": {
+    "repository": [
+      "docs/RELEASE_0.3.0.md: only two authorized wording corrections"
+    ],
+    "productionOrTestsModified": false,
+    "commitOrIndexMutation": false,
+    "reviewReport": "/tmp/viento-0.3.0-release-content-review.json"
+  }
+}

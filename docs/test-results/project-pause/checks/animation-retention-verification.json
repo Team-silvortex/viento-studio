@@ -1,0 +1,37 @@
+{
+  "format": "viento-native-test-fixture-correction",
+  "schemaVersion": 1,
+  "scope": "Only temporary test copies executed. Formal test targets and all production files were left untouched by this task. Global production source guard remains owned by the parent full application check.",
+  "counts": {
+    "tests": 12,
+    "suites": 0,
+    "pass": 12,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "temporaryTestFiles": {
+    "scripts/tests/animation-selectors-godot.test.mjs": "4e3b1a7525234c187c58fa097a3120b63a5f0a8539d9bb24024739c13cefadcd",
+    "scripts/tests/animation-combinations-godot.test.mjs": "76bd1048a2a517620279f4b35c1d2d3e58f4001332f6322ca180d3a146cb1612"
+  },
+  "formalSourcesBefore": {
+    "scripts/tests/animation-selectors-godot.test.mjs": "96216b028679d0e61676b91e958d186dca561653b6f4a3481854b7fa08c7a0b2",
+    "scripts/tests/animation-combinations-godot.test.mjs": "d4b919686942f520e26d7f2eeba85b41da4523005ba603c20e2e36613dde2842"
+  },
+  "formalSourcesAfter": {
+    "scripts/tests/animation-selectors-godot.test.mjs": "96216b028679d0e61676b91e958d186dca561653b6f4a3481854b7fa08c7a0b2",
+    "scripts/tests/animation-combinations-godot.test.mjs": "d4b919686942f520e26d7f2eeba85b41da4523005ba603c20e2e36613dde2842"
+  },
+  "formalTargetsUnchanged": true,
+  "productionSourceGuard": null,
+  "patch": {
+    "path": "/tmp/viento-animation-retention-review/wiring.patch",
+    "sha256": "d530895a2207c7ad977cf1a3175b715fe20a570abb7f21949f6fc5f59c5fa8dd"
+  },
+  "nativeLog": {
+    "path": "/tmp/viento-animation-retention-review/native.log",
+    "sha256": "0b7a51862611e16930bbb33e04ff4f06a1f04201fad9bb66a350333cc0f0eb3c"
+  },
+  "correction": "Collect every admitted onProgress event in a separate testEvents array, preserve all original semantic assertions, and independently assert exact session retention metadata, the unchanged 128-event raw tail, continuous animation entry sequences and the final total."
+}

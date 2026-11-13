@@ -1,3 +1,6 @@
+import { sceneMenuCapabilities } from './scene-menu-capability.mjs';
+import { scenePauseCapabilities } from './scene-pause-capability.mjs';
+import { sceneRestartCapabilities } from './scene-restart-capability.mjs';
 // Build DTO adapter. Source locations are editor metadata kept outside the
 // frozen plan. Valid v1 inputs still emit identical legacy snapshots and artifacts.
 import { resolveScene2DModel } from './scene-model.mjs';
@@ -32,7 +35,7 @@ export function attachSceneBehaviorPlan(observed, plan) {
   const resolved = resolveSceneBehaviors(observed, plan);
   if (!resolved.ok) return { ok: false, plan: null, diagnostics: resolved.diagnostics };
   const behavioral = resolved.behaviors ? { ...plan, schemaVersion: 3,
-    requiredCapabilities: [...plan.requiredCapabilities, 'behavior.bindings', `behavior.${resolved.behaviors.language}`],
+    requiredCapabilities: [...new Set([...plan.requiredCapabilities, 'behavior.bindings', `behavior.${resolved.behaviors.language}`, ...sceneRestartCapabilities(resolved.behaviors), ...scenePauseCapabilities(resolved.behaviors), ...sceneMenuCapabilities(resolved.behaviors)])],
     behaviors: resolved.behaviors } : plan;
   const audio = resolveSceneAudio(observed, behavioral);
   if (!audio.ok) return { ok: false, plan: null, diagnostics: audio.diagnostics };

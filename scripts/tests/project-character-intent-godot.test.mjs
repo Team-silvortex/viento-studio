@@ -290,9 +290,9 @@ test('ineligible arrows-only projects retain historical content beneath the retr
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
   const previous = await generateGodotAudioRequestsProject(captured.plan);
   const generated = await adapter.generate(captured.plan);
-  assert.equal(generated.backend.version, '0.46.0'); assert.equal(generated.backend.protocolVersion, previous.backend.protocolVersion);
+  assert.equal(generated.backend.version, '0.47.0'); assert.equal(generated.backend.protocolVersion, previous.backend.protocolVersion);
   assert.deepEqual(generated.sourceMap, previous.sourceMap); assert.deepEqual(generated.resourceFiles, previous.resourceFiles);
-  assert.equal(generated.files.size, previous.files.size + 5);
+  assert.equal(generated.files.size, previous.files.size + 10);
   for (const [name, bytes] of previous.files) {
     const retained = name === 'project.godot' ? 'retry-original.godot' : name === 'execution-clock-original.godot' ? 'retry-original-clock.godot' : name;
     assert.deepEqual(generated.files.get(retained), bytes, name);

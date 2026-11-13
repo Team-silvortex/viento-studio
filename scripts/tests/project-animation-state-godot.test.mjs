@@ -59,7 +59,7 @@ async function stage(f){const directory=path.join(f.temporary,'generated');for(c
 test('only exact frozen state scripts select protocol10; manually edited scripts retain protocol7',async t=>{
   for(const modified of [false,true]){
     const f=await fixture(t,{modified}),inventory=JSON.parse(f.generated.files.get('assembly.json'));
-    assert.equal(f.generated.backend.protocolVersion,modified?7:10);assert.equal(f.generated.backend.version,'0.46.0');assert.equal(inventory.schemaVersion,modified?8:11);
+    assert.equal(f.generated.backend.protocolVersion,modified?7:10);assert.equal(f.generated.backend.version,'0.47.0');assert.equal(inventory.schemaVersion,modified?8:11);
     assert.equal(f.generated.files.has('project-animation-state-runtime.gd'),!modified);
     assert.equal(f.generated.files.get(`behaviors/${f.scriptId}.gd`).toString(),f.content);
     if(!modified){const limited={...adapter,descriptor:{...adapter.descriptor,capabilities:adapter.descriptor.capabilities.filter(capability=>capability!=='project.animation-state-snapshots')}};assert.throws(()=>validateGeneratedExecutionProject(limited,f.captured.plan,f.generated));const expected=createProjectAnimationStateCatalog(f.captured.plan);assert.deepEqual(inventory.scenes[0].animationStateControllers,expected.scenes[0].controllers.map(({bindingId,instanceId,objectId,scriptObjectId,states,clips})=>({bindingId,instanceId,objectId,scriptObjectId,states,clips})));assert.deepEqual(inventory.scenes[1].animationStateControllers,[]);}

@@ -218,9 +218,9 @@ test('UI support convenience is explicit, operation-specific and fail closed', (
 test('portable middleware executes in an isolated JavaScript realm without host globals', async () => {
   const source = await fs.readFile(new URL('../../engine/backend-capabilities.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(source.replace(/^\s*\/\/.*$/gmu, ''), /(?:from\s+['"]node:|\b(?:process|Buffer|window)\b|(?<!\.)\bdocument\b)/u);
-  const [jsonSource, pathSource, cameraSource, hudSource, stateSource, canonicalSource, runtimeSource] = await Promise.all(['json-source', 'source-path', 'scene-camera2d', 'scene-hud2d', 'project-shared-state', 'canonical-json', 'project-runtime-contracts']
+  const [jsonSource, pathSource, cameraSource, hudSource, stateSource, canonicalSource, runtimeSource, navigationSource, retrySource, restartSource, restartCapabilitySource, pauseSource, pauseCapabilitySource, menuSource, menuCapabilitySource] = await Promise.all(['json-source', 'source-path', 'scene-camera2d', 'scene-hud2d', 'project-shared-state', 'canonical-json', 'project-runtime-contracts', 'godot-scene-navigation-scripts', 'godot-scene-retry-script', 'godot-scene-restart-script', 'scene-restart-capability', 'godot-project-pause-script', 'scene-pause-capability', 'godot-project-menu-script', 'scene-menu-capability']
     .map(name => fs.readFile(new URL(`../../engine/${name}.mjs`, import.meta.url), 'utf8')));
-  const script = value => value.replace(/^import[\s\S]*?from ['"][^'"]+['"];?\n/gmu, '').replaceAll('export ', '');
+  const script = value => value.replace(/^import[\s\S]*?from ['"][^'"]+['"];?\n/gmu, '').replace(/^export /gm, '');
   const context = vm.createContext({ TextEncoder });
   // Load the actual portable dependency sources in this realm. Passing the Node
   // validator would weaken its strict realm boundary and hide browser failures.
@@ -236,8 +236,24 @@ test('portable middleware executes in an isolated JavaScript realm without host 
       ${script(stateSource)}; return {projectSharedStateKey}; })();
     const hudApi = (() => { const {parseJsonSource,locateJsonSource} = jsonApi; const {normalizeSourcePath} = pathApi; const {projectSharedStateKey} = stateApi;
       ${script(hudSource)}; return {validateSceneHUD2DPlan,SCENE_HUD2D_CAPABILITY,sceneHUD2DCapabilities}; })();
+    const navigationApi = (() => { ${script(navigationSource)}; return {GODOT_ACTION_SCENE_SWITCH_SCRIPT}; })();
+    const retryApi = (() => { const {GODOT_ACTION_SCENE_SWITCH_SCRIPT} = navigationApi;
+      ${script(retrySource)}; return {GODOT_ACTION_SCENE_RETRY_SCRIPT}; })();
+    const restartApi = (() => { const {GODOT_ACTION_SCENE_RETRY_SCRIPT} = retryApi;
+      ${script(restartSource)}; return {GODOT_ACTION_SCENE_RESTART_SCRIPT}; })();
+    const restartCapabilityApi = (() => { const {GODOT_ACTION_SCENE_RESTART_SCRIPT} = restartApi;
+      ${script(restartCapabilitySource)}; return {sceneRestartCapabilities}; })();
+    const pauseApi = (() => { ${script(pauseSource)}; return {GODOT_ACTION_PROJECT_PAUSE_SCRIPT}; })();
+    const pauseCapabilityApi = (() => { const {GODOT_ACTION_PROJECT_PAUSE_SCRIPT} = pauseApi;
+      ${script(pauseCapabilitySource)}; return {scenePauseCapabilities}; })();
+    const menuApi = (() => { ${script(menuSource)}; return {GODOT_PROJECT_MENU_SCRIPT}; })();
+    const menuCapabilityApi = (() => { const {GODOT_PROJECT_MENU_SCRIPT} = menuApi;
+      ${script(menuCapabilitySource)}; return {sceneMenuCapabilities}; })();
     const {validateSceneHUD2DPlan,SCENE_HUD2D_CAPABILITY,sceneHUD2DCapabilities} = hudApi;
     (() => { const {validateSceneCamera2DPlan, SCENE_CAMERA2D_CAPABILITY, sceneCamera2DCapabilities} = cameraApi;
+      const {sceneRestartCapabilities} = restartCapabilityApi;
+      const {scenePauseCapabilities} = pauseCapabilityApi;
+      const {sceneMenuCapabilities} = menuCapabilityApi;
       ${script(source)}; globalThis.backendApi = {validateExecutionBackendDescriptor, checkExecutionBackendSupport, canExecuteBackend}; })();
   `, context);
   assert.equal(vm.runInContext('typeof process + ":" + typeof Buffer + ":" + typeof document + ":" + typeof window', context), 'undefined:undefined:undefined:undefined');
@@ -258,10 +274,24 @@ test('portable middleware executes in an isolated JavaScript realm without host 
     const cameraMissing = backendApi.checkExecutionBackendSupport(frozen,{operation:'build',plan:cameraPlan}).some(item=>item.code==='build_capability_missing');
     cameraPlan.camera2d.document.camera.targetInstanceId = '44444444-4444-4444-8444-444444444444';
     const cameraInvalid = backendApi.checkExecutionBackendSupport(cameraBackend,{operation:'build',plan:cameraPlan}).some(item=>item.code==='build_camera2d_invalid');
+    const restartPlan = JSON.parse(JSON.stringify(scenePlan));
+    restartPlan.schemaVersion = 3;
+    restartPlan.requiredCapabilities.push('behavior.bindings','behavior.gdscript','project.scene-restart');
+    restartPlan.behaviors = {format:'viento-behavior-plan',schemaVersion:1,backendId:'org.viento.godot4',language:'gdscript',
+      sources:[{objectId:'55555555-5555-4555-8555-555555555555',content:restartApi.GODOT_ACTION_SCENE_RESTART_SCRIPT}],
+      bindings:[{implementation:{sourceObjectId:'55555555-5555-4555-8555-555555555555'}}]};
+    const restartBackend = {...frozen,plans:[...frozen.plans,{kind:'scene2d',schemaVersion:3,runtimeProtocolVersion:3}],
+      capabilities:[...frozen.capabilities,'behavior.bindings','behavior.gdscript','project.scene-restart']};
+    const restartValid = backendApi.checkExecutionBackendSupport(restartBackend,{operation:'build',plan:restartPlan});
+    const restartMissing = backendApi.checkExecutionBackendSupport({...restartBackend,capabilities:restartBackend.capabilities.filter(c=>c!=='project.scene-restart')},
+      {operation:'build',plan:restartPlan}).some(item=>item.code==='build_capability_missing'&&item.capability==='project.scene-restart');
+    restartPlan.requiredCapabilities = restartPlan.requiredCapabilities.filter(c=>c!=='project.scene-restart');
+    const restartUnmarked = backendApi.checkExecutionBackendSupport(restartBackend,{operation:'build',plan:restartPlan})
+      .some(item=>item.code==='build_scene_restart_invalid');
     JSON.stringify({frozen: Object.isFrozen(frozen.execution), preserved: frozen.execution.windowPreview,
       supported: backendApi.checkExecutionBackendSupport(frozen, {operation:'build', platform:'linux', plan:scenePlan}),
       offscreen: backendApi.canExecuteBackend(frozen, 'offscreenRender'), unknown: backendApi.canExecuteBackend(null, 'build'),
-      cameraValid,cameraMissing,cameraInvalid});
+      cameraValid,cameraMissing,cameraInvalid,restartValid,restartMissing,restartUnmarked});
   `, context);
-  assert.deepEqual(JSON.parse(result), { frozen: true, preserved: true, supported: [], offscreen: false, unknown: false, cameraValid: [], cameraMissing: true, cameraInvalid: true });
+  assert.deepEqual(JSON.parse(result), { frozen: true, preserved: true, supported: [], offscreen: false, unknown: false, cameraValid: [], cameraMissing: true, cameraInvalid: true, restartValid: [], restartMissing: true, restartUnmarked: true });
 });

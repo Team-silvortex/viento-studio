@@ -1,0 +1,73 @@
+extends Node
+
+var _project
+var _body: StaticBody2D
+var _subscription: int = 0
+var _active := false
+var _opened := false
+
+func _object_valid(value) -> bool:
+	return typeof(value) == TYPE_OBJECT and is_instance_valid(value)
+
+func _ready() -> void:
+	_disconnect()
+	_opened = false
+	if not get_parent() is StaticBody2D or not has_meta("viento_project"):
+		_fail("Bind this script to a static door body in a project run.")
+		return
+	var project = get_meta("viento_project")
+	if not _object_valid(project):
+		_fail("The project port is unavailable.")
+		return
+	for method in ["read_state", "subscribe_event", "unsubscribe_event"]:
+		if not project.has_method(method):
+			_fail("The project port has an unsupported contract.")
+			return
+	_project = project
+	_body = get_parent() as StaticBody2D
+	var token = _project.subscribe_event("game.door_open", _on_open)
+	if typeof(token) != TYPE_INT or token <= 0:
+		_fail("Cannot subscribe to the door event.")
+		return
+	_subscription = token
+	_active = true
+	if not _refresh():
+		_fail("Initialize the door_open state before entering this scene.")
+
+func _refresh() -> bool:
+	if not _object_valid(_project) or not is_instance_valid(_body):
+		return false
+	var opened = _project.read_state("door_open")
+	if typeof(opened) != TYPE_BOOL:
+		return false
+	if opened and not _opened:
+		_opened = true
+		_body.hide()
+		_body.set_deferred("collision_layer", 0)
+		_body.set_deferred("collision_mask", 0)
+	return true
+
+func _on_open(_value) -> bool:
+	if not _active:
+		return true
+	if not _refresh():
+		_fail("The door event no longer has a valid visit or state.")
+		return false
+	return true
+
+func _disconnect() -> void:
+	_active = false
+	var project = _project
+	var token := _subscription
+	_project = null
+	_subscription = 0
+	_body = null
+	if token != 0 and _object_valid(project) and project.has_method("unsubscribe_event"):
+		project.unsubscribe_event(token)
+
+func _fail(message: String) -> void:
+	_disconnect()
+	push_error("Topdown door: " + message)
+
+func _exit_tree() -> void:
+	_disconnect()

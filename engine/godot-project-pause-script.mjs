@@ -1,0 +1,23 @@
+// Ordinary author source configures a visit-bound engine controller. It never
+// receives paused gameplay write access or changes node processing itself.
+export const GODOT_ACTION_PROJECT_PAUSE_SCRIPT = `extends Node
+
+@export var action_name: String = "pause"
+@export var paused_text: String = "Paused"
+@export var resume_text: String = "Release controls to resume"
+
+func _ready() -> void:
+	if not has_meta("viento_project_pause"):
+		_fail("Bind this script in a project assembly run with pause support.")
+		return
+	var port = get_meta("viento_project_pause")
+	if typeof(port) != TYPE_OBJECT or not is_instance_valid(port) or not port.has_method("configure_toggle_action"):
+		_fail("The visit-bound project pause controller is unavailable.")
+		return
+	var accepted = port.configure_toggle_action(action_name, paused_text, resume_text)
+	if typeof(accepted) != TYPE_BOOL or not accepted:
+		_fail("Cannot configure project pause; check the mapped action and bounded display text.")
+
+func _fail(message: String) -> void:
+	push_error("Project pause: " + message)
+`;

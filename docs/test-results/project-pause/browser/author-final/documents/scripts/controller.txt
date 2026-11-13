@@ -1,0 +1,164 @@
+extends Node
+
+@export var score_goal: int = 3
+var _project
+var _subscriptions: Array[int] = []
+var _collected: Dictionary = {}
+var _active := false
+var _terminal := false
+var _exit_pending := false
+
+func _object_valid(value) -> bool:
+	return typeof(value) == TYPE_OBJECT and is_instance_valid(value)
+
+func _uuid(value) -> bool:
+	if typeof(value) != TYPE_STRING or value.length() != 36:
+		return false
+	var pattern := RegEx.new()
+	pattern.compile("^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$")
+	return pattern.search(value) != null
+
+func _counter(value) -> bool:
+	return typeof(value) in [TYPE_INT, TYPE_FLOAT] and is_finite(float(value)) and float(value) == floor(float(value)) and value >= 0 and value <= 1000000000
+
+func _state() -> Dictionary:
+	if not _object_valid(_project):
+		return {}
+	var score = _project.read_state("score")
+	var health = _project.read_state("health")
+	var door_open = _project.read_state("door_open")
+	if not _counter(score) or not _counter(health) or typeof(door_open) != TYPE_BOOL:
+		return {}
+	return {"score": int(score), "health": int(health), "door_open": door_open}
+
+func _ready() -> void:
+	_disconnect()
+	_collected.clear()
+	if score_goal < 1 or score_goal > 128 or not has_meta("viento_project"):
+		_fail("Bind the controller in a project run with a score goal from 1 to 128.")
+		return
+	var project = get_meta("viento_project")
+	if not _object_valid(project):
+		_fail("The project port is unavailable.")
+		return
+	for method in ["read_state", "write_state", "publish_event", "subscribe_event", "unsubscribe_event"]:
+		if not project.has_method(method):
+			_fail("The project port has an unsupported contract.")
+			return
+	_project = project
+	if _state().is_empty():
+		_fail("Initialize score, health and door_open through the retry behavior before entering this scene.")
+		return
+	for entry in [["game.collect", _on_collect], ["game.hazard", _on_hazard], ["game.exit", _on_exit]]:
+		var token = _project.subscribe_event(entry[0], entry[1])
+		if typeof(token) != TYPE_INT or token <= 0:
+			_fail("Cannot subscribe to the gameplay events.")
+			return
+		_subscriptions.append(token)
+	_terminal = false
+	_active = true
+
+func _input_state(value) -> Dictionary:
+	if not _uuid(value):
+		_fail("Gameplay event payloads must be sensor instance UUIDs.")
+		return {}
+	var state := _state()
+	if state.is_empty():
+		_fail("The current visit or gameplay state is unavailable.")
+	return state
+
+func _write(key: String, value) -> bool:
+	var accepted = _project.write_state(key, value) if _object_valid(_project) else false
+	if typeof(accepted) != TYPE_BOOL or not accepted:
+		_fail("The project rejected a gameplay state change.")
+		return false
+	return true
+
+func _publish(name: String, value) -> bool:
+	var accepted = _project.publish_event(name, value) if _object_valid(_project) else false
+	if typeof(accepted) != TYPE_BOOL or not accepted:
+		_fail("The project rejected a gameplay event.")
+		return false
+	return true
+
+func _lose() -> bool:
+	if not _publish("game.failed", "lose"):
+		return false
+	_terminal = true
+	_exit_pending = false
+	return true
+
+func _on_collect(value) -> bool:
+	if not _active or _terminal:
+		return true
+	var state := _input_state(value)
+	if state.is_empty():
+		return false
+	if state["health"] <= 0:
+		return _lose()
+	if _collected.has(value):
+		return true
+	if not _write("score", state["score"] + 1):
+		return false
+	_collected[value] = true
+	if state["score"] + 1 >= score_goal and not state["door_open"]:
+		if not _write("door_open", true):
+			return false
+		return _publish("game.door_open", true)
+	return true
+
+func _on_hazard(value) -> bool:
+	if not _active or _terminal:
+		return true
+	var state := _input_state(value)
+	if state.is_empty():
+		return false
+	var health: int = maxi(0, state["health"] - 1)
+	if not _write("health", health):
+		return false
+	return _lose() if health == 0 else true
+
+func _on_exit(value) -> bool:
+	if not _active or _terminal:
+		return true
+	var state := _input_state(value)
+	if state.is_empty():
+		return false
+	if state["health"] <= 0:
+		return _lose()
+	if state["door_open"] and not _exit_pending:
+		_exit_pending = true
+		# Finish the current event batch before winning, so queued damage can win precedence.
+		call_deferred("_resolve_exit")
+	return true
+
+func _resolve_exit() -> void:
+	if not _active or _terminal or not _exit_pending:
+		return
+	_exit_pending = false
+	var state := _state()
+	if state.is_empty():
+		_fail("The exit request no longer belongs to an active gameplay visit.")
+		return
+	if state["health"] <= 0:
+		_lose()
+	elif state["door_open"] and _publish("game.complete", "win"):
+		_terminal = true
+
+func _disconnect() -> void:
+	_active = false
+	_terminal = true
+	_exit_pending = false
+	var project = _project
+	_project = null
+	if _object_valid(project) and project.has_method("unsubscribe_event"):
+		for token in _subscriptions:
+			project.unsubscribe_event(token)
+	_subscriptions.clear()
+
+func _fail(message: String) -> void:
+	_disconnect()
+	push_error("Topdown controller: " + message)
+
+func _exit_tree() -> void:
+	_disconnect()

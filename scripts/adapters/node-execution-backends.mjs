@@ -1,3 +1,5 @@
+import { sceneMenuCapabilities, PROJECT_MENU_CAPABILITY } from '../../engine/scene-menu-capability.mjs';
+import { scenePauseCapabilities, PROJECT_PAUSE_CAPABILITY } from '../../engine/scene-pause-capability.mjs';
 // Only the local host registers implementations. Transport descriptors contain
 // data; neither project files nor HTTP requests can install executable code.
 import { validateExecutionBackendDescriptor, checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
@@ -9,6 +11,7 @@ import { SCENE_PHYSICS2D_CAPABILITIES, scenePhysics2DCapabilities } from '../../
 import { validateSceneHUD2DPlan, sceneHUD2DCapabilities } from '../../engine/scene-hud2d.mjs';
 import { validateSceneCamera2DPlan, sceneCamera2DCapabilities } from '../../engine/scene-camera2d.mjs';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan-contract.mjs';
+import { sceneRestartCapabilities, SCENE_RESTART_CAPABILITY } from '../../engine/scene-restart-capability.mjs';
 import { buildTargetIdentity } from '../../engine/build-target.mjs';
 import { buildError } from './node-build-snapshot.mjs';
 import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
@@ -104,6 +107,52 @@ function relativePath(value) {
 // Validate and detach every output before creating a destination or trusting a
 // stored artifact inventory. Resource bindings are neutral UUID → file paths.
 export function validateGeneratedExecutionProject(adapter, plan, generated) {
+  const menuScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene =>
+    sceneMenuCapabilities(scene.behaviors).includes(PROJECT_MENU_CAPABILITY)
+    || scene.requiredCapabilities?.includes(PROJECT_MENU_CAPABILITY));
+  if (menuScenes.length || plan.requiredCapabilities?.includes(PROJECT_MENU_CAPABILITY)) {
+    if (plan.kind !== 'project') invalid('Project menus require a project assembly host.');
+    try { plan = validateProjectAssemblyPlan(plan); }
+    catch { invalid('Invalid frozen menu declaration or capability union.'); }
+    for (const capability of [PROJECT_MENU_CAPABILITY, PROJECT_PAUSE_CAPABILITY]) {
+      if (!Array.isArray(adapter.descriptor.capabilities) || !adapter.descriptor.capabilities.includes(capability)
+        || !Array.isArray(generated?.backend?.capabilities) || !generated.backend.capabilities.includes(capability)
+        || !plan.requiredCapabilities.includes(capability)
+        || menuScenes.some(scene => !scene.requiredCapabilities?.includes(capability))) invalid('Generated backend lacks a declared project menu dependency.');
+    }
+  }
+
+  const pauseScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene =>
+    scenePauseCapabilities(scene.behaviors).includes(PROJECT_PAUSE_CAPABILITY)
+    || scene.requiredCapabilities?.includes(PROJECT_PAUSE_CAPABILITY));
+  if (pauseScenes.length || plan.requiredCapabilities?.includes(PROJECT_PAUSE_CAPABILITY)) {
+    if (plan.kind !== 'project') invalid('Project pause requires a project assembly host.');
+    try { plan = validateProjectAssemblyPlan(plan); }
+    catch { invalid('Invalid frozen pause declaration or capability union.'); }
+    if (!Array.isArray(adapter.descriptor.capabilities) || !adapter.descriptor.capabilities.includes(PROJECT_PAUSE_CAPABILITY)
+      || !Array.isArray(generated?.backend?.capabilities) || !generated.backend.capabilities.includes(PROJECT_PAUSE_CAPABILITY)
+      || !plan.requiredCapabilities.includes(PROJECT_PAUSE_CAPABILITY)
+      || pauseScenes.some(scene => !scene.requiredCapabilities?.includes(PROJECT_PAUSE_CAPABILITY))) {
+      invalid('Generated backend lacks a declared project pause capability.');
+    }
+  }
+
+  // Derive official bound restart requirements independently of editable flags.
+  // A scene-only output has no project coordinator to recreate the visit.
+  const restartScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene =>
+    sceneRestartCapabilities(scene.behaviors).includes(SCENE_RESTART_CAPABILITY)
+    || scene.requiredCapabilities?.includes(SCENE_RESTART_CAPABILITY));
+  if (restartScenes.length || plan.requiredCapabilities?.includes(SCENE_RESTART_CAPABILITY)) {
+    if (plan.kind !== 'project') invalid('Scene restart requires a project assembly host.');
+    try { plan = validateProjectAssemblyPlan(plan); }
+    catch { invalid('Invalid frozen restart declaration or capability union.'); }
+    if (!Array.isArray(adapter.descriptor.capabilities) || !adapter.descriptor.capabilities.includes(SCENE_RESTART_CAPABILITY)
+      || !Array.isArray(generated?.backend?.capabilities) || !generated.backend.capabilities.includes(SCENE_RESTART_CAPABILITY)
+      || !plan.requiredCapabilities.includes(SCENE_RESTART_CAPABILITY)
+      || restartScenes.some(scene => !scene.requiredCapabilities?.includes(SCENE_RESTART_CAPABILITY))) {
+      invalid('Generated backend lacks a declared scene restart capability.');
+    }
+  }
   const cameraScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene => Object.hasOwn(scene, 'camera2d'));
   if (plan.kind === 'project' && Object.hasOwn(plan, 'camera2d')) invalid('Camera declarations belong to scene members.');
   if (cameraScenes.length) {

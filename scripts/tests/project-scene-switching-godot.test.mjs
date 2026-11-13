@@ -40,7 +40,7 @@ const exits = received => received.events.filter(frame => frame.event === 'scene
 
 test('project generated bridge owns lifecycle while copied author scripts and saved schema stay unchanged', async t => {
   const f = await materialize(t), before = JSON.stringify(f.captured.plan);
-  assert.match(f.generated.files.get('project.godot').toString(), /run\/main_scene="res:\/\/retry-project.tscn"/);
+  assert.match(f.generated.files.get('project.godot').toString(), /run\/main_scene="res:\/\/restart-project.tscn"/);
   assert.match(f.generated.files.get('retry-original.godot').toString(), /run\/main_scene="res:\/\/project.tscn"/);
   assert.ok(f.generated.files.has('project-runtime.gd'));
   for (const child of f.captured.plan.scenes) {

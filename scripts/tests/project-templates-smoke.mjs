@@ -9,18 +9,31 @@ import { once } from 'node:events';
 import { createServer } from 'node:http';
 import { setTimeout as delay } from 'node:timers/promises';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { nativeMobileLibrary } from './mobile-native-harness.mjs';
 
 const binary = process.env.VIENTO_MOBILE_STORE_BIN;
 if (!binary) throw new Error('Set VIENTO_MOBILE_STORE_BIN to the mobile-storage example.');
-const output = path.resolve(process.env.VIENTO_TEMPLATE_TEST_OUTPUT || 'docs/test-results/oc-templates');
+const output = path.resolve(process.env.VIENTO_TEMPLATE_TEST_OUTPUT || '/tmp/viento-film-template-browser');
 await fs.mkdir(output, { recursive: true });
-const report = { browser: '', steps: [], errors: [], limitations: ['System pickers/window launches are substituted; no new APK or device test.'] };
+const report = { browser: '', steps: [], errors: [], readinessPolicy: 'Do not import DOM-caching editor modules while HTML is parsing; wait for the selected workspace catalog before creation.', limitations: ['System pickers/window launches are substituted; no new APK or device test.'] };
 const cleanups = [];
+const sourceFiles = ['scripts/lib/project-templates.json', 'scripts/lib/project-layout.mjs', 'engine/project.mjs', 'engine/parser.mjs',
+  'src-tauri/src/project_templates.rs', 'src-tauri/src/workspace.rs', 'src-tauri/src/mobile_storage.rs', 'src-tauri/src/mobile_archive.rs',
+  'mobile/platform.mjs', 'mobile/library.js', 'mobile/editor.js', 'desktop/ui/app.js', 'web/i18n/en.js', 'web/i18n/ja.js',
+  'scripts/tests/project-templates-smoke.mjs', 'scripts/tests/mobile-native-harness.mjs', 'scripts/tests/mobile-browser.mjs'];
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const sourceHashes = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, hash(await fs.readFile(file))])));
+report.sources = await sourceHashes();
+report.nativeBinary = { path: path.resolve(binary), sha256: hash(await fs.readFile(binary)) };
 let socket;
 let captureFailure;
 async function wait(check, label) {
-  for (let i = 0; i < 300; i++) { if (await check()) return; await delay(100); }
+  for (let i = 0; i < 300; i++) {
+    try { if (await check()) return; }
+    catch (error) { if (!/Execution context was destroyed|Cannot find context with specified id/.test(error.message)) throw error; }
+    await delay(100);
+  }
   throw new Error(`Timed out: ${label}`);
 }
 try {
@@ -85,7 +98,7 @@ try {
   });
   const call = (method, params = {}) => new Promise((resolve, reject) => { const id = ++sequence; pending.set(id, { resolve, reject }); socket.send(JSON.stringify({ id, method, params })); });
   const evaluate = async expression => {
-    const result = await call('Runtime.evaluate', { expression: `(async () => (${expression}))()`, awaitPromise: true, returnByValue: true });
+    const result = await call('Runtime.evaluate', { expression: `(async () => { if (document.readyState === 'loading') return false; return (${expression}); })()`, awaitPromise: true, returnByValue: true });
     if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value;
   };
   const screenshot = async name => {
@@ -97,21 +110,34 @@ try {
   captureFailure = async () => {
     await screenshot('failure.png');
     report.diagnostic = await evaluate(`({ url: location.href, text: document.body.innerText, source: document.querySelector('#docSourceEditor')?.value })`);
+    report.mobileHostLog = mobileLog;
+    report.templateProbe = await evaluate(`(async () => {
+      const workspaceId = new URL(location.href).searchParams.get('workspace');
+      const invoke = (...args) => window.__TAURI__.core.invoke(...args);
+      const {appState} = await import('/web/modules/app-state.js');
+      const type = appState.workspace?.documentTypes.find(type => type.id === document.querySelector('#docCreateTypeSelect')?.value);
+      const templatePath = 'templates/' + (type?.template || 'scene.md');
+      const direct = await invoke('mobile_storage', {action:'template', workspaceId, path:templatePath}).catch(error => ({error}));
+      const {createMobilePlatform} = await import('/mobile/platform.mjs');
+      const response = await createMobilePlatform({invoke, workspaceId}).request('/'+templatePath);
+      return {direct, templatePath, workspace:appState.workspace, activeCreateType:appState.activeCreateType, status:response.status, body:await response.text()};
+    })()`);
   };
   await call('Runtime.enable'); await call('Page.enable');
   report.browser = (await call('Browser.getVersion')).product;
   await call('Page.navigate', { url: desktopUrl });
-  await wait(() => evaluate(`document.querySelector('#createBtn')?.disabled === false`), 'desktop library');
+  await wait(() => evaluate(`document.querySelector('#createBtn')?.disabled === false && document.querySelector('#projectTemplate')?.options.length === 6`), 'desktop library');
   await click('#createBtn');
   assert.equal(await evaluate(`document.querySelector('#projectTemplate').value`), 'org.viento.blank');
-  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#projectTemplate').options, option => option.textContent)`), ['空白工程', '游戏', '文学', '戏剧', '软件设计']);
-  await input('#projectTemplate', 'org.viento.oc-game', 'change');
+  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#projectTemplate').options, option => option.textContent)`), ['空白工程', '游戏', '文学', '戏剧', '影视', '软件设计']);
+  await input('#projectTemplate', 'org.viento.oc-film', 'change');
+  await screenshot('desktop-template-zh.png');
   await evaluate(`window.__TAURI__.core.invoke('set_language', {language:'en'})`);
-  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#projectTemplate').options, option => option.textContent)`), ['Blank project', 'Game', 'Literature', 'Drama', 'Software design']);
+  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#projectTemplate').options, option => option.textContent)`), ['Blank project', 'Game', 'Literature', 'Drama', 'Film & television', 'Software design']);
   await screenshot('desktop-template-en.png');
   await click('#cancelCreateBtn');
   assert.equal(calls.some(item => item.command === 'new_workspace'), false);
-  for (const [index, kind] of ['game', 'literature', 'drama'].entries()) {
+  for (const [index, kind] of ['game', 'literature', 'drama', 'film'].entries()) {
     await wait(() => evaluate(`document.querySelector('#createBtn')?.disabled === false`), 'desktop idle');
     await click('#createBtn'); await input('#projectTemplate', `org.viento.oc-${kind}`, 'change');
     await input('#workspaceName', `Independent ${kind}`);
@@ -120,23 +146,23 @@ try {
     assert.equal(calls.filter(item => item.command === 'new_workspace').at(-1).args.templateId, `org.viento.oc-${kind}`);
     const created = (await library.invoke('mobile_storage', { action: 'list' })).find(work => work.name === `Independent ${kind}`);
     assert.equal(created.projectTemplate.packageId, `org.viento.oc-${kind}`);
-    assert.ok(created.documentTypes.some(type => type.id === { game: 'ability', literature: 'chapter', drama: 'act' }[kind]));
+    assert.ok(created.documentTypes.some(type => type.id === { game: 'ability', literature: 'chapter', drama: 'act', film: 'shot' }[kind]));
   }
-  report.steps.push('Desktop: five choices without legacy OC, translated labels, cancel, and native creation of game/literature/drama projects');
+  report.steps.push('Desktop: six choices without legacy OC, Chinese/English labels, cancel, and native creation of game/literature/drama/film projects');
 
   await call('Emulation.setDeviceMetricsOverride', { width: 430, height: 920, deviceScaleFactor: 1, mobile: true });
   await call('Page.navigate', { url: mobileUrl });
-  await wait(() => evaluate(`document.querySelector('#projectTemplate')?.options.length === 5 && !document.querySelector('#projectTemplate').disabled`), 'mobile catalogue');
+  await wait(() => evaluate(`document.querySelector('#projectTemplate')?.options.length === 6 && !document.querySelector('#projectTemplate').disabled`), 'mobile catalogue');
   assert.equal(await evaluate(`document.querySelector('#projectTemplate').value`), 'org.viento.blank');
   await input('#projectTemplate', 'org.viento.oc-drama', 'change');
   await click('#settingsBtn'); await input('#languageSelect', 'ja', 'change');
   await click('#settingsDialog button[type="submit"]');
-  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#projectTemplate').options, option => option.textContent)`), ['空のプロジェクト', 'ゲーム', '文学', '演劇', 'ソフトウェア設計']);
+  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#projectTemplate').options, option => option.textContent)`), ['空のプロジェクト', 'ゲーム', '文学', '演劇', '映像制作', 'ソフトウェア設計']);
   await screenshot('mobile-template-ja.png');
   assert.equal(await evaluate(`document.documentElement.scrollWidth > innerWidth`), false);
   await input('#workspaceName', 'Drama dialogue');
   await evaluate(`document.querySelector('#createWorkspace').requestSubmit()`);
-  await wait(() => evaluate(`location.pathname === '/editor.html' && (await import('/web/modules/app-state.js')).appState.editBackendAvailable && document.querySelector('#docCreateBtn')?.disabled === false`), 'new drama editor');
+  await wait(() => evaluate(`location.pathname === '/editor.html' && (await import('/web/modules/app-state.js')).appState.workspace?.name === 'Drama dialogue' && (await import('/web/modules/app-state.js')).appState.workspace?.id === new URL(location.href).searchParams.get('workspace') && (await import('/web/modules/app-state.js')).appState.editBackendAvailable && document.querySelector('#docCreateBtn')?.disabled === false`), 'new drama editor');
   await click('#docCreateBtn');
   await wait(() => evaluate(`(await import('/web/modules/app-state.js')).appState.isCreating && !(await import('/web/modules/app-state.js')).appState.isLoadingTemplate`), 'initial drama template');
   await input('#docCreateTypeSelect', 'scene', 'change');
@@ -157,12 +183,72 @@ try {
   await evaluate(`document.querySelector('#sectionCards').scrollIntoView({block: 'center'})`);
   await screenshot('drama-dialogue-ja.png');
   report.steps.push('Mobile: Japanese drama selection, scene template, repeated speakers and stage directions stay prose through save/reopen');
+  await call('Page.navigate', { url: `${mobileUrl}/?new=film` });
+  await wait(() => evaluate(`location.search.includes('new=film') && document.querySelector('#projectTemplate')?.options.length === 6 && !document.querySelector('#projectTemplate').disabled`), 'film project selection');
+  await input('#projectTemplate', 'org.viento.oc-film', 'change');
+  assert.equal(await evaluate(`document.querySelector('#projectTemplate').selectedOptions[0].textContent`), '映像制作');
+  await call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await screenshot('film-template-ja-390.png');
+  assert.equal(await evaluate(`document.documentElement.scrollWidth > innerWidth`), false);
+  await input('#workspaceName', 'Film workflow');
+  await evaluate(`document.querySelector('#createWorkspace').requestSubmit()`);
+  await wait(() => evaluate(`location.pathname === '/editor.html' && (await import('/web/modules/app-state.js')).appState.workspace?.name === 'Film workflow' && (await import('/web/modules/app-state.js')).appState.workspace?.id === new URL(location.href).searchParams.get('workspace') && (await import('/web/modules/app-state.js')).appState.editBackendAvailable && document.querySelector('#docCreateBtn')?.disabled === false`), 'new film editor');
+  assert.equal(await evaluate(`(await import('/web/modules/app-state.js')).appState.docs.length`), 0, 'film starts without authored documents');
+  await click('#docCreateBtn');
+  await wait(() => evaluate(`(await import('/web/modules/app-state.js')).appState.isCreating && !(await import('/web/modules/app-state.js')).appState.isLoadingTemplate`), 'film initial template');
+  assert.deepEqual(await evaluate(`Array.from(document.querySelector('#docCreateTypeSelect').options, option => option.value)`), ['document', 'character', 'outline', 'scene', 'shot', 'location', 'production-plan', 'prop']);
+  await input('#docCreateTypeSelect', 'scene', 'change');
+  await wait(() => evaluate(`!(await import('/web/modules/app-state.js')).appState.isLoadingTemplate && document.querySelector('#docSourceEditor').value.includes('新建剧本场次')`), 'film screenplay template');
+  const screenplay = "﻿# 雨夜来客\r\n\r\nINT. 车站 - 夜\r\n\r\n00:00:01:12\r\n\r\n人物甲：你是谁？\r\n\r\n人物乙：旅人。\r\n\r\n人物甲：我也是。\r\n\r\n（窗外：雨声渐强）\r\n";
+  await input('#docSourceEditor', screenplay);
+  // Textareas normalize CRLF in the browser; the native condition tests cover
+  // literal BOM+CRLF storage. Here assert the actual GUI input byte-for-byte.
+  const screenplayDraft = await evaluate(`document.querySelector('#docSourceEditor').value`);
+  await click('#docSaveBtn');
+  await wait(() => evaluate(`!(await import('/web/modules/app-state.js')).appState.isCreating && !(await import('/web/modules/app-state.js')).appState.editHasUnsavedChanges`), 'save film screenplay');
+  const film = await evaluate(`import('/web/modules/app-state.js').then(({appState}) => ({ id: appState.workspace.id, document: appState.docs.find(doc => doc.documentType === 'scene') }))`);
+  assert.equal(film.document.raw, screenplayDraft);
+  assert.deepEqual(Object.keys(film.document.fields), ['_header']);
+  await call('Page.navigate', { url: `${mobileUrl}/editor.html?mode=edit&workspace=${film.id}&reopened=film-scene` });
+  await wait(() => evaluate(`location.search.includes('reopened=film-scene') && (await import('/web/modules/app-state.js')).appState.docs.some(doc => doc.id === ${JSON.stringify(film.document.id)})`), 'reopen film screenplay');
+  assert.equal(await evaluate(`(await import('/web/modules/app-state.js')).appState.docs.find(doc => doc.documentType === 'scene').raw`), screenplayDraft);
+  const filmText = await evaluate(`document.querySelector('#sectionCards').innerText`);
+  for (const line of ['INT. 车站 - 夜', '00:00:01:12', '人物甲：你是谁？', '人物乙：旅人。', '人物甲：我也是。', '（窗外：雨声渐强）']) assert.ok(filmText.includes(line), line);
+  await evaluate(`document.querySelector('#sectionCards').scrollIntoView({block: 'center'})`);
+  await screenshot('film-screenplay-ja-390.png');
+  assert.equal(await evaluate(`document.documentElement.scrollWidth > innerWidth`), false);
+  await click('#docCreateBtn');
+  await wait(() => evaluate(`(await import('/web/modules/app-state.js')).appState.isCreating && !(await import('/web/modules/app-state.js')).appState.isLoadingTemplate`), 'second film document');
+  await input('#docCreateTypeSelect', 'shot', 'change');
+  await wait(() => evaluate(`!(await import('/web/modules/app-state.js')).appState.isLoadingTemplate && document.querySelector('#docSourceEditor').value.includes('新建分镜')`), 'film storyboard template');
+  const storyboard = "# 雨夜分镜\n\n镜头号：S001\n预计时长：0\n景别：近景\n\n## 画面与动作\n\n她凝视镜外。\n";
+  await input('#docSourceEditor', storyboard);
+  await click('#docEditFieldModeBtn');
+  await wait(() => evaluate(`document.querySelectorAll('#docFieldEditor .doc-field-input').length > 1`), 'storyboard structured fields');
+  const fieldInputs = await evaluate(`Array.from(document.querySelectorAll('#docFieldEditor .doc-field-input'), element => ({id: element.id, value: element.value}))`);
+  const shotNumber = fieldInputs.find(field => field.value === 'S001');
+  assert.ok(shotNumber, JSON.stringify(fieldInputs));
+  await input(`#${shotNumber.id}`, 'S002');
+  await screenshot('film-storyboard-fields-ja-390.png');
+  await click('#docSaveBtn');
+  await wait(() => evaluate(`!(await import('/web/modules/app-state.js')).appState.isCreating && !(await import('/web/modules/app-state.js')).appState.editHasUnsavedChanges`), 'save film storyboard');
+  const shot = await evaluate(`(await import('/web/modules/app-state.js')).appState.docs.find(doc => doc.documentType === 'shot')`);
+  assert.equal(shot.fields.镜头号, 'S002');
+  assert.equal(shot.fields.预计时长, '0');
+  assert.equal(shot.fields.景别, '近景');
+  await call('Page.navigate', { url: `${mobileUrl}/editor.html?mode=edit&workspace=${film.id}&doc=${encodeURIComponent(shot.path)}&reopened=film-shot` });
+  await wait(() => evaluate(`location.search.includes('reopened=film-shot') && (await import('/web/modules/app-state.js')).appState.docs.some(doc => doc.id === ${JSON.stringify(shot.id)} && doc.fields.镜头号 === 'S002')`), 'reopen film storyboard');
+  const reopenedFilm = await evaluate(`import('/web/modules/app-state.js').then(({appState}) => appState.docs.map(doc => ({id:doc.id,documentType:doc.documentType,raw:doc.raw,fields:doc.fields})))`);
+  assert.equal(reopenedFilm.find(doc => doc.documentType === 'scene').raw, screenplayDraft);
+  assert.equal(reopenedFilm.find(doc => doc.documentType === 'shot').raw, shot.raw);
+  report.film = { workspaceId: film.id, initialDocumentCount: 0, screenplay: {id: film.document.id, raw: screenplayDraft, fields: film.document.fields}, storyboard: {id: shot.id, raw: shot.raw, fields: shot.fields}, reopened: reopenedFilm, viewport: {width:390,height:844} };
+  report.steps.push('Film: Japanese 390px creation from an empty project; screenplay retains repeated dialogue/timecode as prose; storyboard uses field editing; both documents reopen with stable identities and exact GUI draft content. Media is separately tested through the desktop HTTP host.');
   await call('Page.navigate', { url: `${mobileUrl}/?new=software` });
-  await wait(() => evaluate(`location.search.includes('new=software') && document.querySelector('#projectTemplate')?.options.length === 5 && !document.querySelector('#projectTemplate').disabled`), 'return to mobile library');
+  await wait(() => evaluate(`location.search.includes('new=software') && document.querySelector('#projectTemplate')?.options.length === 6 && !document.querySelector('#projectTemplate').disabled`), 'return to mobile library');
   await input('#projectTemplate', 'org.viento.software-design', 'change');
   await input('#workspaceName', 'Software workflow');
   await evaluate(`document.querySelector('#createWorkspace').requestSubmit()`);
-  await wait(() => evaluate(`location.pathname === '/editor.html' && (await import('/web/modules/app-state.js')).appState.editBackendAvailable && document.querySelector('#docCreateBtn')?.disabled === false`), 'new mobile editor');
+  await wait(() => evaluate(`location.pathname === '/editor.html' && (await import('/web/modules/app-state.js')).appState.workspace?.name === 'Software workflow' && (await import('/web/modules/app-state.js')).appState.workspace?.id === new URL(location.href).searchParams.get('workspace') && (await import('/web/modules/app-state.js')).appState.editBackendAvailable && document.querySelector('#docCreateBtn')?.disabled === false`), 'new mobile editor');
   await click('#docCreateBtn');
   await wait(() => evaluate(`(await import('/web/modules/app-state.js')).appState.isCreating && !(await import('/web/modules/app-state.js')).appState.isLoadingTemplate`), 'initial document template');
   await input('#docCreateTypeSelect', 'component', 'change');
@@ -184,6 +270,8 @@ try {
   assert.equal(reopened, state.docs[0].id);
   report.steps.push('Mobile: software template selection in Japanese, YAML template/field editing, save and reload with stable identity');
   assert.deepEqual(report.errors, []);
+  assert.deepEqual(await sourceHashes(), report.sources, 'Production/test sources must remain unchanged during the browser proof');
+  report.sourceStableDuringProof = true;
   report.status = 'passed';
   await fs.rm(path.join(output, 'failure.png'), { force: true });
 } catch (error) {

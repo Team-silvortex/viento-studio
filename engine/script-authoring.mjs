@@ -1,3 +1,6 @@
+import { GODOT_PROJECT_MENU_SCRIPT } from './godot-project-menu-script.mjs';
+import { GODOT_ACTION_PROJECT_PAUSE_SCRIPT } from './godot-project-pause-script.mjs';
+import { GODOT_ACTION_SCENE_RESTART_SCRIPT } from './godot-scene-restart-script.mjs';
 import { GODOT_ACTION_SCENE_RETRY_SCRIPT } from './godot-scene-retry-script.mjs';
 import { GODOT_ACTION_SCENE_SWITCH_SCRIPT, GODOT_EVENT_SCENE_SWITCH_SCRIPT } from './godot-scene-navigation-scripts.mjs';
 import { GODOT_PLANAR_INTENT_SCRIPT } from './godot-planar-intent-script.mjs';
@@ -57,6 +60,12 @@ const starters = freeze([
     description: '订阅 event_name（默认 game.complete），收到后请求进入 target_scene_id 指定的其他组装成员。payload_filter 留空接受全部载荷，填写时只响应相同字符串；就绪时不切换，受理后本次访问不重复，离场取消订阅。', content: GODOT_EVENT_SCENE_SWITCH_SCRIPT },
   { id: 'godot-action-scene-retry', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 按动作重试关卡',
     description: '等待 action_name 的新按下，重新进入 target_scene_id 指定的其他组装成员；state_values_json 为显式初始值 JSON 对象，最多16个标量键、4096 UTF-8字节。只复位列出的键，保留其他进度；请求受理后在切换前一次应用，拒绝不改状态。需释放重按，不支持原地重启。', content: GODOT_ACTION_SCENE_RETRY_SCRIPT },
+  { id: 'godot-action-scene-restart', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 按动作原地重启关卡',
+    description: '等待 action_name（默认 ui_accept）的新按下，重新创建当前组装成员场景；无需目标场景。state_values_json 为最多16个标量键、4096 UTF-8字节的严格 JSON 初始值对象，只复位列出的共享状态。请求受理后原子应用，拒绝不改状态；进入时按住不会触发，需释放重按，界面已处理的输入不触发。只创建普通脚本，不创建输入映射。', content: GODOT_ACTION_SCENE_RESTART_SCRIPT },
+  { id: 'godot-project-pause', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 按动作暂停与恢复',
+    description: '通过已映射的 action_name（默认 pause，建议映射 P）暂停与恢复；paused_text 和 resume_text 设置提示文字。失焦自动暂停，重聚焦不会自动恢复；恢复前须松开已注册玩法动作。暂停时停止玩法与游戏时钟，恢复不重置本次运行的有限预算。进入时按住、界面已处理的输入不触发；保留 Escape 结束。只创建普通脚本，不创建输入映射。', content: GODOT_ACTION_PROJECT_PAUSE_SCRIPT },
+  { id: 'godot-project-menu', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 运行菜单',
+    description: '用 title、items_json 和 display_mode 配置内置菜单。scene 模式支持切换、重试、原地重开与结束；paused 模式支持恢复与结束，并要求同场景绑定官方暂停脚本。每模式最多一个菜单、1至8个按钮；使用鼠标或键盘选择，恢复前等待松开操作。只创建普通脚本，不提升玩法权限。', content: GODOT_PROJECT_MENU_SCRIPT },
   { id: 'godot-project-state', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 共享状态',
     description: '在当前项目运行中累加 visit_count；状态跨场景保留，重新运行后清空。单场景运行时不写入。',
     content: "extends Node\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tvar previous = project.read_state(\"visit_count\")\n\tvar count := 0.0\n\tif previous is int or previous is float:\n\t\tcount = float(previous)\n\tproject.write_state(\"visit_count\", count + 1)\n" },

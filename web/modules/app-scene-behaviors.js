@@ -1,3 +1,4 @@
+import { setupSceneBehaviorMenuTargets } from './app-scene-behavior-menu-targets.js';
 import { setupSceneBehaviorStateBindings } from './app-scene-behavior-state-bindings.js';
 import { captureAnimationStateBindings } from '../../engine/animation-state-bindings.mjs';
 import { setupSceneBehaviorParameters } from './app-scene-behavior-parameters.js';
@@ -5,6 +6,7 @@ import { captureScriptParameterContract } from '../../engine/script-parameter-in
 import { setupSceneBehaviorReferences } from './app-scene-behavior-references.js';
 import { setupSceneBehaviorAnimationClips } from './app-scene-behavior-animation-clips.js';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
+import { proposeSceneBehaviorBindingCopy } from '../../engine/scene-behavior-binding-copy.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { createSceneBehaviorProposal, isSceneBehaviorProposal } from '../../engine/scene-behaviors-edit.mjs';
 import { isSceneBehaviorAudioTracks, sceneBehaviorAudioTracksMatchSource, sceneBehaviorAudioTrackValue } from '../../engine/scene-audio-directory.mjs';
@@ -18,6 +20,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     const style = document.createElement('link'); style.id = 'sceneBehaviorsStyle'; style.rel = 'stylesheet';
     style.href = '/web/scene-behaviors.css'; (document.head || document.body).append(style);
   }
+  if (!document.getElementById('sceneBehaviorMenuTargetsStyle')) { const style = document.createElement('link'); style.id = 'sceneBehaviorMenuTargetsStyle'; style.rel = 'stylesheet'; style.href = '/web/scene-behavior-menu-targets.css'; (document.head || document.body).append(style); }
   const button = document.createElement('button'); button.id = 'sceneBehaviorsBtn'; button.type = 'button'; button.className = 'doc-btn doc-btn-ghost';
   (document.getElementById('modeSwitch') || document.body).append(button);
   const dialog = document.createElement('dialog'); dialog.id = 'sceneBehaviorsDialog'; dialog.className = 'scene-behaviors-dialog';
@@ -29,6 +32,10 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     <section id="sceneBehaviorsFields" hidden><div class="scene-behaviors-binding-bar"><label><span data-i18n="当前行为绑定"></span><select id="sceneBehaviorsBinding"></select></label>
       <button id="sceneBehaviorsAddBinding" type="button" class="doc-btn doc-btn-ghost" data-i18n="新增行为绑定"></button>
       <button id="sceneBehaviorsRemoveBinding" type="button" class="doc-btn doc-btn-ghost" data-i18n="移除此绑定"></button></div>
+      <section id="sceneBehaviorsCopyTools" class="scene-behaviors-copy-tools">
+        <div class="scene-behaviors-copy-fields"><label><span data-i18n="复制到场景实例"></span><select id="sceneBehaviorsCopyTarget"></select></label>
+        <button id="sceneBehaviorsCopyBinding" type="button" class="doc-btn doc-btn-ghost" data-i18n="复制当前绑定"></button></div>
+        <p class="scene-behaviors-note" data-i18n="复制脚本、当前参数和信号到所选实例；只新建绑定身份，不改写参数中的引用。"></p></section>
       <p id="sceneBehaviorsBindingId" class="scene-behaviors-note"></p><div class="scene-behaviors-targets">
       <label><span data-i18n="场景实例"></span><select id="sceneBehaviorsInstance"></select></label>
       <label><span data-i18n="已关联脚本"></span><select id="sceneBehaviorsSource"></select></label></div>
@@ -42,6 +49,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
         <p id="sceneBehaviorsAudioTracksPath" class="scene-behaviors-note"></p></section>
       <section id="sceneBehaviorsAnimationClipsTools" hidden></section>
       <section id="sceneBehaviorsReferencesTools" hidden></section>
+      <section id="sceneBehaviorsMenuTargetsTools" hidden></section>
       <div id="sceneBehaviorsParameters"></div><button id="sceneBehaviorsAddParameter" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加参数"></button>
       <h3 data-i18n="信号映射"></h3><div id="sceneBehaviorsEvents"></div><button id="sceneBehaviorsAddEvent" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加信号映射"></button>
       <p class="scene-behaviors-note" data-i18n="最多32条绑定、8份脚本；每条最多32个参数和8个信号。至少保留一条绑定。"></p></section>
@@ -71,6 +79,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   let proposal = null, approvalSignature = '', parameterInputs = [], eventInputs = [], opener = null, message = '', diagnostic = '';
   const parameterIdentity = Symbol('parameterIdentity');
   let rowSequence = 0, audioRequest = 0, audioPending = false, audioCatalog = null, audioMessage = '';
+  let copyTarget = '', copyBindingId = '', copyScene = null;
   const audioChoices = new Map();
   const audioAvailable = () => getContext().audioTracksAvailable === true && typeof getAudioTracks === 'function';
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && context.behaviorSource === true
@@ -98,7 +107,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   function input(id, value, multiline = false) {
     const element = node(multiline ? 'textarea' : 'input'); element.id = 'sceneBehaviors' + id;
     if (!multiline) element.type = 'text'; element.value = value; element.spellcheck = false;
-    element.addEventListener('input', changed); return element;
+    element.addEventListener('input', () => { if (el('Fields').contains(element)) changed(); }); return element;
   }
   function removeButton(label, action) { const element = node('button', t(label)); element.dataset.i18n = label; element.type = 'button'; element.className = 'doc-btn doc-btn-ghost'; element.addEventListener('click', action); return element; }
   function resetAudioTracks() { audioRequest++; audioPending = false; audioCatalog = null; audioMessage = ''; audioChoices.clear(); }
@@ -166,6 +175,13 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     getContext: () => ({ available: getContext().referencesAvailable === true, current: current(), pending, source: session?.source,
       scene: session?.catalog.scene, rows: parameterInputs, bindingId: selected, sourceObjectId: el('Source').value, instanceId: el('Instance').value }),
     onUse: (row, value) => { if (pending || !current() || !parameterInputs.includes(row) || row.type.value !== 'string' || selected !== row.bindingId) return; row.value.value = value; changed(); row.value.focus(); } });
+  const menuTargets = setupSceneBehaviorMenuTargets({ container: el('MenuTargetsTools'), getReferences, translate: t,
+    getContext: () => ({ available: getContext().referencesAvailable === true, current: current(), pending, epoch,
+      source: session?.source, script: session?.catalog.sources.find(item => item.objectId === el('Source').value), scene: session?.catalog.scene,
+      rows: parameterInputs, bindingId: selected, sourceObjectId: el('Source').value, instanceId: el('Instance').value,
+      backendId: session?.backendId, language: session?.language, editSignature: signature() }),
+    onUse: (row, value) => { if (pending || !current() || !parameterInputs.includes(row) || row.type.value !== 'string' || selected !== row.bindingId || row.key.value !== 'items_json') return;
+      row.value.value = value; row.rawValue = value; row.displayValue = row.value.value; changed(); row.value.focus(); } });
   const stateBindings = setupSceneBehaviorStateBindings({ container: el('StateBindingsTools'), getAnimationClips, translate: t,
     getContext: () => {
       const script = session?.catalog.sources.find(item => item.objectId === el('Source').value);
@@ -215,10 +231,10 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       if (row.type === 'boolean') {
         value = node('select'); value.id = `sceneBehaviorsParam${index}Value`;
         options(value, [...(!['true', 'false'].includes(row.value) ? [[row.value, t('请选择布尔值')]] : []), ['true', t('真')], ['false', t('假')]], row.value);
-        value.addEventListener('change', changed);
+        value.addEventListener('change', () => { if (el('Parameters').contains(value)) changed(); });
       } else { value = input(`Param${index}Value`, row.value, row.type === 'string'); if (row.type === 'number') value.inputMode = 'decimal'; }
-      type.addEventListener('change', () => { if (pending || !current()) return; capture(); invalidate(); renderBinding(); refresh(); });
-      const remove = removeButton('移除参数', () => { if (pending || !current()) return; capture(); active().parameters.splice(index, 1); invalidate(); renderBinding(); refresh(); });
+      type.addEventListener('change', () => { if (pending || !current() || !el('Parameters').contains(type)) return; capture(); invalidate(); renderBinding(); refresh(); });
+      const remove = removeButton('移除参数', () => { if (pending || !current() || !el('Parameters').contains(wrapper)) return; capture(); active().parameters.splice(index, 1); invalidate(); renderBinding(); refresh(); });
       remove.id = `sceneBehaviorsParam${index}Remove`;
       wrapper.append(field('参数名称', key), field('参数类型', type), field('参数值', value), remove);
       if (!row[parameterIdentity]) row[parameterIdentity] = ++rowSequence;
@@ -227,9 +243,42 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     for (const [index, row] of binding.events.entries()) {
       const wrapper = node('div'); wrapper.className = 'scene-behaviors-event';
       const signal = input(`Event${index}Signal`, row.signal), event = input(`Event${index}Name`, row.event);
-      const remove = removeButton('移除信号', () => { if (pending || !current()) return; capture(); active().events.splice(index, 1); invalidate(); renderBinding(); refresh(); });
+      const remove = removeButton('移除信号', () => { if (pending || !current() || !el('Events').contains(wrapper)) return; capture(); active().events.splice(index, 1); invalidate(); renderBinding(); refresh(); });
       remove.id = `sceneBehaviorsEvent${index}Remove`; wrapper.append(field('脚本信号名', signal), field('事件名称', event), remove);
       el('Events').append(wrapper); eventInputs.push({ signal, event });
+    }
+  }
+  function refreshCopyTools() {
+    const scene = session?.catalog.scene;
+    if (copyBindingId !== selected || copyScene !== scene) {
+      copyBindingId = selected; copyScene = scene; copyTarget = '';
+      options(el('CopyTarget'), [['', ''], ...(scene?.instances || []).map(item => [item.instanceId, ''])], '');
+    }
+    const choices = [...el('CopyTarget').children];
+    if (choices[0]) choices[0].textContent = t('请选择复制目标实例');
+    for (const [index, item] of (scene?.instances || []).entries()) {
+      if (choices[index + 1]) choices[index + 1].textContent = t('实例 {0} · {1} · 定义 {2} · {3}', index + 1, item.name, item.objectId, item.instanceId);
+    }
+    const locked = pending || !current() || !active() || draft.length >= 32;
+    el('CopyTarget').disabled = locked;
+    el('CopyBinding').disabled = locked || !copyTarget || el('CopyTarget').value !== copyTarget
+      || !scene?.instances.some(item => item.instanceId === copyTarget);
+  }
+  function copyBinding() {
+    if (pending || !current() || draft.length >= 32 || !copyTarget || copyTarget !== el('CopyTarget').value
+      || copyBindingId !== selected || copyScene !== session.catalog.scene) return false;
+    try {
+      // Only plain draft values cross the portable copy boundary. Per-row
+      // helper ownership stays with the old rendering and is never inherited.
+      const values = raw().map(binding => ({ bindingId: binding.bindingId, instanceId: binding.instanceId, sourceObjectId: binding.sourceObjectId,
+        parameters: binding.parameters.map(({ key, type, value }) => ({ key, type, value })),
+        events: binding.events.map(({ signal, event }) => ({ signal, event })) }));
+      const next = proposeSceneBehaviorBindingCopy({ bindings: values, sourceBindingId: selected, targetInstanceId: copyTarget,
+        bindingId: crypto.randomUUID(), instances: session.catalog.scene.instances, sourceObjectIds: session.catalog.sources.map(source => source.objectId) });
+      draft = [...values, next]; selected = next.bindingId; invalidate(); renderBinding();
+      message = '已复制当前绑定；请核对目标实例与参数，再检查并保存。'; refresh(); el('Instance').focus(); return true;
+    } catch {
+      message = '无法复制当前绑定，输入与审阅已保留。'; diagnostic = ''; refresh(); return false;
     }
   }
   function refresh() {
@@ -250,12 +299,12 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Fixed').textContent = session ? t('场景：{0} · 后端：{1} · 语言：{2}', session.catalog.scene.sourcePath, session.backendId, session.language) : '';
-    refreshAudioTracks(); animationClips.refresh(); references.refresh(); parameterInterface.refresh(); stateBindings.refresh();
+    refreshCopyTools(); refreshAudioTracks(); animationClips.refresh(); references.refresh(); menuTargets.refresh(); parameterInterface.refresh(); stateBindings.refresh();
   }
   function close(force = false) {
     if (!force && dirty() && !window.confirm(t('丢弃本次行为表单修改？原文草稿不会改变。'))) return false;
     const target = opener, request = ++epoch; opener = null; session = null; draft = []; selected = ''; pending = false;
-    resetAudioTracks(); animationClips.reset(); references.reset(); parameterInterface.reset(); stateBindings.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
+    resetAudioTracks(); animationClips.reset(); references.reset(); menuTargets.reset(); parameterInterface.reset(); stateBindings.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
@@ -376,7 +425,9 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   }
   el('Binding').addEventListener('change', () => { if (pending || !current()) return; const next = el('Binding').value; capture();
     if (proposal && !approved()) invalidate(); if (draft.some(binding => binding.bindingId === next)) selected = next; renderBinding(); refresh(); });
-  el('Instance').addEventListener('change', changed); el('Source').addEventListener('change', changed);
+  for (const key of ['Instance', 'Source']) el(key).addEventListener('change', () => {
+    if (pending || !current()) return; copyTarget = ''; el('CopyTarget').value = ''; changed();
+  });
   el('AddBinding').addEventListener('click', () => {
     if (pending || !current() || draft.length >= 32) return; capture();
     try {
@@ -389,6 +440,12 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     const index = draft.findIndex(binding => binding.bindingId === selected); draft.splice(index, 1); selected = draft[Math.min(index, draft.length - 1)].bindingId; invalidate(); renderBinding(); refresh(); });
   el('AddParameter').addEventListener('click', () => { if (pending || !current() || active().parameters.length >= 32) return; capture(); active().parameters.push({ key: '', type: 'string', value: '' }); invalidate(); renderBinding(); refresh(); });
   el('AddEvent').addEventListener('click', () => { if (pending || !current() || active().events.length >= 8) return; capture(); active().events.push({ signal: '', event: '' }); invalidate(); renderBinding(); refresh(); });
+  el('CopyTarget').addEventListener('change', () => {
+    if (pending || !current() || draft.length >= 32) return;
+    const target = el('CopyTarget').value;
+    copyTarget = session.catalog.scene.instances.some(item => item.instanceId === target) ? target : ''; refresh();
+  });
+  el('CopyBinding').addEventListener('click', copyBinding);
   el('LoadAudioTracks').addEventListener('click', () => void loadAudioTracks());
   button.addEventListener('click', () => void open()); el('Check').addEventListener('click', () => void check()); el('Apply').addEventListener('click', () => void apply());
   el('Close').addEventListener('click', () => close()); el('Cancel').addEventListener('click', () => close());
@@ -406,6 +463,6 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     }
     refresh();
   });
-  function dispose() { if (disposed) return; close(true); disposed = true; references.dispose(); animationClips.dispose(); parameterInterface.dispose(); stateBindings.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
+  function dispose() { if (disposed) return; close(true); disposed = true; references.dispose(); menuTargets.dispose(); animationClips.dispose(); parameterInterface.dispose(); stateBindings.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
   refresh(); return Object.freeze({ refresh, dispose, open });
 }

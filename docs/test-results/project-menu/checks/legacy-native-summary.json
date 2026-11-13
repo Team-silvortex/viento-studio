@@ -1,0 +1,63 @@
+{
+  "results": [
+    {
+      "name": "legacy",
+      "command": [
+        "xvfb-run",
+        "-a",
+        "-s",
+        "-screen 0 1280x800x24",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-concurrency=1",
+        "scripts/tests/godot4-camera2d-limits-native.test.mjs",
+        "scripts/tests/godot4-camera2d-native.test.mjs",
+        "scripts/tests/godot4-hud2d-native.test.mjs",
+        "scripts/tests/project-scene-switching-godot.test.mjs",
+        "scripts/tests/godot-project-pause-native.test.mjs"
+      ],
+      "startedAt": "2026-11-13T07:27:24.820987+00:00",
+      "returncode": 0,
+      "endedAt": "2026-11-13T07:33:22.233979+00:00",
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "name": "animation",
+      "command": [
+        "xvfb-run",
+        "-a",
+        "-s",
+        "-screen 0 1280x800x24",
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-concurrency=1",
+        "scripts/tests/animation-selectors-godot.test.mjs",
+        "scripts/tests/animation-combinations-godot.test.mjs"
+      ],
+      "startedAt": "2026-11-13T07:27:24.821244+00:00",
+      "returncode": 0,
+      "endedAt": "2026-11-13T07:31:13.070716+00:00",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    }
+  ],
+  "sourceFiles": 2303,
+  "sourcesUnchanged": true,
+  "changedSources": [],
+  "ok": true
+}

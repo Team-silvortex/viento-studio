@@ -1,0 +1,126 @@
+{
+  "status": "passed",
+  "scope": "Independent read-only review of film package and current documentation",
+  "oldPackages": [
+    {
+      "packageId": "org.viento.blank",
+      "canonicalSha256": "ea28edcb46ca9807a6547970f2769a98e337bd932f07593a5a7a41e250e4ee18",
+      "unchanged": true
+    },
+    {
+      "packageId": "org.viento.oc-game",
+      "canonicalSha256": "f8349c5f930f50a276ae4a150b68a9343052f69e67b7cb4489149c9862d9465c",
+      "unchanged": true
+    },
+    {
+      "packageId": "org.viento.oc-literature",
+      "canonicalSha256": "80fb30367da7d98bfee47c28580bcb4b4c39cee17f55da744f9ac0e055274b2e",
+      "unchanged": true
+    },
+    {
+      "packageId": "org.viento.oc-drama",
+      "canonicalSha256": "9feed52072e3f6858b4ebe786b7a229f59191008c012245802a1b11af93f65cd",
+      "unchanged": true
+    },
+    {
+      "packageId": "org.viento.software-design",
+      "canonicalSha256": "a7789fe04034e7d8e7cdda9877ce16084d6834428e8db359f09b179683ce6287",
+      "unchanged": true
+    },
+    {
+      "packageId": "org.viento.oc-narrative",
+      "canonicalSha256": "30545b1162327ee60172cdbe0255a3f85729f668d036a7ff358be8259fe1dc90",
+      "unchanged": true
+    }
+  ],
+  "defaultAndLegacyUnchanged": true,
+  "noRuntimeProfile": true,
+  "characterBackgroundOwnedByCharacter": true,
+  "prose": [
+    {
+      "id": "outline",
+      "sourcePath": "documents/outlines/test.md",
+      "profile": "prose",
+      "dialogueAndTimecodePreserved": true
+    },
+    {
+      "id": "scene",
+      "sourcePath": "documents/scenes/test.md",
+      "profile": "prose",
+      "dialogueAndTimecodePreserved": true
+    }
+  ],
+  "estimatedDurationRemainsDocumentText": true,
+  "languages": {
+    "zhCN": [
+      "空白工程",
+      "游戏",
+      "文学",
+      "戏剧",
+      "影视",
+      "软件设计"
+    ],
+    "en": [
+      "Blank project",
+      "Game",
+      "Literature",
+      "Drama",
+      "Film & television",
+      "Software design"
+    ],
+    "ja": [
+      "空のプロジェクト",
+      "ゲーム",
+      "文学",
+      "演劇",
+      "映像制作",
+      "ソフトウェア設計"
+    ]
+  },
+  "sceneIsolation": {
+    "markdownSource": true,
+    "assemblyRequiresJsonExtensionAndExplicitVientoScene2dFormat": true,
+    "buildDiscoveryRequiresJsonExtensionAndExplicitFormat": true,
+    "sceneEditorRequiresJsonFormatAndVersion": true,
+    "filesReviewed": [
+      "scripts/lib/project-assembly-documents.mjs",
+      "scripts/lib/project-build-service.mjs",
+      "web/modules/app-scene-create.js",
+      "engine/scene3d.mjs"
+    ]
+  },
+  "guideBoundariesReviewed": true,
+  "filesReviewed": [
+    "docs/FILM_WORKFLOW.md",
+    "docs/PROJECT_TEMPLATES.md",
+    "docs/PROJECT_WORKFLOW.md",
+    "docs/STATUS.md",
+    "docs/ROADMAP.md",
+    "docs/README.md",
+    "README.md",
+    "desktop/README.md",
+    "mobile/README.md"
+  ],
+  "sourceChecks": [
+    {
+      "name": "scripts/lib/project-templates.json",
+      "sha256": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4",
+      "unchangedSinceFreeze": true
+    },
+    {
+      "name": "web/i18n/en.js",
+      "sha256": "9e2e69f629fd20d50a6b3153eb45f9d7f07bdbe2927b41957e2a1f60919fb971",
+      "unchangedSinceFreeze": true
+    },
+    {
+      "name": "web/i18n/ja.js",
+      "sha256": "ed4c07e780a4491de014e6719683e679df0439d59bd15dc0cc5d4a996a5133c4",
+      "unchangedSinceFreeze": true
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "Scene isolation reviewed in actual recognition/discovery source; this is not a separate native game build execution.",
+    "Project and type labels are translated UI messages; copied template bodies remain author-owned Chinese starter text like existing packages."
+  ]
+}

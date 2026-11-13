@@ -1,0 +1,308 @@
+{
+  "format": "viento-project-pause-verification",
+  "schemaVersion": 1,
+  "ok": true,
+  "checkedAt": "2026-11-13T06:33:09.408893+00:00",
+  "version": "0.2.10",
+  "nextRelease": "0.3.0",
+  "commit": "c46631350f53ee60e0a70523684274f08b4c73b4",
+  "releaseActions": {
+    "versionChanged": false,
+    "committed": false,
+    "pushed": false,
+    "installed": false
+  },
+  "capability": {
+    "optional": "project.pause",
+    "descriptorVersion": "0.48.0",
+    "requestedGeneratedVersion": "0.48.0",
+    "unrequestedGeneratedVersion": "0.47.0",
+    "businessProtocolsUnchanged": [
+      4,
+      7,
+      10,
+      11
+    ],
+    "authorFormatChanged": false,
+    "transactionFormatChanged": false,
+    "bevySupported": false
+  },
+  "focused": {
+    "tests": 82,
+    "pass": 82,
+    "fail": 0,
+    "skipped": 0,
+    "log": "checks/focused-final.log"
+  },
+  "observationAndHost": {
+    "tests": 16,
+    "pass": 16,
+    "fail": 0,
+    "log": "checks/observation-host.log",
+    "covers": [
+      "split/CRLF/UTF8/oversize lines",
+      "current ready visit and monotonic identity",
+      "same-clock release barrier and focus cancellation",
+      "bounded retention without resetting admission",
+      "unforged first paused transition",
+      "EOF lifecycle synchronization without replay",
+      "terminal business clocks frozen and monotonic",
+      "UI run/build/snapshot/visit ownership",
+      "real child wall-clock timeout and Abort",
+      "observer failures preserve admitted state and session.json",
+      "ordinary no-pause capability remains optional"
+    ]
+  },
+  "browser": {
+    "ok": true,
+    "browser": "Chrome/156.0.8078.73",
+    "screenshots": 11,
+    "layoutChecks": 9,
+    "errors": [],
+    "authorFiles": 102,
+    "registeredDocuments": 35,
+    "assets": 9,
+    "preservedExistingBindings": 12,
+    "report": "browser/browser.json",
+    "archiveReport": "browser/author-archive.json",
+    "archive": "browser/author-final.viento.zip",
+    "standardAuthorFiles": 101,
+    "readmeSidecar": 1,
+    "ignoredAssetsAndRecordsCovered": 18,
+    "recoveredByActualRust": true
+  },
+  "native": {
+    "tests": 3,
+    "pass": 3,
+    "fail": 0,
+    "skipped": 0,
+    "log": "native/native.log",
+    "tool": {
+      "executable": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+      "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+      "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "controllerCases": [
+      "finish while paused",
+      "window close while paused",
+      "abort while paused",
+      "reject from physics callback"
+    ],
+    "controlledReport": "native/controlled-contracts.json",
+    "runs": [
+      {
+        "scope": "window",
+        "stages": 11,
+        "samples": 223,
+        "visits": 2,
+        "screenshots": 13,
+        "events": 24,
+        "pauseFrames": 9,
+        "report": "native/window-flow.json"
+      },
+      {
+        "scope": "offline",
+        "stages": 11,
+        "samples": 226,
+        "visits": 2,
+        "screenshots": 13,
+        "events": 26,
+        "pauseFrames": 9,
+        "report": "native/offline-delivery.json"
+      }
+    ],
+    "originalPathsUnavailableDuringOffline": true,
+    "sourceGuardFiles": 8,
+    "sourceGuardUnchanged": true,
+    "finalReaderRevalidation": "checks/final-readers.json",
+    "rawEvidenceBytes": 7187066,
+    "storedEvidenceBytes": 3876486,
+    "evidenceFiles": 63,
+    "inventory": "native-evidence-inventory.json"
+  },
+  "legacyNative": {
+    "counts": {
+      "tests": 22,
+      "pass": 22,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "sourcesUnchanged": true,
+    "report": "checks/native-regression.json"
+  },
+  "application": {
+    "version": "0.2.10",
+    "startedAt": "2026-11-13T06:21:08.342677+00:00",
+    "command": [
+      "npm",
+      "run",
+      "check",
+      "--",
+      "--app-only"
+    ],
+    "sourceFiles": 2281,
+    "returncode": 0,
+    "endedAt": "2026-11-13T06:30:16.592846+00:00",
+    "sourcesUnchanged": true,
+    "changedSources": [],
+    "counts": {
+      "tests": 9623,
+      "pass": 8929,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 694,
+      "todo": 0
+    },
+    "log": "checks/application.log",
+    "before": "checks/application-sources-before.json",
+    "after": "checks/application-sources-after.json"
+  },
+  "preservation": {
+    "oldEvidence": {
+      "files": 14353,
+      "changed": []
+    },
+    "oldBackendGdText": {
+      "files": 87,
+      "changed": []
+    },
+    "releaseDocs": {
+      "files": 51,
+      "changed": []
+    },
+    "historyDocs": {
+      "files": 15,
+      "changed": []
+    },
+    "canonicalSample": {
+      "files": 98,
+      "changed": []
+    },
+    "atlasFunctions": {
+      "before": 200,
+      "after": 201,
+      "changedOld": []
+    },
+    "atlasImplementations": {
+      "before": 606,
+      "after": 610,
+      "changedOld": []
+    },
+    "atlasBindings": {
+      "before": 821,
+      "after": 825,
+      "changedOld": []
+    },
+    "atlasEvidence": {
+      "before": 3785,
+      "after": 3824,
+      "changedOld": []
+    },
+    "atlasWorkflows": {
+      "before": 165,
+      "after": 166,
+      "changedOld": []
+    },
+    "atlasCells": {
+      "before": 3284,
+      "after": 3300,
+      "changedOld": []
+    },
+    "missingBaselineFiles": []
+  },
+  "preservationReport": "checks/preservation-summary.json",
+  "preservationRaw": {
+    "path": "checks/preservation.json.gz",
+    "rawSha256": "21b87f794d6688a91d3d04d1c289f5ca30600be6b8ac3182dddc1dcf48a82b1d"
+  },
+  "documentation": {
+    "protectedDocuments": 167,
+    "oldHeadings": 1453,
+    "relativeLinks": 7274,
+    "broken": [],
+    "report": "checks/doc-links.json"
+  },
+  "atlas": {
+    "functions": 201,
+    "implementations": 610,
+    "bindings": 825,
+    "cells": 3300,
+    "dependencies": 635,
+    "workflows": 166,
+    "historicalCellsPreserved": true,
+    "newDeliveryScore": 2
+  },
+  "limitations": [
+    "Real Linux Godot window/Xvfb/Mesa/XTest; no physical-device input, hardware GPU or speaker-hearing claim.",
+    "The browser authors a disposable reference workspace; not the complete game authored from blank.",
+    "ALWAYS native observer is read-only, gameplay callbacks remain in the pausable subtree.",
+    "No generic mouse menu, persistent save, thirty-minute gameplay, standalone engine-free binary, Bevy parity or installed-app acceptance.",
+    "Optional pause sideband observes current state and grants no control authority; wall-clock/output/session budgets remain finite.",
+    "Author ZIP includes 101 standard data files plus manifest; top-level README stays as ordinary sidecar.",
+    "Development harness failures and the final overlay/EOF/first-transition corrections are separately recorded in checks/development-notes.md.",
+    "After the passed full application check, only two conditionally run native test fixtures changed; their exact bytes passed the 12-case native mirror and the two original failures passed again from formal paths. All production sources and the other 2279 checked files remain identical."
+  ],
+  "overlay": {
+    "ok": true,
+    "viewport": [
+      390,
+      300
+    ],
+    "unicodeCharactersPerText": 160,
+    "panelWithinViewport": true,
+    "opaqueBackground": true,
+    "actualScroll": [
+      0,
+      513
+    ],
+    "screenshots": 2,
+    "report": "overlay/verification.json",
+    "sourceGuard": "overlay/probe-execution.json"
+  },
+  "conditionalAnimationNative": {
+    "tests": 12,
+    "pass": 12,
+    "fail": 0,
+    "skipped": 0,
+    "scope": "Temporary same-byte test mirror after correcting complete event stream versus 128-event retained tail, all original semantic assertions preserved.",
+    "report": "checks/animation-retention-verification.json",
+    "formalOriginalFailureCases": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "log": "checks/animation-formal-final.log"
+    }
+  },
+  "postApplicationSourceDelta": {
+    "ok": true,
+    "applicationDuringCheckUnchanged": true,
+    "applicationSourceFiles": 2281,
+    "changedAfterApplicationCheck": [
+      "scripts/tests/animation-combinations-godot.test.mjs",
+      "scripts/tests/animation-selectors-godot.test.mjs"
+    ],
+    "changeKind": "Only two conditionally run native test fixtures now collect full admitted events; all production and other checked sources remain identical.",
+    "formalTestsMatchPassedTemporaryCopies": true,
+    "nativeCounts": {
+      "tests": 12,
+      "suites": 0,
+      "pass": 12,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "formalNativeRecheck": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "log": "checks/animation-formal-final.log"
+    },
+    "verifiedAgainAfterFormalNative": true
+  }
+}

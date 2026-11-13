@@ -1,3 +1,4 @@
+import { validateProjectPauseObservation } from '../../engine/project-pause-observation.mjs';
 import { setupPhysicsReplayTargets } from './app-physics-replay-targets.js';
 import { setupProjectPhysicsObservation } from './app-project-physics-observation.js';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
@@ -55,6 +56,26 @@ const errorLabels = {
   build_scene_retry_values_invalid: '关卡重试初始值无效。请输入最多16个标量键、4096 UTF-8字节的严格 JSON 对象。',
   build_scene_retry_limit: '关卡重试诊断过多，部分问题已省略。请先修复已列出的行为绑定。',
   build_scene_retry_invalid: '关卡重试声明不可用，请重新读取并检查行为原文。',
+  build_project_menu_configuration_invalid: "菜单参数无效，请检查标题、显示模式和按钮 JSON。",
+  build_project_menu_duplicate: "同一场景的每种显示模式只能配置一个官方菜单，请移除重复绑定。",
+  build_project_menu_pause_required: "暂停菜单需要在同一场景绑定官方暂停脚本。",
+  build_project_menu_limit: "菜单诊断过多，请先修复已列出的问题。",
+  build_project_menu_invalid: "菜单来源不可用，请重新读取并检查行为原文。",
+  build_project_menu_inventory_invalid: "冻结工程的菜单文件已变化，请重新构建。",
+  build_project_menu_requires_project: "运行菜单需要项目组装，请选择包含该场景的组装。",
+  build_project_pause_duplicate: "同一场景只能配置一个官方暂停控制器，请移除重复绑定。",
+  build_project_pause_parameter_invalid: "暂停参数无效，请选择有效的暂停动作；Escape 保留为结束。",
+  build_project_pause_text_invalid: "暂停提示须为1至160个Unicode字符，且不含控制字符。",
+  build_project_pause_limit: "暂停诊断过多，请先修复已列出的问题。",
+  build_project_pause_invalid: "暂停来源不可用，请重新读取并检查行为原文。",
+  build_project_pause_inventory_invalid: "冻结工程的暂停文件已变化，请重新构建。",
+  build_project_pause_requires_project: "暂停需要项目组装，请选择包含该场景的组装。",
+  build_scene_restart_parameter_invalid: "原地重启参数无效，请检查动作名称和初始值。",
+  build_scene_restart_values_invalid: "原地重启初始值须为至多16个标量键、4096字节的严格JSON对象。",
+  build_scene_restart_limit: "原地重启诊断过多，请先修复已列出的问题。",
+  build_scene_restart_invalid: "原地重启来源不可用，请重新读取并检查行为原文。",
+  build_scene_restart_inventory_invalid: "冻结工程的原地重启文件已变化，请重新构建。",
+  build_scene_restart_requires_project: "原地重启需要项目组装，请选择包含该场景的组装。",
   build_scene_retry_inventory_invalid: '冻结工程的关卡重试文件已变化，请重新构建。',
   build_scene_navigation_target_invalid: '场景导航目标无效。请选择组装中的其他成员场景，并填写完整的小写 UUID。',
   build_scene_navigation_parameter_invalid: '场景导航参数无效。请检查动作名称、事件名称和载荷筛选。',
@@ -182,7 +203,7 @@ const toolReasonLabels = { platform_unsupported: errorLabels.build_platform_unsu
   tool_failed: '构建工具身份检查失败，请检查宿主工具配置。', tool_output_limit: '工具返回内容超出限制，检查已停止。',
   tool_cancelled: '工具检查已取消。', tool_changed: '构建工具已变化，请重新检查。' };
 
-export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, openAuthorSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
+export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, openAuthorSource = () => false, requestScriptCreation, setBusy = () => {}, applied = async () => {} } = {}) {
   const button = document.getElementById('projectBuildBtn');
   if (!button) return { setAvailable() {} };
   const dialog = document.createElement('dialog');
@@ -286,7 +307,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectBuildCaseReport"></div>
     <section id="projectBuildCaseResult" class="build-case-result" hidden aria-labelledby="projectBuildCaseTitle"><h3 id="projectBuildCaseTitle" data-i18n="运行验收结果"></h3>
     <p id="projectBuildCaseSummary" role="status" aria-live="polite"></p><ul id="projectBuildCaseChecks"></ul></section>
-    <p id="projectBuildStatus" role="status" aria-live="polite"></p><p id="projectBuildError" role="alert" hidden></p>
+    <p id="projectBuildStatus" role="status" aria-live="polite"></p><p id="projectBuildPauseStatus" class="build-hint" role="status" aria-live="polite" hidden></p><p id="projectBuildError" role="alert" hidden></p>
     <div id="projectBuildBackendProjects"></div>
     <section id="projectBuildPlanSummary" class="build-summary" hidden aria-labelledby="projectBuildPlanTitle"><h3 id="projectBuildPlanTitle" data-i18n="构建计划"></h3><p id="projectBuildPlanCounts"></p><p id="projectBuildBehaviorCounts" hidden></p><p id="projectBuildSnapshot" class="build-monospace"></p></section>
     <p id="projectBuildRunNote" class="build-hint" data-i18n="先检查计划，再构建。测试与预览使用最近成功构建的快照；编辑后需重新构建。无头测试不验证画面。"></p>
@@ -932,7 +953,35 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     },
   }) : { open() {}, setAvailable() {} };
 
+  let suspendedBehaviorCreation = null;
+  function suspendBehaviorCreation(intent) {
+    if (suspendedBehaviorCreation || !dialog.open || requestBusy || running() || checkingTool() || !ready()
+      || !liveScene() || selected !== intent?.scene?.objectId) return false;
+    const ticket = behaviorCreator.suspendForScript?.(intent); if (!ticket) return false;
+    const capsule = Object.freeze({}); suspendedBehaviorCreation = { capsule, ticket, sceneId: selected };
+    pendingSourceFocus = null; sourceNavigationEpoch++; dialog.close(); return capsule;
+  }
+  async function resumeBehaviorCreation(capsule, { savedScript = null, isCurrent = () => true } = {}) {
+    const suspended = suspendedBehaviorCreation;
+    if (!suspended || suspended.capsule !== capsule || dialog.open || !isCurrent() || !ready() || requestBusy || running()) return false;
+    dialogSession++; sourceNavigationEpoch++; pendingSourceFocus = null;
+    activeTab = 'build'; selected = suspended.sceneId; selections.build = selected;
+    dialog.showModal(); render(); await refresh(true);
+    if (suspendedBehaviorCreation !== suspended || !dialog.open || !isCurrent() || !ready() || errorMessage
+      || !data?.scenes.some(scene => scene.id === suspended.sceneId && scene.frozenOnly !== true)) return false;
+    selected = suspended.sceneId; selections.build = selected; render();
+    const restored = await behaviorCreator.resumeFromScript?.(suspended.ticket, { savedScript });
+    if (restored === true && suspendedBehaviorCreation === suspended) suspendedBehaviorCreation = null;
+    return restored === true;
+  }
+  function discardBehaviorCreation(capsule) {
+    const suspended = suspendedBehaviorCreation;
+    if (!suspended || suspended.capsule !== capsule || behaviorCreator.discardSuspended?.(suspended.ticket) !== true) return false;
+    suspendedBehaviorCreation = null; return true;
+  }
+
   const behaviorCreator = typeof setupSceneBehaviorCreate === 'function' ? setupSceneBehaviorCreate({
+    requestScriptCreation,
     getContext: () => { const context = getContext(); return { ...context,
       busy: (behaviorCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || data?.job?.status === 'running',
       session: String(dialogSession), sceneId: selected, visible: dialog.open, sourceToken: context.sceneDraftToken }; },
@@ -1329,6 +1378,23 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     physicsObserver.setSnapshot(physicsObservation()?.view || null);
     eventPositionsObserver.setSnapshot(eventPositionsObservation()?.view || null);
     const observation = runtimeObservation(), owner = observation?.owner || '';
+    const pauseStatus = el('projectBuildPauseStatus');
+    pauseStatus.hidden = true; pauseStatus.textContent = '';
+    if (data?.job?.kind === 'run' && data.job.pause && observation?.view.project) {
+      try {
+        const pause = validateProjectPauseObservation(data.job.pause), project = observation.view.project, visit = project.visits.at(-1);
+        const owns = pause.assemblyId === project.assemblyId && pause.current && visit?.phase === 'ready'
+          && pause.current.visitIndex === visit.index && pause.current.sceneId === project.activeSceneId;
+        if (owns && pause.totalTransitions > 0) {
+          const message = pause.phase === 'incomplete' ? '暂停观察未完成；显示的是最后收到的状态。'
+            : pause.phase !== 'recording' ? '' : pause.state === 'paused' ? '游戏已暂停；窗口操作与结束仍可用。'
+              : pause.state === 'waiting-for-release' ? '正在等待松开已注册的玩法按键，再恢复游戏。'
+                : pause.state === 'running' ? '游戏已恢复，继续当前场景访问。' : '';
+          pauseStatus.hidden = !message; pauseStatus.textContent = message ? t(message) : '';
+        }
+      } catch { /* A stale or malformed independent snapshot cannot label the current run. */ }
+    }
+
     animationTargetReview.setObservation(observation?.view.project?.protocolVersion === 11 ? observation.view : null);
     stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
     eventObservation.setSnapshot([3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
@@ -1900,7 +1966,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     sourceNavigationEpoch++;
     scenePreview.setVisible(false);
     if (current) pending.focus();
-    else button.focus();
+    else if (!suspendedBehaviorCreation) button.focus();
   });
   const tabs = ['projectBuildTabPreview', 'projectBuildTabBuild'];
   function selectTab(index, focus = false) {
@@ -2024,7 +2090,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   el('projectBuildCancel').addEventListener('click', () => void submit('cancel'));
   el('projectBuildRuntimeSearch').addEventListener('input', () => { runtimeSearch = el('projectBuildRuntimeSearch').value; renderRuntimeObjects(); });
   onLanguageChange(render);
-  return { setAvailable(value, commands = [], capabilities = {}) {
+  return { suspendBehaviorCreation, resumeBehaviorCreation, discardBehaviorCreation, setAvailable(value, commands = [], capabilities = {}) {
     creationSupported = commands.includes('scene.create'); updateSupported = commands.includes('scene.update'); sceneCreator.setAvailable(value === true && (creationSupported || updateSupported), commands);
     audioCreationSupported = value === true && commands.includes('audio.create'); audioCreator.setAvailable(audioCreationSupported, commands);
     animationCreationSupported = value === true && commands.includes('animation.create'); animationCreator.setAvailable(animationCreationSupported, commands);

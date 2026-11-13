@@ -1,15 +1,24 @@
+import { hasGodotProjectMenuParameterDeclaration, discoverGodotProjectMenuParameterContract } from './godot-project-menu-parameters.mjs';
 // Recognition belongs to fixed source-format providers. Never infer exports
 // from arbitrary GDScript/Rust, execute source, or promote a marker to authority.
 import { hasAnimationStateScriptMarker, readAnimationStateScriptSource } from './animation-state-script-source.mjs';
+import { hasGodotProjectPauseParameterDeclaration, discoverGodotProjectPauseParameterContract } from './godot-project-pause-parameters.mjs';
+import { hasGodotSceneRestartParameterDeclaration, discoverGodotSceneRestartParameterContract } from './godot-scene-restart-parameters.mjs';
 import { hasGodotSceneRetryParameterDeclaration, discoverGodotSceneRetryParameterContract } from './godot-scene-retry-parameters.mjs';
 import { captureScriptParameterContract } from './script-parameter-interface.mjs';
 
 // Candidate detection only schedules optional inspection; it grants no contract.
-export const hasScriptParameterDeclaration = content => hasGodotSceneRetryParameterDeclaration(content) || hasAnimationStateScriptMarker(content);
+export const hasScriptParameterDeclaration = content => hasGodotProjectMenuParameterDeclaration(content) || hasGodotProjectPauseParameterDeclaration(content) || hasGodotSceneRestartParameterDeclaration(content) || hasGodotSceneRetryParameterDeclaration(content) || hasAnimationStateScriptMarker(content);
 // The exact retry provider is pure. Only the existing animation provider needs
 // the optional native/WASM core; hosts keep that loader independently lazy.
 export const requiresScriptParameterCore = content => hasAnimationStateScriptMarker(content);
 export function discoverScriptParameterContract(content) {
+  const menu = discoverGodotProjectMenuParameterContract(content);
+  if (menu) return menu;
+  const pause = discoverGodotProjectPauseParameterContract(content);
+  if (pause) return pause;
+  const restart = discoverGodotSceneRestartParameterContract(content);
+  if (restart) return restart;
   const retry = discoverGodotSceneRetryParameterContract(content);
   if (retry) return retry;
   if (!hasAnimationStateScriptMarker(content)) return null;

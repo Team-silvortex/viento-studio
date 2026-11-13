@@ -1,0 +1,157 @@
+{
+  "status": "passed",
+  "completedAt": "2026-11-13T07:57:40.705057+00:00",
+  "scope": "Film project template creation, ordinary parser profiles, translated library catalog, native BOM/CRLF storage and standard archive restore, real Chromium document authoring.",
+  "changedFormalFiles": [
+    "scripts/tests/project-templates.test.mjs",
+    "scripts/tests/desktop-library.test.mjs",
+    "scripts/tests/project-templates-smoke.mjs",
+    "src-tauri/src/project_templates.rs (test count only)"
+  ],
+  "commands": [
+    {
+      "command": "cargo build --manifest-path /tmp/viento-film-template-native/Cargo.toml --offline --bins",
+      "log": "/tmp/viento-film-template-native/build.log",
+      "exitCode": 0
+    },
+    {
+      "command": "cargo test --manifest-path /tmp/viento-film-template-native/Cargo.toml --offline --bin mobile-storage project_templates::tests",
+      "log": "/tmp/viento-film-template-native/test.log",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 41
+    },
+    {
+      "command": "VIENTO_MOBILE_STORE_BIN=/tmp/viento-film-template-native/target/debug/mobile-storage node24 --test --test-reporter=tap scripts/tests/project-templates.test.mjs scripts/tests/desktop-library.test.mjs scripts/tests/i18n-coverage.test.mjs scripts/tests/template-http.test.mjs",
+      "log": "/tmp/viento-film-template-targeted-final.log",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    {
+      "command": "VIENTO_MOBILE_STORE_BIN=/tmp/viento-film-template-native/target/debug/mobile-storage VIENTO_TEMPLATE_TEST_OUTPUT=/tmp/viento-film-template-browser-complete node24 scripts/tests/project-templates-smoke.mjs /usr/bin/google-chrome",
+      "log": "/tmp/viento-film-template-browser-complete.log",
+      "status": "passed",
+      "browser": "Chrome/156.0.8078.73",
+      "screenshots": 8,
+      "runtimeErrors": 0,
+      "stableSourceCount": 17
+    }
+  ],
+  "nativeWrapper": {
+    "root": "/tmp/viento-film-template-native",
+    "productionModulesUnmodified": true,
+    "sourceHashes": {
+      "src-tauri/src/workspace.rs": "388f1b0f9905ee561ba7a4cafe7b91d3b341635832dff757c5368eebbbeff880",
+      "src-tauri/src/project_templates.rs": "efd68fbd807b76ef8b912cc5b941b93f88bf9c3ae30c37e1648f6708e10102ae",
+      "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
+      "src-tauri/src/mobile_archive.rs": "580e5e757e5c0aa9c9e197c2593f604aab3d86425bdd63b503e08fdb995f20cf",
+      "scripts/lib/project-templates.json": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4"
+    },
+    "files": {
+      "Cargo.toml": "d3223941cff22d2a2171cc5085e110fa68b297b661475ad0e4a8372a3d22fb11",
+      "Cargo.lock": "b6e445a85161e11570c918b25bee60b966be4c1c35338433932296efb4258b81",
+      "src/bin/mobile-storage.rs": "8639c91d80d139dac2f8950ab51e45779b0a971bf60929bac1d4ed237aa6afad",
+      "src/bin/workspace-archive.rs": "a0da33912aae19f58b6cd6c38d577534b2defb4b038f5566d154a0cf482c56e5"
+    },
+    "binaries": {
+      "mobile-storage": {
+        "path": "/tmp/viento-film-template-native/target/debug/mobile-storage",
+        "sha256": "b9572e5393d39e09b58b62aa4263c8342451a5e1c3bc081e18061c3229d170dc"
+      },
+      "workspace-archive": {
+        "path": "/tmp/viento-film-template-native/target/debug/workspace-archive",
+        "sha256": "3aa9e4d2158223b6c141e5527a6f5ecf7c3660b6c520091fb677d20800165d09"
+      }
+    },
+    "limitations": [
+      "The temporary wrapper directly imports unmodified production Rust modules and has its own saved minimal Cargo manifest/lock; no installed desktop, native picker, engine runtime, APK or device claim."
+    ]
+  },
+  "browserEvidence": {
+    "root": "/tmp/viento-film-template-browser-complete",
+    "files": {
+      "browser.json": {
+        "bytes": 4595,
+        "sha256": "a4bf1990185a0b807cbd7c816e383be3e5cdb4c7754d09a1916def4350a941d5"
+      },
+      "desktop-template-en.png": {
+        "bytes": 114397,
+        "sha256": "88e07cbb641c9ad0115dc041c666e3d54a80c0e8ccb25b759457eb7ff6daa223"
+      },
+      "desktop-template-zh.png": {
+        "bytes": 116242,
+        "sha256": "5135c0c6130d7b27db46ae8b5f10862e60a1a514854ed813c67e2ca37c96c999"
+      },
+      "drama-dialogue-ja.png": {
+        "bytes": 186005,
+        "sha256": "c0ee4796bc512f5e7f9719b4fa60097808f3d3a80239b92bdf680030d1355e24"
+      },
+      "film-screenplay-ja-390.png": {
+        "bytes": 137974,
+        "sha256": "9acb7094c98c46e4a6ddc65cdae5bd133b9fd06aa39496a3880cda981ad88700"
+      },
+      "film-storyboard-fields-ja-390.png": {
+        "bytes": 75719,
+        "sha256": "6b918792a7ab1269870d4f357e63080753080b35166d4b569960c313aff0ebf5"
+      },
+      "film-template-ja-390.png": {
+        "bytes": 79698,
+        "sha256": "41b0a258fae89af3fb284bc3e993f4da7c66ecbe076dd3a8539d89a53b8a3745"
+      },
+      "mobile-template-ja.png": {
+        "bytes": 86589,
+        "sha256": "1ededdea3ab3ced9cf13004814dc1a2e4527eca2e0d1e2bf562fefb1712be9e4"
+      },
+      "software-fields-ja.png": {
+        "bytes": 108525,
+        "sha256": "4c462bcd017627dad159c6d59872bab48fef9d7967d576cd4f879bfac0ccd4cd"
+      }
+    },
+    "sourceStableDuringProof": true,
+    "sourceHashes": {
+      "scripts/lib/project-templates.json": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4",
+      "scripts/lib/project-layout.mjs": "83d9b9ba4e13bc43a340293f5d87a6e17fba1bb0ab01a0b4ea80e944682bde48",
+      "engine/project.mjs": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
+      "engine/parser.mjs": "240dd8d16b5e2b13c5e297fab31f5c7c129a766fc429b79d2c8be4d94d1721fe",
+      "src-tauri/src/project_templates.rs": "efd68fbd807b76ef8b912cc5b941b93f88bf9c3ae30c37e1648f6708e10102ae",
+      "src-tauri/src/workspace.rs": "388f1b0f9905ee561ba7a4cafe7b91d3b341635832dff757c5368eebbbeff880",
+      "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
+      "src-tauri/src/mobile_archive.rs": "580e5e757e5c0aa9c9e197c2593f604aab3d86425bdd63b503e08fdb995f20cf",
+      "mobile/platform.mjs": "921d587a591dbb662630598b838d0d6095774de386a0ecb8468cfb064753a771",
+      "mobile/library.js": "a60baece388c981736d68aa81ef76a47a3e83a893fe2ebb620d0c5e785bac6dd",
+      "mobile/editor.js": "c4a7b6346acaa346d836b7b3f555c4d7a468d6e28d92528419083985005d8d0f",
+      "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
+      "web/i18n/en.js": "9e2e69f629fd20d50a6b3153eb45f9d7f07bdbe2927b41957e2a1f60919fb971",
+      "web/i18n/ja.js": "ed4c07e780a4491de014e6719683e679df0439d59bd15dc0cc5d4a996a5133c4",
+      "scripts/tests/project-templates-smoke.mjs": "d4d14843b2e84746023d899db25a81b0dc5e019c78c104e5ed79748183b3ed55",
+      "scripts/tests/mobile-native-harness.mjs": "9e39bc80c1486b0dc82963d36a183752ba045587893b40ad74cd3fe2b536b829",
+      "scripts/tests/mobile-browser.mjs": "508e6db261727e9fa64e5bfbd0d2fecb2ee4f8496b532f92d8a5ece12fb46d2a"
+    }
+  },
+  "driverRepairs": {
+    "productionModified": false,
+    "fixes": [
+      "Wait for 6 library options before Create.",
+      "Wait for selected workspace name/ID before document creation.",
+      "Do not import DOM-caching app-state while HTML is still parsing.",
+      "Retry only two known transient CDP context destruction errors during navigation."
+    ],
+    "failedRunsPreserved": [
+      "/tmp/viento-film-template-browser-first",
+      "/tmp/viento-film-template-browser-diagnostic",
+      "/tmp/viento-film-template-browser-verified",
+      "/tmp/viento-film-template-browser-final"
+    ],
+    "failedRunsCountedAsPass": false
+  },
+  "generatedTestResources": {
+    "mobile": "mobile/dist generated by unchanged mobile/prepare.mjs",
+    "desktop": "desktop/ui/i18n only copied from authoritative web/i18n",
+    "desktopResourcesRebuilt": false
+  },
+  "oldEvidenceOverwritten": false
+}

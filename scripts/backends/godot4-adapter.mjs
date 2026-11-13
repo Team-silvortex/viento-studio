@@ -1,3 +1,7 @@
+import { applyGodotProjectMenu, PROJECT_MENU_CAPABILITY } from './godot4-project-menu.mjs';
+import { applyGodotProjectPause, PROJECT_PAUSE_CAPABILITY } from './godot4-project-pause.mjs';
+import { createProjectPauseReader } from '../../engine/project-pause-observation.mjs';
+import { applyGodotSceneRestartProject, SCENE_RESTART_CAPABILITY } from './godot4-scene-restart.mjs';
 // Godot-specific process arguments and generated project conventions stay here.
 // The host executor consumes only the neutral adapter contract below.
 import fs from 'node:fs/promises';
@@ -43,9 +47,9 @@ import { applyGodotSceneRetryProject, SCENE_RETRY_CAPABILITY } from './godot4-sc
 import { validateGodotSceneRetryInventory } from './godot4-scene-retry-inventory.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.46.0',
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.49.0',
   platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }, { kind: 'project', schemaVersion: 2, runtimeProtocolVersion: 11 }],
-  capabilities: [SCENE_RETRY_CAPABILITY, HUD2D_CAPABILITY, CAMERA2D_CAPABILITY, CAMERA2D_LIMITS_CAPABILITY, PHYSICS_INSTANCE_INPUT_REPLAY_CAPABILITY, PLANAR_INTENT_CAPABILITY, 'physics.platform-control2d', 'physics.platform-vertical2d', 'project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
+  capabilities: [PROJECT_MENU_CAPABILITY, PROJECT_PAUSE_CAPABILITY, SCENE_RESTART_CAPABILITY, SCENE_RETRY_CAPABILITY, HUD2D_CAPABILITY, CAMERA2D_CAPABILITY, CAMERA2D_LIMITS_CAPABILITY, PHYSICS_INSTANCE_INPUT_REPLAY_CAPABILITY, PLANAR_INTENT_CAPABILITY, 'physics.platform-control2d', 'physics.platform-vertical2d', 'project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -72,6 +76,9 @@ async function generate(plan) {
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
   const detached = structuredClone(plan);
+  if (detached.kind === 'scene2d' && detached.requiredCapabilities.includes(PROJECT_MENU_CAPABILITY)) throw buildError('build_project_menu_requires_project', 'Menus currently require a project assembly.');
+  if (detached.kind === 'scene2d' && detached.requiredCapabilities.includes(PROJECT_PAUSE_CAPABILITY)) throw buildError('build_project_pause_requires_project', 'Pause currently requires a project assembly.');
+  if (detached.kind === 'scene2d' && detached.requiredCapabilities.includes(SCENE_RESTART_CAPABILITY)) throw buildError('build_scene_restart_requires_project', 'Restart currently requires a project assembly.');
   if (detached.kind === 'scene2d' && Object.hasOwn(detached, 'hud2d')) throw buildError('build_hud2d_requires_project', 'HUD2D currently requires a project assembly.');
   let hudPlan = null;
   if (detached.kind === 'project' && detached.scenes?.some(scene => Object.hasOwn(scene, 'hud2d'))) {
@@ -101,6 +108,9 @@ async function generate(plan) {
   if (cameraPlan) await applyGodotCamera2DProject(generated, cameraPlan);
   if (hudPlan) await applyGodotHUD2DProject(generated, hudPlan);
   if (detached.kind === 'project') await applyGodotSceneRetryProject(generated);
+  if (detached.kind === 'project') await applyGodotSceneRestartProject(generated);
+  if (detached.kind === 'project' && detached.requiredCapabilities.includes(PROJECT_PAUSE_CAPABILITY)) await applyGodotProjectPause(generated);
+  if (detached.kind === 'project' && detached.requiredCapabilities.includes(PROJECT_MENU_CAPABILITY)) await applyGodotProjectMenu(generated);
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -109,7 +119,17 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-project-menu${suffix}.mjs`, new URL(`./godot4-project-menu${suffix}.mjs`, import.meta.url)]),
+    ...['project-menu-runtime.gd', 'project-menu-input.gd'].map(name => [`scripts/backends/godot4/${name}`, new URL(`./godot4/${name}`, import.meta.url)]),
+    ...['scene-menu-capability', 'godot-project-menu-script', 'project-menu-diagnostics', 'project-menu'].map(name => [`engine/${name}.mjs`, new URL(`../../engine/${name}.mjs`, import.meta.url)]),
+    ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-project-pause${suffix}.mjs`, new URL(`./godot4-project-pause${suffix}.mjs`, import.meta.url)]),
+    ...['project-pause-runtime.gd', 'project-pause-input.gd'].map(name => [`scripts/backends/godot4/${name}`, new URL(`./godot4/${name}`, import.meta.url)]),
+    ...['scene-pause-capability', 'godot-project-pause-script', 'project-pause-diagnostics', 'project-pause-observation'].map(name => [`engine/${name}.mjs`, new URL(`../../engine/${name}.mjs`, import.meta.url)]),
     ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-scene-retry${suffix}.mjs`, new URL(`./godot4-scene-retry${suffix}.mjs`, import.meta.url)]),
+    ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-scene-restart${suffix}.mjs`, new URL(`./godot4-scene-restart${suffix}.mjs`, import.meta.url)]),
+    ['scripts/backends/godot4/restart-project-runtime.gd', new URL('./godot4/restart-project-runtime.gd', import.meta.url)],
+    ['engine/scene-restart-capability.mjs', new URL('../../engine/scene-restart-capability.mjs', import.meta.url)],
+    ...['godot-scene-restart-script', 'project-scene-restart-diagnostics'].map(name => [`engine/${name}.mjs`, new URL(`../../engine/${name}.mjs`, import.meta.url)]),
     ['scripts/backends/godot4/retry-project-runtime.gd', new URL('./godot4/retry-project-runtime.gd', import.meta.url)],
     ...['godot-scene-retry-script', 'project-scene-retry-diagnostics'].map(name => [`engine/${name}.mjs`, new URL(`../../engine/${name}.mjs`, import.meta.url)]),
     ...['godot4-physics-planar-intent.mjs', 'godot4-physics-planar-intent-projection.mjs', 'godot4-physics-planar-intent-inventory.mjs',
@@ -426,6 +446,7 @@ export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
     if (input.kind === 'project') {
       const protocolVersion = options?.protocolVersion ?? (input.scenes.some(scene => scene.animation?.document.playbackScope === 'instance') ? 11 : createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4);
       const runtimeReader = createProjectRuntimeEventReader(input, { protocolVersion, ...options,
+      allowSceneRestart: options?.capabilities?.includes(SCENE_RESTART_CAPABILITY) === true,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
       const observed = options?.smoke === true && hasGodotPhysics(input)
         && (options.capabilities === undefined || options.capabilities.includes('physics.observe2d'))
@@ -438,8 +459,10 @@ export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
         ? createProjectAnimationRequestsReader(input, { runtimeReader: framed, protocolVersion, onSnapshot: options.onAnimationRequestsSnapshot }) : framed;
       const audio = options?.capabilities?.includes(GODOT_AUDIO_REQUESTS_CAPABILITY)
         ? createProjectAudioRequestsReader(input, { runtimeReader: animated, protocolVersion, onSnapshot: options.onAudioRequestsSnapshot }) : animated;
-      return protocolVersion >= 3 && options?.capabilities?.includes(GODOT_EXECUTION_FRAMES_CAPABILITY)
+      const positioned = protocolVersion >= 3 && options?.capabilities?.includes(GODOT_EXECUTION_FRAMES_CAPABILITY)
         ? createProjectEventPositionsReader({ runtimeReader: audio, onSnapshot: options.onEventPositionsSnapshot }) : audio;
+      return options?.capabilities?.includes(PROJECT_PAUSE_CAPABILITY)
+        ? createProjectPauseReader(input, { runtimeReader: positioned, onSnapshot: options.onPauseSnapshot }) : positioned;
     }
     const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;

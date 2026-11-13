@@ -1,0 +1,273 @@
+{
+  "format": "viento-film-template-verification",
+  "schemaVersion": 1,
+  "ok": true,
+  "checkedAt": "2026-11-13T08:07:45.482468+00:00",
+  "version": "0.2.10",
+  "nextRelease": "0.3.0",
+  "installedVersion": "0.2.0",
+  "commit": "c46631350f53ee60e0a70523684274f08b4c73b4",
+  "releaseActions": {
+    "versionChanged": false,
+    "committed": false,
+    "pushed": false,
+    "installed": false
+  },
+  "template": {
+    "packageId": "org.viento.oc-film",
+    "version": "1.0.0",
+    "digest": "sha256:3f5b734e248497dee8318536fe88c1d74412b84a8f71339e3a0f4242233f5c8c",
+    "types": [
+      "document",
+      "character",
+      "outline",
+      "scene",
+      "shot",
+      "location",
+      "production-plan",
+      "prop"
+    ],
+    "prose": [
+      "outline",
+      "scene"
+    ],
+    "selectablePackages": 6,
+    "oldPackagesIncludingCompatibility": 6,
+    "oldPackageObjectsAndDigestsUnchanged": true,
+    "defaultUnchanged": "org.viento.blank",
+    "newParser": false,
+    "runtimeCapabilityAdded": false,
+    "authorFormatChanged": false,
+    "transactionFormatChanged": false,
+    "runtimeProtocolChanged": false
+  },
+  "productionSources": {
+    "scripts/lib/project-templates.json": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4",
+    "web/i18n/en.js": "9e2e69f629fd20d50a6b3153eb45f9d7f07bdbe2927b41957e2a1f60919fb971",
+    "web/i18n/ja.js": "ed4c07e780a4491de014e6719683e679df0439d59bd15dc0cc5d4a996a5133c4"
+  },
+  "targeted": {
+    "tests": 33,
+    "pass": 33,
+    "fail": 0,
+    "skipped": 0,
+    "log": "checks/targeted-tests.log",
+    "commands": "checks/verification.json"
+  },
+  "nativeTemplateUnitTests": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0,
+    "ignored": 0,
+    "filtered": 41,
+    "log": "checks/rust-template-tests.log",
+    "wrapper": "checks/native-wrapper/",
+    "productionModules": {
+      "src-tauri/src/workspace.rs": "388f1b0f9905ee561ba7a4cafe7b91d3b341635832dff757c5368eebbbeff880",
+      "src-tauri/src/project_templates.rs": "efd68fbd807b76ef8b912cc5b941b93f88bf9c3ae30c37e1648f6708e10102ae",
+      "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
+      "src-tauri/src/mobile_archive.rs": "580e5e757e5c0aa9c9e197c2593f604aab3d86425bdd63b503e08fdb995f20cf",
+      "scripts/lib/project-templates.json": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4"
+    },
+    "binaries": {
+      "mobile-storage": {
+        "path": "/tmp/viento-film-template-native/target/debug/mobile-storage",
+        "sha256": "b9572e5393d39e09b58b62aa4263c8342451a5e1c3bc081e18061c3229d170dc"
+      },
+      "workspace-archive": {
+        "path": "/tmp/viento-film-template-native/target/debug/workspace-archive",
+        "sha256": "3aa9e4d2158223b6c141e5527a6f5ecf7c3660b6c520091fb677d20800165d09"
+      }
+    }
+  },
+  "regression": {
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=2",
+      "scripts/tests/project-definition.test.mjs",
+      "scripts/tests/project-snapshot.test.mjs",
+      "scripts/tests/templates.test.mjs",
+      "scripts/tests/media.test.mjs",
+      "scripts/tests/workspace-layout.test.mjs",
+      "scripts/tests/resource-packages.test.mjs",
+      "scripts/tests/export.test.mjs",
+      "scripts/tests/asset-export.test.mjs",
+      "scripts/tests/i18n.test.mjs"
+    ],
+    "startedAt": "2026-11-13T07:52:07.354272+00:00",
+    "sourceFiles": 729,
+    "returncode": 0,
+    "endedAt": "2026-11-13T07:52:26.543840+00:00",
+    "sourcesUnchanged": true,
+    "changedSources": [],
+    "counts": {
+      "tests": 119,
+      "pass": 119,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "log": "checks/regression.log",
+    "before": "checks/regression-sources-before.json",
+    "after": "checks/regression-sources-after.json"
+  },
+  "browser": {
+    "status": "passed",
+    "browser": "Chrome/156.0.8078.73",
+    "screenshots": 8,
+    "runtimeErrors": [],
+    "sourceFiles": 17,
+    "sourcesUnchanged": true,
+    "screenplayAndStoryboardReopen": true,
+    "startsWithDocuments": 0,
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "report": "browser/browser.json",
+    "readme": "browser/README.md",
+    "sourceAndDriverProof": "checks/verification.json"
+  },
+  "mediaMigration": {
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "skipped": 0,
+    "uploadedKinds": [
+      "image",
+      "audio",
+      "video"
+    ],
+    "fixtureDecoding": "ffmpeg input validity check only; not Studio playback/rendering",
+    "authorFilesPreserved": 20,
+    "templateFilesPreserved": 8,
+    "sourceFilesPreserved": 18,
+    "sourceHashesUnchanged": true,
+    "originalPathsUnavailable": true,
+    "archive": {
+      "path": "media/film-media.viento.zip",
+      "bytes": 10442,
+      "sha256": "7cbc58eb33536762e70e84fae8f01ce18646ce1dfaf6414ec92eb35257388fe8"
+    },
+    "report": "media/workflow.json",
+    "inventory": "media/evidence-inventory.json",
+    "initialManifest": "Existing first Node registration may reserialize layout key order; JSON values and IDs equal. Strict migration hash baseline captured after ordinary registration and author saves."
+  },
+  "preservation": {
+    "format": "viento-film-template-preservation-summary",
+    "schemaVersion": 1,
+    "ok": true,
+    "checkedAt": "2026-11-13T08:05:21.036928+00:00",
+    "baselineFiles": 17447,
+    "baselineFilesPresent": 17447,
+    "baselineFilesLost": 0,
+    "baselineFilesChanged": 23,
+    "immutableGroups": {
+      "oldEvidence": {
+        "files": 14890,
+        "preservedExactly": 14890,
+        "ok": true
+      },
+      "oldBackendGdAndText": {
+        "files": 91,
+        "preservedExactly": 91,
+        "ok": true
+      },
+      "examples": {
+        "files": 164,
+        "preservedExactly": 164,
+        "ok": true
+      },
+      "publishedReleaseDocuments": {
+        "files": 51,
+        "preservedExactly": 51,
+        "ok": true
+      },
+      "history": {
+        "files": 15,
+        "preservedExactly": 15,
+        "ok": true
+      },
+      "oldMenuAuthorBaselineFiles": {
+        "files": 86,
+        "preservedExactly": 86,
+        "ok": true
+      },
+      "oldMenuZipArchives": {
+        "files": 2,
+        "preservedExactly": 2,
+        "ok": true
+      }
+    },
+    "menuAuthorFiles": 104,
+    "menuAuthorUnchanged": true,
+    "menuIgnoredAssetAndRegistrationFilesCovered": 18,
+    "oldTemplatePackages": 6,
+    "oldTemplatePackagesUnchanged": true,
+    "atlasOldCounts": {
+      "functions": 202,
+      "implementations": 614,
+      "bindings": 829,
+      "cells": 3316,
+      "evidence": 3859,
+      "dependencies": 639,
+      "workflows": 167
+    },
+    "atlasCurrentCounts": {
+      "functions": 203,
+      "implementations": 618,
+      "bindings": 833,
+      "cells": 3332,
+      "evidence": 3879,
+      "dependencies": 643,
+      "workflows": 168
+    },
+    "atlasOldObjectsAndScoresPreserved": true
+  },
+  "preservationReport": "checks/preservation-summary.json",
+  "preservationRaw": {
+    "path": "checks/preservation.json.gz",
+    "rawSha256": "f2d4092a7883e17304e52872c6cad9a56b9717779f55fb49cbf07a19488410d2",
+    "storedSha256": "06a44f93fb3a6c04751ec178b3ae2f46b0f5c81b0480dc50d20b13f8ecdbd7e1"
+  },
+  "atlas": {
+    "functions": 203,
+    "implementations": 618,
+    "bindings": 833,
+    "cells": 3332,
+    "evidence": 3879,
+    "dependencies": 643,
+    "workflows": 168,
+    "oldObjectsAndScoresPreserved": true,
+    "newDeliveryScore": 2,
+    "referencedFiles": 3173
+  },
+  "documentation": {
+    "protectedDocuments": 171,
+    "oldHeadings": 1491,
+    "oldExplicitAnchors": 401,
+    "relativeLinks": 7421,
+    "dynamicRoutes": 173,
+    "broken": [],
+    "report": "checks/doc-links.json"
+  },
+  "applicationCheckScope": "This film increment ran targeted 33 JS, 119 shared-chain JS, one native media integration test and five Rust template unit tests, plus real Chrome. Previous menu full app 9670 remains a separate immutable prior-turn report; it was not rerun or relabeled as this film increment.",
+  "limitations": [
+    "Creation and storage call actual production Rust modules through a temporary console host; pickers/windows/IPC are substituted. No installed desktop or Android-device validation.",
+    "Author document/template bodies remain editable project-owned Chinese text, independent of UI language.",
+    "No film timeline, automatic camera scheduling, nonlinear editing, transcoding, frame rendering, film output or new Godot/Bevy capability.",
+    "Media uploads/references/indexing/archive verified separately from mobile browser, which retains its existing media restriction."
+  ],
+  "artifacts": {
+    "report": "checks/final-artifact-audit.json",
+    "allHashesVerified": true
+  },
+  "cacheCleanup": {
+    "report": "checks/cache-cleanup.json",
+    "onlyNewTemporaryBuildOutputRemoved": true,
+    "temporaryBinariesRetained": false
+  }
+}

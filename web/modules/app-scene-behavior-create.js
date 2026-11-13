@@ -12,7 +12,7 @@ const behaviorProfiles = Object.freeze([
 // Creation owns a local declaration and a single reviewed transaction. Source
 // navigation, world authority and author-file writes belong to injected ports.
 export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = () => {}, inspect = async () => null,
-  command = async () => null, applied = async () => {}, openSource = async () => false } = {}) {
+  command = async () => null, applied = async () => {}, openSource = async () => false, requestScriptCreation } = {}) {
   if (!document.getElementById('sceneBehaviorCreateStyle')) {
     const link = document.createElement('link'); link.id = 'sceneBehaviorCreateStyle'; link.rel = 'stylesheet'; link.href = '/web/scene-behavior-create.css';
     (document.head || document.body).append(link);
@@ -22,6 +22,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   dialog.innerHTML = `<header class="scene-behavior-create-header"><h2 id="sceneBehaviorCreateTitle" data-i18n="为场景添加行为"></h2><button id="sceneBehaviorCreateClose" class="doc-btn doc-btn-ghost" type="button" data-i18n="返回构建"></button></header>
     <div class="scene-behavior-create-body"><p data-i18n="为已保存场景创建多条实例与脚本绑定，并一起登记行为文档和关联关系。此操作不运行脚本。"></p>
     <p id="sceneBehaviorCreateScene" class="scene-behavior-create-note"></p><p data-i18n="整份行为文档使用所选后端与语言。请选择与脚本内容一致的选项；创建无需安装对应工具链，参数与信号可在保存后设置。"></p>
+    <button id="sceneBehaviorCreateNewScript" class="doc-btn doc-btn-ghost" type="button" data-i18n="新建 TXT 脚本并返回"></button>
     <button id="sceneBehaviorCreateRefresh" class="doc-btn doc-btn-ghost" type="button" data-i18n="重新读取工程"></button>
     <p id="sceneBehaviorCreateEmpty" data-i18n="没有可用的已登记 TXT 脚本。请返回主编辑器，新建并保存 TXT 文档后再添加行为。" hidden></p>
     <fieldset id="sceneBehaviorCreateFields" hidden><legend data-i18n="行为文档设置"></legend><div class="scene-behavior-create-grid">
@@ -53,7 +54,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   const fail = key => { throw Object.assign(new Error(t(key)), { uiKey: key }); };
   let enabled = false, supported = false, disposed = false, epoch = 0, owner = null, catalog = null, draft = null, baseline = '', preview = null;
   let phase = '', dirty = false, saved = null, refreshed = false, uncertain = false, needsRefresh = false, opener = null, message = '', details = '';
-  let selectedBindingId = '';
+  let selectedBindingId = '', suspended = null, returnOrigin = null, scriptRequest = false, scriptRequestSequence = 0, suppressCloseFocus = false;
   const fields = ['Profile', 'Type', 'Path', 'Instance', 'Source'];
   const selectedBinding = () => draft?.bindings.find(binding => binding.bindingId === selectedBindingId);
   const bindingFields = () => ({ instanceId: el('Instance').value, sourceObjectId: el('Source').value });
@@ -65,7 +66,9 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     const c = getContext(); return generation === epoch && dialog.open && owner && !owner.invalidated && eligible() && c.session === owner.session && c.sceneId === owner.sceneId
       && (afterSave || c.sourceToken === owner.sourceToken);
   };
-  const canChange = () => !phase && !saved && !uncertain && !needsRefresh && catalog && draft && owns();
+  const canView = () => !phase && !scriptRequest && !saved && catalog && draft && owns();
+  const canEditDraft = () => !phase && !saved && !uncertain && !needsRefresh && catalog && draft && owns();
+  const canChange = () => !scriptRequest && canEditDraft();
   const approval = () => preview && signature() === preview.signature;
   function invalidate() { preview = null; dirty = Boolean(draft && signature() !== baseline); message = '行为尚未保存，请先审阅原文与关系。'; details = ''; }
   function capture() { if (draft) Object.assign(draft, raw()); }
@@ -93,7 +96,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     renderBindingList();
   }
   function selectBinding() {
-    if (!canChange()) { el('BindingList').value = selectedBindingId; return; }
+    if (!canView()) { el('BindingList').value = selectedBindingId; return; }
     const next = draft.bindings.find(binding => binding.bindingId === el('BindingList').value); if (!next) return;
     capture(); selectedBindingId = next.bindingId; renderFields(); update();
   }
@@ -117,10 +120,10 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     ...JSON.parse(requested.content).bindings.map(binding => binding.implementation.sourceObjectId)])].sort();
   function update() {
     if (disposed) return;
-    translatePage(dialog); dialog.dataset.dirty = String(!saved && (dirty || draft && signature() !== baseline)); dialog.setAttribute('aria-busy', String(Boolean(phase)));
-    el('Fields').hidden = !catalog; el('Fields').disabled = !canChange();
+    translatePage(dialog); dialog.dataset.dirty = String(Boolean(suspended || !saved && (dirty || draft && signature() !== baseline))); dialog.setAttribute('aria-busy', String(Boolean(phase || scriptRequest)));
+    el('Fields').hidden = !catalog; el('Fields').disabled = !canView();
     for (const name of fields) el(name).disabled = !canChange();
-    el('BindingList').disabled = !canChange();
+    el('BindingList').disabled = !canView();
     el('AddBinding').disabled = !canChange() || !catalog.sources.length || draft.bindings.length >= SCENE_BEHAVIOR_LIMITS.bindings;
     el('RemoveBinding').disabled = !canChange() || draft.bindings.length <= 1;
     el('BindingCount').textContent = draft ? t('绑定 {0}/{1} · 脚本 {2}/{3}；至少保留一条绑定。', draft.bindings.length, SCENE_BEHAVIOR_LIMITS.bindings, new Set(raw().bindings.map(binding => binding.sourceObjectId).filter(Boolean)).size, SCENE_BEHAVIOR_LIMITS.sources) : '';
@@ -131,8 +134,10 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     el('Save').disabled = !canChange() || !approval();
     el('Open').hidden = !saved; el('Open').disabled = Boolean(phase) || !saved || !refreshed || !owns();
     el('Check').hidden = Boolean(saved); el('Save').hidden = Boolean(saved);
-    el('Refresh').disabled = Boolean(phase) || !owns();
-    el('Close').disabled = Boolean(phase); el('Cancel').disabled = Boolean(phase);
+    el('NewScript').hidden = typeof requestScriptCreation !== 'function';
+    el('NewScript').disabled = !canChange() || !behaviorProfiles.some(item => item.id === el('Profile').value);
+    el('Refresh').disabled = Boolean(phase || scriptRequest) || !owns();
+    el('Close').disabled = Boolean(phase || scriptRequest); el('Cancel').disabled = Boolean(phase || scriptRequest);
     el('Review').hidden = !preview; el('SourceText').textContent = preview?.request.content || '';
     el('Relations').replaceChildren();
     if (preview) for (const [from, kind, to] of [[catalog.scene.objectId, 'behavior', draft.objectId], ...referenceIds(preview.request).map(targetId => [draft.objectId, 'references', targetId])]) {
@@ -194,12 +199,14 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     catch (error) { if (owns(generation, true)) { message = '行为已保存，但目录刷新失败。请重新读取工程，勿重复创建。'; details = error.message || ''; } }
   }
   async function read() {
-    if (phase || !owns()) return; capture(); const generation = epoch; phase = 'read'; setBusy(true); message = '正在读取行为创建目录…'; details = ''; update();
+    if (phase || scriptRequest || !owns()) return; capture(); const generation = epoch; phase = 'read'; setBusy(true); message = '正在读取行为创建目录…'; details = ''; update();
     try {
       if (saved) await synchronize(generation);
       else {
         const result = await inspect({ sceneObjectId: owner.sceneId }); if (!owns(generation)) return;
-        const next = validateCatalog(result); catalog = next; preview = null; needsRefresh = false;
+        const next = validateCatalog(result);
+        if (returnOrigin && !matchesReturnOrigin(next, returnOrigin)) fail('原场景或脚本保存版本已变化，设置已保留；请核对后重试或明确取消。');
+        catalog = next; preview = null; needsRefresh = false;
         if (!draft) {
           draft = { objectId: crypto.randomUUID(), Profile: behaviorProfiles[0].id, Type: next.documentTypes[0].id,
             Path: `${next.documentRoot}/behaviors/new-behavior.json`, bindings: [{ bindingId: crypto.randomUUID(), instanceId: next.scene.instances[0].instanceId, sourceObjectId: next.sources[0]?.objectId || '' }] };
@@ -240,9 +247,9 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     }
   }
   function close() {
-    if (phase) return false;
+    if (phase || scriptRequest || suspended) return false;
     if (!saved && draft && (dirty || signature() !== baseline) && !window.confirm(t('丢弃本次行为创建设置？尚未提交的内容不会写入工程。'))) return false;
-    epoch++; owner = null; catalog = null; draft = null; preview = null; dirty = false; dialog.dataset.dirty = 'false'; dialog.close(); return true;
+    epoch++; scriptRequestSequence++; returnOrigin = null; owner = null; catalog = null; draft = null; preview = null; dirty = false; dialog.dataset.dirty = 'false'; dialog.close(); return true;
   }
   async function navigate() {
     if (phase || !saved || !refreshed || !owns()) return;
@@ -255,23 +262,85 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     } catch (error) { if (generation === epoch && !disposed) { message = '行为已保存，但原文未打开。请返回编辑器按路径查找。'; details = error.message || ''; } }
     finally { if (generation === epoch && !disposed) { phase = ''; update(); } }
   }
+  const sceneIdentityKeys = ['objectId', 'objectRevision', 'sourcePath', 'sourceRevision'];
+  function scriptIntent(allowRequested = false) {
+    const profile = behaviorProfiles.find(item => item.id === el('Profile').value);
+    if (!(allowRequested ? canEditDraft() : canChange()) || !profile) return null;
+    return Object.freeze({ worldId: catalog.worldId, documentRoot: catalog.documentRoot,
+      scene: Object.freeze(Object.fromEntries(sceneIdentityKeys.map(key => [key, catalog.scene[key]]))), backendId: profile.backendId, language: profile.language });
+  }
+  function sameIntent(input, expected) {
+    return Boolean(expected && exact(input, ['worldId', 'documentRoot', 'scene', 'backendId', 'language']) && exact(input.scene, sceneIdentityKeys)
+      && ['worldId', 'documentRoot', 'backendId', 'language'].every(key => input[key] === expected[key])
+      && sceneIdentityKeys.every(key => input.scene[key] === expected.scene[key]));
+  }
+  function matchesReturnOrigin(next, origin) {
+    return next.worldId === origin.intent.worldId && next.documentRoot === origin.intent.documentRoot
+      && sceneIdentityKeys.every(key => next.scene[key] === origin.intent.scene[key])
+      && (!origin.savedScript || next.sources.filter(source => source.sourcePath === origin.savedScript.sourcePath && source.sourceRevision === origin.savedScript.sourceRevision).length === 1);
+  }
+  function suspendForScript(intent) {
+    // Script handoff is navigation. It never holds the world mutation lock.
+    const expected = scriptIntent(true);
+    if (suspended || phase || saved || uncertain || !sameIntent(intent, expected)) return false;
+    capture(); const ticket = Object.freeze({});
+    suspended = { ticket, intent: expected }; returnOrigin = null; preview = null; dirty = dirty || signature() !== baseline;
+    epoch++; scriptRequest = false; suppressCloseFocus = true;
+    message = '行为设置已暂存；保存普通 TXT 脚本后，请明确返回并重新选择脚本。'; details = '';
+    dialog.close(); update(); return ticket;
+  }
+  function discardSuspended(ticket) {
+    if (disposed || phase || !suspended || suspended.ticket !== ticket) return false;
+    epoch++; scriptRequestSequence++; suspended = null; returnOrigin = null; scriptRequest = false;
+    owner = null; catalog = null; draft = null; preview = null; selectedBindingId = ''; baseline = ''; dirty = false;
+    message = ''; details = ''; update(); return true;
+  }
+  async function resumeFromScript(ticket, options = {}) {
+    if (disposed || !suspended || suspended.ticket !== ticket || dialog.open || !eligible() || getContext().sceneId !== suspended.intent.scene.objectId
+      || !(exact(options, []) || exact(options, ['savedScript']))) return false;
+    const savedScript = Object.hasOwn(options, 'savedScript') ? options.savedScript : null;
+    if (savedScript !== null && (!exact(savedScript, ['sourcePath', 'sourceRevision']) || !text(savedScript.sourcePath, 1024) || !revision(savedScript.sourceRevision)
+      || !savedScript.sourcePath.startsWith(suspended.intent.documentRoot + '/') || !/\.txt$/i.test(savedScript.sourcePath) || getCreatePathError(savedScript.sourcePath))) return false;
+    const origin = { intent: suspended.intent, savedScript: savedScript && Object.freeze({ sourcePath: savedScript.sourcePath, sourceRevision: savedScript.sourceRevision }) };
+    suspended = null; returnOrigin = origin; scriptRequest = false; scriptRequestSequence++; epoch++;
+    const context = getContext(); owner = { session: context.session, sceneId: context.sceneId, sourceToken: context.sourceToken };
+    preview = null; needsRefresh = true; message = '正在返回原场景并重新核对脚本目录…'; details = '';
+    // Retain every local field and identity even when the fresh catalog fails.
+    renderFields(); dialog.showModal(); update(); await read();
+    return !disposed && dialog.open && returnOrigin === origin;
+  }
+  async function requestScript() {
+    if (typeof requestScriptCreation !== 'function' || scriptRequest) return false;
+    const intent = scriptIntent(); if (!intent) return false;
+    const generation = epoch, request = ++scriptRequestSequence; scriptRequest = true; update();
+    try {
+      const result = await requestScriptCreation(intent);
+      if (request === scriptRequestSequence && generation === epoch && owns() && result === false) message = '未进入脚本创建，行为设置已保留，请重试。';
+      return result !== false;
+    } catch {
+      if (request === scriptRequestSequence && generation === epoch && owns()) message = '未进入脚本创建，行为设置已保留，请重试。';
+      return false;
+    } finally { if (!disposed && request === scriptRequestSequence) { scriptRequest = false; update(); } }
+  }
+  el('NewScript').addEventListener('click', () => void requestScript());
   for (const key of fields) for (const event of ['input', 'change']) el(key).addEventListener(event, () => { if (canChange()) { capture(); renderBindingList(); invalidate(); update(); } });
   el('BindingList').addEventListener('change', selectBinding); el('AddBinding').addEventListener('click', addBinding); el('RemoveBinding').addEventListener('click', removeBinding);
   el('Check').addEventListener('click', () => void run('preview')); el('Save').addEventListener('click', () => void run('apply'));
   el('Refresh').addEventListener('click', () => void read()); el('Open').addEventListener('click', () => void navigate());
   el('Close').addEventListener('click', close); el('Cancel').addEventListener('click', close);
   dialog.addEventListener('cancel', event => { event.preventDefault(); if (!event.isComposing && !event.repeat) close(); });
-  dialog.addEventListener('close', () => { if (!dialog.open && !disposed) opener?.focus(); });
+  dialog.addEventListener('close', () => { if (suppressCloseFocus) { suppressCloseFocus = false; return; } if (!dialog.open && !disposed && !suspended) opener?.focus(); });
   dialog.addEventListener('keydown', event => { event.stopPropagation(); if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') event.preventDefault(); });
   const unsubscribe = onLanguageChange(() => { if (dialog.open && !disposed) { capture(); renderFields(); update(); } });
   return Object.freeze({
     open(sceneId) {
-      if (dialog.open || !eligible() || getContext().sceneId !== sceneId) return false;
-      epoch++; const context = getContext(); owner = { session: context.session, sceneId, sourceToken: context.sourceToken }; opener = document.activeElement;
+      if (suspended || dialog.open || !eligible() || getContext().sceneId !== sceneId) return false;
+      epoch++; returnOrigin = null; scriptRequest = false; scriptRequestSequence++; const context = getContext(); owner = { session: context.session, sceneId, sourceToken: context.sourceToken }; opener = document.activeElement;
       catalog = null; draft = null; selectedBindingId = ''; preview = null; saved = null; refreshed = false; uncertain = false; needsRefresh = false; dirty = false; baseline = ''; phase = ''; message = ''; details = '';
       dialog.showModal(); update(); void read(); return true;
     },
+    suspendForScript, resumeFromScript, discardSuspended,
     setAvailable(value, commands = []) { enabled = value === true; supported = Array.isArray(commands) && commands.includes('behavior.create'); if (dialog.open) { if (!enabled || !supported) { preview = null; if (owner) owner.invalidated = true; } update(); } },
-    dispose() { if (disposed) return; disposed = true; epoch++; if (phase && phase !== 'open') setBusy(false); phase = ''; owner = null; if (typeof unsubscribe === 'function') unsubscribe(); dialog.close(); dialog.remove(); },
+    dispose() { if (disposed) return; disposed = true; epoch++; scriptRequestSequence++; suspended = null; returnOrigin = null; scriptRequest = false; if (phase && phase !== 'open') setBusy(false); phase = ''; owner = null; if (typeof unsubscribe === 'function') unsubscribe(); dialog.close(); dialog.remove(); },
   });
 }

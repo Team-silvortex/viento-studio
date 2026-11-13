@@ -1,4 +1,7 @@
+import { inspectProjectMenuReferences } from './project-menu-diagnostics.mjs';
+import { inspectProjectPauseReferences } from './project-pause-diagnostics.mjs';
 import { inspectProjectSceneNavigationReferences } from './project-scene-navigation-diagnostics.mjs';
+import { inspectProjectSceneRestartReferences } from './project-scene-restart-diagnostics.mjs';
 import { inspectProjectSceneRetryReferences } from './project-scene-retry-diagnostics.mjs';
 // Assemble complete existing scene plans without flattening scene-local state.
 import { inspectProjectAssembly, validateProjectAssemblyDependencies } from './project-assembly.mjs';
@@ -49,6 +52,12 @@ export function createProjectAssemblyPlan(observed, targetRef) {
   if (navigationDiagnostics.length) return { ok: false, plan: null, diagnostics: navigationDiagnostics };
   const retryDiagnostics = inspectProjectSceneRetryReferences(scenes, source.documents);
   if (retryDiagnostics.length) return { ok: false, plan: null, diagnostics: retryDiagnostics };
+  const restartDiagnostics = inspectProjectSceneRestartReferences(scenes, source.documents);
+  if (restartDiagnostics.length) return { ok: false, plan: null, diagnostics: restartDiagnostics };
+  const menuDiagnostics = inspectProjectMenuReferences(scenes, source.documents);
+  if (menuDiagnostics.length) return { ok: false, plan: null, diagnostics: menuDiagnostics };
+  const pauseDiagnostics = inspectProjectPauseReferences(scenes, source.documents);
+  if (pauseDiagnostics.length) return { ok: false, plan: null, diagnostics: pauseDiagnostics };
   const input = checked.value.schemaVersion === 2 ? source.documents.find(item => item.record?.id === checked.value.inputMapId) : null;
   if (input) capabilities.add('project.input-map');
   const inputDocument = input ? inspectProjectInputMap(input.content) : null;

@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.2.10**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.2.10.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.3.0**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.3.0.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -40,6 +40,8 @@
 `validateSceneAuthoringCandidate(kind, proposal, payload, {sourceRevision})` 同步核验完整候选、来源、目标和有序变化，返回冻结小回执；不授予保存权限。`createSceneAuthoringWorkflow(options)` 仅通过来源、目录、预览、摘要、应用及通知端口编排，各入口独立持有会话与回执，退出释放临时预览。规则与接线见[场景创作](../docs/SCENE_AUTHORING.md)。
 
 `script-authoring.mjs` 的 `listScriptStarters()`／`prepareScriptDraft(context,request)` 提供 Godot GDScript、Bevy Rust 起始内容与普通 TXT 草稿提案。`prepareScriptDraftApply` 再验当前会话、正文目录和类型目录；不创建 UUID、关系或执行源码。已有行为、声音、动画与物理各由自己的 edit／source 契约接入原文草稿，最终普通保存权仍属于宿主。
+
+0.3.0 源码收录 `scene-behavior-binding-copy.mjs` 的 `proposeSceneBehaviorBindingCopy({bindings, sourceBindingId, targetInstanceId, bindingId, instances, sourceObjectIds})`。输入是当前普通绑定表单及已核对目录；调用方分配新 UUID，模块检查精确数据结构、数量、已存在来源及目标身份，返回可继续编辑且脱离输入的新绑定。参数原字符串（包括未完成数字、空值与换行）及信号顺序保留；参数内的 UUID 不推断改写。一个文档最多32条绑定，语义合法性、原文提案、依赖重查与保存继续由原链负责。模块不依赖渲染器、I/O、随机身份服务或具体后端，也不新增持久格式。操作与验证见[绑定配置复制](../docs/SCENE_BEHAVIORS.md#复制当前绑定到场景实例)和[开发专题](../docs/test-results/scene-behavior-binding-copy/README.md)。
 
 [完整接口细节与阶段记录](../docs/history/engine-2026-10-25.md#section-02)。
 
@@ -513,3 +515,21 @@ Node宿主 `scripts/lib/scene-camera2d-framing.mjs` 复用 `camera2d-inspect` �
 ### 关卡重试的显式初始值
 
 `project-scene-retry-diagnostics.mjs` 对精确官方重试源码进行有界预检，独立解析严格JSON标量初始值并提供带修订／绑定／参数范围的诊断。普通动作模板复用输入边沿与焦点状态机，界面仍只创建和审阅普通TXT／行为草稿；Godot适配层通过独立访问接口把覆盖和不同成员切换一起准入，保持原项目／动画端口及单调会话计数。没有新增作者或运行线协议；具体预算、故障与交付边界见[关卡重试](../docs/SCENE_RETRY.md)。
+
+### 同场景重启的能力与观察准入
+
+`scene-restart-capability.mjs` 只从有效稳定身份、唯一且实际绑定的官方完整普通源码推导 `project.scene-restart`，不求值调用方访问器。成员与组装明确带该能力，冻结合同及后端支持分别复查；`project-scene-restart-diagnostics.mjs` 独立检查两项普通参数和精确原文范围。助手允许四种完整换行/BOM表示，构建推导仍只匹配原始官方字节。
+
+Godot专属0.47.0外层在保留的0.46.0重试层上提供 `viento_project_restart.request_restart(values)`，复用预约覆盖与访问关闭／重建；旧端口自身拒绝和原86份GD／文本保持。`project-runtime-events.mjs` 默认拒绝自身切换，仅显式布尔 `allowSceneRestart` 开启；生产宿主从认证生成能力传入。`project-runtime-query.mjs` 为启用的观察加可选 `project.sceneRestart: true` 并严格验证，退出间隙清除旧样本。作者格式、事务与4／7／10／11业务线协议不变。操作和实测见[原地重启](../docs/SCENE_RESTART.md)。
+
+### 项目暂停的可选能力与独立观察
+
+`scene-pause-capability.mjs` 仅从合法稳定身份、唯一且实际绑定的官方完整普通源码推导 `project.pause`，成员／组装／冻结合同与后端支持分别核对。`project-pause-diagnostics.mjs` 对三String参数和同场景重复官方控制器作有界、可回源预检；`godot-project-pause-parameters.mjs` 的四种完整文本表示只用于辅助，不执行源码、不授予控制或保存权限。
+
+当前Godot执行描述符0.49.0；按显式暂停需求叠加0.48.0独立外层，无暂停生成保留完整0.47.0内容。窄访问端口只负责配置／请求／查询暂停，独立ALWAYS控制器负责输入、焦点、提示、等待注册动作释放和关闭；玩法继续PAUSABLE。进入暂停须安全点和空业务队列，拒绝保持全部状态与额度；普通业务端口和deferred flush在暂停期间拒绝推进，离场先撤销再释放树暂停。
+
+`project-pause-observation.mjs` 验证独立 `VIENTO_PROJECT_PAUSE` 协议1的身份、连续序号、合法转换及冻结游戏时间，有界保留后由宿主／界面只读展示。同一访问、节点、进度和单调账本保持，游戏时间冻结但墙钟／输出／有限预算继续；作者格式、事务与4／7／10／11业务协议不升级。作者与Chrome已通过，原生／离线与完整应用回归已通过；Bevy不支持，完整操作和证据见[暂停指南](../docs/PROJECT_PAUSE.md)。
+
+## 项目运行菜单
+
+`project-menu.mjs` 拥有最多8项有限命令、Unicode文本、成员目标与中立载荷预算的纯合同；`project-menu-diagnostics.mjs` 对精确官方TXT给出参数／模式／依赖定位，`scene-menu-capability.mjs` 独立派生菜单和暂停要求。普通脚本及三String默认参数复用既有作者流程，不解析任意函数。Godot0.49.0可选外层负责GUI，保持旧HUD、GD／文本与业务协议。暂停菜单仅恢复／结束，运行命令沿原事务和访问失效规则。详见[运行菜单](../docs/PROJECT_MENU.md)。

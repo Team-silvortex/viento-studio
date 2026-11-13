@@ -21,7 +21,7 @@ const xdg=await fs.mkdtemp(path.join(os.tmpdir(),'viento-combinations-xdg-'));
 const saved=Object.fromEntries(['XDG_CACHE_HOME','XDG_CONFIG_HOME','XDG_DATA_HOME'].map(key=>[key,process.env[key]]));
 for(const[key,name]of [['XDG_CACHE_HOME','cache'],['XDG_CONFIG_HOME','config'],['XDG_DATA_HOME','data']]){process.env[key]=path.join(xdg,name);await fs.mkdir(process.env[key]);}
 after(async()=>{for(const[key,value]of Object.entries(saved)){if(value===undefined)delete process.env[key];else process.env[key]=value;}await fs.rm(xdg,{recursive:true,force:true});});
-const rows=(result,event)=>result.record.events.filter(row=>row.event===event);
+const rows=(result,event)=>result.testEvents.filter(row=>row.event===event);
 const passed=result=>assert.equal(result.ok,true,JSON.stringify(result.record?.diagnostics||result));
 const printed=(result,prefix)=>result.record.phases.at(-1).stdout.split('\n').filter(line=>line.startsWith(prefix)).map(line=>JSON.parse(line.slice(prefix.length)));
 const combinedTable=condition=>{const table=structuredClone(DEFAULT_ANIMATION_STATE_TABLE);table.transitions[0].trigger.condition=condition;return table;};
@@ -61,10 +61,25 @@ async function build(t,table,body,{parameters,bom=false,edit}={}){
   const output=path.join(f.temporary,'combinations-build'),built=await buildProject({root:f.author,targetId:f.assemblyId,tool,output});
   assert.equal(built.ok,true,JSON.stringify(built.diagnostics||built.record?.diagnostics));
   assert.equal(await fs.readFile(path.join(f.author,'documents/scripts/checkpoint.txt'),'utf8'),content);
-  assert.equal(adapter.descriptor.version,'0.46.0');
+  assert.equal(adapter.descriptor.version,'0.49.0');
   return {...f,output,content};
 }
-const run=f=>runProjectBuild({buildDirectory:f.output,tool,headless:true,smoke:false});
+const run=async f=>{
+  // Interactive session records retain a bounded raw tail. Collect the admitted
+  // progress stream separately so semantic assertions still cover every case.
+  const testEvents=[];
+  const result=await runProjectBuild({buildDirectory:f.output,tool,headless:true,smoke:false,
+    onProgress:update=>{if(update.event)testEvents.push(update.event);}});
+  const retained=result.record.eventRetention,total=testEvents.length;
+  assert.deepEqual(retained,{limit:128,total,retained:Math.min(total,128),dropped:Math.max(0,total-128),
+    firstSequence:total?Math.max(1,total-127):null,lastSequence:total||null});
+  assert.deepEqual(result.record.events,testEvents.slice(-128));
+  const entered=testEvents.filter(row=>row.event==='animation-state-entered');
+  assert.deepEqual(entered.map(row=>row.sequence),entered.map((_,index)=>index+1));
+  const terminal=testEvents.at(-1);
+  if(terminal?.event==='finished')assert.equal(terminal.animationStateEntrySequence,entered.length);
+  return {...result,testEvents};
+};
 
 const entries=result=>rows(result,'animation-state-entered');
 const snapshots=result=>rows(result,'animation-state-snapshot');

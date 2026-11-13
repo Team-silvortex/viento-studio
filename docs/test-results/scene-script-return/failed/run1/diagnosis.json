@@ -1,0 +1,29 @@
+{
+  "runOverallAccepted": false,
+  "businessCasesPassed": [
+    "success",
+    "cancel",
+    "changed-source"
+  ],
+  "reason": "The initial integration run crossed two concurrent production edits. Its final source snapshot assertion correctly failed; it is retained as a diagnostic and is not counted as the final pass.",
+  "changedSources": [
+    {
+      "path": "web/modules/app-scene-script-return.js",
+      "before": "b7bd78c5923ac191741f1196338343fe11630562da90c6a37c3a6fd4e00a0e5a",
+      "after": "9d5afecb036b4cb7986d5f9e6c00c795ba20b91a2e4007f4984a895f430bcd77"
+    },
+    {
+      "path": "web/modules/app-studio-system.js",
+      "before": "2fc2c5e0a7102b8303630395468ba55800fbb08d98aacf1a7b3153fbb5dbec84",
+      "after": "76dc1765cd864c0f0df165fe96e6f61314fb3f71a89ffa1986107e1f5ec8e95d"
+    }
+  ],
+  "driverObservation": "At 390px, geometry-only checks could miss the open sidebar covering the non-modal return bar. The final driver uses the existing sidebar toggle, verifies button centers with elementFromPoint and retains clear screenshots.",
+  "productionBugClaim": false,
+  "retainedObscuredScreenshot": {
+    "path": "failed/run1/success-saved-return-en-390.png",
+    "sha256": "de1b47ce9b7b26c7babd3f2d98a5a56b8c93290e8257e8de384f1aeaf069f754"
+  },
+  "driverOriginalSha256": "22e76196880ef3c21613e7fef4f7615fc7ebca20953e9e453434df0ed96fb1f9",
+  "driverSourceRecoveredExactlyAgainstRecordedSha256": true
+}

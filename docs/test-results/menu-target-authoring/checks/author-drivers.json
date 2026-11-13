@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "completedAt": "2026-11-13T08:54:20.972288+00:00",
+  "browser": {
+    "sourceCount": 29,
+    "screenshots": 3,
+    "runtimeErrors": 0,
+    "registeredDocuments": 10,
+    "authorFiles": 22,
+    "finalEvidence": "../browser/browser.json",
+    "driverSha256": "a60b842f39432aaaead14c9b48499d2fe4441c3943ea1aaae0c6b29efe0b5b64"
+  },
+  "native": {
+    "results": [
+      {
+        "name": "original",
+        "ok": true,
+        "visits": 5,
+        "stages": 5,
+        "events": 17,
+        "screenshots": 5
+      },
+      {
+        "name": "offline",
+        "ok": true,
+        "visits": 5,
+        "stages": 5,
+        "events": 17,
+        "screenshots": 5
+      }
+    ],
+    "generatedFiles": 57,
+    "sourceCount": 9,
+    "zipBytes": 142068,
+    "zipSha256": "77057755ddd1ae011f8b2a9a969c3749b05246b8821be144960a3add7dda674b",
+    "finalEvidence": "../native/verification.json"
+  },
+  "driverHashes": {
+    "scripts/tests/menu-target-authoring-smoke.mjs": "a60b842f39432aaaead14c9b48499d2fe4441c3943ea1aaae0c6b29efe0b5b64",
+    "scripts/tests/menu-target-authoring-native-smoke.mjs": "b338be7696dbedc7e2a6eb6990b56da05dc0aa47876dfbabf6b80613f8b5982e",
+    "scripts/tests/helpers/menu-targets-keyboard.py": "e8307e27ae3c047a6094f082e28c14018adcf4fccd23f60e5809b96156d4ca26",
+    "scripts/tests/helpers/menu-targets-observer.gd": "cc5771b6bafd9b9793cd37d9fbb18bc9c2ddf08f65ef5fd1b8140db265893fbb"
+  },
+  "commands": [
+    {
+      "command": "VIENTO_MENU_TARGETS_OUTPUT=/tmp/viento-menu-targets-browser VIENTO_GODOT_BIN=<verified Godot path> node24 scripts/tests/menu-target-authoring-smoke.mjs /usr/bin/google-chrome",
+      "log": "../browser/run.log",
+      "exitCode": 0
+    },
+    {
+      "command": "VIENTO_GODOT_BIN=<verified Godot path> xvfb-run -a node24 scripts/tests/menu-target-authoring-native-smoke.mjs /tmp/viento-menu-targets-browser /tmp/viento-menu-targets-native-verified",
+      "log": "../native/run.log",
+      "exitCode": 0
+    }
+  ],
+  "failedRunsCountedAsPass": false,
+  "productionOrOldDriverModifiedForNative": false,
+  "sourceDeltaDuringFullCheck": [
+    "Added new scripts/tests/helpers/menu-targets-observer.gd",
+    "Changed only new scripts/tests/menu-target-authoring-native-smoke.mjs to use minimal observer"
+  ],
+  "oldEvidenceOverwritten": false
+}

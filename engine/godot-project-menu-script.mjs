@@ -1,0 +1,23 @@
+// Ordinary author source configures a bounded visit-owned menu controller.
+// Only the built-in controller owns GUI processing and command dispatch.
+export const GODOT_PROJECT_MENU_SCRIPT = `extends Node
+
+@export var title: String = "Menu"
+@export var items_json: String = "[{\\"id\\":\\"finish\\",\\"label\\":\\"Exit\\",\\"command\\":\\"finish\\"}]"
+@export var display_mode: String = "scene"
+
+func _ready() -> void:
+	if not has_meta("viento_project_menu"):
+		_fail("Bind this script in a project assembly run with menu support.")
+		return
+	var port = get_meta("viento_project_menu")
+	if typeof(port) != TYPE_OBJECT or not is_instance_valid(port) or not port.has_method("configure"):
+		_fail("The visit-bound project menu controller is unavailable.")
+		return
+	var accepted = port.configure(title, items_json, display_mode)
+	if typeof(accepted) != TYPE_BOOL or not accepted:
+		_fail("Cannot configure project menu; check its bounded text, commands and display mode.")
+
+func _fail(message: String) -> void:
+	push_error("Project menu: " + message)
+`;

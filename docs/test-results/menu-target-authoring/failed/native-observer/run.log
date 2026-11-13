@@ -1,0 +1,45 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Traceback (most recent call last):
+  File "/home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/menu-targets-keyboard.py", line 172, in <module>
+    wait(lambda: samples and last()['focused'], 'project focused')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/menu-targets-keyboard.py", line 79, in wait
+    raise AssertionError(label + ': timeout ' + repr(samples[-1:]) + '\n' + '\n'.join(lines[-15:]))
+AssertionError: project focused: timeout []
+Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)
+
+SCRIPT ERROR: Parse Error: Identifier "animation_control" not declared in the current scope.
+          at: GDScript::reload (res://project-menu-observer.gd:117)
+ERROR: Failed to load script "res://project-menu-observer.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+SCRIPT ERROR: Invalid access to property or key 'execution_budget' on a base object of type 'Node2D'.
+          at: _attach (res://execution-clock-host.gd:16)
+          GDScript backtrace (most recent call first):
+              [0] _attach (res://execution-clock-host.gd:16)
+
++ actual - expected
+
++ 'failed'
+- 'succeeded'
+
+    at success (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/menu-target-authoring-native-smoke.mjs:42:36)
+    at runWindow (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/menu-target-authoring-native-smoke.mjs:54:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/menu-target-authoring-native-smoke.mjs:71:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'failed',
+  expected: 'succeeded',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

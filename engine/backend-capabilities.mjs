@@ -1,3 +1,6 @@
+import { sceneMenuCapabilities } from './scene-menu-capability.mjs';
+import { scenePauseCapabilities } from './scene-pause-capability.mjs';
+import { sceneRestartCapabilities } from './scene-restart-capability.mjs';
 // Portable admission checks only. Executables, artifact generators and process
 // lifecycle belong to host adapters; a descriptor never supplies runnable code.
 import { validateSceneCamera2DPlan, SCENE_CAMERA2D_CAPABILITY, sceneCamera2DCapabilities } from './scene-camera2d.mjs';
@@ -209,6 +212,18 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
       for (const capability of required) if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_assembly_invalid',
         'Project plans must explicitly require every member capability.', { capability }));
       for (const scene of plan.scenes) diagnostics.push(...checkExecutionBackendSupport(backend, { ...value, plan: scene }));
+    }
+    for (const capability of sceneMenuCapabilities(plan.behaviors)) {
+      if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_project_menu_invalid', 'Menu plans must explicitly declare menu and pause capabilities.', { capability }));
+      if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));
+    }
+    for (const capability of scenePauseCapabilities(plan.behaviors)) {
+      if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_project_pause_invalid', 'Pause plans must explicitly declare the pause capability.', { capability }));
+      if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));
+    }
+    for (const capability of sceneRestartCapabilities(plan.behaviors)) {
+      if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_scene_restart_invalid', 'Restart plans must explicitly declare the restart capability.', { capability }));
+      if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));
     }
     if (plan.animation) {
       const animationCapabilities = ['animation.visual2d'];

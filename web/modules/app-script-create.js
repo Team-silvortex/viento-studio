@@ -42,7 +42,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   const starters = listScriptStarters();
   const fields = ['Starter', 'Type', 'Path'];
   let disposed = false, epoch = 0, owner = null, baseline = '', proposal = null, reviewed = '';
-  let phase = false, invalidated = false, message = '', opener = null, pendingFocus = null;
+  let phase = false, invalidated = false, message = '', opener = null, pendingFocus = null, continuation = null;
   const raw = () => ({ starterId: el('Starter').value, documentType: el('Type').value, sourcePath: el('Path').value });
   const isStateTable = () => el('Starter').value === 'godot-project-animation-state-table';
   const tableEditor = setupAnimationStateScript({ container: el('StateTable'), translate: t,
@@ -167,7 +167,8 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   function close() {
     if (phase) return false;
     if (signature() !== baseline && !window.confirm(t('丢弃本次脚本创建设置？编辑器内容不会改变。'))) return false;
-    closeDialog(); return true;
+    const cancelled = continuation; continuation = null;
+    closeDialog(); try { cancelled?.onCancel?.(); } catch {} return true;
   }
   async function apply() {
     if (phase || !owns() || (isStateTable() && (!supportsAnimationStateScript() || !conditionsReady()))) { if (!phase) review(); return; }
@@ -181,7 +182,9 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
       if (disposed || generation !== epoch || !dialog.open || form !== signature()) return;
       // A successful editor handoff changes its source token and creating flag.
       // The port checks isCurrent immediately before that synchronous mutation.
-      if (result?.applied === true) { closeDialog(typeof result.focus === 'function' ? result.focus : undefined); return; }
+      if (result?.applied === true) { const completed = continuation; continuation = null;
+        try { completed?.onCreated?.(result); } catch {}
+        closeDialog(typeof result.focus === 'function' ? result.focus : undefined); return; }
       message = '未创建脚本草稿，设置已保留。请检查编辑器状态后重试。';
     } catch {
       if (disposed || generation !== epoch || !dialog.open) return;
@@ -206,14 +209,16 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     }
     render();
   }
-  function open() {
+  function open(request = {}) {
     if (dialog.open || !eligible(getContext())) return false;
     const context = coreContext(getContext());
     const documentType = context.documentTypes.find(item => item.id === 'script')?.id || context.documentTypes[0].id;
-    const input = { starterId: starters[0].id, documentType, sourcePath: `${context.documentRoot}/scripts/new-script.txt` };
+    const preferred = starters.find(item => item.backendId === request?.backendId && item.languageId === request?.language) || starters[0];
+    const input = { starterId: preferred.id, documentType, sourcePath: `${context.documentRoot}/scripts/new-script.txt` };
     try { prepareScriptDraft(context, input); } catch { return false; }
     epoch++; owner = { context, signature: JSON.stringify(context) }; opener = document.activeElement;
     phase = false; invalidated = false; pendingFocus = null;
+    continuation = { onCreated: typeof request?.onCreated === 'function' ? request.onCreated : null, onCancel: typeof request?.onCancel === 'function' ? request.onCancel : null };
     options(el('Starter'), starters.map(item => [item.id, t(item.label)]), input.starterId);
     options(el('Type'), context.documentTypes.map(item => [item.id, item.label]), input.documentType);
     el('Path').value = input.sourcePath; tableEditor.reset(DEFAULT_ANIMATION_STATE_TABLE); baseline = signature();
@@ -239,7 +244,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   refresh();
   return Object.freeze({ open, refresh, dispose() {
     if (disposed) return;
-    disposed = true; epoch++; owner = null; proposal = null; phase = false; pendingFocus = null;
+    disposed = true; epoch++; owner = null; proposal = null; phase = false; pendingFocus = null; continuation = null;
     if (typeof unsubscribe === 'function') unsubscribe();
     tableEditor.dispose(); dialog.close(); dialog.remove(); button.remove();
   } });

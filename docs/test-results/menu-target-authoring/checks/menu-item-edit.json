@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "status": "frozen",
+  "sources": {
+    "engine/project-menu-item-edit.mjs": "e6129e9cbc28fcdd6e2e0abd4a8611cfe61a30b63899f5597c9e503aedd5fe0d",
+    "scripts/tests/project-menu-item-edit.test.mjs": "4132812b70706e40f993d57c3afb1a223f916803f8dc0bf425cb6d48cf619273"
+  },
+  "oldSourcesUnchanged": {
+    "engine/project-menu.mjs": "a43d975b23a8c1ce2df5f2b90a7b1c115af94dd5cb1771520e505576b00b0d7c",
+    "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+    "engine/godot-project-menu-parameters.mjs": "bdbd8da79c958d54b50c83dabbcac02efaeb7a9b144b0e457d08f272784e18e9",
+    "scripts/tests/project-menu.test.mjs": "317ecca1bf15d516f6999a941c3f48be9d1b77509471db608e0d80f4bda23df3",
+    "scripts/tests/json-source.test.mjs": "224c1016f8665e92ec496324c150aa669703f3bee4ba90662cf83681ba98f59e"
+  },
+  "tests": {
+    "tests": 44,
+    "pass": 44,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "testLog": "/tmp/viento-menu-item-edit-adjacent.log",
+  "api": {
+    "inspectProjectMenuTargets": "(itemsJson,{sceneIds,currentSceneId}) => frozen {items,targets:[{id,label,command,targetSceneId,index}],canAppend}",
+    "editProjectMenuItemTarget": "(itemsJson,{itemId,targetSceneId,sceneIds,currentSceneId}) => string",
+    "appendProjectMenuNavigationItem": "(itemsJson,{id,label,command,targetSceneId,sceneIds,currentSceneId}) => string"
+  },
+  "limits": {
+    "parameterCharacters": 4096,
+    "menuBytes": 8192,
+    "menuItems": 8,
+    "sceneMembers": 32
+  },
+  "errorCode": "project_menu_item_edit_invalid",
+  "errorReasons": [
+    "input",
+    "fields",
+    "context",
+    "menu",
+    "item",
+    "target",
+    "limit"
+  ],
+  "note": "First UTF8 fixture expectation was corrected to hit exact independent8192/8193 boundaries; production code was not changed."
+}

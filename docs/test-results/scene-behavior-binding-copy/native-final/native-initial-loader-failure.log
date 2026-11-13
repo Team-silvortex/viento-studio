@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: /tmp/viento-behavior-copy-native/harness/topdown-native.test.mjs
+not ok 1 - /tmp/viento-behavior-copy-native/harness/topdown-native.test.mjs
+  ---
+  duration_ms: 0.533762
+  type: 'test'
+  location: '/tmp/viento-behavior-copy-native/harness/topdown-native.test.mjs:1:1'
+  error: "Cannot find package 'yauzl' imported from /tmp/viento-behavior-copy-native/harness/topdown-native.test.mjs"
+  code: 'ERR_MODULE_NOT_FOUND'
+  stack: |-
+    Object.getPackageJSONURL (node:internal/modules/package_json_reader:331:9)
+    packageResolve (node:internal/modules/esm/resolve:784:25)
+    moduleResolve (node:internal/modules/esm/resolve:873:18)
+    defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)
+    #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)
+    ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)
+    #resolve (node:internal/modules/esm/loader:687:17)
+    ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)
+    ModuleJob.syncLink (node:internal/modules/esm/module_job:276:33)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19.2687

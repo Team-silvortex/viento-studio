@@ -16,9 +16,9 @@ function camera(plan) {
 test('HUD is a final optional project view that preserves original scenes, camera wrappers, source map and protocol', async t => {
   for (const base of [cameraProject(), camera(cameraProject())]) {
     const old = await adapter.generate(base), plan = hudOn(structuredClone(base), 0), before = structuredClone(plan), generated = await adapter.generate(plan);
-    assert.deepEqual(plan, before); assert.equal(generated.backend.version, '0.46.0'); assert.ok(generated.backend.capabilities.includes('scene.hud2d'));
+    assert.deepEqual(plan, before); assert.equal(generated.backend.version, '0.47.0'); assert.ok(generated.backend.capabilities.includes('scene.hud2d'));
     assert.equal(generated.backend.protocolVersion, old.backend.protocolVersion); assert.deepEqual(generated.sourceMap, old.sourceMap);
-    for (const [name, bytes] of old.files) if (!name.startsWith('retry-') && !['project.godot', 'execution-clock-original.godot'].includes(name)) assert.deepEqual(generated.files.get(name), bytes, name);
+    for (const [name, bytes] of old.files) if (!name.startsWith('retry-') && !['project.godot', 'execution-clock-original.godot', 'restart-project.json', 'restart-original.godot', 'restart-original-clock.godot'].includes(name)) assert.deepEqual(generated.files.get(name), bytes, name);
     assert.deepEqual(generated.files.get('hud2d-original.godot'), old.files.get('retry-original.godot'));
     assert.deepEqual(JSON.parse(generated.files.get(`scenes/${base.entrySceneId}/hud2d.json`)), plan.scenes[0].hud2d.document);
     const directory = await cameraStage(t, generated), inventory = await validateGodotHUD2DInventory(directory);
@@ -26,7 +26,7 @@ test('HUD is a final optional project view that preserves original scenes, camer
     assert.equal(Boolean(await validateGodotCamera2DInventory(directory)), Boolean(base.scenes[0].camera2d));
     assert.deepEqual(await adapter.generate(plan), generated); await assert.rejects(adapter.generate(plan.scenes[0]), { errorCode: 'build_hud2d_requires_project' });
   }
-  assert.equal(adapter.descriptor.version, '0.46.0'); assert.ok(adapter.descriptor.capabilities.includes('scene.hud2d'));
+  assert.equal(adapter.descriptor.version, '0.49.0'); assert.ok(adapter.descriptor.capabilities.includes('scene.hud2d'));
 });
 test('HUD authenticates every owned file and retained settings before camera inventory reads its inner layer', async t => {
   const plan = hudOn(camera(cameraProject()), 0, [hudLabel(), hudBar()]), generated = await adapter.generate(plan), directory = await cameraStage(t, generated);
@@ -50,7 +50,7 @@ test('HUD authenticates every owned file and retained settings before camera inv
 test('projects without HUD retain retry generation without adding HUD and reject HUD-owned orphans', async t => {
   for (const plan of [cameraProject(), camera(cameraProject())]) {
     const generated = await adapter.generate(plan), directory = await cameraStage(t, generated); assert.equal(generated.backend.capabilities.includes('scene.hud2d'), false);
-    assert.equal(generated.backend.version, '0.46.0'); assert.equal(await validateGodotHUD2DInventory(directory), null);
+    assert.equal(generated.backend.version, '0.47.0'); assert.equal(await validateGodotHUD2DInventory(directory), null);
     await fs.writeFile(path.join(directory, 'hud2d-project-runtime.gd'), 'extends Node\n'); await assert.rejects(validateGodotHUD2DInventory(directory), invalid);
   }
 });

@@ -1,0 +1,43 @@
+{
+  "status": "frozen",
+  "command": "node24 --test-reporter=tap scripts/tests/scene-script-return-save-wiring.test.mjs",
+  "passed": 6,
+  "failed": 0,
+  "skipped": 0,
+  "log": "save-wiring-current.log.gz",
+  "source": [
+    {
+      "path": "scripts/tests/scene-script-return-save-wiring.test.mjs",
+      "bytes": 12741,
+      "sha256": "9d6ff6759fb92540962af0699fc39821394b6cf1055d80eb802fc1fef8299c56"
+    },
+    {
+      "path": "web/modules/app-runtime.js",
+      "bytes": 262051,
+      "sha256": "763b1997c50af06593c7e12a7c202e6b67126ecd795f82db65a112d8a176a054"
+    },
+    {
+      "path": "web/modules/app-script-create.js",
+      "bytes": 18244,
+      "sha256": "53c1040464c35efe980d90e990265c6a130f623cc65091512f38697b2a10a7d3"
+    },
+    {
+      "path": "web/modules/app-scene-script-return-host.js",
+      "bytes": 8977,
+      "sha256": "701d1f9958a12b53d005451377f08af19ea27d6866609d1e917154e34473a0cb"
+    },
+    {
+      "path": "scripts/tests/editor-harness.mjs",
+      "bytes": 9204,
+      "sha256": "e965cc2ea42f1477c53843370b553d457c8f1018f4032dc67d4ff10ea31b2049"
+    },
+    {
+      "path": "scripts/tests/dialog-harness.mjs",
+      "bytes": 24797,
+      "sha256": "7c82ec383ae6db53a3913ab7eb630953dc5fbc94cabab42bab059e911975e621"
+    }
+  ],
+  "scope": "Complete production runtime save functions and real host run in editorHarness; writeDoc and index I/O are injected. Only VM JSON DTOs are transported across realms. No file storage or index rebuild success is inferred from the ordinary Save return value.",
+  "previousReceipt": "save-wiring.json",
+  "reasonForRepeat": "The editor harness gained the real return-host import and an explicit unavailable directory port after the first targeted run. Re-executed unchanged six tests against the final harness; full application also included them under an unchanged source guard."
+}

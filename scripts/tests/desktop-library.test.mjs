@@ -139,7 +139,7 @@ test('the chosen project template survives translations and picker cancellation 
   h.element('createBtn').click();
   const select = h.element('projectTemplate');
   assert.equal(select.value, 'org.viento.blank');
-  assert.deepEqual(select.children.map(option => option.textContent), ['空白工程', '游戏', '文学', '戏剧', '软件设计']);
+  assert.deepEqual(select.children.map(option => option.textContent), ['空白工程', '游戏', '文学', '戏剧', '影视', '软件设计']);
   select.value = 'org.viento.software-design'; select.dispatch('change');
   assert.match(h.element('templateDescription').textContent, /组件、接口/);
   h.events.get('language-changed')({ payload: 'en' });

@@ -1,3 +1,6 @@
+import { setupSceneBehaviorMenuTargets } from '../../web/modules/app-scene-behavior-menu-targets.js';
+import { validateProjectPauseObservation } from '../../engine/project-pause-observation.mjs';
+import { proposeSceneBehaviorBindingCopy } from '../../engine/scene-behavior-binding-copy.mjs';
 import { projectRuntimeUuid, freezeProjectRuntimeData } from '../../engine/project-runtime-contracts.mjs';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { validateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
@@ -155,6 +158,7 @@ export async function dialogHarness(module, overrides = {}) {
   const runtime = vm.createContext({
     document, window, URL, Blob, TextEncoder, SCENE_PREVIEW_API_PATH, WORLD_API_PATH, PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS,
     setProjectPhysics2DInputReplayRange: (value, ...args) => setProjectPhysics2DInputReplayRange(JSON.parse(JSON.stringify(value)), ...args),
+    validateProjectPauseObservation: value => validateProjectPauseObservation(JSON.parse(JSON.stringify(value))),
     validateProjectPhysics2DObservation: value => validateProjectPhysics2DObservation(JSON.parse(JSON.stringify(value))), projectRuntimeUuid, freezeProjectRuntimeData,
     validateProjectPhysics2DReplayCase: value => validateProjectPhysics2DReplayCase(JSON.parse(JSON.stringify(value))),
     validateProjectPhysics2DInputReplay: value => validateProjectPhysics2DInputReplay(JSON.parse(JSON.stringify(value))),
@@ -177,6 +181,8 @@ export async function dialogHarness(module, overrides = {}) {
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
+    proposeSceneBehaviorBindingCopy: value => proposeSceneBehaviorBindingCopy(JSON.parse(JSON.stringify(value))),
+    setupSceneBehaviorMenuTargets,
     setupSceneBehaviorReferences: () => ({ refresh() {}, reset() {}, dispose() {} }),
     setupSceneLayout: () => ({ setAvailable() {}, open() {} }),
     setupSceneCompositionOverrides: () => ({ open() {}, refresh() {}, destroy() {} }),

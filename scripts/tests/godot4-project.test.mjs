@@ -26,7 +26,7 @@ test('one project inventories every scene and shares resource copies without rew
   assert.equal(plan.scenes.length, 2); assert.equal(plan.resources.length, 2); assert.equal(f.generated.resourceFiles.size, 2);
   assert.equal([...f.generated.files.keys()].filter(name => name.endsWith('project.godot')).length, 1);
   assert.ok(f.generated.files.get('project.godot').toString().includes(`config/name=${JSON.stringify(plan.assembly.title)}\n`));
-  assert.match(f.generated.files.get('project.godot').toString(), /res:\/\/retry-project.tscn/);
+  assert.match(f.generated.files.get('project.godot').toString(), /res:\/\/restart-project.tscn/);
   assert.match(f.generated.files.get('retry-original.godot').toString(), /res:\/\/project.tscn/);
   for (const child of plan.scenes) {
     const id = child.scene.objectId, prefix = `scenes/${id}`;

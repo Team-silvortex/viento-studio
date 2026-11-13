@@ -349,7 +349,7 @@ Godot 的独立 **0.25.0** 事件包装声明 `physics.character-events2d`，保
 
 每次测试最多保留 **256 条角色样本**；达到限制后明确标为部分记录，游戏继续执行。中断保留已接收样本并标记不完整；无角色、尚未采样和该样本未碰撞分别显示。脚本自行创建的未登记碰撞体标为未映射，不猜测 UUID 或作者路径。记录不覆盖持续窗口运行、自定义脚本的所有位移、触发区重叠、着地状态或持续接触生命周期。旧有限控制回放仍拒绝物理工程；新的[物理输入回放](#物理项目输入回放)可在受限项目中使用这份观察核对每个角色的 30 步。
 
-中间层使用独立的 `VIENTO_PHYSICS2D` 协议 1 和 `viento-physics2d-observation` 快照 1；宿主保存到运行 `session.json` 的 `physics` 字段。物理观察包装生成器为 **0.23.0**，能力为 `physics.observe2d`；0.2.7 发布时执行适配器为 0.38.0，0.2.8 为 0.40.0，0.2.9 发布时为 0.41.0，0.2.10 收录逐实例回放0.42.0增量，当前执行描述符为0.46.0；显式角色运动与单向平台各套独立包装。观察本身不要求作者格式升级，项目协议 4／7／10／11和既有动画契约不变。验证范围及结果见[物理观察专题](test-results/scene-physics2d-observation/README.md)。
+中间层使用独立的 `VIENTO_PHYSICS2D` 协议 1 和 `viento-physics2d-observation` 快照 1；宿主保存到运行 `session.json` 的 `physics` 字段。物理观察包装生成器为 **0.23.0**，能力为 `physics.observe2d`；0.2.7 发布时执行适配器为 0.38.0，0.2.8 为 0.40.0，0.2.9 发布时为 0.41.0，0.2.10 收录逐实例回放0.42.0增量，发布执行描述符为0.46.0，工作树另增0.47.0[独立重启外层](SCENE_RESTART.md)；显式角色运动与单向平台各套独立包装。观察本身不要求作者格式升级，项目协议 4／7／10／11和既有动画契约不变。验证范围及结果见[物理观察专题](test-results/scene-physics2d-observation/README.md)。
 
 ### 查看位移与碰撞示意
 
@@ -501,7 +501,7 @@ Godot 执行描述符更新为 **0.42.0**，可选能力为 `physics.input-repla
 
 Rust 核心负责声明规则；中立计划负责绑定场景身份、保存态来源和能力需求；Godot 适配器负责原生节点和时钟。声明没有 Godot 节点名、事件绑定号或渲染尺寸。schema 1 使用既有可选核心入口 `scenePhysics2D.inspect`；schema 2／3／4／5／6 分别使用独立 `scenePhysics2D.inspectResponse`／`inspectMotion`／`inspectOneWay`／`inspectPlatformMotion`／`inspectPlatformVertical` 与各自可选标记，不改变主 ABI。物理子计划为 `viento-physics2d-plan` v1，挂在场景计划 `physics` 字段；旧场景作者格式不变。
 
-执行能力为 `physics.bodies2d`，按声明种类追加 `physics.character2d`／`physics.sensors2d`；按实际字段追加 `physics.character-slide2d`、`physics.character-motion2d`、`physics.one-way-platform2d`、`physics.platform-motion2d` 或 `physics.platform-vertical2d`。Godot 提供这些能力，两个 Bevy 通道明确拒绝。0.2.7 发布时执行适配器为 0.38.0，0.2.8 为 0.40.0，0.2.9 发布时为 0.41.0，0.2.10 收录逐实例回放0.42.0增量，当前执行描述符为0.46.0；原 0.21.0 物理、0.22.0 响应、0.23.0 观察、0.24.0 运动及 0.25.0 事件生成层保持，实际单向平台再套 0.26.0 包装，当前含角色的场景从这些层组合 0.28.0 统一移动碰撞收集器，保留但不叠加旧 0.27.0 收集器；同时存在重力角色和单向平台时再由0.29.0薄桥提供独立下穿控制；显式水平往返由0.30.0独立平台控制器合入角色请求，保存并严格校验旧运行原文；实际垂直往返由保留的0.39.0独立内层处理并校验库存；实际移动平台另叠加0.40.0启停控制层；项目运行协议继续按已有动画范围与控制器内容[选择](PROJECT_BUILD.md#当前项目协议选择)，没有新的物理线协议。只在选择物理声明时加入原生物理运行文件；没有选择的场景不产生空物理计划。
+执行能力为 `physics.bodies2d`，按声明种类追加 `physics.character2d`／`physics.sensors2d`；按实际字段追加 `physics.character-slide2d`、`physics.character-motion2d`、`physics.one-way-platform2d`、`physics.platform-motion2d` 或 `physics.platform-vertical2d`。Godot 提供这些能力，两个 Bevy 通道明确拒绝。0.2.7 发布时执行适配器为 0.38.0，0.2.8 为 0.40.0，0.2.9 发布时为 0.41.0，0.2.10 收录逐实例回放0.42.0增量，发布执行描述符为0.46.0，工作树另增0.47.0[独立重启外层](SCENE_RESTART.md)；原 0.21.0 物理、0.22.0 响应、0.23.0 观察、0.24.0 运动及 0.25.0 事件生成层保持，实际单向平台再套 0.26.0 包装，当前含角色的场景从这些层组合 0.28.0 统一移动碰撞收集器，保留但不叠加旧 0.27.0 收集器；同时存在重力角色和单向平台时再由0.29.0薄桥提供独立下穿控制；显式水平往返由0.30.0独立平台控制器合入角色请求，保存并严格校验旧运行原文；实际垂直往返由保留的0.39.0独立内层处理并校验库存；实际移动平台另叠加0.40.0启停控制层；项目运行协议继续按已有动画范围与控制器内容[选择](PROJECT_BUILD.md#当前项目协议选择)，没有新的物理线协议。只在选择物理声明时加入原生物理运行文件；没有选择的场景不产生空物理计划。
 
 成功工程经现有[交付工程](BACKEND_PROJECTS.md#交付生成工程)导出，包内含物理声明、运行脚本、行为和已冻结素材；解包后可独立用 Godot 导入运行。`physics-project.json` 是受校验的生成文件清单补充；schema 2 另附 `physics-response-project.json` 登记响应场景与底层停止脚本，它们都不是作者配置。实际单向平台另附 `one-way-project.json`、各场景 `one-way.json`、原运行脚本与独立原生形状设置脚本，并由库存核对后参与交付。水平往返另有平台场景清单、参数、旧运行原文及独立控制器，纳入严格库存；完整作者迁移仍使用 `.viento.zip`。
 

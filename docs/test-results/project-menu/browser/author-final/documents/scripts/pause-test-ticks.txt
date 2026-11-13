@@ -1,0 +1,7 @@
+extends Node
+var pause_test_idle_ticks := 0
+var pause_test_physics_ticks := 0
+func _process(_delta: float) -> void:
+	pause_test_idle_ticks += 1
+func _physics_process(_delta: float) -> void:
+	pause_test_physics_ticks += 1

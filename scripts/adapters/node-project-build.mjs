@@ -344,7 +344,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     aborted(signal);
     // Runtime identities and navigation come only from the revalidated frozen
     // plan. No process frame can introduce an object or author location.
-    observation = plan.kind === 'project' ? createProjectRuntimeObservation(plan, { protocolVersion: build.backend.protocolVersion, ...(controlProgram ? { controlProgram } : {}) })
+    observation = plan.kind === 'project' ? createProjectRuntimeObservation(plan, { protocolVersion: build.backend.protocolVersion, allowSceneRestart: build.backend.capabilities.includes('project.scene-restart'), ...(controlProgram ? { controlProgram } : {}) })
       : createSceneRuntimeObservation(plan, { ...(controlProgram ? { controlProgram } : {}) });
     const sessions = await resolveContainedPath(buildDirectory, path.join(buildDirectory, 'sessions'), { allowMissing: true });
     await fs.mkdir(sessions, { recursive: true });
@@ -385,7 +385,9 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
         // Interactive sessions keep a raw tail; finite verification retains its original complete record.
         ...(plan.kind === 'project' && !smoke ? { retainedEvents: 128 } : {}),
         capabilities: generated.backend.capabilities, ...(plan.kind === 'project' && controlProgram ? { controlProgram,
-          canFinishReplay: () => replayFinalized && !replayInvalidTail && !signal?.aborted && traceReader?.diagnostics.length === 0 && traceReader.samples.length === controlProgram.steps.length } : {}), onEventPositionsSnapshot: snapshot => {
+          canFinishReplay: () => replayFinalized && !replayInvalidTail && !signal?.aborted && traceReader?.diagnostics.length === 0 && traceReader.samples.length === controlProgram.steps.length } : {}), onPauseSnapshot: snapshot => {
+          record.pause = snapshot; publish({ pause: snapshot });
+        }, onEventPositionsSnapshot: snapshot => {
           record.eventPositions = snapshot; publish({ eventPositions: snapshot });
         }, onAudioRequestsSnapshot: snapshot => {
           record.audioRequests = snapshot; publish({ audioRequests: snapshot });
@@ -491,7 +493,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     record.events = runtimeReader.events;
     if (runtimeReader.retention) record.eventRetention = { ...runtimeReader.retention };
     if (runtimeReader.lifecycle) record.lifecycle = { ...runtimeReader.lifecycle };
-    if (runtimeReader.executionClock || runtimeReader.executionFrames || runtimeReader.animationRequests || runtimeReader.audioRequests || runtimeReader.eventPositions) {
+    if (runtimeReader.pause || runtimeReader.executionClock || runtimeReader.executionFrames || runtimeReader.animationRequests || runtimeReader.audioRequests || runtimeReader.eventPositions) {
       // Preserve the last admitted scheduling evidence even when cancellation
       // interrupts the process before its terminal observation can arrive.
       try { runtimeReader.finish(); }
@@ -502,6 +504,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
         record.status = signal?.aborted ? 'cancelled' : 'failed';
         record.diagnostics.push(diagnostic(error, plan));
       }
+      if (runtimeReader.pause) record.pause = runtimeReader.pause;
       if (runtimeReader.executionClock) record.executionClock = runtimeReader.executionClock;
       if (runtimeReader.executionFrames) record.executionFrames = runtimeReader.executionFrames;
       if (runtimeReader.animationRequests) record.animationRequests = runtimeReader.animationRequests;
@@ -514,6 +517,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     }
   }
   // The initial reader notification can fail before runtimeReader is assigned.
+  if (record.pause && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.pause = { ...record.pause, phase: 'incomplete' };
   if (record.executionClock && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.executionClock = { ...record.executionClock, phase: 'incomplete' };
   if (record.executionFrames && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.executionFrames = { ...record.executionFrames, phase: 'incomplete' };
   if (record.eventPositions && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.eventPositions = { ...record.eventPositions, phase: 'incomplete' };

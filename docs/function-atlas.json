@@ -3,9 +3,9 @@
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
     "date": "2026-11-13",
-    "version": "0.2.10",
-    "commit": "82baaea9024bda118cc301c28f68d6a6bc4b1282",
-    "scope": "0.2.10源码收录逐实例物理回放、世界工作平面、运行主相机/构图/世界边界、HUD、场景导航/关卡重试、晶石庭院参考游戏、名称参数参考与官方重试参数起始项。198功能/600实现/815绑定/3260评分/163工作流。11项功能及39项交付评分由工作树2改为源码3，其余评分/对象/旧证据保留；发布前基线为meta.commit，当前来源由sourceSnapshot核对。开发Chrome/Godot原始验收仍按0.2.9原时点，发布检查另存；安装保持0.2.0。不证明0.3/0.5出口、完整从空白复建、暂停/存档/长期运行、独立发行、Bevy对等或其他设备。未来ns-nova替换保留语义、稳定身份与验收样例。",
+    "version": "0.3.0",
+    "commit": "c46631350f53ee60e0a70523684274f08b4c73b4",
+    "scope": "0.3.0源码交付将行为复制、同场景重启、暂停恢复、运行菜单、影视模板、菜单成员名称接线与首次脚本创建往返七项能力纳入版本。205功能/622实现/837绑定/3348评分/649依赖/170工作流；仅22个对应交付评分由2升至3，实现/验证/解耦评分与其他关系保留。此前各专题的0.2.10开发实测按原始回执阅读，本次0.3.0发布检查单独留证。审查基线为上次0.2.10提交，安装验收仍0.2.0；未完成完整关卡从空白、现有行为dirty往返、存档/长期运行/独立发行与新安装验收。独立Godot/Bevy/模板版本与业务协议保持原层级。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -4279,6 +4279,160 @@
           "不是桌面作品库/目录选择器创建验收、完整四场景游戏复建、暂停/同场景重启、存档、独立发行、Bevy或新安装；完整应用退出另见最终回执。"
         ],
         "next": "继续整款参考游戏复建，单独评估复制一个绑定到明确实例及脚本保存后的场景返回；重启和暂停按生命周期另行推进。"
+      },
+      {
+        "id": "behavior.binding_copy",
+        "label": "将当前行为配置复制到明确实例",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "已有行为JSON→明确复制目标实例→复制当前绑定→检查完整原文→应用草稿→普通保存→生成与离线游戏",
+        "platforms": [
+          "Linux Node编辑服务与Chrome156，中英日390px；界面复制完成的作者副本进入实际Godot和离线生成工程验收",
+          "开发验收时为0.2.10后的工作树；现纳入0.3.0源码，安装验收仍0.2.0，未完成完整从空白游戏或阶段门槛"
+        ],
+        "boundary": [
+          "纯临时表单复制接收当前原始参数/信号、稳定目录和宿主提供的新绑定UUID，无DOM、I/O、随机分配或持久化权限。显式选择目标，不合并共用定义的多个实例；只更换bindingId和instanceId，普通文本参数里的UUID不猜测改写。",
+          "当前未保存输入含空文本/false/0/-0/换行和未完成数字可保留为副本，随后沿既有语义检查和序列化；新条目不复制原JSON的词法表示。已存在条目按既有保真补丁保留，来源/类型/依赖仍须检查。",
+          "选择目标不改草稿或旧审阅；复制才生成独立行身份并撤销审阅。旧参数/信号控件及音轨/动画/参考/合同辅助不能写复制后的行，忙碌、旧来源、身份冲突和32条上限拒绝，取消不写作者文件。",
+          "在既有参考游戏副本只保留一条收集绑定，再从真实界面明确复制另外两枚晶体。原9条绑定及98份正式示范保留，实际原窗口和离线ZIP玩法分别验证；不是完整游戏从空白创建、安装/设备/Bevy对等、暂停/存档/长期运行验收。"
+        ],
+        "next": "继续完整从空白关卡复建与跨编辑区交接；同场景重启、暂停/恢复、鼠标/键盘菜单分别定义时间、输入、状态和生命周期，不将复制辅助当作阶段出口。"
+      },
+      {
+        "id": "authoring.scene_restart",
+        "label": "原地重启当前场景与指定共享值复位",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "普通重启TXT→显式两参数→行为/组装保存→当前访问重建→原窗口与离线工程",
+        "platforms": [
+          "Linux Node作者/构建服务与Chrome156，中英日390px",
+          "Godot4.7.2音频清理修订；Xvfb/Mesa软件GL和XTest键盘"
+        ],
+        "boundary": [
+          "独立viento_project_restart.request_restart(values)端口，不填目标；普通导航和失败页retry端口继续拒绝自身。单成员组装允许，单独scene生成明确拒绝。",
+          "普通官方TXT与两String参数，显式补齐默认ui_accept及score0/health100，作者另填游戏值；不创建输入映射。参数助手四种完整换行/BOM表示，专用预检和能力推导只匹配原始官方正文。",
+          "只推导有效稳定UUID、唯一且实际绑定的精确来源；成员、组装、descriptor及生成后能力分别检查，删标记不能降级。自定义源码不被解释为官方模板。",
+          "最多16标量键/4096UTF8字节严格JSON；受理后预留每键一次状态额度并复制覆盖，共用切换槽；离场边界合并最新共享状态，未列键保留。拒绝不改状态/额度，结束/中止取消覆盖但不退预约。",
+          "同一有限会话增加访问，旧对象及所有访问端口撤销，物理/行为/相机/HUD/音轨/动画重新实例化；场景局部计时归零，总时间/身份/修订/预算继续，64访问等旧累计上限保持。",
+          "可信生成能力显式启用同场景reader；默认旧reader仍拒绝，观察可选project.sceneRestart严格true后自洽查询，退出间隙清除旧样本，旧访问帧拒绝。业务线协议4/7/10/11与作者/事务格式保持。",
+          "Godot0.47.0独立最外层认证新文件和成对settings，包住保留的0.46.0retry；旧86后端GD/text不改，标准生成ZIP离线重跑。Bevy和原生ns-nova未接。",
+          "真实UI在参考游戏一次性副本创建TXT/引用/绑定/两参数；原11绑定原字节保留。测试准备仅是原有输入映射/menu进度/音轨loop；原生窗口使用该UI保存100文件，不是完整从空白游戏。",
+          "不代表暂停/鼠标菜单、跨启动存档、30分钟运行、独立无引擎发行、硬件GPU、Bevy对等或新安装验收；开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0。"
+        ],
+        "next": "在同场景重建的明确生命周期基础上接暂停/恢复与鼠标键盘菜单，继续从空白关卡作者任务；持续运行、存档和独立发行按0.4工作包推进。"
+      },
+      {
+        "id": "authoring.project_pause",
+        "label": "项目暂停与按键释放后恢复",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "普通暂停TXT→显式三参数→组装保存→原生冻结/恢复→离线交付",
+        "platforms": [
+          "Linux Node作者与Chrome三语390px",
+          "Godot4.7.2音频修订/Xvfb/Mesa软件GL/XTest键盘"
+        ],
+        "boundary": [
+          "只匹配实际绑定的原始官方TXT，成员/组装/descriptor/生成能力独立准入；project.pause可选，无暂停工程保留原0.47生成字节。",
+          "三String参数为动作名、暂停文案和恢复等待文案；参数助手支持完整LF/CRLF与单BOM，专用预检和能力推导仍只匹配原始正文。同场景一个控制器，不自动创建输入映射。",
+          "Godot0.48独立暂停外层包住原0.47重启，玩法宿主PAUSABLE，独立内置ALWAYS子树只处理按键/焦点/文案，普通作者回调不获ALWAYS权限。",
+          "只在非物理回调、无刷新/切换/retry/事件和音频动画待队列安全点受理；拒绝不改变游戏状态/序号/预算。",
+          "同步停住物理、普通回调、动画、原生音轨与游戏时钟；恢复先等待焦点和全部已注册动作松开，焦点丢失暂停且恢复焦点不恢复游戏。",
+          "恢复保持同一访问、节点、状态和累计额度；墙钟超时/输出上限不中止，Escape/关闭/取消仍能结束，关闭时不先恢复玩法。",
+          "独立VIENTO_PROJECT_PAUSE旁路仅观察，不成为执行权限；严格校验访问/序号/冻结时钟，默认32保留窗口/最大128，观察失败保留最后已接受状态并标未完成。",
+          "真实UI创建普通TXT/引用/绑定/三参数，原12绑定字节保持；参考副本102文件与标准作者ZIP真实Rust恢复，原生原工程/标准构建ZIP离线分别验证。",
+          "业务协议4/7/10/11、作者/事务格式保持；Bevy/ns-nova未实现。仍未覆盖鼠标菜单、从空白完整游戏、跨启动存档、30分钟运行和独立无引擎发行。"
+        ],
+        "next": "接鼠标/键盘菜单与从空白关卡的完整作者任务，按0.3阶段门槛补齐；持续运行、存档、独立发行后续工作包。"
+      },
+      {
+        "id": "authoring.project_menu",
+        "label": "独立运行菜单与键鼠释放后执行",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "普通菜单TXT→三String参数→审阅保存→场景/暂停菜单→原窗口与离线ZIP",
+        "platforms": [
+          "Linux Node作者服务、Chrome156中英日390px",
+          "Godot4.7.2音频修订/Xvfb/Mesa软件GL/XTest键鼠"
+        ],
+        "boundary": [
+          "只识别精确且实际绑定的官方普通TXT，成员/组装/descriptor/生成输出分别要求project.menu和project.pause；自定义源不推断，单独scene生成拒绝。",
+          "配置仅title/items_json/display_mode三String；每模式每场景一份，默认Exit。1–8项/8192UTF8字节，旧String4096UTF16单元保持，160标量标签、严格JSON/重复键/Unicode/精确命令字段校验。",
+          "中立values预算为ASCII键与标量载荷，最多16键/4096字节；文本不含C0/C1。通用Double语义保留，Godot会读成零的极小非零数显式拒绝；全零指数只规范解析副本，原作者JSON保持。",
+          "场景命令只允许scene/retry/restart/finish，复用原导航/重试/重开端口与累计额度；暂停模式只resume/finish，同场景官方暂停控制器仍须显式绑定，不暂时恢复普通玩法执行跳转。",
+          "内置真实GUI持有按钮和焦点，不授予作者ALWAYS或任意回调；首次显示/重新聚焦/执行前等待全部注册动作与鼠标键释放，长按/重复键不重复提交，失焦撤销待执行选择，旧访问/移除节点的端口失效。",
+          "scene菜单不冻结InputMap轮询，标题和结果推荐独立成员；paused菜单沿原冻结层替代基础提示，恢复保持同一访问/节点/状态。业务协议4/7/10/11、作者格式、事务日志和89份旧GD/text保持。",
+          "当前descriptor0.49.0；仅含菜单工程叠加0.49.0认证外层，无菜单暂停工程0.48.0、普通0.47.0生成字节保持。Bevy/ns-nova尚未接入，不从Godot能力推导其他后端。",
+          "真实Chrome创建普通TXT/引用/绑定/三参数，原13条绑定逐字节保持；UI104作者文件和标准作者ZIP真实Rust恢复。原生4/4含拒绝与失效、原窗口/标准ZIP离线完整流程、场景重开鼠标和Enter长按释放。",
+          "不代表从空白完成整款游戏、暂停中重开/导航事务、跨启动存档、30分钟运行、字体闭包、独立无引擎发行、硬GPU/真实设备或候选安装；开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0。"
+        ],
+        "next": "按真实作者任务从空白复建第一款关卡，统一找参数和跨编辑区交接；暂停中重开需独立受控事务。持续运行、存档与独立发行仍按0.4/0.5门槛推进。"
+      },
+      {
+        "id": "project.film_template",
+        "label": "影视创作模板、剧本与分镜素材迁移",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "新建影视→人物/剧本场次/分镜→普通编辑保存→图片音视频引用→作者ZIP换根恢复",
+        "platforms": [
+          "Linux Node编辑服务与直接引用实际Rust workspace/mobile_storage模块的临时原生测试宿主",
+          "Chrome桌面选择器与移动预览日语390px；系统选择器/窗口与IPC由测试桥接，不代表安装或Android设备"
+        ],
+        "boundary": [
+          "org.viento.oc-film 1.0.0为纯声明包，共用原catalog schema1和workspace3；新增影视成为6个可选包，默认空白和兼容OC保持。旧5个可选包与1个兼容包逐对象canonical摘要完全不变。",
+          "八类为影视说明、人物、故事大纲、剧本场次、分镜、拍摄地点、制作计划、道具；新工程正文与素材为空，类型/模板/来源摘要复制到工程，不随应用升级自动替换。",
+          "场次和大纲沿原prose，重复人物对白、冒号、时间码、BOM/CRLF保持正文；分镜沿structured，镜头号/景别/运镜/预计时长为普通文字，人物背景保留在人物自身。",
+          "场景类型名scene只属于本工程文档，Markdown不因此取得Scene2D/3D身份或后端能力；无新parser、studioProfile、运行协议、事务或Godot/Bevy执行适配。",
+          "桌面HTTP实际导入PNG/WAV/MP4并保存stable asset UUID引用，重复导入复用身份；三样本ffmpeg解码只验证输入，不代表Studio播放、剪辑或成片渲染。",
+          "现有Rust真实创建、模板快照及标准ZIP导出/检查/异地导入；原路径失效后重建，索引后20份作者文件和8模板、文档/素材ID逐字节保持。首次Node登记重排manifest键序属既有行为，另记录语义等价，不假称索引前后原manifest字节不变。",
+          "真实浏览器六选项/三语/空影视创建/场次prose/分镜字段与普通保存重开，旧drama/software同行验收。旧CDP驱动过早导入DOM缓存模块及未等待workspace的初始化竞态仅修驱动，失败证据与最终通过分开。",
+          "JS定向33项、Rust模板5项、共用解析/媒体/导出119项及新媒体迁移1项分别通过；不重复外推上一轮9670项完整应用为影视本轮全量。",
+          "开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0；未含镜头时间线/自动摄影机调度/剪辑/逐帧渲染/成片输出、影视专用OC投影、物理设备或安装验收。"
+        ],
+        "next": "先按真实影视作者任务优化场次与分镜的交接；镜头序列、时间同步、摄影机调度和渲染交付另定义中立合同与后端能力，不增加0.5.0两款2D游戏的出口。"
+      },
+      {
+        "id": "behavior.menu_target_authoring",
+        "label": "菜单按钮的成员名称接线与原文保真编辑",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "官方场景菜单绑定→读取目录→明确组装/按钮/成员→替换或追加→原检查/审阅/应用/普通保存",
+        "platforms": [
+          "Linux Node作者服务、Chrome中英日390px",
+          "Godot4.7.2音频修订/Xvfb/Mesa软件GL/XTest键鼠，原路径及构建ZIP离线"
+        ],
+        "boundary": [
+          "独立纯JSON源码位置编辑，仅替换一个targetSceneId字符串或显式追加scene/retry项；保留其他条目、空白、转义、数字字面量及初始化值。",
+          "只识别当前会话中官方Godot/GDScript三String默认接口，要求唯一items_json和display_mode=scene；缺行/重复/暂停/无效旧菜单保留手动编辑。",
+          "显式读取及选择保存态组装/其他成员，不自动选取。插入前重读branded目录并比较revision和完整fingerprint；来源、绑定、行节点/身份、输入、选择和异步epoch均复验。",
+          "最终普通Check重新核对全部脚本依赖；辅助目录读取不代表重新抓取官方脚本，也不获得持久保存权限。读取/选择/取消/相同目标保留审阅，真正改单行后重新检查。",
+          "追加retry写values:{}，不猜分数/生命初值；旧retry values原文保留。1..8项、String4096UTF16、菜单8192UTF8与32成员原预算继续。",
+          "真实三场景空白结构只证明菜单作者纵切和原窗口/离线导航，不代表完整游戏复建、持续运行、跨启动存档、独立发行、Bevy对等或安装验收。",
+          "作者格式、事务、宿主API、Godot0.49.0与业务协议4/7/10/11保持；开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0。"
+        ],
+        "next": "接通脚本创建后返回原场景的显式交接，保留未保存配置并重核来源；继续从空白完成第一款关卡，不自动建立绑定。"
+      },
+      {
+        "id": "behavior.script_creation_return",
+        "label": "首次行为配置与普通脚本创建的显式往返",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "首次行为表单→暂存配置→普通脚本草稿/保存或取消→显式返回→目录双重核验→选择脚本/重新审阅/保存",
+        "platforms": [
+          "Linux Node编辑服务与Chrome中英日390px，真实GUI作者步骤",
+          "Godot4.7.2音频修订，成功样例仅真实构建和一次headless事件"
+        ],
+        "boundary": [
+          "仅首次行为创建，原表单在闭包保留文档/绑定UUID、所有未完成字段、Profile/Type/Path/选择和dirty；不导出可重灌draft DTO。",
+          "跨区纯意图含world/root/场景两修订/路径/后端/语言，一次性内存token；不写作品格式、事务、恢复日志或运行协议。关闭的dirty表单仍参与退出保护，reload不恢复这份临时配置。",
+          "装配层以受限服务连接scripts/build，不互传控制器。服务只有两模块均active才注入，picker初选对应后端，实际语言和脚本选择仍由作者核对。",
+          "host在成功writeDoc点观察path/content修订，未把saveNewDoc正常返回或isCreating=false视为注册完成；新Save失败/重试、后续已有Save、迟到创建会话与index失败分别测试。",
+          "显式返回先fresh目录核scene object/source revision和实际written script path/revision，再既有受护导航、fresh build context及表单第二次inspect。允许普通TXT创建带来的world baseRevision变化，旧preview不复用。",
+          "不自动选新TXT、补绑定或关系。原空选择仍空；无效新目录保留设置供只读查看/明确取消，来源变化前置拒绝不拉走当前正文。显式Discard只清暂存配置，脚本草稿另处理。",
+          "真实Chrome三独立零正文空结构，成功4文档10文件/取消2文档6文件/改源恢复3文档8文件；17截图、549生产来源稳定，实际Godot第二实例及原binding发context_ready [dock,0]。",
+          "本轮30host/协调器、102创建相邻、6保存接线、34构建UI与完整应用分别按回执验证；首轮运行中源码变化/截图遮挡、Node夹具新导入失败独立留证，不计最终通过。",
+          "现有行为原文有未保存修改时的往返尚未接入；未覆盖完整关卡复建、长期运行、存档、独立发行、设备/安装或Bevy执行对等。开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0。"
+        ],
+        "next": "继续从空白完整复建第一款参考关卡，按实际重复操作补参数/诊断交接；现有行为原文dirty往返另定义来源和草稿保真。"
       }
     ],
     "implementation": [
@@ -12097,6 +12251,359 @@
           "scripts/tests/scene-retry-parameters-smoke.mjs",
           "scripts/tests/scene-retry-parameters-native-smoke.mjs",
           "scripts/tests/helpers/retry-parameters-keyboard.py"
+        ]
+      },
+      {
+        "id": "i601",
+        "label": "当前行为草稿的可移植复制规则",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-behavior-binding-copy.mjs",
+          "scripts/tests/scene-behavior-binding-copy.test.mjs"
+        ]
+      },
+      {
+        "id": "i602",
+        "label": "明确复制目标与独立表单行所有权",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-scene-behaviors.js",
+          "web/scene-behaviors.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/scene-behavior-binding-copy-ui.test.mjs",
+          "scripts/tests/scene-behavior-binding-copy-smoke.mjs"
+        ]
+      },
+      {
+        "id": "i603",
+        "label": "官方重启作者语义和能力推导",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/godot-scene-restart-script.mjs",
+          "engine/godot-scene-restart-parameters.mjs",
+          "engine/project-scene-restart-diagnostics.mjs",
+          "engine/scene-restart-capability.mjs",
+          "engine/build-plan.mjs",
+          "engine/project-assembly-plan-contract.mjs",
+          "engine/backend-capabilities.mjs",
+          "scripts/tests/project-scene-restart-capabilities.test.mjs",
+          "scripts/tests/project-scene-restart-diagnostics.test.mjs"
+        ]
+      },
+      {
+        "id": "i604",
+        "label": "Godot独立重启端口与保留层库存",
+        "kind": "product",
+        "language": [
+          "GDScript",
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4/restart-project-runtime.gd",
+          "scripts/backends/godot4-scene-restart.mjs",
+          "scripts/backends/godot4-scene-restart-projection.mjs",
+          "scripts/backends/godot4-scene-restart-inventory.mjs",
+          "scripts/backends/godot4-scene-retry-inventory.mjs",
+          "scripts/backends/godot4-adapter.mjs",
+          "scripts/tests/godot4-scene-restart.test.mjs",
+          "scripts/tests/godot-scene-restart-native.test.mjs"
+        ]
+      },
+      {
+        "id": "i605",
+        "label": "同场景访问的中立观察与宿主准入",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-runtime-events.mjs",
+          "engine/project-runtime-query.mjs",
+          "scripts/adapters/node-execution-backends.mjs",
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/tests/project-scene-restart-readers.test.mjs"
+        ]
+      },
+      {
+        "id": "i606",
+        "label": "普通脚本创建与重启参数作者闭环",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/script-authoring.mjs",
+          "engine/script-parameter-discovery.mjs",
+          "web/modules/app-script-create.js",
+          "web/modules/app-scene-behaviors.js",
+          "web/modules/app-project-build.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/scene-restart-authoring-smoke.mjs"
+        ]
+      },
+      {
+        "id": "i607",
+        "label": "官方暂停作者语义与能力推导",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/godot-project-pause-script.mjs",
+          "engine/godot-project-pause-parameters.mjs",
+          "engine/project-pause-diagnostics.mjs",
+          "engine/scene-pause-capability.mjs",
+          "engine/build-plan.mjs",
+          "engine/project-assembly-plan-contract.mjs",
+          "engine/backend-capabilities.mjs"
+        ]
+      },
+      {
+        "id": "i608",
+        "label": "Godot暂停外层与专属输入子树",
+        "kind": "product",
+        "language": [
+          "GDScript",
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4/project-pause-runtime.gd",
+          "scripts/backends/godot4/project-pause-input.gd",
+          "scripts/backends/godot4-project-pause.mjs",
+          "scripts/backends/godot4-project-pause-projection.mjs",
+          "scripts/backends/godot4-project-pause-inventory.mjs",
+          "scripts/backends/godot4-scene-restart-inventory.mjs",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i609",
+        "label": "独立暂停观察与宿主记录",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-pause-observation.mjs",
+          "scripts/adapters/node-execution-backends.mjs",
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i610",
+        "label": "普通暂停脚本作者与三语状态",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/script-authoring.mjs",
+          "engine/script-parameter-discovery.mjs",
+          "web/modules/app-project-build.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/project-pause-authoring-smoke.mjs"
+        ]
+      },
+      {
+        "id": "i611",
+        "label": "菜单纯数据合同和独立能力推导",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-menu.mjs",
+          "engine/godot-project-menu-script.mjs",
+          "engine/godot-project-menu-parameters.mjs",
+          "engine/project-menu-diagnostics.mjs",
+          "engine/scene-menu-capability.mjs",
+          "engine/build-plan.mjs",
+          "engine/project-assembly-plan-contract.mjs",
+          "engine/backend-capabilities.mjs"
+        ]
+      },
+      {
+        "id": "i612",
+        "label": "Godot菜单外层与专属GUI输入控制器",
+        "kind": "product",
+        "language": [
+          "GDScript",
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4/project-menu-runtime.gd",
+          "scripts/backends/godot4/project-menu-input.gd",
+          "scripts/backends/godot4-project-menu.mjs",
+          "scripts/backends/godot4-project-menu-projection.mjs",
+          "scripts/backends/godot4-project-menu-inventory.mjs",
+          "scripts/backends/godot4-project-pause-inventory.mjs",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i613",
+        "label": "冻结计划与生成能力的本机准入",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-assembly-plan.mjs",
+          "scripts/adapters/node-execution-backends.mjs"
+        ]
+      },
+      {
+        "id": "i614",
+        "label": "普通菜单作者与三语诊断",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/script-authoring.mjs",
+          "engine/script-parameter-discovery.mjs",
+          "web/modules/app-project-build.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/project-menu-authoring-smoke.mjs"
+        ]
+      },
+      {
+        "id": "i615",
+        "label": "声明式影视包与八类起始正文",
+        "kind": "product",
+        "language": [
+          "JSON"
+        ],
+        "paths": [
+          "scripts/lib/project-templates.json"
+        ]
+      },
+      {
+        "id": "i616",
+        "label": "普通解析、资源与HTTP作者接线",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/lib/project-layout.mjs",
+          "scripts/lib/doc-api-service.mjs",
+          "scripts/lib/media-assets.mjs",
+          "scripts/lib/export-package.mjs",
+          "scripts/tests/film-template-workflow.test.mjs"
+        ]
+      },
+      {
+        "id": "i617",
+        "label": "原生模板快照与归档互通",
+        "kind": "product",
+        "language": [
+          "Rust"
+        ],
+        "paths": [
+          "src-tauri/src/project_templates.rs",
+          "src-tauri/src/workspace.rs",
+          "src-tauri/src/mobile_storage.rs"
+        ]
+      },
+      {
+        "id": "i618",
+        "label": "共用选择器和三语模板名称",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "desktop/ui/app.js",
+          "mobile/library.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/project-templates-smoke.mjs"
+        ]
+      },
+      {
+        "id": "i619",
+        "label": "菜单嵌套目标的纯保真编辑",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-menu-item-edit.mjs",
+          "scripts/tests/project-menu-item-edit.test.mjs"
+        ]
+      },
+      {
+        "id": "i620",
+        "label": "菜单目标选择与异步行所有权",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS",
+          "Python"
+        ],
+        "paths": [
+          "web/modules/app-scene-behavior-menu-targets.js",
+          "web/modules/app-scene-behaviors.js",
+          "web/scene-behavior-menu-targets.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/dialog-harness.mjs",
+          "scripts/tests/scene-behavior-menu-targets-ui.test.mjs",
+          "scripts/tests/menu-target-authoring-smoke.mjs",
+          "scripts/tests/menu-target-authoring-native-smoke.mjs",
+          "scripts/tests/helpers/menu-targets-keyboard.py",
+          "scripts/tests/helpers/menu-targets-observer.gd"
+        ]
+      },
+      {
+        "id": "i621",
+        "label": "瞬时脚本返回会话与可信写入回执",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-scene-script-return-host.js",
+          "scripts/tests/scene-script-return-host.test.mjs",
+          "scripts/tests/scene-script-return-save-wiring.test.mjs"
+        ]
+      },
+      {
+        "id": "i622",
+        "label": "跨区显式交接与原表单恢复",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-scene-script-return.js",
+          "web/modules/app-scene-behavior-create.js",
+          "web/modules/app-script-create.js",
+          "web/modules/app-project-build.js",
+          "web/modules/app-studio-system.js",
+          "web/modules/app-runtime.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "scripts/tests/editor-harness.mjs",
+          "scripts/tests/scene-behavior-script-return-ui.test.mjs",
+          "scripts/tests/scene-script-return-coordinator-ui.test.mjs",
+          "scripts/tests/scene-script-return-authoring-smoke.mjs"
         ]
       }
     ],
@@ -34200,6 +34707,838 @@
         "e3729",
         "e3730",
         "e3731"
+      ]
+    },
+    {
+      "id": "b817",
+      "architecture": "semantic-js",
+      "function": "behavior.binding_copy",
+      "implementation": "i601",
+      "role": "复制仅产出脱离副本，语义检查/保存/依赖准入继续由原规划与宿主负责；同一规则供Node专项和真实浏览器使用。",
+      "evidence": [
+        "e3732",
+        "e3733",
+        "e3734",
+        "e3735",
+        "e3736",
+        "e3737",
+        "e3738",
+        "e3739",
+        "e3740",
+        "e3741",
+        "e3742",
+        "e3743",
+        "e3744",
+        "e3745",
+        "e3746",
+        "e3747",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b818",
+      "architecture": "ui",
+      "function": "behavior.binding_copy",
+      "implementation": "i602",
+      "role": "目标选择不改作者输入，复制只交接普通临时行；新行所有权、取消/冲突和审阅保持，真实作者操作及原生游戏分别留证。",
+      "evidence": [
+        "e3732",
+        "e3733",
+        "e3734",
+        "e3735",
+        "e3736",
+        "e3737",
+        "e3738",
+        "e3739",
+        "e3740",
+        "e3741",
+        "e3742",
+        "e3743",
+        "e3744",
+        "e3745",
+        "e3746",
+        "e3747",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b819",
+      "architecture": "semantic-js",
+      "function": "authoring.scene_restart",
+      "implementation": "i603",
+      "role": "纯作者预检、参数提供器与显式能力推导；不执行脚本或拥有保存权限。",
+      "evidence": [
+        "e3748",
+        "e3749",
+        "e3750",
+        "e3751",
+        "e3752",
+        "e3753",
+        "e3754",
+        "e3755",
+        "e3756",
+        "e3757",
+        "e3758",
+        "e3759",
+        "e3760",
+        "e3761",
+        "e3762",
+        "e3763",
+        "e3764",
+        "e3765",
+        "e3766",
+        "e3767",
+        "e3768",
+        "e3769",
+        "e3770",
+        "e3771",
+        "e3772",
+        "e3773",
+        "e3774",
+        "e3775",
+        "e3776",
+        "e3777",
+        "e3778",
+        "e3779",
+        "e3780",
+        "e3781",
+        "e3782",
+        "e3783",
+        "e3784",
+        "e3785",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b820",
+      "architecture": "runtime-backend",
+      "function": "authoring.scene_restart",
+      "implementation": "i604",
+      "role": "后端端口复用旧候选与离场/进入，认证完整新外层；旧GD/text、导航和retry自跳转拒绝保持。",
+      "evidence": [
+        "e3748",
+        "e3749",
+        "e3750",
+        "e3751",
+        "e3752",
+        "e3753",
+        "e3754",
+        "e3755",
+        "e3756",
+        "e3757",
+        "e3758",
+        "e3759",
+        "e3760",
+        "e3761",
+        "e3762",
+        "e3763",
+        "e3764",
+        "e3765",
+        "e3766",
+        "e3767",
+        "e3768",
+        "e3769",
+        "e3770",
+        "e3771",
+        "e3772",
+        "e3773",
+        "e3774",
+        "e3775",
+        "e3776",
+        "e3777",
+        "e3778",
+        "e3779",
+        "e3780",
+        "e3781",
+        "e3782",
+        "e3783",
+        "e3784",
+        "e3785",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b821",
+      "architecture": "node-service",
+      "function": "authoring.scene_restart",
+      "implementation": "i605",
+      "role": "读取默认拒绝自身切换，认证生成能力显式开放；查询重新验证可选能力标记和旧样本失效。",
+      "evidence": [
+        "e3748",
+        "e3749",
+        "e3750",
+        "e3751",
+        "e3752",
+        "e3753",
+        "e3754",
+        "e3755",
+        "e3756",
+        "e3757",
+        "e3758",
+        "e3759",
+        "e3760",
+        "e3761",
+        "e3762",
+        "e3763",
+        "e3764",
+        "e3765",
+        "e3766",
+        "e3767",
+        "e3768",
+        "e3769",
+        "e3770",
+        "e3771",
+        "e3772",
+        "e3773",
+        "e3774",
+        "e3775",
+        "e3776",
+        "e3777",
+        "e3778",
+        "e3779",
+        "e3780",
+        "e3781",
+        "e3782",
+        "e3783",
+        "e3784",
+        "e3785",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b822",
+      "architecture": "ui",
+      "function": "authoring.scene_restart",
+      "implementation": "i606",
+      "role": "复用普通TXT创建、关联、绑定、显式补齐、审阅和保存；三语窄屏和取消留证，实际作者副本进入原生验证。",
+      "evidence": [
+        "e3748",
+        "e3749",
+        "e3750",
+        "e3751",
+        "e3752",
+        "e3753",
+        "e3754",
+        "e3755",
+        "e3756",
+        "e3757",
+        "e3758",
+        "e3759",
+        "e3760",
+        "e3761",
+        "e3762",
+        "e3763",
+        "e3764",
+        "e3765",
+        "e3766",
+        "e3767",
+        "e3768",
+        "e3769",
+        "e3770",
+        "e3771",
+        "e3772",
+        "e3773",
+        "e3774",
+        "e3775",
+        "e3776",
+        "e3777",
+        "e3778",
+        "e3779",
+        "e3780",
+        "e3781",
+        "e3782",
+        "e3783",
+        "e3784",
+        "e3785",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b823",
+      "architecture": "semantic-js",
+      "function": "authoring.project_pause",
+      "implementation": "i607",
+      "role": "纯作者参数和独立能力准入；不执行作者脚本、不拥有持久写入。",
+      "evidence": [
+        "e3786",
+        "e3787",
+        "e3788",
+        "e3789",
+        "e3790",
+        "e3791",
+        "e3792",
+        "e3793",
+        "e3794",
+        "e3795",
+        "e3796",
+        "e3797",
+        "e3798",
+        "e3799",
+        "e3800",
+        "e3801",
+        "e3802",
+        "e3803",
+        "e3804",
+        "e3805",
+        "e3806",
+        "e3807",
+        "e3808",
+        "e3809",
+        "e3810",
+        "e3811",
+        "e3812",
+        "e3813",
+        "e3814",
+        "e3815",
+        "e3816",
+        "e3817",
+        "e3818",
+        "e3819",
+        "e3820",
+        "e3821",
+        "e3822",
+        "e3823",
+        "e3824",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b824",
+      "architecture": "runtime-backend",
+      "function": "authoring.project_pause",
+      "implementation": "i608",
+      "role": "原生SceneTree暂停；新外层认证及输入边缘/焦点/松键门禁，旧后端字节保留。",
+      "evidence": [
+        "e3786",
+        "e3787",
+        "e3788",
+        "e3789",
+        "e3790",
+        "e3791",
+        "e3792",
+        "e3793",
+        "e3794",
+        "e3795",
+        "e3796",
+        "e3797",
+        "e3798",
+        "e3799",
+        "e3800",
+        "e3801",
+        "e3802",
+        "e3803",
+        "e3804",
+        "e3805",
+        "e3806",
+        "e3807",
+        "e3808",
+        "e3809",
+        "e3810",
+        "e3811",
+        "e3812",
+        "e3813",
+        "e3814",
+        "e3815",
+        "e3816",
+        "e3817",
+        "e3818",
+        "e3819",
+        "e3820",
+        "e3821",
+        "e3822",
+        "e3823",
+        "e3824",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b825",
+      "architecture": "node-service",
+      "function": "authoring.project_pause",
+      "implementation": "i609",
+      "role": "中立旁路DTO严格验证，有限保留，失败/取消/超时保存未完成记录；不反向控制运行。",
+      "evidence": [
+        "e3786",
+        "e3787",
+        "e3788",
+        "e3789",
+        "e3790",
+        "e3791",
+        "e3792",
+        "e3793",
+        "e3794",
+        "e3795",
+        "e3796",
+        "e3797",
+        "e3798",
+        "e3799",
+        "e3800",
+        "e3801",
+        "e3802",
+        "e3803",
+        "e3804",
+        "e3805",
+        "e3806",
+        "e3807",
+        "e3808",
+        "e3809",
+        "e3810",
+        "e3811",
+        "e3812",
+        "e3813",
+        "e3814",
+        "e3815",
+        "e3816",
+        "e3817",
+        "e3818",
+        "e3819",
+        "e3820",
+        "e3821",
+        "e3822",
+        "e3823",
+        "e3824",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b826",
+      "architecture": "ui",
+      "function": "authoring.project_pause",
+      "implementation": "i610",
+      "role": "复用普通脚本创建、绑定、显式参数和审阅保存；构建页只显示当前冻结工程/访问状态。",
+      "evidence": [
+        "e3786",
+        "e3787",
+        "e3788",
+        "e3789",
+        "e3790",
+        "e3791",
+        "e3792",
+        "e3793",
+        "e3794",
+        "e3795",
+        "e3796",
+        "e3797",
+        "e3798",
+        "e3799",
+        "e3800",
+        "e3801",
+        "e3802",
+        "e3803",
+        "e3804",
+        "e3805",
+        "e3806",
+        "e3807",
+        "e3808",
+        "e3809",
+        "e3810",
+        "e3811",
+        "e3812",
+        "e3813",
+        "e3814",
+        "e3815",
+        "e3816",
+        "e3817",
+        "e3818",
+        "e3819",
+        "e3820",
+        "e3821",
+        "e3822",
+        "e3823",
+        "e3824",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b827",
+      "architecture": "semantic-js",
+      "function": "authoring.project_menu",
+      "implementation": "i611",
+      "role": "有限声明、严格JSON和中立载荷预算；纯语义不拥有执行端口或持久写入。",
+      "evidence": [
+        "e3825",
+        "e3826",
+        "e3827",
+        "e3828",
+        "e3829",
+        "e3830",
+        "e3831",
+        "e3832",
+        "e3833",
+        "e3834",
+        "e3835",
+        "e3836",
+        "e3837",
+        "e3838",
+        "e3839",
+        "e3840",
+        "e3841",
+        "e3842",
+        "e3843",
+        "e3844",
+        "e3845",
+        "e3846",
+        "e3847",
+        "e3848",
+        "e3849",
+        "e3850",
+        "e3851",
+        "e3852",
+        "e3853",
+        "e3854",
+        "e3855",
+        "e3856",
+        "e3857",
+        "e3858",
+        "e3859",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b828",
+      "architecture": "runtime-backend",
+      "function": "authoring.project_menu",
+      "implementation": "i612",
+      "role": "配置端口、真实GUI和访问/焦点/松键门禁分别负责；动作复用既有受控事务，旧生成外层认证。",
+      "evidence": [
+        "e3825",
+        "e3826",
+        "e3827",
+        "e3828",
+        "e3829",
+        "e3830",
+        "e3831",
+        "e3832",
+        "e3833",
+        "e3834",
+        "e3835",
+        "e3836",
+        "e3837",
+        "e3838",
+        "e3839",
+        "e3840",
+        "e3841",
+        "e3842",
+        "e3843",
+        "e3844",
+        "e3845",
+        "e3846",
+        "e3847",
+        "e3848",
+        "e3849",
+        "e3850",
+        "e3851",
+        "e3852",
+        "e3853",
+        "e3854",
+        "e3855",
+        "e3856",
+        "e3857",
+        "e3858",
+        "e3859",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b829",
+      "architecture": "node-service",
+      "function": "authoring.project_menu",
+      "implementation": "i613",
+      "role": "菜单和暂停标记独立推导核验；冻结目标与实际输出重核，不添加HTTP任意执行入口。",
+      "evidence": [
+        "e3825",
+        "e3826",
+        "e3827",
+        "e3828",
+        "e3829",
+        "e3830",
+        "e3831",
+        "e3832",
+        "e3833",
+        "e3834",
+        "e3835",
+        "e3836",
+        "e3837",
+        "e3838",
+        "e3839",
+        "e3840",
+        "e3841",
+        "e3842",
+        "e3843",
+        "e3844",
+        "e3845",
+        "e3846",
+        "e3847",
+        "e3848",
+        "e3849",
+        "e3850",
+        "e3851",
+        "e3852",
+        "e3853",
+        "e3854",
+        "e3855",
+        "e3856",
+        "e3857",
+        "e3858",
+        "e3859",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b830",
+      "architecture": "ui",
+      "function": "authoring.project_menu",
+      "implementation": "i614",
+      "role": "复用普通创建/关联/绑定/参数/审阅/保存；作者数据与HUD显示、引擎运行GUI解耦。",
+      "evidence": [
+        "e3825",
+        "e3826",
+        "e3827",
+        "e3828",
+        "e3829",
+        "e3830",
+        "e3831",
+        "e3832",
+        "e3833",
+        "e3834",
+        "e3835",
+        "e3836",
+        "e3837",
+        "e3838",
+        "e3839",
+        "e3840",
+        "e3841",
+        "e3842",
+        "e3843",
+        "e3844",
+        "e3845",
+        "e3846",
+        "e3847",
+        "e3848",
+        "e3849",
+        "e3850",
+        "e3851",
+        "e3852",
+        "e3853",
+        "e3854",
+        "e3855",
+        "e3856",
+        "e3857",
+        "e3858",
+        "e3859",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b831",
+      "architecture": "definition",
+      "function": "project.film_template",
+      "implementation": "i615",
+      "role": "类型和起始正文属于工程副本；prose/structured语义复用，不推断执行能力。",
+      "evidence": [
+        "e3860",
+        "e3861",
+        "e3862",
+        "e3863",
+        "e3864",
+        "e3865",
+        "e3866",
+        "e3867",
+        "e3868",
+        "e3869",
+        "e3870",
+        "e3871",
+        "e3872",
+        "e3873",
+        "e3874",
+        "e3875",
+        "e3876",
+        "e3877",
+        "e3878",
+        "e3879",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b832",
+      "architecture": "node-service",
+      "function": "project.film_template",
+      "implementation": "i616",
+      "role": "复用通用文档/资源/导出链；新集成测试证明影视场次与分镜不绑定运行引擎。",
+      "evidence": [
+        "e3860",
+        "e3861",
+        "e3862",
+        "e3863",
+        "e3864",
+        "e3865",
+        "e3866",
+        "e3867",
+        "e3868",
+        "e3869",
+        "e3870",
+        "e3871",
+        "e3872",
+        "e3873",
+        "e3874",
+        "e3875",
+        "e3876",
+        "e3877",
+        "e3878",
+        "e3879",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b833",
+      "architecture": "persistence",
+      "function": "project.film_template",
+      "implementation": "i617",
+      "role": "实际Rust模块复制新包并保持来源摘要；标准作者ZIP携带模板、正文、登记和媒体，不执行制作计划。",
+      "evidence": [
+        "e3860",
+        "e3861",
+        "e3862",
+        "e3863",
+        "e3864",
+        "e3865",
+        "e3866",
+        "e3867",
+        "e3868",
+        "e3869",
+        "e3870",
+        "e3871",
+        "e3872",
+        "e3873",
+        "e3874",
+        "e3875",
+        "e3876",
+        "e3877",
+        "e3878",
+        "e3879",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b834",
+      "architecture": "ui",
+      "function": "project.film_template",
+      "implementation": "i618",
+      "role": "共用动态包目录和普通文档编辑，新增翻译；不新增影视专用渲染控制器或重复存储。",
+      "evidence": [
+        "e3860",
+        "e3861",
+        "e3862",
+        "e3863",
+        "e3864",
+        "e3865",
+        "e3866",
+        "e3867",
+        "e3868",
+        "e3869",
+        "e3870",
+        "e3871",
+        "e3872",
+        "e3873",
+        "e3874",
+        "e3875",
+        "e3876",
+        "e3877",
+        "e3878",
+        "e3879",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b835",
+      "architecture": "semantic-js",
+      "function": "behavior.menu_target_authoring",
+      "implementation": "i619",
+      "role": "严格有限菜单复验与源码token位置补丁；无DOM、I/O、执行或持久写权限。",
+      "evidence": [
+        "e3880",
+        "e3881",
+        "e3882",
+        "e3883",
+        "e3884",
+        "e3885",
+        "e3886",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b836",
+      "architecture": "ui",
+      "function": "behavior.menu_target_authoring",
+      "implementation": "i620",
+      "role": "显式目录/选择与写前复验；单行结果交给原检查、草稿应用和普通保存。",
+      "evidence": [
+        "e3880",
+        "e3881",
+        "e3882",
+        "e3883",
+        "e3884",
+        "e3885",
+        "e3886",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b837",
+      "architecture": "semantic-js",
+      "function": "behavior.script_creation_return",
+      "implementation": "i621",
+      "role": "无DOM的注入式会话守护；只观察普通保存与受护导航，不取得文件写入权限。",
+      "evidence": [
+        "e3887",
+        "e3888",
+        "e3889",
+        "e3890",
+        "e3891",
+        "e3892",
+        "e3893",
+        "e3894",
+        "e3895",
+        "e3896"
+      ]
+    },
+    {
+      "id": "b838",
+      "architecture": "ui",
+      "function": "behavior.script_creation_return",
+      "implementation": "i622",
+      "role": "原表单持有草稿和审阅；装配受限服务、明确返回、新目录双核与焦点各自负责。",
+      "evidence": [
+        "e3887",
+        "e3888",
+        "e3889",
+        "e3890",
+        "e3891",
+        "e3892",
+        "e3893",
+        "e3894",
+        "e3895",
+        "e3896"
       ]
     }
   ],
@@ -66803,6 +68142,886 @@
       ],
       "value": 3,
       "reason": "纳入0.2.10源码交付；开发专题与本次发布检查分别留证，本机安装仍0.2.0，无新增设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.binding_copy",
+        "i601",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "限定的明确实例复制→检查/审阅→普通保存与取消闭环；失败保留输入，身份与数量边界明确。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.binding_copy",
+        "i601",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯复制12项、实际界面14项及相邻130项，真实Chrome双晶体保存/重开与Godot原窗口及离线工程分别验收；完整应用另见专题实际结果，不推导设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.binding_copy",
+        "i601",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "复制仅产出脱离副本，语义检查/保存/依赖准入继续由原规划与宿主负责；同一规则供Node专项和真实浏览器使用。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.binding_copy",
+        "i601",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后的未发布工作树增量；下一版计划0.3.0，安装仍0.2.0，无新增宿主设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.binding_copy",
+        "i602",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "限定的明确实例复制→检查/审阅→普通保存与取消闭环；失败保留输入，身份与数量边界明确。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.binding_copy",
+        "i602",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯复制12项、实际界面14项及相邻130项，真实Chrome双晶体保存/重开与Godot原窗口及离线工程分别验收；完整应用另见专题实际结果，不推导设备。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.binding_copy",
+        "i602",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "目标选择不改作者输入，复制只交接普通临时行；新行所有权、取消/冲突和审阅保持，真实作者操作及原生游戏分别留证。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.binding_copy",
+        "i602",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后的未发布工作树增量；下一版计划0.3.0，安装仍0.2.0，无新增宿主设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.scene_restart",
+        "i603",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "限定当前成员重建形成作者、显式状态范围、运行访问与离线工程闭环。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.scene_restart",
+        "i603",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、真实Chrome保存作品、实际Godot原窗口/离线ZIP及完整应用分别验证，范围见本轮回执。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.scene_restart",
+        "i603",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯作者预检、参数提供器与显式能力推导；不执行脚本或拥有保存权限。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.scene_restart",
+        "i603",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后的未发布工作树，下一版计划0.3.0；当前安装仍0.2.0，不推导安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.scene_restart",
+        "i604",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "限定当前成员重建形成作者、显式状态范围、运行访问与离线工程闭环。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.scene_restart",
+        "i604",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、真实Chrome保存作品、实际Godot原窗口/离线ZIP及完整应用分别验证，范围见本轮回执。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.scene_restart",
+        "i604",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "后端端口复用旧候选与离场/进入，认证完整新外层；旧GD/text、导航和retry自跳转拒绝保持。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.scene_restart",
+        "i604",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后的未发布工作树，下一版计划0.3.0；当前安装仍0.2.0，不推导安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.scene_restart",
+        "i605",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "限定当前成员重建形成作者、显式状态范围、运行访问与离线工程闭环。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.scene_restart",
+        "i605",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、真实Chrome保存作品、实际Godot原窗口/离线ZIP及完整应用分别验证，范围见本轮回执。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.scene_restart",
+        "i605",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "读取默认拒绝自身切换，认证生成能力显式开放；查询重新验证可选能力标记和旧样本失效。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.scene_restart",
+        "i605",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后的未发布工作树，下一版计划0.3.0；当前安装仍0.2.0，不推导安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.scene_restart",
+        "i606",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "限定当前成员重建形成作者、显式状态范围、运行访问与离线工程闭环。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.scene_restart",
+        "i606",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、真实Chrome保存作品、实际Godot原窗口/离线ZIP及完整应用分别验证，范围见本轮回执。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.scene_restart",
+        "i606",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用普通TXT创建、关联、绑定、显式补齐、审阅和保存；三语窄屏和取消留证，实际作者副本进入原生验证。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.scene_restart",
+        "i606",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后的未发布工作树，下一版计划0.3.0；当前安装仍0.2.0，不推导安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_pause",
+        "i607",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "可选暂停能力形成作者、按键/焦点安全边界、真实冻结和同访问恢复闭环。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_pause",
+        "i607",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、状态归属、异常收尾、真实UI作者保存与原生/离线窗口分项验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_pause",
+        "i607",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯作者参数和独立能力准入；不执行作者脚本、不拥有持久写入。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_pause",
+        "i607",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后未发布工作树，下一版0.3.0；安装仍0.2.0，不外推新安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_pause",
+        "i608",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "可选暂停能力形成作者、按键/焦点安全边界、真实冻结和同访问恢复闭环。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_pause",
+        "i608",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、状态归属、异常收尾、真实UI作者保存与原生/离线窗口分项验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_pause",
+        "i608",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "原生SceneTree暂停；新外层认证及输入边缘/焦点/松键门禁，旧后端字节保留。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_pause",
+        "i608",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后未发布工作树，下一版0.3.0；安装仍0.2.0，不外推新安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_pause",
+        "i609",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "可选暂停能力形成作者、按键/焦点安全边界、真实冻结和同访问恢复闭环。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_pause",
+        "i609",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、状态归属、异常收尾、真实UI作者保存与原生/离线窗口分项验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_pause",
+        "i609",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "中立旁路DTO严格验证，有限保留，失败/取消/超时保存未完成记录；不反向控制运行。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_pause",
+        "i609",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后未发布工作树，下一版0.3.0；安装仍0.2.0，不外推新安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_pause",
+        "i610",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "可选暂停能力形成作者、按键/焦点安全边界、真实冻结和同访问恢复闭环。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_pause",
+        "i610",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同、状态归属、异常收尾、真实UI作者保存与原生/离线窗口分项验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_pause",
+        "i610",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用普通脚本创建、绑定、显式参数和审阅保存；构建页只显示当前冻结工程/访问状态。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_pause",
+        "i610",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10后未发布工作树，下一版0.3.0；安装仍0.2.0，不外推新安装/设备验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_menu",
+        "i611",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "普通作者配置、精确能力准入、原生菜单与生命周期形成有限闭环。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_menu",
+        "i611",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同/真实后端边界、三语作者保存、原窗口/离线完整键鼠流程和重开长按释放按最终专题分项验证。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_menu",
+        "i611",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "有限声明、严格JSON和中立载荷预算；纯语义不拥有执行端口或持久写入。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.project_menu",
+        "i611",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10之后未发布工作树；下一版0.3.0，安装仍0.2.0，不外推独立发行或安装验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_menu",
+        "i612",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "普通作者配置、精确能力准入、原生菜单与生命周期形成有限闭环。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_menu",
+        "i612",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同/真实后端边界、三语作者保存、原窗口/离线完整键鼠流程和重开长按释放按最终专题分项验证。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_menu",
+        "i612",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "配置端口、真实GUI和访问/焦点/松键门禁分别负责；动作复用既有受控事务，旧生成外层认证。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "authoring.project_menu",
+        "i612",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10之后未发布工作树；下一版0.3.0，安装仍0.2.0，不外推独立发行或安装验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_menu",
+        "i613",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "普通作者配置、精确能力准入、原生菜单与生命周期形成有限闭环。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_menu",
+        "i613",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同/真实后端边界、三语作者保存、原窗口/离线完整键鼠流程和重开长按释放按最终专题分项验证。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_menu",
+        "i613",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "菜单和暂停标记独立推导核验；冻结目标与实际输出重核，不添加HTTP任意执行入口。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "authoring.project_menu",
+        "i613",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10之后未发布工作树；下一版0.3.0，安装仍0.2.0，不外推独立发行或安装验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_menu",
+        "i614",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "普通作者配置、精确能力准入、原生菜单与生命周期形成有限闭环。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_menu",
+        "i614",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯合同/真实后端边界、三语作者保存、原窗口/离线完整键鼠流程和重开长按释放按最终专题分项验证。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_menu",
+        "i614",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用普通创建/关联/绑定/参数/审阅/保存；作者数据与HUD显示、引擎运行GUI解耦。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.project_menu",
+        "i614",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：0.2.10之后未发布工作树；下一版0.3.0，安装仍0.2.0，不外推独立发行或安装验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "definition",
+        "project.film_template",
+        "i615",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "八类独立模板、真实创建/普通编辑、资源引用和完整作者迁移形成有界创作闭环。"
+    },
+    {
+      "coordinates": [
+        "definition",
+        "project.film_template",
+        "i615",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新包/旧包摘要、实际Rust、三语Chrome与真实HTTP媒体/标准ZIP迁移分别验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "definition",
+        "project.film_template",
+        "i615",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "类型和起始正文属于工程副本；prose/structured语义复用，不推断执行能力。"
+    },
+    {
+      "coordinates": [
+        "definition",
+        "project.film_template",
+        "i615",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，当前0.2.10/下一版0.3.0/安装0.2.0；无新安装或成片输出验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "project.film_template",
+        "i616",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "八类独立模板、真实创建/普通编辑、资源引用和完整作者迁移形成有界创作闭环。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "project.film_template",
+        "i616",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新包/旧包摘要、实际Rust、三语Chrome与真实HTTP媒体/标准ZIP迁移分别验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "project.film_template",
+        "i616",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用通用文档/资源/导出链；新集成测试证明影视场次与分镜不绑定运行引擎。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "project.film_template",
+        "i616",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，当前0.2.10/下一版0.3.0/安装0.2.0；无新安装或成片输出验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "persistence",
+        "project.film_template",
+        "i617",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "八类独立模板、真实创建/普通编辑、资源引用和完整作者迁移形成有界创作闭环。"
+    },
+    {
+      "coordinates": [
+        "persistence",
+        "project.film_template",
+        "i617",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新包/旧包摘要、实际Rust、三语Chrome与真实HTTP媒体/标准ZIP迁移分别验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "persistence",
+        "project.film_template",
+        "i617",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "实际Rust模块复制新包并保持来源摘要；标准作者ZIP携带模板、正文、登记和媒体，不执行制作计划。"
+    },
+    {
+      "coordinates": [
+        "persistence",
+        "project.film_template",
+        "i617",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，当前0.2.10/下一版0.3.0/安装0.2.0；无新安装或成片输出验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "project.film_template",
+        "i618",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "八类独立模板、真实创建/普通编辑、资源引用和完整作者迁移形成有界创作闭环。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "project.film_template",
+        "i618",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新包/旧包摘要、实际Rust、三语Chrome与真实HTTP媒体/标准ZIP迁移分别验证，以最终回执为准。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "project.film_template",
+        "i618",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共用动态包目录和普通文档编辑，新增翻译；不新增影视专用渲染控制器或重复存储。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "project.film_template",
+        "i618",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，当前0.2.10/下一版0.3.0/安装0.2.0；无新安装或成片输出验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.menu_target_authoring",
+        "i619",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "可用的有界作者目标编辑，复用原运行链。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.menu_target_authoring",
+        "i619",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮纯规则、真实helper、Chrome、Godot原窗口/离线及完整应用按回执分项验证。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.menu_target_authoring",
+        "i619",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯JSON编辑与UI所有权、既有保存/执行分离，规则仍是JS当前承载。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.menu_target_authoring",
+        "i619",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，当前0.2.10/下一版0.3.0/安装0.2.0；未做新安装。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.menu_target_authoring",
+        "i620",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "可用的有界作者目标编辑，复用原运行链。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.menu_target_authoring",
+        "i620",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮纯规则、真实helper、Chrome、Godot原窗口/离线及完整应用按回执分项验证。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.menu_target_authoring",
+        "i620",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯JSON编辑与UI所有权、既有保存/执行分离，规则仍是JS当前承载。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.menu_target_authoring",
+        "i620",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，当前0.2.10/下一版0.3.0/安装0.2.0；未做新安装。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.script_creation_return",
+        "i621",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "首次创建的有界往返可用，失败保留设置；不扩现有dirty原文交接。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.script_creation_return",
+        "i621",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮真实host/UI/runtime、Chrome三分支与Godot事件、完整应用按各自回执验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.script_creation_return",
+        "i621",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "意图、宿主回执、界面协调和草稿/保存分别负责；当前仍由JS和Web承载。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.script_creation_return",
+        "i621",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，应用0.2.10/下一版0.3.0/安装0.2.0；未有新安装验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.script_creation_return",
+        "i622",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "首次创建的有界往返可用，失败保留设置；不扩现有dirty原文交接。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.script_creation_return",
+        "i622",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮真实host/UI/runtime、Chrome三分支与Godot事件、完整应用按各自回执验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.script_creation_return",
+        "i622",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "意图、宿主回执、界面协调和草稿/保存分别负责；当前仍由JS和Web承载。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.script_creation_return",
+        "i622",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，应用0.2.10/下一版0.3.0/安装0.2.0；未有新安装验收。 本次不代表新安装包或新增目标平台验收。"
     }
   ],
   "evidence": [
@@ -89191,6 +91410,996 @@
       "kind": "report",
       "path": "docs/test-results/release-0.2.10/README.md",
       "note": "0.2.10源码发布检查；开发专题保留原实测时点，本机安装仍0.2.0，不授予新设备范围。"
+    },
+    {
+      "id": "e3732",
+      "kind": "source",
+      "path": "engine/scene-behavior-binding-copy.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3733",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-binding-copy.test.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3734",
+      "kind": "source",
+      "path": "web/modules/app-scene-behaviors.js",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3735",
+      "kind": "source",
+      "path": "web/scene-behaviors.css",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3736",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3737",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3738",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-binding-copy-ui.test.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3739",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-binding-copy-smoke.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3740",
+      "kind": "source",
+      "path": "engine/scene-behaviors-edit.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3741",
+      "kind": "source",
+      "path": "scripts/lib/scene-behavior-authoring-service.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3742",
+      "kind": "test",
+      "path": "scripts/tests/scene-behaviors-editor-ui.test.mjs",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3743",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-binding-copy/README.md",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3744",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-binding-copy/browser-final/browser.json",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3745",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-binding-copy/native-final/native.log",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3746",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3747",
+      "kind": "design",
+      "path": "docs/ROADMAP.md",
+      "note": "当前表单显式复制与原文审阅保存；合成参考工程作者操作、实际游戏与离线ZIP按本轮专题范围，旧证据和评分保持。"
+    },
+    {
+      "id": "e3748",
+      "kind": "source",
+      "path": "engine/godot-scene-restart-script.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3749",
+      "kind": "source",
+      "path": "engine/godot-scene-restart-parameters.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3750",
+      "kind": "source",
+      "path": "engine/project-scene-restart-diagnostics.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3751",
+      "kind": "source",
+      "path": "engine/scene-restart-capability.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3752",
+      "kind": "source",
+      "path": "engine/build-plan.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3753",
+      "kind": "source",
+      "path": "engine/project-assembly-plan-contract.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3754",
+      "kind": "source",
+      "path": "engine/backend-capabilities.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3755",
+      "kind": "source",
+      "path": "scripts/backends/godot4/restart-project-runtime.gd",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3756",
+      "kind": "source",
+      "path": "scripts/backends/godot4-scene-restart.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3757",
+      "kind": "source",
+      "path": "scripts/backends/godot4-scene-restart-projection.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3758",
+      "kind": "source",
+      "path": "scripts/backends/godot4-scene-restart-inventory.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3759",
+      "kind": "source",
+      "path": "scripts/backends/godot4-scene-retry-inventory.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3760",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3761",
+      "kind": "source",
+      "path": "engine/project-runtime-events.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3762",
+      "kind": "source",
+      "path": "engine/project-runtime-query.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3763",
+      "kind": "source",
+      "path": "scripts/adapters/node-execution-backends.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3764",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3765",
+      "kind": "source",
+      "path": "engine/script-authoring.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3766",
+      "kind": "source",
+      "path": "engine/script-parameter-discovery.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3767",
+      "kind": "source",
+      "path": "web/modules/app-script-create.js",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3768",
+      "kind": "source",
+      "path": "web/modules/app-scene-behaviors.js",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3769",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3770",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3771",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3772",
+      "kind": "test",
+      "path": "scripts/tests/scene-restart-authoring.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3773",
+      "kind": "test",
+      "path": "scripts/tests/godot-scene-restart-parameters.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3774",
+      "kind": "test",
+      "path": "scripts/tests/scene-restart-input-diagnostics.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3775",
+      "kind": "test",
+      "path": "scripts/tests/project-scene-restart-diagnostics.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3776",
+      "kind": "test",
+      "path": "scripts/tests/project-scene-restart-capabilities.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3777",
+      "kind": "test",
+      "path": "scripts/tests/project-scene-restart-readers.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3778",
+      "kind": "test",
+      "path": "scripts/tests/godot4-scene-restart.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3779",
+      "kind": "test",
+      "path": "scripts/tests/godot-scene-restart-native.test.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3780",
+      "kind": "test",
+      "path": "scripts/tests/scene-restart-authoring-smoke.mjs",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3781",
+      "kind": "report",
+      "path": "docs/test-results/scene-restart/README.md",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3782",
+      "kind": "report",
+      "path": "docs/test-results/scene-restart/browser/browser.json",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3783",
+      "kind": "report",
+      "path": "docs/test-results/scene-restart/final-verification.json",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3784",
+      "kind": "design",
+      "path": "docs/SCENE_RESTART.md",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3785",
+      "kind": "design",
+      "path": "docs/ROADMAP.md",
+      "note": "0.2.10后的工作树原地重启纵切：作者/运行/离线/完整应用分项记录，旧证据与评分保持，不外推完整游戏或新安装。"
+    },
+    {
+      "id": "e3786",
+      "kind": "source",
+      "path": "engine/godot-project-pause-script.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3787",
+      "kind": "source",
+      "path": "engine/godot-project-pause-parameters.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3788",
+      "kind": "source",
+      "path": "engine/project-pause-diagnostics.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3789",
+      "kind": "source",
+      "path": "engine/scene-pause-capability.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3790",
+      "kind": "source",
+      "path": "engine/build-plan.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3791",
+      "kind": "source",
+      "path": "engine/project-assembly-plan-contract.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3792",
+      "kind": "source",
+      "path": "engine/backend-capabilities.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3793",
+      "kind": "source",
+      "path": "scripts/backends/godot4/project-pause-runtime.gd",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3794",
+      "kind": "source",
+      "path": "scripts/backends/godot4/project-pause-input.gd",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3795",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-pause.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3796",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-pause-projection.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3797",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-pause-inventory.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3798",
+      "kind": "source",
+      "path": "scripts/backends/godot4-scene-restart-inventory.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3799",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3800",
+      "kind": "source",
+      "path": "engine/project-pause-observation.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3801",
+      "kind": "source",
+      "path": "scripts/adapters/node-execution-backends.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3802",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3803",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3804",
+      "kind": "source",
+      "path": "engine/script-authoring.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3805",
+      "kind": "source",
+      "path": "engine/script-parameter-discovery.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3806",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3807",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3808",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3809",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-authoring.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3810",
+      "kind": "test",
+      "path": "scripts/tests/godot-project-pause-parameters.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3811",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-input-diagnostics.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3812",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-diagnostics.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3813",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-capabilities.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3814",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-observation.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3815",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-build-ui.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3816",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-host.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3817",
+      "kind": "test",
+      "path": "scripts/tests/godot4-project-pause.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3818",
+      "kind": "test",
+      "path": "scripts/tests/godot-project-pause-native.test.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3819",
+      "kind": "test",
+      "path": "scripts/tests/project-pause-authoring-smoke.mjs",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3820",
+      "kind": "report",
+      "path": "docs/test-results/project-pause/README.md",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3821",
+      "kind": "report",
+      "path": "docs/test-results/project-pause/browser/browser.json",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3822",
+      "kind": "report",
+      "path": "docs/test-results/project-pause/browser/author-archive.json",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3823",
+      "kind": "report",
+      "path": "docs/test-results/project-pause/final-verification.json",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3824",
+      "kind": "design",
+      "path": "docs/PROJECT_PAUSE.md",
+      "note": "0.2.10后未发布暂停/恢复纵切；作者/原生/离线/完整应用分别验证，边界与最终回执见主题报告。"
+    },
+    {
+      "id": "e3825",
+      "kind": "source",
+      "path": "engine/project-menu.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3826",
+      "kind": "source",
+      "path": "engine/godot-project-menu-script.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3827",
+      "kind": "source",
+      "path": "engine/godot-project-menu-parameters.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3828",
+      "kind": "source",
+      "path": "engine/project-menu-diagnostics.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3829",
+      "kind": "source",
+      "path": "engine/scene-menu-capability.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3830",
+      "kind": "source",
+      "path": "engine/build-plan.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3831",
+      "kind": "source",
+      "path": "engine/project-assembly-plan-contract.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3832",
+      "kind": "source",
+      "path": "engine/backend-capabilities.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3833",
+      "kind": "source",
+      "path": "scripts/backends/godot4/project-menu-runtime.gd",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3834",
+      "kind": "source",
+      "path": "scripts/backends/godot4/project-menu-input.gd",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3835",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-menu.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3836",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-menu-projection.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3837",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-menu-inventory.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3838",
+      "kind": "source",
+      "path": "scripts/backends/godot4-project-pause-inventory.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3839",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3840",
+      "kind": "source",
+      "path": "engine/project-assembly-plan.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3841",
+      "kind": "source",
+      "path": "scripts/adapters/node-execution-backends.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3842",
+      "kind": "source",
+      "path": "engine/script-authoring.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3843",
+      "kind": "source",
+      "path": "engine/script-parameter-discovery.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3844",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3845",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3846",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3847",
+      "kind": "test",
+      "path": "scripts/tests/project-menu.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3848",
+      "kind": "test",
+      "path": "scripts/tests/project-menu-diagnostics.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3849",
+      "kind": "test",
+      "path": "scripts/tests/project-menu-authoring.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3850",
+      "kind": "test",
+      "path": "scripts/tests/godot-project-menu-parameters.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3851",
+      "kind": "test",
+      "path": "scripts/tests/project-menu-capabilities.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3852",
+      "kind": "test",
+      "path": "scripts/tests/godot4-project-menu.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3853",
+      "kind": "test",
+      "path": "scripts/tests/godot-project-menu-native.test.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3854",
+      "kind": "test",
+      "path": "scripts/tests/project-menu-authoring-smoke.mjs",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3855",
+      "kind": "report",
+      "path": "docs/test-results/project-menu/README.md",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3856",
+      "kind": "report",
+      "path": "docs/test-results/project-menu/browser/browser.json",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3857",
+      "kind": "report",
+      "path": "docs/test-results/project-menu/browser/author-archive.json",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3858",
+      "kind": "report",
+      "path": "docs/test-results/project-menu/final-verification.json",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3859",
+      "kind": "design",
+      "path": "docs/PROJECT_MENU.md",
+      "note": "0.2.10之后未发布菜单纵切；纯合同/后端限制/真实作者/原生/离线及全量各自留证，不推断完整从空白游戏或安装验收。"
+    },
+    {
+      "id": "e3860",
+      "kind": "source",
+      "path": "scripts/lib/project-templates.json",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3861",
+      "kind": "source",
+      "path": "scripts/lib/project-layout.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3862",
+      "kind": "source",
+      "path": "scripts/lib/doc-api-service.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3863",
+      "kind": "source",
+      "path": "scripts/lib/media-assets.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3864",
+      "kind": "source",
+      "path": "scripts/lib/export-package.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3865",
+      "kind": "source",
+      "path": "src-tauri/src/project_templates.rs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3866",
+      "kind": "source",
+      "path": "src-tauri/src/workspace.rs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3867",
+      "kind": "source",
+      "path": "src-tauri/src/mobile_storage.rs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3868",
+      "kind": "source",
+      "path": "desktop/ui/app.js",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3869",
+      "kind": "source",
+      "path": "mobile/library.js",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3870",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3871",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3872",
+      "kind": "test",
+      "path": "scripts/tests/project-templates.test.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3873",
+      "kind": "test",
+      "path": "scripts/tests/desktop-library.test.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3874",
+      "kind": "test",
+      "path": "scripts/tests/project-templates-smoke.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3875",
+      "kind": "test",
+      "path": "scripts/tests/film-template-workflow.test.mjs",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3876",
+      "kind": "report",
+      "path": "docs/test-results/film-template/README.md",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3877",
+      "kind": "report",
+      "path": "docs/test-results/film-template/final-verification.json",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3878",
+      "kind": "report",
+      "path": "docs/test-results/film-template/media/workflow.json",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3879",
+      "kind": "design",
+      "path": "docs/FILM_WORKFLOW.md",
+      "note": "0.2.10后新增影视作者模板与素材迁移；真实Rust/Chrome/HTTP/原路径不可访问后恢复分项留证，不等于镜头执行、剪辑、影片渲染或安装。"
+    },
+    {
+      "id": "e3880",
+      "kind": "design",
+      "path": "docs/PROJECT_MENU.md",
+      "note": "菜单作者操作、默认空覆盖和普通检查最终重核全部脚本依赖。"
+    },
+    {
+      "id": "e3881",
+      "kind": "test",
+      "path": "scripts/tests/project-menu-item-edit.test.mjs",
+      "note": "16项纯目标替换和追加测试；保真、closed data、成员、Unicode及8项/4096UTF16/8192UTF8边界。"
+    },
+    {
+      "id": "e3882",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-menu-targets-ui.test.mjs",
+      "note": "真实helper和核心的所有权、陈旧响应、目录重读和单行回填；数量按本轮回执。"
+    },
+    {
+      "id": "e3883",
+      "kind": "report",
+      "path": "docs/test-results/menu-target-authoring/README.md",
+      "note": "本轮实际专项、浏览器、原生/离线和完整应用结果按范围分项阅读，不外推为整款游戏完成。"
+    },
+    {
+      "id": "e3884",
+      "kind": "report",
+      "path": "docs/test-results/menu-target-authoring/browser/browser.json",
+      "note": "三场景空白结构作者纵切，真实Chrome中英日和390px，创建/关联/补参数/按名接线/取消/审阅/保存重开。"
+    },
+    {
+      "id": "e3885",
+      "kind": "report",
+      "path": "docs/test-results/menu-target-authoring/native/verification.json",
+      "note": "直接消费浏览器保存作者工程，真实Godot窗口原路径及标准生成ZIP离线键鼠跳转/重试，不修补生成运行脚本。"
+    },
+    {
+      "id": "e3886",
+      "kind": "report",
+      "path": "docs/test-results/menu-target-authoring/checks/full-application-status.json",
+      "note": "当前源码完整应用检查计数与前后源文件摘要，不重新标注旧菜单的历史回归。"
+    },
+    {
+      "id": "e3887",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "首次行为创建的脚本往返操作、内存暂存与普通保存边界。"
+    },
+    {
+      "id": "e3888",
+      "kind": "test",
+      "path": "scripts/tests/scene-script-return-host.test.mjs",
+      "note": "16项注入式host：严格意图、一次性身份、真实保存回执、保存重试/更新和来源导航守护。"
+    },
+    {
+      "id": "e3889",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-script-return-ui.test.mjs",
+      "note": "17项真实创建表单：原始设置/UUID保留、恢复目录重验、撤审阅、取消/放弃和只读阻塞。"
+    },
+    {
+      "id": "e3890",
+      "kind": "test",
+      "path": "scripts/tests/scene-script-return-save-wiring.test.mjs",
+      "note": "6项真实runtime保存接线和实际script picker callbacks，VM仅跨realm DTO传输。"
+    },
+    {
+      "id": "e3891",
+      "kind": "test",
+      "path": "scripts/tests/scene-script-return-coordinator-ui.test.mjs",
+      "note": "14项实际协调器+实际host，明确返回、来源变化、异步陈旧、保存更新、重复请求与dispose回调。"
+    },
+    {
+      "id": "e3892",
+      "kind": "report",
+      "path": "docs/test-results/scene-script-return/README.md",
+      "note": "本轮分项范围、旧证据保护、完整应用与三分支真实浏览器/Godot，不替代完整游戏。"
+    },
+    {
+      "id": "e3893",
+      "kind": "report",
+      "path": "docs/test-results/scene-script-return/browser/browser.json",
+      "note": "三独立空结构工程：成功4文档10文件、取消2文档6文件、改源恢复3文档8文件；17图与第二实例Godot事件。"
+    },
+    {
+      "id": "e3894",
+      "kind": "report",
+      "path": "docs/test-results/scene-script-return/checks/full-application-status.json",
+      "note": "本轮完整应用检查计数与2319捕获来源前后摘要，按实际回执阅读。"
+    },
+    {
+      "id": "e3895",
+      "kind": "design",
+      "path": "docs/RELEASE_0.3.0.md",
+      "note": "0.3.0源码版本范围、七项新增能力及平台/安装限制；旧专题回执保留开发时版本与原始字节。"
+    },
+    {
+      "id": "e3896",
+      "kind": "report",
+      "path": "docs/test-results/release-0.3.0/README.md",
+      "note": "实际0.3.0版本一致性、源码归档、完整应用回归及来源保真检查；源码验证不等于安装验收。"
     }
   ],
   "dependencies": [
@@ -92931,6 +96140,162 @@
       "to": "behavior.retry_parameter_defaults",
       "relation": "requires",
       "reason": "复用已保存脚本、普通作者接口及官方重试声明；可选名称选择不作为默认项的硬依赖。"
+    },
+    {
+      "from": "behavior.binding_copy",
+      "to": "behavior.authoring",
+      "relation": "requires",
+      "reason": "复制产生普通已有编辑器草稿，仍使用原检查、原文审阅与普通保存。"
+    },
+    {
+      "from": "behavior.binding_copy",
+      "to": "scene.instances_v2",
+      "relation": "requires",
+      "reason": "复制目标来自当前保存态稳定实例目录，不按定义合并实例。"
+    },
+    {
+      "from": "behavior.binding_copy",
+      "to": "workflow.topdown_collect",
+      "relation": "requires",
+      "reason": "以实际重复晶体接线的参考工程证明复制任务，不额外注入运行玩法。"
+    },
+    {
+      "from": "authoring.scene_restart",
+      "to": "authoring.scene_retry",
+      "relation": "requires",
+      "reason": "复用有限会话候选覆盖、预算预约和离场边界，保留不同成员重试语义。"
+    },
+    {
+      "from": "authoring.scene_restart",
+      "to": "build.project_assembly",
+      "relation": "requires",
+      "reason": "重启属于当前组装成员的新访问，单独scene不降级。"
+    },
+    {
+      "from": "authoring.scene_restart",
+      "to": "behavior.authoring",
+      "relation": "requires",
+      "reason": "新普通TXT与绑定参数沿原审阅保存链。"
+    },
+    {
+      "from": "authoring.scene_restart",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "观察新访问必须清除旧样本并核对严格能力标记。"
+    },
+    {
+      "from": "authoring.scene_restart",
+      "to": "workflow.topdown_collect",
+      "relation": "requires",
+      "reason": "以UI保存的真实参考关卡副本验证重建和离线交付，不修补玩法生成源码。"
+    },
+    {
+      "from": "authoring.project_pause",
+      "to": "authoring.scene_restart",
+      "relation": "requires",
+      "reason": "可选外层保留原重启能力与库存认证。"
+    },
+    {
+      "from": "authoring.project_pause",
+      "to": "build.project_assembly",
+      "relation": "requires",
+      "reason": "暂停只在冻结组装和当前成员访问中开启。"
+    },
+    {
+      "from": "authoring.project_pause",
+      "to": "behavior.authoring",
+      "relation": "requires",
+      "reason": "普通TXT/参数/引用绑定沿原审阅保存链。"
+    },
+    {
+      "from": "authoring.project_pause",
+      "to": "workflow.topdown_collect",
+      "relation": "requires",
+      "reason": "真实UI保存参考副本用于原生与离线验证。"
+    },
+    {
+      "from": "authoring.project_pause",
+      "to": "authoring.project_menu",
+      "relation": "requires",
+      "reason": "菜单层继承暂停安全边界；paused显式配置另需同场景控制器。"
+    },
+    {
+      "from": "build.project_assembly",
+      "to": "authoring.project_menu",
+      "relation": "requires",
+      "reason": "命令目标只属于当前冻结组装，普通scene生成拒绝菜单。"
+    },
+    {
+      "from": "behavior.authoring",
+      "to": "authoring.project_menu",
+      "relation": "requires",
+      "reason": "普通TXT/引用/绑定/三参数通过既有审阅保存。"
+    },
+    {
+      "from": "workflow.topdown_collect",
+      "to": "authoring.project_menu",
+      "relation": "requires",
+      "reason": "以UI保存参考关卡副本验原窗口/离线游戏，不修补玩法生成源码。"
+    },
+    {
+      "from": "project.starter-packs",
+      "to": "project.film_template",
+      "relation": "requires",
+      "reason": "声明式包复制/独立工程副本提供影视起点。"
+    },
+    {
+      "from": "authoring.parse-index",
+      "to": "project.film_template",
+      "relation": "requires",
+      "reason": "prose对白与structured镜头使用通用解析和普通保存。"
+    },
+    {
+      "from": "media.embed-play",
+      "to": "project.film_template",
+      "relation": "requires",
+      "reason": "影视参考图/音视频复用已有稳定资源引用，不新增媒体存储。"
+    },
+    {
+      "from": "export.jobs-delivery",
+      "to": "project.film_template",
+      "relation": "requires",
+      "reason": "作者工程与素材用标准归档交付，非成片渲染。"
+    },
+    {
+      "from": "behavior.menu_target_authoring",
+      "to": "authoring.project_menu",
+      "relation": "requires",
+      "reason": "作者辅助编辑既有有限命令，不新建菜单执行语义。"
+    },
+    {
+      "from": "behavior.menu_target_authoring",
+      "to": "behavior.parameter_references",
+      "relation": "requires",
+      "reason": "复用保存态成员目录和显式组装选择，不替换整个普通String参考功能。"
+    },
+    {
+      "from": "behavior.menu_target_authoring",
+      "to": "authoring.script_parameter_interface",
+      "relation": "requires",
+      "reason": "官方接口识别与显式补齐参数分开，最终检查保留依赖重核。"
+    },
+    {
+      "from": "behavior.script_creation_return",
+      "to": "behavior.creation",
+      "relation": "requires",
+      "reason": "保留原首次创建草稿，在新目录中重新审阅后使用原事务。"
+    },
+    {
+      "from": "behavior.script_creation_return",
+      "to": "script.authoring",
+      "relation": "requires",
+      "reason": "脚本仍沿普通起始内容、TXT草稿与显式保存。"
+    },
+    {
+      "from": "behavior.script_creation_return",
+      "to": "authoring.document-edit",
+      "relation": "requires",
+      "reason": "写入回执只来自原文实际保存，导航不能绕过未保存编辑。"
     }
   ],
   "workflows": [
@@ -95090,6 +98455,94 @@
       ],
       "gaps": [],
       "boundary": "限定零正文初始化后通过界面建立的两场景试点；名称参考是显式可选交接，普通手填仍可。没有桌面库创建、整款游戏复建、同场景重启或阶段出口完成断言。"
+    },
+    {
+      "id": "behavior-copy-explicit-instance",
+      "label": "保留一个晶体配置→明确复制其他实例→保存重开→真实游戏和离线工程",
+      "steps": [
+        "behavior.authoring",
+        "behavior.binding_copy",
+        "build.project_assembly",
+        "workflow.topdown_collect"
+      ],
+      "gaps": [],
+      "boundary": "已有参考游戏临时副本移除两条收集绑定后以真实界面重建，原9条绑定字节保留；不是整款游戏从空白复建或0.3/0.5完成。"
+    },
+    {
+      "id": "same-scene-restart",
+      "label": "UI创建重启TXT与两参数→保存→当前场景新访问→标准ZIP离线重跑",
+      "steps": [
+        "behavior.creation",
+        "behavior.authoring",
+        "authoring.scene_restart",
+        "build.project_assembly",
+        "workflow.topdown_collect"
+      ],
+      "gaps": [],
+      "boundary": "临时参考工程的已存在输入映射/menu进度/loop音轨显式测试选择；新TXT、引用和绑定由真实UI创建。不是完整从空白游戏或暂停/存档/独立发行/新安装验收。"
+    },
+    {
+      "id": "project-pause-resume",
+      "label": "普通暂停TXT与三参数→实际保存→冻结/松键恢复→标准ZIP离线重跑",
+      "steps": [
+        "behavior.creation",
+        "behavior.authoring",
+        "authoring.project_pause",
+        "build.project_assembly",
+        "workflow.topdown_collect"
+      ],
+      "gaps": [],
+      "boundary": "参考关卡副本已存在输入映射/menu进度/loop音轨为明确测试选择；普通TXT、引用、绑定与参数经真实UI保存。非从空白完整游戏、鼠标菜单、存档或独立发行验收。"
+    },
+    {
+      "id": "project-runtime-menu",
+      "label": "普通菜单TXT→显式命令/参数→实际保存→原窗口键鼠与标准ZIP离线运行",
+      "steps": [
+        "behavior.creation",
+        "behavior.authoring",
+        "authoring.project_menu",
+        "build.project_assembly",
+        "workflow.topdown_collect"
+      ],
+      "gaps": [],
+      "boundary": "真实界面在已有参考游戏副本创建配置，原生开始/收集/暂停/恢复/胜负/标题/退出和独立场景重开长按释放分别验证；只适用于此有限纵切，不代表从空白整款游戏、暂停中导航/重开、存档、持续运行、独立发行或安装完成。"
+    },
+    {
+      "id": "film-template-author-migration",
+      "label": "空影视工程→人物/剧本/分镜→图片音视频引用→标准作者ZIP换根恢复",
+      "steps": [
+        "project.starter-packs",
+        "project.film_template",
+        "authoring.document-edit",
+        "media.embed-play",
+        "export.jobs-delivery"
+      ],
+      "gaps": [],
+      "boundary": "八类模板和普通作者资源闭环；真实浏览器只在移动预览编辑场次/镜头，媒体HTTP和原生ZIP另验。不是影片时间线、剪辑、镜头自动执行、成片输出或安装设备验收。"
+    },
+    {
+      "id": "menu-target-authoring",
+      "label": "三场景空白结构→官方菜单→按名称替换/追加→保存重开→原窗口与ZIP离线",
+      "steps": [
+        "authoring.script_parameter_interface",
+        "behavior.parameter_references",
+        "behavior.menu_target_authoring",
+        "authoring.project_menu"
+      ],
+      "gaps": [],
+      "boundary": "独立菜单作者纵切，原始条目保真、显式组装及重试空覆盖；不是完整关卡从空白、脚本创建返回、持续运行、发行或安装验收。"
+    },
+    {
+      "id": "scene-script-creation-return",
+      "label": "首次行为暂存→普通脚本保存/取消→显式返回→重验与明确绑定→Godot第二实例事件",
+      "steps": [
+        "behavior.creation",
+        "script.authoring",
+        "behavior.script_creation_return",
+        "behavior.authoring"
+      ],
+      "gaps": [],
+      "boundary": "单个两实例场景的作者纵切，四文档成功工程；三语/取消/改源范围，不是整款游戏、持久会话恢复、已有dirty行为原文或安装验收。"
     }
   ],
   "legacyCoverage": [
@@ -95606,10 +99059,13 @@
         "workflow.topdown_collect",
         "authoring.scene_navigation",
         "authoring.scene_retry",
-        "scene.authoring_workflow"
+        "scene.authoring_workflow",
+        "authoring.scene_restart",
+        "authoring.project_pause",
+        "authoring.project_menu"
       ],
-      "reason": "真实收集／伤害／胜负和迁移已有证据；作者仍需查成员、实例、动作编号，暂停菜单和同场景重启未接通。",
-      "acceptance": "按路线从空白逐步复建，补有来源的选择与可审阅参数，再完成重启／暂停和菜单；不改旧评分、不以参考初稿代替0.3或0.5出口。"
+      "reason": "参考游戏、名称选择、绑定复制、同场景重启、暂停/恢复与键鼠运行菜单已有分项证据；从空白完整作者任务和跨编辑区交接仍待完成。",
+      "acceptance": "在内置编辑器从空白完成第一款关卡，保存重开/换根后复现完整键鼠游戏；阶段出口单独验收，不以已有参考副本代替从空白任务。"
     }
   ],
   "sourceSnapshot": {
@@ -95668,20 +99124,23 @@
     "desktop/tests/native-smoke.py": "5a5446e05d056fffc36c5f61fbe84a1785db4ee14ccb067186abf45edc02014a",
     "desktop/tests/native_workflow_2d.py": "d1d1c78ddec1bc1f5c036ce032d9fb232df8b0eecec73125b389bee2aa014091",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
-    "docs/ARCHITECTURE.md": "d00980cfb5dd405ef0c375dd3cf8e244acaf7b7aa0a43550aaf8ce9aa4cb6836",
-    "docs/BACKEND_MIDDLEWARE.md": "e58c3d8690ac11d1e1e1f6ba7b0175bb1a7570ce891c82c57f9146700ea22b8d",
+    "docs/ARCHITECTURE.md": "a59bbfce5aa191801411b71eba150a97047f41286880fec6ca52b2ad21da6560",
+    "docs/BACKEND_MIDDLEWARE.md": "8d560c37d8e2e54ee7e5a4a0a0c588ae5f752f80413caaa9729a930743c0329a",
     "docs/BACKEND_PROJECTS.md": "c274e879222d9d66eb0f4feb6cecf93d5fff7c589d85d8330987c62dc97a0174",
     "docs/BEVY_BACKEND.md": "d7b839d99edc97e68e17497dddd7c50a7bb7325109afd39dd381145aea3b2828",
-    "docs/FUNCTION_MAPPING_2D.md": "44ce77bf030d447b0935b46bb78d56662246e04e15ec899a382c50e130c3b7dd",
+    "docs/FILM_WORKFLOW.md": "0ec2a59770b2a2242a25d309077d1fe81fab2a7d2f68af643f27d11a047044c6",
+    "docs/FUNCTION_MAPPING_2D.md": "fd5eb719eadbf0608bef27e2fe86aa83b988e24f11681f88fe9abd98b65c05de",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
-    "docs/MILESTONE_0.5.0.md": "d6ddb6e7264ff78e70c1f40ea5d467c1fc8715750857444a7eb4b3a9d5418644",
+    "docs/MILESTONE_0.5.0.md": "815eccf15419c126bed7fd0e8a42d0376c013ef1509d815629ec1fe01243b5d3",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "d39ed92f8916c4911c1b8b9007adb5784173f8ff84be0bdf869681c0530093ad",
-    "docs/PROJECT_ASSEMBLY.md": "14c132c1fc35ec053ce053d2846def542b1d94fc81cdac93e76cebf1048abba8",
+    "docs/PROJECT_ASSEMBLY.md": "e5fd60d8ba16fb1b925884c92f0ca6e96567009d62772f9bb9a61159ba48fd0e",
     "docs/PROJECT_AUDIO_CONTROLS.md": "dc7734deb7e3ead51447d1262b58847bac741877f8da96c338cb0ff65f7aeecc",
-    "docs/PROJECT_BUILD.md": "c08e4bbd6d38dd54a851a7056839d145f1c0e907bd78fc7ae16f4a6d641499cf",
+    "docs/PROJECT_BUILD.md": "f38d697f31562044e46ea06ffc4c78d88a23a4e87222f940aa0afa79ab96cb0b",
     "docs/PROJECT_EVENTS.md": "69d7f7f4ae70b25d8e5885192788a35d1a1ac5f74495f6eddc1dfa442be03f09",
+    "docs/PROJECT_MENU.md": "dc4c8e936c2249b897ca6c3fb40689c03d72eeee8e1db1febd97822a7b8a46de",
+    "docs/PROJECT_PAUSE.md": "7c87e8bbb6c55c41cb7b647b98ea32b8c54cb74f0c56ca3d18109b74e07e17c1",
     "docs/PROJECT_SHARED_STATE.md": "5fdb2413042c956eb15d7e42a046c74a54fc5e64caac69d4722f5fc28fca1fa1",
-    "docs/PROJECT_WORKFLOW.md": "046abdda29cd560a6a75d3d2b1a753089be2890a6d90829fb536293ce94e4387",
+    "docs/PROJECT_WORKFLOW.md": "7bfc2c0d27453b2b6a71aaeae3dd1632eaf31de572f9c2e55e8849443931061f",
     "docs/RELEASE_0.0.10.md": "6d2bdaa7d2998c13c3eb6be4843a88b90a6168d829c7457444acb94f1da239f4",
     "docs/RELEASE_0.0.7.md": "2fd35d702ddcf55edb8813fef0646f6d3d3a846a0e6f33f64c6fc44399e0375e",
     "docs/RELEASE_0.0.8.md": "dfc6b4e1fb850f3f7d5888f89c0a7ceffdad9e0c5b2c6fc68f9f8e65b114fe7b",
@@ -95700,7 +99159,8 @@
     "docs/RELEASE_0.2.4.md": "18f4e7a7a3069d6126d12dfe1d31a2ad15d904d02eb743490f0c5677ee07d068",
     "docs/RELEASE_0.2.5.md": "abc8d1af2dec8d6abae9c714b69e2876c5b638051b53e7d83a16b74d1d9b4c65",
     "docs/RELEASE_0.2.8.md": "dd39219b4b452b268349177660a6e72f43e401e02e09063f102db07e18f8a48b",
-    "docs/ROADMAP.md": "79e49f7578ad8898c4fa305098d3902e81e8449020d9d77f8f4f5689230edea0",
+    "docs/RELEASE_0.3.0.md": "68797f76cd83c2a3a87c1fe3457d98562fdc5912502f98f56ba1b9805895d8a6",
+    "docs/ROADMAP.md": "d39ce19bd9cc9731649eb65c7e2093c9728de4379e6372c4a63f364a1049df26",
     "docs/RUNTIME_CASES.md": "a0016d535de4b3e8ba2c19816e274f5fe9a3730e5dcace7786629bdea734b7c7",
     "docs/RUNTIME_CASE_REPORTS.md": "42b67098cefebfa016f68e184499962afea7feda0607c8dbd461e647fff40f04",
     "docs/RUNTIME_CASE_SUITES.md": "112b701db28ce258ca28435ade21349b1773f416a7f9c7d7f35d5e801e3beb74",
@@ -95710,15 +99170,16 @@
     "docs/SCENE_ANIMATION.md": "0fb56206fbdc247c3348dc624f1cbdff60ebd31394840ee180244434ad196f05",
     "docs/SCENE_AUDIO.md": "a254d5d162d7de9bd2513dcf71d391ec4fd2254678de6468697621364a27e752",
     "docs/SCENE_AUTHORING.md": "2c3092ee6a68a8ba2e31958b2deb235c608a16d81d3ce4081b085761d296dccd",
-    "docs/SCENE_BEHAVIORS.md": "f44ae66973fe4a67ad9edc82f25321c7d024dace6d94b1b8557247da0f69dff4",
+    "docs/SCENE_BEHAVIORS.md": "4f91443efead9ff129e8404f4e20261a17880dbdc518c3495f21f7919458ab79",
     "docs/SCENE_CAMERA2D.md": "364a069cea30a7e2db2820ab1af9804d63d4b0fc24bdef3eaedbaa389a10671e",
     "docs/SCENE_COMPOSITION.md": "d61647165b6c7c9f44fdc9e9c8243592e8e205d7630a9be700c47ccbde09cc05",
     "docs/SCENE_HUD2D.md": "455036e9f4f5a65732151928b4b70a5e8063edd4d1fd26e15114584f0a23c13b",
     "docs/SCENE_NAVIGATION.md": "ead29e411ddc9188daf669ca592bbc14304449cc77cc30a0c5d9910f6e4b22ff",
-    "docs/SCENE_PHYSICS2D.md": "02c3628bd40aad968600de91764a6ce1a43eaae3383d9b950541b1f71ead4b11",
-    "docs/SCENE_RETRY.md": "7636feb22e13d33f747734d3095adcdfaf46cb76b75d8f654084110f8b07c193",
+    "docs/SCENE_PHYSICS2D.md": "b09a100043f925a21a83be2a84d134cb09d9685f6a50d5777f3dc23d90042eeb",
+    "docs/SCENE_RESTART.md": "64931ef1419713dc8464514d52539d444f14054cf37120b8f0c5cc0c0640c59b",
+    "docs/SCENE_RETRY.md": "ef84e7488aa4f18779b2e3101cde6c424c8a326175d2e33439c7f74162e64fc4",
     "docs/SECURITY_ZIP_2026-11-04.md": "a34a98275b1948f17829f294df5a04042243a9d1b312f950b9777111fd6c6591",
-    "docs/STATUS.md": "a0ba7225a22b10291065f983a6e21d07359fdda8f226d7b59ac057a66ab02a52",
+    "docs/STATUS.md": "aebf1f86aca21e99129499ab4076fd2041eeff9fa172852421aaedc1cd94bcbe",
     "docs/STUDIO_MODULES.md": "a61f3e4880df120d6b08ce6403811d735ba0f0eab3e90258e9d747efdb99562d",
     "docs/WORLD_TRANSACTIONS.md": "bcdf7e96289f68e92271fc7c6ad025985e3744857f304fa21eb2ede43a37394e",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
@@ -95834,10 +99295,17 @@
     "docs/test-results/export-downloads-2026-09-24/results.json": "446df5760100c8bc36758b1fe265048a61bfe979bbec4469842c4bc14d64b478",
     "docs/test-results/export-references-2026-09-23/results.json": "6224d3e3e547a139e7224c20d8c52e1561b383b237984932888399908649fcee",
     "docs/test-results/field-editing-2026-09-24/results.json": "ad52ab94c46a3450e939e4803531f0cf6e95db67ea126fd08f382926fe07b246",
+    "docs/test-results/film-template/README.md": "670d1b3c408c8840157e6616b205aab79edee9ed3c575fa8bb16cd794691bd95",
+    "docs/test-results/film-template/final-verification.json": "23b9e31ee470d9bbef494fece8c413cd33e16eb62bf9ee7d04d8f8dc20aeede6",
+    "docs/test-results/film-template/media/workflow.json": "aac6b5083a905fee7195a640c599fdee8d41b68f68a3c575e0e6bfec753f2cf7",
     "docs/test-results/functional-mapping/summary.json": "868ac28b2836d3c93ab77455639a8e6f0d23f0029c36c0014058ee587cd61a48",
     "docs/test-results/godot-audio-shutdown-patch/README.md": "c4bd632f5f02391ffe2d800651a013bc620fde4dfeeb6c46eac9e3a24834789f",
     "docs/test-results/godot-audio-shutdown/README.md": "7b26a2636bcd7a4b8a794c786555235b195cd48f1e8e6892166b7c6b7657b4dd",
     "docs/test-results/media-insertion-2026-09-23/results.json": "42c29f11bfdc0149b1805df646db2c0909e1040b7db7a9d9a054eb63e4cc6c8d",
+    "docs/test-results/menu-target-authoring/README.md": "62a5af6bf8d06d698534690757171748b53fde3e3e14d943bc8f367f3e8c860c",
+    "docs/test-results/menu-target-authoring/browser/browser.json": "c7e74c6396af72aeb464d5e7cc31d56fb48c992e75a362425f3adab877e62680",
+    "docs/test-results/menu-target-authoring/checks/full-application-status.json": "d16d7f1710c9409190f4bf4c31f7488651270475a16fc721d489b145c00a0620",
+    "docs/test-results/menu-target-authoring/native/verification.json": "400df3c16e1684eaa40afea3926b7bea92e2621991addae6db1c1bc5cc01175b",
     "docs/test-results/native-current-2026-09-24/results.json": "9c876c1b42389b2f2ba4a79ba155bb63fbeca435644c836612a846af35c67663",
     "docs/test-results/native-installed-0.1.1/summary.json": "76daecabb73fcc97139a3f04ee4b922abd780ef97d0a01b2caf614cd0c70e6bc",
     "docs/test-results/oc-projection-edit/results.json": "5609ca2fc6267ffe95e7e8d35b47836a4aa8ae2a84d5f975997df30177647788",
@@ -95913,6 +99381,14 @@
     "docs/test-results/project-events/summary.json": "9633185ce6a8d13c7e3a5ef8dafa13d7de2d8e805cde196a709e8a3b9cc4212d",
     "docs/test-results/project-events/ui-results.json": "19d8513c7041c4bfa7440571164cadb02c6422949d11de98e6795772d1a2e6e8",
     "docs/test-results/project-events/visual-review.json": "94da1aa2485448398e37381073edca7a8759be6d083bdef34b3350dce2d1bff9",
+    "docs/test-results/project-menu/README.md": "026fbf5ff2710fb0d8a75f9a69b2468bb688e059dd831d3a673069df6eff6354",
+    "docs/test-results/project-menu/browser/author-archive.json": "852713e439556109dc5929bf82d122ef472cb1e5a279351d367a4d54ed370c82",
+    "docs/test-results/project-menu/browser/browser.json": "d80690c5a4456c3ff4da085ce5496f057b8fd70d260934fb36ffc60373778783",
+    "docs/test-results/project-menu/final-verification.json": "492d39a8c03c7f3c9ba8894c578b6c2547d06c401e91b6a8db9e994071f52fe8",
+    "docs/test-results/project-pause/README.md": "d208724bbf42206b41c7cbecd1a285ef3bb260fd419ff88f4419ca41cac6d9b6",
+    "docs/test-results/project-pause/browser/author-archive.json": "7b7c1dfcf06ff7c74267b79a5ad2aea07b2ddb156075592cd3d95b3ad3f5045e",
+    "docs/test-results/project-pause/browser/browser.json": "20a58067777ecf88607c1d6c29619a734c51b5145e6aab5fb5c80d0d2d906769",
+    "docs/test-results/project-pause/final-verification.json": "0f035c010a0c97805d4fddcf23793d510d862c443e99ae97aa3438e1ced2b418",
     "docs/test-results/project-problems/browser-1791870888844/report.json": "e954da7b225c0826e73bc0e56622db203e9ab42610f9f3f7d98aeabe14744c13",
     "docs/test-results/project-problems/full-final.log": "cf75ea191c49ede517831764819ead6b58eefeb4cff4dc47b4358d00e5e55292",
     "docs/test-results/project-problems/resources.json": "e0bdafc59197d72d4cf37bf36a1ff5278aa1058a14c19bf608f786a048c98463",
@@ -95993,6 +99469,7 @@
     "docs/test-results/release-0.2.5/README.md": "9d810a06371ab041196de3fe36f6577aefeb75f8bb2fc65f3b059d0d91223630",
     "docs/test-results/release-0.2.8/README.md": "e0a51335941c21921e473ca0deed54800d910fd79486b4b790163910fecc20e9",
     "docs/test-results/release-0.2.9/README.md": "b3383660758d561e8eb0ac33184de603a999bcdda9139d7eaf826bfdd28df7b5",
+    "docs/test-results/release-0.3.0/README.md": "57a5cf06b4a4364e6ddf69943506bd594174e3e43b25879d2fc7508ef8e0e820",
     "docs/test-results/resource-packages/results.json": "8a1a13357a461cd249efe5178b7c5bf06d2f950b377b0e25afb73abf84cdb3f9",
     "docs/test-results/runtime-case-documents/browser/browser.json": "06b19cd5fd9ef6e5fd2dbbb698d89ff887324af123eb472f4d534d590bb53203",
     "docs/test-results/runtime-case-documents/cleanup.json": "e4911d39652c0a64767b3861edd6e0b8426e4092e3822b937bd76a3efe9fb387",
@@ -96212,6 +99689,9 @@
     "docs/test-results/scene-behavior-audio-picker/README.md": "b754d89d5e67e2ad967dfd605bc223a939305a6b3247aa9e381f0f8bf805d8c8",
     "docs/test-results/scene-behavior-authoring/browser-smoke.json": "e3185e71e3889a767a57b82c050bd986e393b04bd0c1d81f176e9f1545b14dc5",
     "docs/test-results/scene-behavior-authoring/summary.json": "478612f9ad2c0bda7e584163c08dc976cb0f2adf14bd373db5067868589a35be",
+    "docs/test-results/scene-behavior-binding-copy/README.md": "89abc6fb3fa094aa5bc9d94b796611d1f2f22f72490d17789259a81dd893e149",
+    "docs/test-results/scene-behavior-binding-copy/browser-final/browser.json": "0f3850aa80c14ce8022480c425accb16bc6f3fddd4c9afad198056415b9e66db",
+    "docs/test-results/scene-behavior-binding-copy/native-final/native.log": "a85a8984f7ee4fc265464379f71c2ddffa975c027debe0abccf180287586fb91",
     "docs/test-results/scene-behavior-creation/README.md": "93b1007a2c837ed37f3701ff8b2c0993d66759a96cee0fc4e6741f5e29bc4ef7",
     "docs/test-results/scene-behavior-creation/summary.json": "99294a27d1cbafbb58549a7fa11a123f0f1f6f4181455de2427ec75b8547d88e",
     "docs/test-results/scene-behavior-links/summary.json": "ac2e90953000b856ccb76ba812f22ae7fa5bb34bd5885415d43df59715a81cf4",
@@ -96674,6 +100154,9 @@
     "docs/test-results/scene-physics2d/README.md": "41d3c012106497573e8de3ac270abdb7dfd816d09ed7b1de1db4affa6e2c1e7c",
     "docs/test-results/scene-preview/browser.json": "51037f7af71c9b7936ecce271095f77788532a5e40126f700ef2459225fcadc5",
     "docs/test-results/scene-preview/results.json": "40bb44b7f2c53d3365b470f188aeb449cc0151c397c332c547a7d27d7acceff4",
+    "docs/test-results/scene-restart/README.md": "02bc6c42d1d84f527a102336a8cd63982f8b8eafb583374636b1ba477f8d7b00",
+    "docs/test-results/scene-restart/browser/browser.json": "817fbe9cebb32b75d05c3df63e50cffc419b015978b0fd497ce73bc89c6d2c03",
+    "docs/test-results/scene-restart/final-verification.json": "b12a0550afb1c914ba053fa922d69b92548515612b405ad645244cfc406f0f89",
     "docs/test-results/scene-retry-parameters/README.md": "ec43792c603e343def196e7c197c74e4e19a71c2d44ee8c151a2fc5f1956b480",
     "docs/test-results/scene-retry-parameters/architecture-review.json": "bb4d1537a899fafff9ad305cd2c98774edd233d3b56bb219ccaf0bafaf0e18bd",
     "docs/test-results/scene-retry-parameters/browser-final/browser.json": "1f5f2ab2b69a5917e303f503bedea73568371fcccf50b27d203b2fec8d4af92c",
@@ -96690,6 +100173,9 @@
     "docs/test-results/scene-retry/native-compat-initial/final-scope-review.json": "c654286f946cd0a8a62e4f56b819e297b3bd60b5eea78005336f4535663e0b96",
     "docs/test-results/scene-retry/native-final-2026-11-13/summary.json": "acd80088072f49ad3163084154fe620811c66a28c5faf78266e018f59ae1935a",
     "docs/test-results/scene-retry/targeted/new-tests.json": "a5052a8f235ddb16daa82e1b223f0dd42840bc7c78268b4f0e590f978c8a429b",
+    "docs/test-results/scene-script-return/README.md": "55f84aec99301a903e1100bb9c958e1672cc82e20993981e16f7d00e63de914b",
+    "docs/test-results/scene-script-return/browser/browser.json": "da13424246b8c47e186a2ceafbbfaf2399f2f88adbef5179ea210dfde6559e91",
+    "docs/test-results/scene-script-return/checks/full-application-status.json": "f8c952c6a76dea338b80d37d3600e87b2e8d15f16eb7acc7a22bf0857e8bfe03",
     "docs/test-results/scene-selection/results.json": "b7b51c28234966a2175362f368012138e1954a235d6fdd8f4d876dc32eb83e14",
     "docs/test-results/scene-source-layout/app-check-verified.log": "3e64fcb4b75e004d19534a3aa85e1a734e076d2fc8fd6a87586f6a97f26055f3",
     "docs/test-results/scene-source-layout/browser-render/browser.json": "1c1fbf8cbe5fb2e799988075007ba47f281169e21ec2e663d37c4c24e7e0e513",
@@ -97088,7 +100574,7 @@
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
     "docs/test-results/zip-security-2026-11-04/README.md": "0e3eb285dedeeedbacc283554bdf66eb24c60c0991473aa313933428e094c625",
-    "engine/README.md": "ba62262a5310dc0354caf01119be4d843d2b0e75af74cee38ef72815badf19ef",
+    "engine/README.md": "ffbd5f35b5213f8f3a0028e28680c9b6ab792e1bdc82b54045d8b36c85de2927",
     "engine/animation-state-bindings.mjs": "a77eb5534e292ad6561c9bac4dedbc4d4cd5cb3ecddf3257c3981a1171f8336b",
     "engine/animation-state-branches-core.mjs": "2e0fdad7c839a70735de5e54d0afaf8a14082cbb40b5ee165eabec3ca4ee9c15",
     "engine/animation-state-combinations-core.mjs": "978f0794a802c6da196b650dd3e03cba1a7a63d8aebc7209810e4c4bfd041f95",
@@ -97102,10 +100588,10 @@
     "engine/animation-state-trial-case.mjs": "57a26f4aebb991cff5aa818ff9f41e9563cb9321a32ae5f82d32e1c1097fc98e",
     "engine/animation-state-trial-sequence.mjs": "b7aa9afd38543899a84dfcf16843083e73e7eb6294da17696305c3e27ff0e978",
     "engine/audio-wav.mjs": "e11faaa850c20a2b63bcdfe987964c1223712b49ed5fb897262f855fb3ca1f35",
-    "engine/backend-capabilities.mjs": "13e3e5ef17252244cbf7f0199126abf8af7f2ddd3e046e66ee197e8f79ee27a1",
+    "engine/backend-capabilities.mjs": "3965150e1d3f12b16276b0c24fff812ee7401081692fbf68941ff63fa3ac0803",
     "engine/backend-project-delivery.mjs": "14a024784311df069b3c9834779df7f73797e3ddf62ddfcf33ce4461b4bebd51",
     "engine/backend-project.mjs": "f07d4e2984e51651033623fa3d8c2dc13ace951cbe873d0b318abfdfba986138",
-    "engine/build-plan.mjs": "104c8f002094b0783412ba4510e50d0f22186fae1b639cf68cd4ce133622d623",
+    "engine/build-plan.mjs": "6244addcd8291aeeea74e8c3c1ccdb7528025c81f1a8cc691ff2634ae1c9d56b",
     "engine/build-target.mjs": "2560c0d99b4b1a255028d5e6ae98768e07d7cd639917785ac791100a24ad33a1",
     "engine/document-model.mjs": "ccdd05ff614086ad038dae4dccfca438eee99aefca69ce85a05c9f1b5c93b0ef",
     "engine/document-store.mjs": "b67d62b4f94e2fb48fa7e3546108a56776df57eb7dc65811aff4e53b5939dd46",
@@ -97126,7 +100612,13 @@
     "engine/godot-platform-control-script.mjs": "85c2ebfa732f9a7e13655771658b1392400c6ef4c16a7406f690a389200f7879",
     "engine/godot-platform-endpoint-events-script.mjs": "4d52b33be308d2a70994dd1f49dd4f3ff3262bef091d2669f49e5bde0c28fb9b",
     "engine/godot-project-event-audio-script.mjs": "6d75d2dc4a43589c8e36a7a51e305d2b34af5c34829261ef2dcb6965f2def613",
+    "engine/godot-project-menu-parameters.mjs": "bdbd8da79c958d54b50c83dabbcac02efaeb7a9b144b0e457d08f272784e18e9",
+    "engine/godot-project-menu-script.mjs": "9755fb365cb3d240c10014455cf726c1c7382b49a409d65ca534a9251fa66853",
+    "engine/godot-project-pause-parameters.mjs": "3d0989e3f93aae27516d3ac1501135aafa78098a291c8227d7e638d275813e16",
+    "engine/godot-project-pause-script.mjs": "99cb2f07ba61a5afe220413d9a3ef157948dc8815041c02def898adf7ae88f00",
     "engine/godot-scene-navigation-scripts.mjs": "285a48cc1f27744ea4a58be378397ccde11610e1b02ce8273284d99aa120b511",
+    "engine/godot-scene-restart-parameters.mjs": "3fdc847fe9e589c88ab3945e53e58a3853a06d5e4b05c22f5a42812f9e0cf8f5",
+    "engine/godot-scene-restart-script.mjs": "4510b3e9c96f43b17a4b1d9f37fc10742c64bc03e2176e1051bde1e0d98b179e",
     "engine/godot-scene-retry-parameters.mjs": "1af40810b7984811405870d961eef766c370025039726940c2d724ad95e1162f",
     "engine/godot-scene-retry-script.mjs": "58a7c101915f646e6ea1a3c9d81ffbc68d9f2beccfc150b209b4cc1ebbbd79c4",
     "engine/index.mjs": "f32d59dc8ae663d35c74e5dd145fbea63c88659e60e4fb10cfb9b236db237c49",
@@ -97152,8 +100644,8 @@
     "engine/project-animation-target-review.mjs": "e60990c94ca072f703c6c05fd07624511bd00f825343d9769b174711f4459a4e",
     "engine/project-animation-targets.mjs": "ea07cc20a063f151c9738b760eba09f5b01f0792d210404c16836a1fbfad15ab",
     "engine/project-animation-transport.mjs": "9049a044ea7bb3aa57eb4049ea233cdeb1db383f004543622ab4718e77beb566",
-    "engine/project-assembly-plan-contract.mjs": "08b4d0f509a25e8dee11ea1390db5db25aad4395d8830abfddaceb306f6c10d9",
-    "engine/project-assembly-plan.mjs": "aa53a3df11642a51ef07913c475c33f02984d4de777fdaa3890cd5c61db53fee",
+    "engine/project-assembly-plan-contract.mjs": "59c28736a90eaff0546309f6a1647889ad5c6a0815bc23bac2ad8360ca418461",
+    "engine/project-assembly-plan.mjs": "1ea148c32bf80632e4a3312d58886139d98e275adccbf105593c04f5926b6ca4",
     "engine/project-assembly.mjs": "752602128cefd3091babef7aabdd9f9166181d1f860e6066c0bec24120ac0710",
     "engine/project-audio-commands.mjs": "9845c1563d7cfae2d6509dba65a5edc3f62c905e8a04989f7a2ac53b164dc63a",
     "engine/project-audio-requests.mjs": "db7d8a1d22dfe4971d7e58cfb8d80fbf00ee74c3b6278cc9d5b91250038bfb6d",
@@ -97166,7 +100658,12 @@
     "engine/project-execution-budget.mjs": "5624b9df4be70201c82ef186a95ebcc090edf26faa594baf26a03f425b5c9912",
     "engine/project-execution-clock.mjs": "ea3a3ef1fca31fb93c010f32f46c2e42552c17deb13c646ab8e13d34622e31e5",
     "engine/project-execution-frames.mjs": "3bcd518079a2af397c1ebd9ef32556d2c1347bbbe3e137cc7fffdf7367f46b47",
-    "engine/project-input-action-diagnostics.mjs": "19e8ace538c3c8d7b0db3b7323ba8daac753dbd19efb099dc037d3e2c3931128",
+    "engine/project-input-action-diagnostics.mjs": "cd58fded7a2b6779c3c6f7734c7e7ff6dacc201c3e4613dab74ac5f499ea0b31",
+    "engine/project-menu-diagnostics.mjs": "1d50a8f54802260c8b05689dc1903fabf49afe11d635ef71028f342d967f350b",
+    "engine/project-menu-item-edit.mjs": "e6129e9cbc28fcdd6e2e0abd4a8611cfe61a30b63899f5597c9e503aedd5fe0d",
+    "engine/project-menu.mjs": "a43d975b23a8c1ce2df5f2b90a7b1c115af94dd5cb1771520e505576b00b0d7c",
+    "engine/project-pause-diagnostics.mjs": "22d8b4871af52bfc4ed1af43823e1b9f3deb6a21cb5d11a39409df1d47e955c9",
+    "engine/project-pause-observation.mjs": "387a0c06aef2c7dddbeaeb4a9609cc5aa512584c02059e3db216ea290a6fbbc2",
     "engine/project-physics2d-input-replay-edit.mjs": "b568410ebbc23f604aa238ea9086ecc4cbc72d568b4a52a48b7696b3f50ef5a9",
     "engine/project-physics2d-input-replay.mjs": "7ba19edb11d702171d7e8c5ef8cc682066ada22dfaec68681ae8c35dd01d07d1",
     "engine/project-physics2d-observation-selection.mjs": "86ac1d8b5e759f7f3b83a103f3ae7ddef379b6cb5db2c16cc1383431d8a80498",
@@ -97177,9 +100674,10 @@
     "engine/project-problems.mjs": "5b67e49504c1996c507f77fb4a4dc5541d5229aadfdf014211f6cce4f2dd1874",
     "engine/project-queued-requests.mjs": "e94cf91a95ebb7e5c08afad7a79e3e2b460b419dd74826fe2903c996dffabd93",
     "engine/project-runtime-contracts.mjs": "e4f365f530d6dec4f2a09426b33f9048af957830a7e50de4ad7bed324ee4f74d",
-    "engine/project-runtime-events.mjs": "d3469f337098da222a5f7fde65aa71417ba3fc593359daf3dbbe3012d00242b0",
-    "engine/project-runtime-query.mjs": "cdcaf0ad9fadaa9b55cfd8078cd8c2aa0fabaf39454e50696a33cc416b708a67",
+    "engine/project-runtime-events.mjs": "3be2a3bfa606b1a93e2b5b6436f7bf289c37eca305ceeb2304bdc703de6aa85a",
+    "engine/project-runtime-query.mjs": "30ba7cf77b87334db538f58d068ca1e2cc2265dcd62ebcec10af585d442db18d",
     "engine/project-scene-navigation-diagnostics.mjs": "4b7d74dec4ba3248c9f56618f6ef24db043b5f5b23a1e2a2379643307819ea08",
+    "engine/project-scene-restart-diagnostics.mjs": "b70fddbc581d0abba45627e5cb1d7cb4be4ad39ed0bc446ccc8025613632bd79",
     "engine/project-scene-retry-diagnostics.mjs": "1dcf119b22abccc6a2fe73375c7071c99feca9e3f1fcfea7d3a2c7b0805868d7",
     "engine/project-shared-state.mjs": "f615021c9f04261c41888d3dc62ee8c65f87627706fdf268d0ce1e3e3ba9a357",
     "engine/project.mjs": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
@@ -97215,6 +100713,7 @@
     "engine/scene-authoring-candidate.mjs": "7f31ae6c32878d4dd410e0e878e6bab12da26437d0478acfbea597fa321da7b4",
     "engine/scene-authoring-workflow.mjs": "577593157ec5a1924170ec9fc3e5e071e04dd2df2237231372c52e6526d2d10d",
     "engine/scene-behavior-authoring-contract.mjs": "328e9d5fa29a8257ed333c871d6ac34dbe54f579e13884b359a22c76c9d9cb6b",
+    "engine/scene-behavior-binding-copy.mjs": "2f655b9051971e781ba433394cd4b31634f43b4bec1372ae91068fa3a532cbcb",
     "engine/scene-behavior-create-plan.mjs": "6f626880fa77ee318e913fb9ed6716aa32505ff03c6aa11389ebd4feea8049be",
     "engine/scene-behavior-creation-contract.mjs": "c2ae49d7ba16d33a67af6faea23c44bf42a5108dc86297504e2badb24d4a8d65",
     "engine/scene-behavior-directory.mjs": "51ce505e317ee114ec8d7531b63a25842a3ee01eab42dbac85132df4540edce0",
@@ -97248,7 +100747,9 @@
     "engine/scene-hud2d.mjs": "c67420bfd331481b5d1b757ac020c26677ab3f0e8fc0085991cc9edd7e868d4d",
     "engine/scene-identity.mjs": "eb17e6efdda342ca9ebb431c5522adf7f1544300f1fa6d24a75425ae4cb73a1e",
     "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
+    "engine/scene-menu-capability.mjs": "035c0d10a985c93e5d5dad3d87b4444f8bc1b6e51cd2673752c4c847fd078224",
     "engine/scene-model.mjs": "6bd3cd82f095508eaeda5008f698c60591413200fc2a7020e734f5a8ac8cbb7b",
+    "engine/scene-pause-capability.mjs": "36a5babd4195e435d2c44ab9d45fa1ca509a2ebfd8355b48b24819414fae87e5",
     "engine/scene-physics2d-core.mjs": "3aa60892ff8168bf498c036ce30a1548a7c64f0ebd22b9f17bee4068a5aff752",
     "engine/scene-physics2d-create-plan.mjs": "cb3bf5257d699723ccbd042c3b22c803905c2cf1e1b2ba50354f44e082e986c4",
     "engine/scene-physics2d-creation-contract.mjs": "c6e386f9bf21f2c96e9cd67db913aa8773ae153d7596d2a45cb422e2865c4b3c",
@@ -97259,6 +100760,7 @@
     "engine/scene-physics2d-targets.mjs": "6cbb847621ccc7ff4bce65d68676d54fa487d859feee58408a5f9e2143830534",
     "engine/scene-physics2d.mjs": "15e58fd34e3352cfaa93f7fafff45fc6809ef508e621e0a151fc289bcb2aa58c",
     "engine/scene-preview-contract.mjs": "c500754da05884cc73f99c597d8367fad2a1515235e2d2c0c57377de1f34506b",
+    "engine/scene-restart-capability.mjs": "7f608158cf9a64dab207bddcb4610d9d0c96e3b34ba859998fa98f23ea94116e",
     "engine/scene-runtime-events.mjs": "227f3953bf7892bccbb1be5f1bfc5f42fd9d70a88583783738a15ad9a1bb69d5",
     "engine/scene-runtime-query.mjs": "2409489089f75e026a9358ea23cdee72b512fb809ad85ff45b92253193909c74",
     "engine/scene-source-layout.mjs": "94ef1c1d1130c1d751fdb909df570cc2f125a3119bc0f1a790f2012c2611738d",
@@ -97277,8 +100779,8 @@
     "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
     "engine/scene3d-translation.mjs": "ff8bcc30e738f4a6d7f8ce3e79fe6f25ff21d17654bac348298a8f4ab8af83e3",
     "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
-    "engine/script-authoring.mjs": "1cdf2d3ce1fc18db86a9c3918e512a4c9fe9f0d7c98736a9ef3bd8849372e7e7",
-    "engine/script-parameter-discovery.mjs": "82ac50e0dfdd2ab8ccff3edb88342d93f478dd3a1be0a572ca32a810ffcaf0ae",
+    "engine/script-authoring.mjs": "29a026c66253bc3338329fd26f688c33b5fa2ae43798ae34630260ad1e85509b",
+    "engine/script-parameter-discovery.mjs": "b49d5591fd368f3541a825e80111af422298c764867dcd163c529d0da0f8588c",
     "engine/script-parameter-interface.mjs": "a4468f0e3ade0b81a34459ca692258191bc1a6bcf746dae3387d83a836ccf11e",
     "engine/script-usage.mjs": "61f74b8a3aaa06c4b672faa5db88aa36efd930d2d3fb247338a7ce60adfee03e",
     "engine/source-diagnostic.mjs": "5060a7cddc502fb3e4a664914ec01257afb299ffa2ef9ce6fbc11812ac492e90",
@@ -97342,10 +100844,10 @@
     "scripts/adapters/node-backend-project.mjs": "18c87cb33ee032ed6f73e2e80147e64866c28241b43f9d2aa23e96cd5275a749",
     "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
     "scripts/adapters/node-document-storage.mjs": "74c2c13ede6919cbc70bbd7eae2d1931f05b1bb709450b4181330af1dadb994e",
-    "scripts/adapters/node-execution-backends.mjs": "8b35cf6e72daacdb184534dc97ff2e30744e7ef5b1ed3fdff6e908ea79da0dce",
+    "scripts/adapters/node-execution-backends.mjs": "8ee3ca807826ae63ffa231e430d032a0476a0bd838642525adf17d836333af85",
     "scripts/adapters/node-execution-tool-probe.mjs": "10171f6f7300744028266eafe8dd4435414fe64392a9065d33fbbd47a37924fa",
     "scripts/adapters/node-execution-tool.mjs": "6c807296f257df7354d46c5f0576a5f3e469acb239b46162546e543eaa73e6ac",
-    "scripts/adapters/node-project-build.mjs": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+    "scripts/adapters/node-project-build.mjs": "f7cd62ab55a3f41cab2759b07dfc7d6f271c92ada57f7db6c18c39035fcfa6c3",
     "scripts/adapters/node-runtime-case-suite.mjs": "a5fc7eaad7bdd59bd3b8038a80bdbffc91f7281c111a2b29760481bc0e37b447",
     "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
     "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
@@ -97363,7 +100865,7 @@
     "scripts/backends/bevy-rust/src/main.rs": "59c64d0ff86ee7d5e8adae1b431919cc2107577dc6122fa66c4b6b460de69379",
     "scripts/backends/bevy-rust/src/runtime.rs": "566e585520914e36850eca9318170993db38b4aa7379879eae32f0a2e91f6f7b",
     "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
-    "scripts/backends/godot4-adapter.mjs": "704bccacea88710acbf98a8588dfe77e776889d2075d677fbaa91f3725b70707",
+    "scripts/backends/godot4-adapter.mjs": "c0af4e0ed31eee462c10b10c1a13263cf3b897cd2cc208ed3503aeb8010ab7dc",
     "scripts/backends/godot4-animation-requests.mjs": "3a4ca5e1ef1a9c533fca2c8a7f932783968fc024f1fea4b39a9f5d29e54e1f4e",
     "scripts/backends/godot4-animation.mjs": "35075d9ddc4fd41b2eb0486fe3ee9dbcce0138ba00cce7f43c19acdaec829e7e",
     "scripts/backends/godot4-audio-requests.mjs": "c2bfa57171a5b484340f191d2fbbadbfc9e106a21b5210f7323f7cba57fab1f8",
@@ -97408,8 +100910,17 @@
     "scripts/backends/godot4-physics-platform-vertical.mjs": "cf29f15316cbed94e171cd9a5f7159660e7ff53e4eb7f72ad03c0319f9032f85",
     "scripts/backends/godot4-physics-response.mjs": "4662812020b3f1aa513d32d9918b87a07648c6c55da382f7d1187fa7996b9de1",
     "scripts/backends/godot4-physics.mjs": "3131d66a627678956035fe9b9c7aaf1181f1cf91b36c9571d2e280d8b9b7db7b",
+    "scripts/backends/godot4-project-menu-inventory.mjs": "4359d1db20efa76afc7d2fbd2f16981ee08924c05ca7a0293470ee810f58d873",
+    "scripts/backends/godot4-project-menu-projection.mjs": "8c5d3acfc940e48048541713df2cbecce27a95a4e00ebf035ed84831e01296e6",
+    "scripts/backends/godot4-project-menu.mjs": "1f424e13872722a0a5e35bb0d915d2c7c85cd17461a0129bf05af76c2b1d098b",
+    "scripts/backends/godot4-project-pause-inventory.mjs": "64a06b08aa70f13e4fb51892f9962354f0b58c4cf1244df2a81f8fe71c6ae3ae",
+    "scripts/backends/godot4-project-pause-projection.mjs": "e433f253d7daeaf30a96e556179439e2b1308a43c98cb65ade99fb92195a4602",
+    "scripts/backends/godot4-project-pause.mjs": "1684eb53630713b930fcb1e50b2b9ee3ca42fc3f4b8cf40183f681b042c8471f",
     "scripts/backends/godot4-project.mjs": "349aabce01d0e7ce00620d80d2ce2ca73fc03ef95a69bd8cc0f0aeceead759dd",
-    "scripts/backends/godot4-scene-retry-inventory.mjs": "b3b501fa30d1a385aeb8fb4c0bdaaee55bc9d1928e9d5bc0377556bc4853bfff",
+    "scripts/backends/godot4-scene-restart-inventory.mjs": "ec3765233b5dfbd042f7dd2e63b45054afb7521ab61e65c797f87fc2a42c3830",
+    "scripts/backends/godot4-scene-restart-projection.mjs": "c654972b5eddbb3a93d08ced7c4332fb0b7337a124c58ce899bb9e36d50a84da",
+    "scripts/backends/godot4-scene-restart.mjs": "0580d46e6f5a2a4e09566fe8f19f41282f5dba65efc4695e388b3f8b3174a96c",
+    "scripts/backends/godot4-scene-retry-inventory.mjs": "6160b45506806436d53027eecbc2a491d9d54da7c5827d1f9262e4808c344237",
     "scripts/backends/godot4-scene-retry-projection.mjs": "660913a82ffd77eae928c2aaff262a6901126127df13b224ff4074986c8b835c",
     "scripts/backends/godot4-scene-retry.mjs": "c9dfe70ce29397c933a179d2aae2d90da5b4ffdac71c5490f96cfed267b29849",
     "scripts/backends/godot4-scene3d.mjs": "2e9c29b62868b643036df67f0fbb09b77c6710247764bf5c837277200f53876a",
@@ -97485,10 +100996,15 @@
     "scripts/backends/godot4/project-control-runtime.gd": "829fbb9b6e5ed7a639b54e9a57050d0af2b7ab2d867299d0bbf7b358adcae5ea",
     "scripts/backends/godot4/project-events.gd": "7d4a7454e63cd278ee8aa0539f4341b52e86a59ff1e9f7a751e18a31a8cd50d0",
     "scripts/backends/godot4/project-execution-budget.gd": "69985e28c2f2a8cf2d4d011974fb5c1af5c0eaa215c24f9264a940ce080ac413",
+    "scripts/backends/godot4/project-menu-input.gd": "eb522473d9007c70b9cf8d703cc7437f8f516a092914a502509eb3bf2da92859",
+    "scripts/backends/godot4/project-menu-runtime.gd": "477231c332608e3fa0fc9860663b2f6f3101e8dbdf4c882e452a6c636e3f5b62",
+    "scripts/backends/godot4/project-pause-input.gd": "f68bdf435b84b0ef65b2d7161185f238340b7b0631ab0d479b45ffcbf310c3e0",
+    "scripts/backends/godot4/project-pause-runtime.gd": "ff963b6e79807366dcdbde31cc03136c0fd9e374dca857e5e8b5db527de055be",
     "scripts/backends/godot4/project-physics-observation-runtime.gd": "606bfa3df3ed047e34eb8a01bb1139d4d8fe5f42f5041eb28e00434736c473f7",
     "scripts/backends/godot4/project-physics-runtime.gd": "1d81deea4b2b5549e705dbed4b0c9a3b07403bdde76bfedc3ce127fb652b2742",
     "scripts/backends/godot4/project-runtime.gd": "e9a33b45cd9e35c2acf870fdf5fa24dca91dfd19f33fd25d3dd3bc18145abcf4",
     "scripts/backends/godot4/project-scene.gd": "ff3de5853a0e8414103cbfb0f9b9799d0e41c208c242a7d47ece1d81046a2e20",
+    "scripts/backends/godot4/restart-project-runtime.gd": "1936a560946f07a534abd7308c2f584417a3baa51cd461fbc2f5229f791a7bba",
     "scripts/backends/godot4/retry-project-runtime.gd": "11c3b65cc5ff1b52d2c5183d4a81c7e0049ed0381b42481678f8f6902623151c",
     "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
     "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
@@ -97516,11 +101032,12 @@
     "scripts/lib/media-insertion.mjs": "27ffea2efc1564656b003a08e4cd7a3f87ef9c77858cfbea19f3ff8cb5ff42c9",
     "scripts/lib/paths.mjs": "0a0e5325d12176c09e88ffe8bdf195b1d19cb7ca210650aeb3f2764e3bfd3848",
     "scripts/lib/project-assembly-documents.mjs": "9dbfd279d42a21708998366690535ed2fb2ba418e9ce7f23c812be408396c964",
-    "scripts/lib/project-build-service.mjs": "40cfad236257a1bff515d2bbca3caf481206ff7201e1cce5692f33ea35075efa",
+    "scripts/lib/project-build-service.mjs": "b6c4e934ae603878ae137e3b05e3329fb068bff940a4a1731c7d0588d38ba0b3",
     "scripts/lib/project-definition.mjs": "a7da2a138b2b0be3db03b973945d9481afcb9745611c048ef449ed4a32c12781",
     "scripts/lib/project-documents.mjs": "9f81f09f1e0f627bc229e01adae8967cf5562ee36c118b472fd729a20da6247f",
+    "scripts/lib/project-layout.mjs": "83d9b9ba4e13bc43a340293f5d87a6e17fba1bb0ab01a0b4ea80e944682bde48",
     "scripts/lib/project-service.mjs": "a1a6a04d00bef0f682e579f84cc7e68cc45892d9e1904c36418d77e6375ff44c",
-    "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
+    "scripts/lib/project-templates.json": "dfcb07e22d5f7b6adef788555cf904d91f1147fcdce947179b5b125b774117a4",
     "scripts/lib/resource-package-catalog.mjs": "5bcc3598f8d4451d330243a42dfbfdab8cef2f0b95e6864ad882b91815650e50",
     "scripts/lib/resource-package-export.mjs": "8b5d1bb3d655c085b0bebc2f7bc9e6df955d8a49e68419e83c738706931e0030",
     "scripts/lib/resource-package-import.mjs": "085ec0979a406a5ea81615edb1e3d7c2e26ec3ba94629b77ba0d3065b935f8ae",
@@ -97623,7 +101140,7 @@
     "scripts/tests/asset-export-browser.test.mjs": "be7c25b29e51dd70be647a19bcc518a06707040f28f0db49491cd565bc08d0a9",
     "scripts/tests/asset-export-smoke.mjs": "ad7488ec4f823e02128dd1ba335fd8e5475517c1c07c720f11a2507497884b74",
     "scripts/tests/asset-export.test.mjs": "98dda47dbf226114ad7e45b7e291c348932157f3c1943fdbc56886386573445a",
-    "scripts/tests/backend-capabilities.test.mjs": "5ad53eab979f6f6c3e57dbfe1711ffdb66d9b76f65a1151b6296cef87c524d23",
+    "scripts/tests/backend-capabilities.test.mjs": "cfc222f101a0be728073903958ec352068b17e73cd2368786e2aeb379fe62549",
     "scripts/tests/backend-capability-ui.test.mjs": "d5dbfcc61c12e82fe70e0371a832ea7891fe3d2d46d7ea6232676e87542fb57b",
     "scripts/tests/backend-middleware.test.mjs": "dcc72c9fc872fad18c1fc0e58743a5c6ae3380ad29e63bab22e724899345ede6",
     "scripts/tests/backend-project-boundary.test.mjs": "dc60c3e7544894f7195887229cd5c038668734d526e3ea3c4b5c8eed6c14f311",
@@ -97657,20 +101174,22 @@
     "scripts/tests/build-runtime-protocol.test.mjs": "49c1f959e2ef939f16fc544875e1eec0fa10ef57589919ae3033b1170ba004d5",
     "scripts/tests/build.test.mjs": "3e241da1a1ac5798fbdc075ca8f64eb55e2322d8d121e2a0d4c110ded7a84dcc",
     "scripts/tests/call-paths.test.mjs": "a5559e1f56c77918b96d1a33f44b62a891870fb448d7f68ce4dedeea41140d2f",
-    "scripts/tests/character-contact-event-starter.test.mjs": "603dce74aef9ff81163b3ecb1507e062b2a7f32c87686d7dd2c4074805fddd3a",
-    "scripts/tests/character-drop-through-starter.test.mjs": "56e21174c659ac6a8648195892d45075e098d25e03f1d626e9847e5520e58636",
+    "scripts/tests/character-contact-event-starter.test.mjs": "75486a503d36961690e875888d8c7f9af365803bc0848f6d0b8c9732e26fc331",
+    "scripts/tests/character-drop-through-starter.test.mjs": "d198a15cc0ee4624021d87b030f0b686d6ae5d31bc7725b7c449bcfdc25cf2bb",
     "scripts/tests/character-intent-starter.test.mjs": "7dc2448430967a22f9e0c41c004da08c4c3883a2ba11ae28c907df868ea8b294",
-    "scripts/tests/character-motion-event-starters.test.mjs": "f5a5948eb6fdfe9240eddd606fd2da5c3a33ceab941a58a87a09fa809ffa90d1",
+    "scripts/tests/character-motion-event-starters.test.mjs": "2ec3c672a92b6351df0fa417d1d78bcd590b3b9f67bba6e40f0fe87ae76b6e2e",
     "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
     "scripts/tests/desktop-close.test.mjs": "9af2c664add04c4fba6a5f8082de953c31b9ca8783067d72f27d31240bd39fd0",
-    "scripts/tests/desktop-library.test.mjs": "1f600e7a2010d7be6d506eade9684edc42a215eb7c8c56c224f2f780fe9d3481",
+    "scripts/tests/desktop-library.test.mjs": "4b0134b06cccf881bbb32905721c60a9662d18d269c69c4b0f5cb655b9809137",
     "scripts/tests/desktop-workspace.test.mjs": "95a79fabec528755b749c2e40a373315ab36e09050e294cb867d606ed7bd09ac",
+    "scripts/tests/dialog-harness.mjs": "7c82ec383ae6db53a3913ab7eb630953dc5fbc94cabab42bab059e911975e621",
     "scripts/tests/doc-api.test.mjs": "1b7ec1a5e0081840789af02e7d39c01afde0a6b8e8b5f5762c5af5b68e899a2b",
     "scripts/tests/document-migration.test.mjs": "3215a96aeef64508e53ee228da0f7aab8bb3e92c9e61a1b7bd2a4f3dcee5a0a7",
     "scripts/tests/document-model.test.mjs": "993e6aa192cef7585cf221b3d10fd5f8f8289930c7168515afe89aeb2e386054",
     "scripts/tests/editor-draft.test.mjs": "89c664dc31fb5133a5bc79f01ce7e7686275d40f9d6d447def597ebde885d6e9",
     "scripts/tests/editor-fields.test.mjs": "73352fe10993f23b93091da8de6095b1bb942fa18ea0782f43220cfe7f731f8e",
     "scripts/tests/editor-filtering.test.mjs": "dc1b256ba0d4b004a719241f8b5831cfe2d25dc457c9ba02299b23365029cf20",
+    "scripts/tests/editor-harness.mjs": "e965cc2ea42f1477c53843370b553d457c8f1018f4032dc67d4ff10ea31b2049",
     "scripts/tests/editor-index-refresh.test.mjs": "7c2d6ad8c854def427c114530c3a88b70d56240058e8be38b211fd2c3fd99608",
     "scripts/tests/editor-language.test.mjs": "ace1a14bf777fee8d51a13334ff91253bc00ce54398fd6773d4033113fd4d3d5",
     "scripts/tests/editor-runtime.test.mjs": "58349be903cfbe25a7085cb790083643b47614f77a2d6ab4ac0c440159dc2d17",
@@ -97687,25 +101206,37 @@
     "scripts/tests/export-streams.test.mjs": "be0d79dc2fab1565e031ec94f27a5a38cdbbd90589fed9d3c4a275630c759dc5",
     "scripts/tests/export.test.mjs": "bf950f4c69a263ecbbc20a1933faf8574677af5c887efa01f65895f9b98d0cc7",
     "scripts/tests/field-draft.test.mjs": "81ec97d78faba1bacc3be48e1866ff15ef91592267c59af0135b27cdb99ce718",
+    "scripts/tests/film-template-workflow.test.mjs": "9b25a95a6c89b26da9ef82dfe6c86b3f09654b661b1b0d185f2abbe05ad754f8",
     "scripts/tests/fixtures/scene-model/legacy-plan-v1.json": "929b2ebec2f32466026d3ccb4bec55371eb52b680f1f4a8ece9338e3958913a4",
     "scripts/tests/fixtures/scene-model/legacy-plan-v2.json": "eed953ffadac02c98fb52225254afb85c501e9ef7cd597c4d29810aac61f979d",
     "scripts/tests/fixtures/studio-core-source/legacy-patches.json": "5a8a13a3a987cee41c24f1147fc928f295246a6cb608f69e3283bd6771515f6a",
     "scripts/tests/function-atlas-smoke.mjs": "616a725fcfa199f15d9e9b577072c49d34b615a8098572bbc7405de510caf530",
     "scripts/tests/function-atlas-view.test.mjs": "424df7a656adb48a57570c3f53d5677cec980292654cb9ba50fc1a377c69d764",
     "scripts/tests/function-atlas.test.mjs": "f66d6b898ccc0020b9cb065de64b8fd352240b5010896dbd5c3afb86f6122987",
+    "scripts/tests/godot-project-menu-native.test.mjs": "a2082d77cd2f239d24407e2f5bba2791bb7eb4250b85b6a81628965cfeba64a6",
+    "scripts/tests/godot-project-menu-parameters.test.mjs": "9094de21a10d43f0c30747ba44f93d1aa5a4c90326c19ece907adf49efc76dd8",
+    "scripts/tests/godot-project-pause-native.test.mjs": "98b75301131505c3cfcec2b77f3aa1d31f15f5852c0b522dc781aca26ee1e933",
+    "scripts/tests/godot-project-pause-parameters.test.mjs": "b9da90799d84a07376305fcd4ed19dc8f7b3a0d83e7e9e86258827fec63fc73e",
     "scripts/tests/godot-scene-navigation-native.test.mjs": "f8b8a5e729ccc5c86cf3ee7d8d0a1f401f5b593b947632c38e76de642174b3b1",
+    "scripts/tests/godot-scene-restart-native.test.mjs": "99c9d3a8d1f1b25d4e6dce661bbf3de5671755f2052ae322691f68f4de2a13aa",
+    "scripts/tests/godot-scene-restart-parameters.test.mjs": "9de03d2b5c9b1144178a50eed62930c0e5553f087281e5b93cd467df7e8ea79b",
     "scripts/tests/godot-scene-retry-native.test.mjs": "1fab5e8e2b938db67dbf22277b12ffcd0249fcd78f1daed5c603da931881234a",
     "scripts/tests/godot-scene-retry-parameters.test.mjs": "b14528d4c55e9bcf4794853fffb3e44bf8260824872b80ddb279687ec6274efd",
-    "scripts/tests/godot4-adapter.test.mjs": "4b11e8c530f20f3ca70459e68c0d3b7d9b68ee460d536a49738707ddaf92fa3d",
+    "scripts/tests/godot4-adapter.test.mjs": "c7e2562008080c8145f22c850ee0a32d7934dfce1c5599f6c59cfee49fd731c2",
     "scripts/tests/godot4-behaviors.test.mjs": "addbed9b220c3ee298f0be51648c24b80b98d2473c3918aafc7b7e4eac87ceb4",
-    "scripts/tests/godot4-camera2d-limits-native.test.mjs": "7dc660c5843b03a3cc0d8977be058c1b614ca1f5c89f1540961bad61239a4379",
-    "scripts/tests/godot4-camera2d-limits.test.mjs": "57b08618b4a46537912f7d1f00ce96c8fdbb36f534bc00314a3745352dc4ac8b",
-    "scripts/tests/godot4-hud2d-native.test.mjs": "bc74b518ad0ac3024d06a0f4628fa7227b7bbeb4e33bacc990228c56b2558083",
-    "scripts/tests/godot4-hud2d.test.mjs": "c8f660267edac562c4c0e56e262dd64ce5f72cee0fef5bd4b62c5b5d5fca058e",
-    "scripts/tests/godot4-project.test.mjs": "091aa74379fa98494263d285d421f16807dd2af0ff67d186d7cebcaf3224fc70",
-    "scripts/tests/godot4-scene-retry.test.mjs": "36135f7c466603f7a23cbf410c86f36298f0c0bab04852cf74945b0a141f0755",
+    "scripts/tests/godot4-camera2d-limits-native.test.mjs": "2c2ca759facb3231fb242fa62df1d43a8f614a6b4bfb3f5a28f8905b3542b8c1",
+    "scripts/tests/godot4-camera2d-limits.test.mjs": "c6c599bc7ad5617c6f36b0ed1b096257cb6d27fcbc5081a2b0d74da1e13055b0",
+    "scripts/tests/godot4-hud2d-native.test.mjs": "1f5a5edd8a275df749021129c2ee57ffbde7c485006f4dcb26c418113a266669",
+    "scripts/tests/godot4-hud2d.test.mjs": "ee6ae307bad2f7e0fd844df3756fa767344152439f1e66337eae36326373511a",
+    "scripts/tests/godot4-project-menu.test.mjs": "17adb4bef985ca02d294790ead901bdf13151b307b0930cb9996ac49dcf147cc",
+    "scripts/tests/godot4-project-pause.test.mjs": "3685a711993e87a0dddc25f6924d360debf03972319b3d079d413e5bf641048c",
+    "scripts/tests/godot4-project.test.mjs": "a0d751d8bbc73ea74ec28ea4b658809e4233b3b199895904cb36f374c997295c",
+    "scripts/tests/godot4-scene-restart.test.mjs": "0cd7187aad9d503c7d4439840c1b94ebb5157c0cdf8b07d41159691b9e602936",
+    "scripts/tests/godot4-scene-retry.test.mjs": "4d2d72979cba433681f248ab41bd0ec412d59c20e58fdb9f8ec350fa0ac47475",
     "scripts/tests/helpers/godot-scene-navigation-author-fixture.mjs": "e364e8cb3b69453c1ebd4d30a1c71b29cb719c213798094b679d39232a972e01",
     "scripts/tests/helpers/godot-scene-retry-author-fixture.mjs": "e26bc6f31f5f9f112f27151d0ee9c1c2ab3002d0194c103fe8deafffdca4d0e0",
+    "scripts/tests/helpers/menu-targets-keyboard.py": "e8307e27ae3c047a6094f082e28c14018adcf4fccd23f60e5809b96156d4ca26",
+    "scripts/tests/helpers/menu-targets-observer.gd": "cc5771b6bafd9b9793cd37d9fbb18bc9c2ddf08f65ef5fd1b8140db265893fbb",
     "scripts/tests/helpers/project-physics2d-observation-fixture.mjs": "3f9a9f86e27741ae1580b0966afad48bd7f2d0a734443d9d5d81585a1b70c169",
     "scripts/tests/helpers/project-shared-state-author-fixture.mjs": "b3229ec1fe81b8f98f8b8233a7b4feb8f25e5dc90f6219e9b50974020557b83d",
     "scripts/tests/helpers/project-shared-state-fixture.mjs": "80044985789765e378d0b008e3cd0ed420c5fcdb0e62e2a09409c7b4359d3759",
@@ -97726,6 +101257,8 @@
     "scripts/tests/media-loading.test.mjs": "e0b48deacd1aca829665ba39692d1df1c74f7331c96886a3a7dfad67007835ed",
     "scripts/tests/media-preview-content.test.mjs": "78a4b9dc4ca029b55b75ff8fddfde1abfb39bbb5a849dd22cbcc1c08745b7242",
     "scripts/tests/media.test.mjs": "def47929535b3108c1b36adc5617c6384d2fe67ed18571b23b1914f6c0e6917b",
+    "scripts/tests/menu-target-authoring-native-smoke.mjs": "b338be7696dbedc7e2a6eb6990b56da05dc0aa47876dfbabf6b80613f8b5982e",
+    "scripts/tests/menu-target-authoring-smoke.mjs": "a60b842f39432aaaead14c9b48499d2fe4441c3943ea1aaae0c6b29efe0b5b64",
     "scripts/tests/mobile-archive.test.mjs": "a31f29055a46123bb0ee1c8a256e28ecab3bf56d29ff7126663731f77b5fed78",
     "scripts/tests/mobile-browser.mjs": "508e6db261727e9fa64e5bfbd0d2fecb2ee4f8496b532f92d8a5ece12fb46d2a",
     "scripts/tests/mobile-drafts.test.mjs": "cb2415da294c3d9ac300a01e7f7692ed87088cfbe85289fbe45dedaa2aef671a",
@@ -97743,7 +101276,7 @@
     "scripts/tests/platform-control-authoring-smoke.mjs": "04026a9c502855f7b891507bb5b494885d038c80a2b72df7707f2b14f6035fb9",
     "scripts/tests/platform-control-paused-character-smoke.mjs": "dea205109ce27d7829e438fa3a31c5dd6220288333a421c281eb6b9df8f744f1",
     "scripts/tests/platform-control-starter.test.mjs": "ae62698766c4b68e4ce9d3a43a33f58bda99023a0d772b05408e4c1f73a660f4",
-    "scripts/tests/platform-endpoint-event-starter.test.mjs": "2d237e0959ffdda0c7fc9bbc5f259286fb3c22f743990879369ca0f6b9ed8cec",
+    "scripts/tests/platform-endpoint-event-starter.test.mjs": "9c39f38bb34b06b2c14537b0516645bd28c280bf2373ceb772cf731a2c9a8b94",
     "scripts/tests/portable-engine.test.mjs": "90c17db812f222ac50c24b51b2b178d2c5bf585c41de0919bb2e870e925f1a0f",
     "scripts/tests/project-animation-authoring-smoke.mjs": "fd683ecfc101e5d41ec2c584248e970ebfb5a8f8c11423aea36b763cc7937358",
     "scripts/tests/project-animation-authoring-workflow.test.mjs": "06b339da4440ba9b93c872b2ce1e85e69bf43375ca3c06bbf71f81078be5ed13",
@@ -97764,7 +101297,7 @@
     "scripts/tests/project-animation-preflight-workflow.test.mjs": "fb4624a7ee6336ec25a487158dc49784eb021b4e73a441bc938c2dc7ec3f75e4",
     "scripts/tests/project-animation-preflight.test.mjs": "1b65858d62587031cb1ae03deb5f02e3f80129cec61f0bfe01d788805188bf22",
     "scripts/tests/project-animation-requests-backends.test.mjs": "c64798638ccb4908c310d0d2aa21b361fa17f259aa452d85b607230ff1a33473",
-    "scripts/tests/project-animation-requests-godot.test.mjs": "c70d318cf3f66ec4a9f9aa821ac802bd63c4c1e4d568ac78096fc8aef6774032",
+    "scripts/tests/project-animation-requests-godot.test.mjs": "9f2891083be6feb6f8986406263c7049bb60d1dc0bb6287f2fecc5d19c4954a4",
     "scripts/tests/project-animation-requests-host.test.mjs": "5365e7fae8b66b6a200b40b7d1d8cb283fe6c1ffc5393e2f54f26e7d862af1be",
     "scripts/tests/project-animation-requests.test.mjs": "0fa731adf6695aa90cd4b68a993ccc35b9fa31a592380d6fdd0fb5a104bec79d",
     "scripts/tests/project-animation-runtime.test.mjs": "502c8f1717643975218ad1a890e48396be06ff521dcb579e6e16dac7b06c1175",
@@ -97772,11 +101305,11 @@
     "scripts/tests/project-animation-state-entries-smoke.mjs": "ce5154c1881b3b01887391be515e3353c7a8915061f0de402dd59e068518768a",
     "scripts/tests/project-animation-state-entries.test.mjs": "904e72f57895f3308c6381d5bddd7ef19c2d10e21f55f4ca91022e76805556e9",
     "scripts/tests/project-animation-state-entry-godot.test.mjs": "23879abc6b3f12a6ffb8330d6341753cccb854f541df804624cc3f0fb4240649",
-    "scripts/tests/project-animation-state-entry-inventory.test.mjs": "c71d0759ce7038981e62a13235cbbc3d421d69971601596302b31cf14277e579",
+    "scripts/tests/project-animation-state-entry-inventory.test.mjs": "31ac66325356fc4934a207df7bc9de771e1a4fd18b30ffb2593d0287a1f6e9c9",
     "scripts/tests/project-animation-state-entry-observation-ui.test.mjs": "9042788de6a6308df68cbd434f5ee1f23f5a5d1a018944d4811c203c888ef2ee",
-    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs": "2848cb19942f4bd961e242fce0a0705117c14884160b5eda438885a51c0369ed",
+    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs": "c53c166531658caca62e1a477e3858264ae7fc5bb3fcf5db8d107dd6eb763058",
     "scripts/tests/project-animation-state-entry-triggers.test.mjs": "e51415f28b5093607e72b4d1ce052209cff7e82310af5f9e028e5b1183f379fe",
-    "scripts/tests/project-animation-state-godot.test.mjs": "9038ff63ce2226e7c8cfe3a72dcc9b44ff6259e9073f514eed4b9e658a9756ab",
+    "scripts/tests/project-animation-state-godot.test.mjs": "89605a5e1b8c55488d712ae5a332a23f576fb02cbf2d2a30bf717ee18dc2dc09",
     "scripts/tests/project-animation-state-observation-ui.test.mjs": "af398ba673c2c0e97abe368ec9de7255b05d6898df040e8d247c10a38f135ff9",
     "scripts/tests/project-animation-state-review-smoke.mjs": "d9c91661ae9f1404e5781a2fdd706009d3bee7ac25ba1b7fabc243775546ec40",
     "scripts/tests/project-animation-state-review-ui.test.mjs": "c71b0715c6b82d821fb2b3a20f8f6dd51850a1859ebf49f32b12cfaeaa714611",
@@ -97807,7 +101340,7 @@
     "scripts/tests/project-audio-observation-build-ui.test.mjs": "a5de43c18d9754be6f7dd3227f28890794a1ffa6e01b78945432e82511712f1c",
     "scripts/tests/project-audio-observation-ui.test.mjs": "d1009f66d655dd8305c880f42e9aa51041744ed49e9acff355112683e7ac3253",
     "scripts/tests/project-audio-requests-backends.test.mjs": "5ef1c06637c6674ef2870ce7059236dd748f206eeaf60e13bc66cd29fedabe26",
-    "scripts/tests/project-audio-requests-godot.test.mjs": "63b183d13f4c7469a1eae3cf03a53eaede9bc48c7a16474a51c311c21dddab75",
+    "scripts/tests/project-audio-requests-godot.test.mjs": "ebf1540d9b0450b098df228459d6a4449f94d1d76d401522b6bdd7a454d13ce9",
     "scripts/tests/project-audio-requests-host.test.mjs": "0c48d196d2e34ce7ddced36ea78fe22dfe00e32303c857f1873fa7f32fec48b8",
     "scripts/tests/project-audio-requests.test.mjs": "f6679ce4e7ddb0db45cfd1579e46957e1bfe826296f4a8fce01cb3b95b67b18a",
     "scripts/tests/project-audio-runtime.test.mjs": "2e46bef12c8b1328a9e862f89f3e56491f3c80ae1b3a93e9eebc9130f5417e89",
@@ -97823,7 +101356,7 @@
     "scripts/tests/project-causal-anchors-godot.test.mjs": "81301589a3885f92559543347d9805e060217ad0db74256c91a2cef9821d222f",
     "scripts/tests/project-causal-anchors-host.test.mjs": "cbf0f90a0372b6f44b6959a55a8b04bb9ce5b4c0de95e01ce0513efbccd0575b",
     "scripts/tests/project-causal-anchors.test.mjs": "55ba770c98bfecab21303831f2f0126c78ef901f27b5d87e235abba16140038f",
-    "scripts/tests/project-character-intent-godot.test.mjs": "33ef565da26e69c3d141a4a929ab8d2b3a667e250c947db4b80b451f968583a5",
+    "scripts/tests/project-character-intent-godot.test.mjs": "ea417acc692a2fc512f1892ea5aa346977a5b0f6e3af7d4199a5f0758dbab636",
     "scripts/tests/project-definition.test.mjs": "46ff91af400a9b78c20ec7d4fed122faa7037bd292850abeb3b29dcd12376f0f",
     "scripts/tests/project-event-animation-authoring-smoke.mjs": "752265029b2561d1b9f03ce6235f422ab0ed4e5cbcf97d4dab9a6c92cc2f5d23",
     "scripts/tests/project-event-animation-authoring-workflow.test.mjs": "5cd067ad29a4f2caebea81173871e5cc9583ae7be25ab4ce12c4b6822d01a9a0",
@@ -97832,7 +101365,7 @@
     "scripts/tests/project-event-observation-build-ui.test.mjs": "a21f82300a7fe7bd91d2efcfad04ffe1792244afb2e51029b04959692e417b7c",
     "scripts/tests/project-event-observation-ui.test.mjs": "5a8ffc6d65f8447d5885df8b0b75a6382fd156d4146a9780510020f804074231",
     "scripts/tests/project-event-positions-build-ui.test.mjs": "8d57863a1003bd3dac3eedea816d69e306fcf67a3f6e6e66cf925de1787167b8",
-    "scripts/tests/project-event-positions-godot.test.mjs": "88ab7ff684c9c1dd2e942167fe239d56105df1238783eb9bad44a8d861123529",
+    "scripts/tests/project-event-positions-godot.test.mjs": "82d2861735d1aec975aeee7d73c3c5d9d1f3f0cd4c5ff861632b8148b08d9a09",
     "scripts/tests/project-event-positions-host.test.mjs": "7a05fd99d860e515ffe41f83226f6605a50351c4eebe7726561205df94b310ae",
     "scripts/tests/project-event-positions-observation-ui.test.mjs": "8a66f46aae35f84865cbd87fbe1df7abb71770664b0175bcd3b4f7c963cbd6a3",
     "scripts/tests/project-event-positions-query.test.mjs": "9997b71810abdae473d11436947a4dbb7d3d5231ee2218f8da6023bb83145b55",
@@ -97844,19 +101377,33 @@
     "scripts/tests/project-events-runtime.test.mjs": "298b4fae457d96b5789591ae3ce4bc9f313f66ac9e03d829232f67916521f06e",
     "scripts/tests/project-events-smoke.mjs": "f69823a181a7c26d28e34167ef7280d03aefd89f39505ced2667801c279e444f",
     "scripts/tests/project-events-workflow.test.mjs": "d13669105f9e05bda8068dc46392f771e732591610b0d2c44a1826afd0eda05c",
-    "scripts/tests/project-execution-budget-backends.test.mjs": "0d2605bdbdc066e8f4411ae00cdae3af2f858915cf2fe207d39d63f4e75220cb",
+    "scripts/tests/project-execution-budget-backends.test.mjs": "506b19930368c01f2c694a518f4899fd0b0bce4ca583ee4b259deaf25b77104b",
     "scripts/tests/project-execution-budget-godot.test.mjs": "3fe7fd157908b777939a8f1087c2604c8e9e539f3ac1483e203044ad6cf7d00d",
     "scripts/tests/project-execution-budget.test.mjs": "6e554fe0f6bdabd53a542fe7af69ef3d22ab42fd4e2ab975877d8d671156c0f5",
-    "scripts/tests/project-execution-clock-backends.test.mjs": "f5d77eecf3bfb94fbe522d465fde491a49a2cc347dc69362fdcdea1743296c03",
-    "scripts/tests/project-execution-clock-godot.test.mjs": "5dfd514d1c295bdf16347b6aede86cb0123f82b365d551fbc47fd42db74e944c",
+    "scripts/tests/project-execution-clock-backends.test.mjs": "8fd1e9c8392a974ea5befe619c66edaa4e742dcd51b209c38e71dfc1df18dcb4",
+    "scripts/tests/project-execution-clock-godot.test.mjs": "8795a94059df21cec1d13756adf9d465d28ffc76767af46abd680da21ec92fa6",
     "scripts/tests/project-execution-clock-host.test.mjs": "18f5ae99ce5b4598a20eadefb10b444ab365da989069652eac1177decd4cdaa3",
-    "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs": "0a1d0ebf96480c15a5bb63d28f2c4fde9779056cbd56166ba6239a938b55f49d",
+    "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs": "b6b131ee4abbabedeecaa0f82e5daa4fb0a1e307a70804e4ce6282bb60a5203a",
     "scripts/tests/project-execution-clock.test.mjs": "36d5de26d8ff16a2b9a33032ac638ee5ef1c5f3fd7abc8b4a019482431f7df0a",
     "scripts/tests/project-execution-frames-backends.test.mjs": "56c224bef21b6ab82154129dcdca6e03571003e726daaef7f276305f6dcdcc70",
-    "scripts/tests/project-execution-frames-godot.test.mjs": "429c0f81ed96b238e0923b09e032afc9f6fc11cb4aa353600ad58c2807509347",
+    "scripts/tests/project-execution-frames-godot.test.mjs": "519816be76642a4a20522bbc7a29872afe652627f23f99a3831fae18e5048ec6",
     "scripts/tests/project-execution-frames-host.test.mjs": "921b87977a306e4b1400332d48b79daed53e1d9ee7cd82d8b8713d603fc40045",
     "scripts/tests/project-execution-frames.test.mjs": "52adbe5f03fef27004b0838d7bd48fbdeb6c126706ef694e4e2dec6202687658",
     "scripts/tests/project-input-action-planar-diagnostics.test.mjs": "317d8e12c1225f531055e27c1f57b951f3b842c815a0461d2b436b0cce5b1ccd",
+    "scripts/tests/project-menu-authoring-smoke.mjs": "078571d5be3185cba5945d89512df3d04c09202e0e468dbad34c81a6d2b6bec7",
+    "scripts/tests/project-menu-authoring.test.mjs": "4755b0b6d44cffe06baedd8bc00a979c2c47d0a9323c007b3cb3acff00be2b42",
+    "scripts/tests/project-menu-capabilities.test.mjs": "62c80dd1d3324f56cb7474db02b9708ad9fe702c1acbd7fadfc05fc00b6cc851",
+    "scripts/tests/project-menu-diagnostics.test.mjs": "8acb27fe924100818b3ac441dbf4e38a352e4a6ad29a62c1730efea1f06c3a70",
+    "scripts/tests/project-menu-item-edit.test.mjs": "4132812b70706e40f993d57c3afb1a223f916803f8dc0bf425cb6d48cf619273",
+    "scripts/tests/project-menu.test.mjs": "317ecca1bf15d516f6999a941c3f48be9d1b77509471db608e0d80f4bda23df3",
+    "scripts/tests/project-pause-authoring-smoke.mjs": "813b64e8d35096547367dee5a793a26e586cd6ce95ebbb33de0a269920d23a04",
+    "scripts/tests/project-pause-authoring.test.mjs": "eb2f3e6ea35aca905dd53c76291849398e5fda2552174867da3bd5a5023092fe",
+    "scripts/tests/project-pause-build-ui.test.mjs": "e02c4348d8410b9c9e4718b883e846843ca9a87a64804e5221693f4a24dc046e",
+    "scripts/tests/project-pause-capabilities.test.mjs": "0f5030ef7529f0f7726c28980341a8a3156fe5317e4238932c9783d5afec148b",
+    "scripts/tests/project-pause-diagnostics.test.mjs": "94514ab76a2a75a068537bcd13114a09d2b2b805a98791f59dcf7e5f1adedc4e",
+    "scripts/tests/project-pause-host.test.mjs": "d66e930051fbe283d10c5f57c3da0e07618adb2cda62f74a846e72c2dcaba370",
+    "scripts/tests/project-pause-input-diagnostics.test.mjs": "f96a5f6a4c8989e046922ab8c8cee38030481b4285be349acbd464d1498115ff",
+    "scripts/tests/project-pause-observation.test.mjs": "3813d17ebd6ef17988a4915998cafb9646b6f4463d012c3cb2b85a7cf26bd77e",
     "scripts/tests/project-physics-case-ui.test.mjs": "f51f0d564ceb61654a32d65b2d274704fb17da77255c8b62aefacac61bce098b",
     "scripts/tests/project-physics-diagram-ui.test.mjs": "57eea874aba566325adf4b09be1602cf785724d50dd8076b09716641461fbe40",
     "scripts/tests/project-physics-observation-build-ui.test.mjs": "65389c8cb89aba0d4a9fe7a9f8e301882d3ec21aaa0be06add8d402bdfefd7d3",
@@ -97884,10 +101431,13 @@
     "scripts/tests/project-scene-navigation-diagnostics.test.mjs": "dcb6366b21f8fc0127b72eb9ebf23fb5cde5ff5035b40e45e90f17dee9bfc0e4",
     "scripts/tests/project-scene-navigation-host.test.mjs": "f262cd17920792dfab76dee615a984bd453d278bbec375b3413043db5317addc",
     "scripts/tests/project-scene-navigation-packages.test.mjs": "e96aec52ddc74d0ddff2be01bba681c149b5575d93cfa97aa543831c1922929a",
+    "scripts/tests/project-scene-restart-capabilities.test.mjs": "22f315129228c481ba48243ef5435d5b1163c8dbd97494103a6700685df8f779",
+    "scripts/tests/project-scene-restart-diagnostics.test.mjs": "15d40c9660be55ef8a7956ffb7abdf9240e78d64315e0c55ed935c068dcde8e7",
+    "scripts/tests/project-scene-restart-readers.test.mjs": "c1cb46a583355a4b17b5f3517e6ccca6a640b824ad8ae49dbe4f7e17269c9801",
     "scripts/tests/project-scene-retry-diagnostics.test.mjs": "50e814d70db51d251b2b499deab1c9490741aa7ad2b523713ff961ed07fcd1c6",
     "scripts/tests/project-scene-retry-host.test.mjs": "c6f841805e8605e0e46d75df1a49c109b17c347e6bfa5403202761ae81cc48d4",
     "scripts/tests/project-scene-retry-packages.test.mjs": "f4833cfad7e6f8002da0ecada7530bc7ac8cf0356360fcf6dd4b39bc559b9dcb",
-    "scripts/tests/project-scene-switching-godot.test.mjs": "7623669cb1f37e526d9285e7ad5c8d0bdd44375db9715c839da744e66412489a",
+    "scripts/tests/project-scene-switching-godot.test.mjs": "3e6c52cda39db76dc806e8ec8c72ae87fb1d49d0ee3ffe9d5d8c8fa373baa18b",
     "scripts/tests/project-scene-switching-smoke.mjs": "46464c7367dbbf529fd5d0d0c3293f6a3d5719b6f097f245eb50421b446337ee",
     "scripts/tests/project-scene-switching-ui.test.mjs": "fbb6650bfaa0dc67cd548844a2852e1cb523e9e3d3fccf5b0e3f97a0287b6207",
     "scripts/tests/project-scene-switching-workflow.test.mjs": "3d34d95ed902f928329c1e7c4965efd7d28500b639f72a140972d13ef3c0fd03",
@@ -97899,8 +101449,8 @@
     "scripts/tests/project-snapshot.test.mjs": "442fd8529e7f09011fee3ccf18df1c909206f3d677fcde0f0b8c38e052868da8",
     "scripts/tests/project-state-observation-build-ui.test.mjs": "925262849f73852b15a1621c8abc1d6276af209b7fbc0b313e9a5b741aaecec8",
     "scripts/tests/project-state-observation-ui.test.mjs": "b7916e84fd490ea04ec2c255708b2bc3f4788533ea9d4928ed22994ae4682128",
-    "scripts/tests/project-templates-smoke.mjs": "e2089287afadeb1d532f3464c8dd2f31fdbaf941c7f8e2b2120ea52afb1a070b",
-    "scripts/tests/project-templates.test.mjs": "5cb420734d22c505979e8cfd04cef5a6287073df42b4f1f78cd5ad2115d337e4",
+    "scripts/tests/project-templates-smoke.mjs": "d4d14843b2e84746023d899db25a81b0dc5e019c78c104e5ed79748183b3ed55",
+    "scripts/tests/project-templates.test.mjs": "4505b7fbb32855add5703592a2e4cc3bc8cf67aea16029f1189ef49fddc65384",
     "scripts/tests/projection-build.test.mjs": "39fdcff0a82acd2c9571ad40eb0d6e31579e69e06351c7e9ac314e344fbcbb6a",
     "scripts/tests/projection-edit.test.mjs": "01415c1dea793340e944045865194b0e2dc751cd6807a3c8635440608bcb9eef",
     "scripts/tests/resource-package-browser.test.mjs": "da4d2e9a1cf019f8117a9b3bf9f1e2d1eeabc47536734bfd7499775fc7579e83",
@@ -97924,7 +101474,7 @@
     "scripts/tests/runtime-case-suite.test.mjs": "7f17f8c6141c7e6dcd111afcfb86643001813c9168230f98c68b59fbc443b8fc",
     "scripts/tests/runtime-case-ui.test.mjs": "58677eb83c687f9932668c3c942d98373e8932d4a223dde5881fdcc0a241a63e",
     "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
-    "scripts/tests/runtime-instance-backends.test.mjs": "456d6e933c5d68674009c9990e79d791c4193ea6cc43b6d113e8c4a57cd70941",
+    "scripts/tests/runtime-instance-backends.test.mjs": "097288f63737b1029a0669a19d8ce81e5adab26af7a11f46522fc839852ba7e7",
     "scripts/tests/runtime-object-smoke.mjs": "97d8fb99231301db6af075723d41993d1ccde031b7fef274c21c866bb9bc48f4",
     "scripts/tests/runtime-verification-case.test.mjs": "86cffeef603268663912f63739ce2529447738c719d6d8a4816939532cac74a6",
     "scripts/tests/scene-animation-clips-core.test.mjs": "a78752d781e97f3485910fe09148f04264f08633c82fcd61bafbb8e008bf8644",
@@ -97961,7 +101511,7 @@
     "scripts/tests/scene-animation-scope-plan.test.mjs": "4e53b38ae4314e3efad43bf3f267be5eeff2bb08741efb1a9d2b5eac03c75430",
     "scripts/tests/scene-animation-scope-ui.test.mjs": "e43eaf4e7097e0c5c8a679d16ea6547c79280dbf8172435c762002a8864c4c51",
     "scripts/tests/scene-animation-smoke.mjs": "505eea6d8e9055a0d9782a928b29d4c4f532391024f0199a97e77bc22f5fc288",
-    "scripts/tests/scene-animation-sprite-godot.test.mjs": "f0b5827b7deda480513ec57637524bf52df7661196fa1e4116b98adac21f0bc1",
+    "scripts/tests/scene-animation-sprite-godot.test.mjs": "ca9804da368d8a719febf1743fa572bda1805570f1ed1e6990629cd237555a7d",
     "scripts/tests/scene-animation-sprite-plan.test.mjs": "e19efe661ed267d3fa02955f2ceb5da5a1ff578f1c0dc3cdc92cc47086ac88ae",
     "scripts/tests/scene-animation-sprite-preview.test.mjs": "81944b0a1bbc2ff90fa1ccdbeb98dcd47b0e9b6adb59284a356cb263db3a4f19",
     "scripts/tests/scene-animation-sprite-smoke.mjs": "41b5007f059862c3ef81b81fa80867c7fabb0efa4e090df8b8b727d5bfecd566",
@@ -98037,6 +101587,9 @@
     "scripts/tests/scene-behavior-authoring-http.test.mjs": "ed5b88a789f5076efadd397d72bcc4b59da330c7a946d93f6479b1b728695767",
     "scripts/tests/scene-behavior-authoring-service.test.mjs": "c2b571fc12257239b970c83a3f16dcc77b28644dd44bd65c015dc6382df6ce7d",
     "scripts/tests/scene-behavior-authoring-system.test.mjs": "f0fda59e4ad7049c397f3833868f6f3deda8085d15fe2b8d029778e397b168fe",
+    "scripts/tests/scene-behavior-binding-copy-smoke.mjs": "fb2def765c757297a43558cc17bdad753e0307f5e106e294043a9074b9ccbfcb",
+    "scripts/tests/scene-behavior-binding-copy-ui.test.mjs": "a6f2a103dd341485595c44dcdf068842e6612aa723f654d839ca4ee77777d519",
+    "scripts/tests/scene-behavior-binding-copy.test.mjs": "50de988ab45bbd2ea74a401623f5c86814d81a7b12cd61275b2cbf583f83772d",
     "scripts/tests/scene-behavior-create-plan.test.mjs": "08a4aa1b89afd576849e11001c082050979867ac096a9a871155822b777b1a51",
     "scripts/tests/scene-behavior-create-ui.test.mjs": "97634c0bb752ed62db395fc46441ee9e7cc25f38461e126b4080816114f893d8",
     "scripts/tests/scene-behavior-creation-http.test.mjs": "5b6c936a085c68bce5bfba0a79aaaed54c667e960f402d5710792bcda7ed57cf",
@@ -98050,6 +101603,7 @@
     "scripts/tests/scene-behavior-links-smoke.mjs": "beffe90ed8343b75e19b35f38d0ebb9302cdc6030ceac28841dc8b1665b2a015",
     "scripts/tests/scene-behavior-links-system-ports.test.mjs": "ebc4ab5a29330a1e9ae9eeb1148a9a0b5e6fb75f9b2577dc6729954c46027b1f",
     "scripts/tests/scene-behavior-links-ui.test.mjs": "9c0c19108950980eec9316dd1f6b202eafb33596e6cc0e1fa19cc0dc329b4397",
+    "scripts/tests/scene-behavior-menu-targets-ui.test.mjs": "e100e84a3f31ce6edaca5da1d93175574ca6b5edc5a599c325577040f04ddc3d",
     "scripts/tests/scene-behavior-multi-create-service.test.mjs": "0418a49ecc82d7ba8e8d201d91d537ef62d3cd2e4331ee80a9df40e913441548",
     "scripts/tests/scene-behavior-multi-create-smoke.mjs": "7eb3f797f39bd451cd87c520eab01b69d3520dee8b51cd8465869d76171427e9",
     "scripts/tests/scene-behavior-packages.test.mjs": "ac1603141a64e6d1f8ce4ffbae977523c9dfbbee58b8bf8336d94972a9cc7147",
@@ -98065,6 +101619,7 @@
     "scripts/tests/scene-behavior-reference-picker-smoke.mjs": "9a1cacc2e73f78dc98b5101512398a3e8431905fb8eb0bd826ae3fc8a6e6c101",
     "scripts/tests/scene-behavior-reference-transport.test.mjs": "92f06197baa5895edf4acedb3ab71581f0221635f6812b1d7185c654e9666312",
     "scripts/tests/scene-behavior-references-ui.test.mjs": "dcc2713ccf3d332f4697dc0a8ee83ed1c204c645b35965e40fa5e79371873e86",
+    "scripts/tests/scene-behavior-script-return-ui.test.mjs": "ec809b3baa0ff7263a80ee78a229659d7f8602200edb4c66853913fbc7a3ff14",
     "scripts/tests/scene-behavior-smoke.mjs": "b55d43740e202de9510b2c89fedad151849e4e50ed40981be4bbceca9342d30c",
     "scripts/tests/scene-behavior-state-bindings-service.test.mjs": "b7ea90f6ce55d891fbd10ce11be0394850c2388c9b99c282892a6d4f8b3d5482",
     "scripts/tests/scene-behavior-state-bindings-smoke.mjs": "b2d2b79cca88e8088ea5b3157a010b56ff7a2abf1ede0216263f9e25de877212",
@@ -98258,9 +101813,9 @@
     "scripts/tests/scene-physics2d-platform-motion-plan.test.mjs": "2753ddd7f31ed857e5dadc7ed120e4716ae462a4759cf174d6f4bb3f4b68f0bb",
     "scripts/tests/scene-physics2d-platform-motion-smoke.mjs": "4e5724617497d0899c01b1698a6203da35e3c51bf6a6d6c8550bb6559707e73b",
     "scripts/tests/scene-physics2d-platform-motion-ui.test.mjs": "ef471237a20e51a3bf2318b68668756c0413982afdd6bcf30a0a79c42b067eec",
-    "scripts/tests/scene-physics2d-platform-vertical-backends.test.mjs": "e10812b1217a15306cbabab35b3f052ecd28001f8d17713152128aa3ec57f81c",
+    "scripts/tests/scene-physics2d-platform-vertical-backends.test.mjs": "2af44d5234fde4e78766f984d84bf2c79c13ec68ed25528645c2b5732817eef3",
     "scripts/tests/scene-physics2d-platform-vertical-core.test.mjs": "7fcb01218848f32e3181e69a20df77104a375289ee33e5c72f2522d2ff8d370b",
-    "scripts/tests/scene-physics2d-platform-vertical-inventory.test.mjs": "ec656e5c0990a322b9635d8f136133126c0602174ff6a542cb89bc4fe1a5d538",
+    "scripts/tests/scene-physics2d-platform-vertical-inventory.test.mjs": "887d5b8f25921749ebdd6d18ccf3c89894b57cf4467999096037c4038e772c92",
     "scripts/tests/scene-physics2d-platform-vertical-packages.test.mjs": "ced15cc3f62e6466309822f52322aeba7f7410f665752ad963125c909cb338ac",
     "scripts/tests/scene-physics2d-platform-vertical-plan.test.mjs": "e0c205983fbfb60e40c253e0fc979dc1c77cc52fa9cee191e06cf93310c72f2e",
     "scripts/tests/scene-physics2d-platform-vertical-smoke.mjs": "4edecea685c5b3ab09df4bac6df8cde4ef13d426a4c458fc60a063e66c0718d5",
@@ -98305,6 +101860,9 @@
     "scripts/tests/scene-preview-service.test.mjs": "26caa0ba5a5933e1f3784a2f7df9451dc0baa49e18b25db12f32d1772a2a93e0",
     "scripts/tests/scene-preview-smoke.mjs": "36aa9a08d3a5a239b2d2ab75e48c84b01a37757e4f1b35db2d86cc849391770a",
     "scripts/tests/scene-preview-ui.test.mjs": "6acb0942ff281725389f23fe7b7f85484958b1b520aa377256f2c0fb4f5842b2",
+    "scripts/tests/scene-restart-authoring-smoke.mjs": "19dbcdf9042a8a8327fb666074e93f441e1dc8332e71857443912a2ba610d82d",
+    "scripts/tests/scene-restart-authoring.test.mjs": "6bce480d08abfe17dc88ce02c7875e3147c402365f0acfb91292bb770141d6dc",
+    "scripts/tests/scene-restart-input-diagnostics.test.mjs": "13431a9c179b6bf6135b4c4e9723c4db17cbc2e6ed92c56dc5913336dc75c012",
     "scripts/tests/scene-retry-authoring-smoke.mjs": "fd3f4cc579806579bb34944e40e531ec5190e3e4125ae0754a08a8176b76f346",
     "scripts/tests/scene-retry-authoring-ui.test.mjs": "221a09a52beffa5e53e3520f1fbd4ad2bf8ee05c5a4e719f7a46c9607228bc52",
     "scripts/tests/scene-retry-authoring.test.mjs": "bc49e2ebbdb9f9ce64d325bf0c919e5fb66777e1b40ea5f83c4aa56f3cb38a58",
@@ -98318,6 +101876,10 @@
     "scripts/tests/scene-runtime-query-host.test.mjs": "1e65f7263e0757af93e9f8cc9ac4c20f48c7f56b6e5ad52a63038bc0d817ddb6",
     "scripts/tests/scene-runtime-query-ui.test.mjs": "cbe6c160ccfb8c1292b6c1e43d59a9bdbb449375dd79cd35f9f3a2233799752f",
     "scripts/tests/scene-runtime-query.test.mjs": "678cae94ee662fd78e54bdc79b168bd3208ddd0d893073b7ef8315904c5b1a6b",
+    "scripts/tests/scene-script-return-authoring-smoke.mjs": "fe5cd1add86054dcc9ae59cf6c76bad6ae0bd606302a188c024b494315c604a7",
+    "scripts/tests/scene-script-return-coordinator-ui.test.mjs": "2ff081ddda6303b4f401dcea32f7e546b055e07d3156138e5d26452e76c868a6",
+    "scripts/tests/scene-script-return-host.test.mjs": "c75ccd22f1e84faf5fd01e7d1a7a145140fd16cf6a91d60e9dd10221f5086ccd",
+    "scripts/tests/scene-script-return-save-wiring.test.mjs": "9d6ff6759fb92540962af0699fc39821394b6cf1055d80eb802fc1fef8299c56",
     "scripts/tests/scene-selection-smoke.mjs": "27ec75d993e215cdd5bbdaff76561041f2c4ef55ec75381e9d6d03bc1c9eb28a",
     "scripts/tests/scene-source-layout-host.test.mjs": "11bb15e9ad4f40a2e84bdcff02da973075af7104429992fb3d539819f0c2c0d0",
     "scripts/tests/scene-source-layout-smoke.mjs": "a0314c3468ab36013e05c4219229502a9dbeaf5bd549df1b2a21eb4e2bf3f701",
@@ -98418,7 +101980,7 @@
     "scripts/tests/script-authoring-smoke.mjs": "e74118a0a183e1a347a8eac7c5c4deb2535e51d2070089ae0e12c5303bceacbd",
     "scripts/tests/script-authoring-system.test.mjs": "474677d7b6ac074b193d97ac9f521ab807447acff361b4a3e63ca519c3e15652",
     "scripts/tests/script-authoring-workflow.test.mjs": "8b40cc87dfca86740089d3593c914acb022f2b75aacfacb2e1c712991f959522",
-    "scripts/tests/script-authoring.test.mjs": "613562e10c968254a09fe982aef47e46002e116e0d4c669659dae8d230642fef",
+    "scripts/tests/script-authoring.test.mjs": "5298f394194a2466eb76181c21db6c8b2ffa48c8c2c386810d834c94305e1086",
     "scripts/tests/script-create-ui.test.mjs": "37b566e0fc528960f2f2e1867e30b460f63e96a48ea59d883fa6b8ec614f0c78",
     "scripts/tests/script-parameter-discovery.test.mjs": "1de9f07d9e86c238693ce1069551abf14a340ffbe1d23359522bd44e8f877da0",
     "scripts/tests/script-parameter-interface.test.mjs": "957461d38ca4532e34edff50e6db3527e8ba83514e1c1ff44d012e544ebf0359",
@@ -98512,8 +102074,8 @@
     "scripts/tests/world-transactions.test.mjs": "02427bc668beb9b84ec4ba1fe3fcedf1a4293869ed09d08e0ff213dc31afd7c3",
     "scripts/workspace.mjs": "8067d98be67d70aaf9d83b48e01e8fdef69fe83395aaff33e7814a13894a3077",
     "scripts/world.mjs": "5f1f1b1f6e145b0738112856ee08f59aa5f5835e58ec6adaafc6d6365fe4667c",
-    "src-tauri/Cargo.lock": "e88d96208392cdb08ddd0b44435e9579b145a6fafdddab7b520c1e270311a1b0",
-    "src-tauri/Cargo.toml": "0dffe96a1df025ed1bc909ffd756385447f7b01fee9acc667de586d6264d3e2a",
+    "src-tauri/Cargo.lock": "b51923a798e271460686df1e2c119cff50bd0b55b492ed54538b18689538bdd4",
+    "src-tauri/Cargo.toml": "745cf3ccf7bbfa5323abc0c1ebc86853f3fe3884661414d77fa504096cf52228",
     "src-tauri/gen/android/app/src/main/java/io/viento/studio/ArchiveTransferPlugin.kt": "309b6dea7b8085b935673f160e7ba3d7c37deb855f177df673c4a62fafba0a0e",
     "src-tauri/src/close_state.rs": "06f5639c1f9f9e086ee73de9b81e1a3a9a09a4b2436980826c4b5c92c891c11b",
     "src-tauri/src/desktop_host.rs": "cf5ef9448848178d8084782712545ed9aa3017e6a9bf16d14112495f8b6bd5e8",
@@ -98523,7 +102085,7 @@
     "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
     "src-tauri/src/mobile_transfer.rs": "f407ced01f4c77d927163c737b73ad6d5bea2e7d27aa0e16a5dc3c4f1978be84",
     "src-tauri/src/preferences.rs": "21cd709cf08108333dbd039507fc23a802e7d221309937bb4416a753b0eeba8e",
-    "src-tauri/src/project_templates.rs": "ba7ca8372c4ac6a5e5d3a3fe547bcfaa5c5736fa3c7865fdb753bcfa82111410",
+    "src-tauri/src/project_templates.rs": "efd68fbd807b76ef8b912cc5b941b93f88bf9c3ae30c37e1648f6708e10102ae",
     "src-tauri/src/workspace.rs": "388f1b0f9905ee561ba7a4cafe7b91d3b341635832dff757c5368eebbbeff880",
     "web/animation-state-condition-group.css": "7db6f40b56adfaaea64919b24cdd04c7888491f8a7d70545114b0746426fcc67",
     "web/animation-state-condition.css": "4a8922b0d88b029d638d129ce95118c83e3115adb8d439c09e5a05f9f00e23d6",
@@ -98534,10 +102096,10 @@
     "web/animation-state-trial-case-editor.css": "6b69cae01ab42a233b7ef00efb3848c7da1c7b83693ceb83d9f923f5713c7259",
     "web/animation-state-trial-case.css": "b945e97e563ba61dca5b626f2ce51710df9024dbc94330d90c4768bc9269e4f5",
     "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
-    "web/i18n/en.js": "66289ed1f0da80d9ac739d2728e7663c67988d70c7862df03408d0b23d33da02",
+    "web/i18n/en.js": "b281455fb562f3d7169c9880c21f22c22502362a43cdd9fd852076b9ba1a7c6c",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "962b7d92d5a62a6b2d1c05e77aaaad0fba46fb3c70d3ddb5eed49b405d1bdb69",
-    "web/index.html": "8d5ac7e922766692de7e6f6a63005cac2f523ca77fca1ea3f06c240dab76aaf2",
+    "web/i18n/ja.js": "daab49c6a1df3d5230909eb80ef8f71f872b5640b180ccf5e90d178b017824c6",
+    "web/index.html": "b72fa8ee4bb03568a5173f5dd9edd95716da540b188615faf60ded148bcaef91",
     "web/modules/app-animation-state-condition-group.js": "0c1b02f720757ed756c2efc2e27ca04346760400dbafc8a5c9768f4ba1a592d5",
     "web/modules/app-animation-state-condition.js": "62ca96e0221d6eb0a5b72eac21bacdf888c55a3851c0d4de85ef4bb376067c1a",
     "web/modules/app-animation-state-event-preview.js": "b178da0734dcf8f8af086b57f25db41003e9f68e715069c6a2c7c65aa28e5cea",
@@ -98568,7 +102130,7 @@
     "web/modules/app-project-animation-target-review.js": "7dea0d3f58daa91486f46b56f57681cb10ddb4f2acfd9cf9a7e9eb2c4ad3bfb1",
     "web/modules/app-project-assembly.js": "75af5b925651bed5852779ee6bb58de934db7705443957f9099ff759ba3a12d3",
     "web/modules/app-project-audio-observation.js": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
-    "web/modules/app-project-build.js": "44e737985347201ac4a9dfee62fa8aba19bb78c944e9d4e5fde3164385e6a082",
+    "web/modules/app-project-build.js": "3e5f9194dc1e72662eb60fddb26bce4a361e64b6f835c99387ccd0bb621f89ea",
     "web/modules/app-project-event-observation.js": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
     "web/modules/app-project-event-positions-observation.js": "598e7a04cd6357f872b24078d42abbd81037b025bf0924dbd9f8d179ad3f9856",
     "web/modules/app-project-event-review.js": "9558ea75da21182a51c25add0595a959fc6bdfa8a509d532260cd0774da379a9",
@@ -98582,7 +102144,7 @@
     "web/modules/app-runtime-case-documents.js": "e2d0b9df3b21251f90c20612a9cb127735be78b23eee4b273de956c2ec040da4",
     "web/modules/app-runtime-case-report.js": "3c481e99bdc698312fcc70172fa0c6f90b9fd3860c584aeea3c7d38816526e2d",
     "web/modules/app-runtime-case-suites.js": "9290a982a2fe1ff4fe5917f5c35f8f37c148d259fb4c08fc9025f3e16b6e1e42",
-    "web/modules/app-runtime.js": "a05d20392415c142bfe0fe6edf40558ee5446ad0c85585ef5596a10a1c6d2e99",
+    "web/modules/app-runtime.js": "763b1997c50af06593c7e12a7c202e6b67126ecd795f82db65a112d8a176a054",
     "web/modules/app-scene-animation-clips.js": "5ea47930ece48f75c5bfad5e1a2c83599fb72a2e748b8216746e66264e286bab",
     "web/modules/app-scene-animation-create.js": "494c12e33defb03e27adee07b62ce071dc956f97818f309aca2e7afee7647f70",
     "web/modules/app-scene-animation-retime.js": "9d5c7d24faad9820bd8525066110055f535252ced254f04d7f1d72bcbd61bcbc",
@@ -98596,12 +102158,13 @@
     "web/modules/app-scene-audio.js": "48bf3ce96f796212cda72a6374e5a9e437d15f9570a2e1d40e20a76c62af94ce",
     "web/modules/app-scene-authoring.js": "791f84a9aa3a4b92d9c1bfc1a62b5754d3c75e6803298f7f45331ce3ac70da21",
     "web/modules/app-scene-behavior-animation-clips.js": "8ce8939de5a713bedbe611be1f474ad341944aa17bed2b48c006f8aece3847af",
-    "web/modules/app-scene-behavior-create.js": "0e4e602632062ded566f323036eafe3f5525ab80cd24d0a545de358fefe4137f",
+    "web/modules/app-scene-behavior-create.js": "a8b0f9c1969cc677d454a6ae536ef8b76f37cca254bf38e23c3080fd3bad2753",
     "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+    "web/modules/app-scene-behavior-menu-targets.js": "055091edec17a8c417aed10998c3852bcde4f9ea1b130c1b2a1c1bc7ccdd73ef",
     "web/modules/app-scene-behavior-parameters.js": "e66884f73c19124d1c8336577ea23e8ce766edda10df1918eeb9c344ce13333c",
     "web/modules/app-scene-behavior-references.js": "02ac34e7374a2eb9b2c24a85f86f68ec8487adcab7fb21dbfd78af3bcccdb605",
     "web/modules/app-scene-behavior-state-bindings.js": "fa76e847af6fa434d414dcf3e21805cbb43f480dc509ec8dc8e4360d269101b3",
-    "web/modules/app-scene-behaviors.js": "fb12f31afe8c6c138ba1164e3149e4836349642c32e2ae33d8f29fb1255cba5b",
+    "web/modules/app-scene-behaviors.js": "bb129d9490f7cc887270bf094e465930f2de41e3f16a51f9d094de3626fe0107",
     "web/modules/app-scene-camera2d-composer.js": "2f7d2d46590487d2d3fe0829a108f8ec850f240437d08e1ef3e00e5c7cf05afa",
     "web/modules/app-scene-camera2d.js": "9e9ff6a778d1a8eb944c07a136da4b0c5a44b99060ff5ad074b154add95f7ee9",
     "web/modules/app-scene-composition-batch-layout.js": "f2e5eead553c2c33ad4f9797044cd889a289968d9a26d65371643f014748d442",
@@ -98627,6 +102190,8 @@
     "web/modules/app-scene-preview-canvas.js": "a0f6b8336e5ad5a7bb4b1192eac7b34fa965545b82a5a50ed538d779dd123442",
     "web/modules/app-scene-preview-instance-animation.js": "eac455c8905932a356009bcda11a300c1786b924839f69ae0c72662d7499e14b",
     "web/modules/app-scene-preview.js": "ece421114ee18ae88e138a0072afe2b5f47154173e9f2f371a1ab85bdb11e5a8",
+    "web/modules/app-scene-script-return-host.js": "701d1f9958a12b53d005451377f08af19ea27d6866609d1e917154e34473a0cb",
+    "web/modules/app-scene-script-return.js": "f9235e61c136731240db913e1e9048dd5d3105b72a4a31ebdc795417bb13742c",
     "web/modules/app-scene3d-alignment.js": "a6f93e3d191dac8e81bf0cacbe9be6a277ab9d3037e84e18efd378748159bcb3",
     "web/modules/app-scene3d-copy.js": "a9ca26bc91bae21a568c9593ea923abbf552826dde8f095d0641875ad38e6184",
     "web/modules/app-scene3d-distribution.js": "8b1574b343f67c418b53c7bc07f83e6ecd69988308aa291cb5b3123ea7710cb6",
@@ -98637,7 +102202,7 @@
     "web/modules/app-scene3d-removal.js": "a1d232b493f6f803966fc4885a25ad61966f7a03821662b94687765feee0271d",
     "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
     "web/modules/app-scene3d-translation.js": "584a3ee52665ed8484747bfd714238352e3e6dbdc7d8adfb2c9b5a80588ce282",
-    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/modules/app-script-create.js": "53c1040464c35efe980d90e990265c6a130f623cc65091512f38697b2a10a7d3",
     "web/modules/app-script-usage-source.js": "9846c4734068af0643789ff446af1374783f6fcfcbb999c8be77aaed15128203",
     "web/modules/app-script-usage.js": "6448955f8bf2475dfe444b9d74711fb27b6fa301f67b034ba19a5a55437d953f",
     "web/modules/app-source-diagnostic.js": "378ec9944ce4a5273253bde4d685b058ce2c56bb830331564e68a2c6747cc68a",
@@ -98648,7 +102213,7 @@
     "web/modules/app-source-reveal.js": "45ed39671a100268ee8b7f171c341fda6970aa8bdece9b86cd8749e2d4ab56b6",
     "web/modules/app-source-search.js": "ce2f78e29b37dbb86f843816420e9f3e18c03f65d69c9d6b667d2da7f8eca7fd",
     "web/modules/app-studio-core.js": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
-    "web/modules/app-studio-system.js": "6cc17c9cffc5811c062afbe1f1dd55662dfa956b85646f118a6726126e8c1263",
+    "web/modules/app-studio-system.js": "76dc1765cd864c0f0df165fe96e6f61314fb3f71a89ffa1986107e1f5ec8e95d",
     "web/modules/app-world-browser.js": "a064f510ad203c10ab1d358dc305941315c3f1a5969d99160a87cf224480592b",
     "web/modules/scene-animation-player.js": "a606fd87ae987963dc23292c7a44581f9d701f1be5ce099dd7c8abb39fafcf4c",
     "web/modules/scene-animation-preview.js": "cc06fb90ea103f7615314a40b9b055feff1a43b8205a93253105ebdff5998378",
@@ -98679,7 +102244,8 @@
     "web/scene-audio-create.css": "c3685f7059031b8b8dbdcc7d0338d9ff72bfaaeb1c94a653e96d05d33dfea58a",
     "web/scene-audio.css": "1d230ea2ce60d983d9096465ed8440728a3a1b0db47ea7a46acb1c582f93c2a2",
     "web/scene-behavior-links.css": "0ff6305fadffa7db3f4b7e4636dba91b751a9d2f8b7bf885ce3debf4462ab064",
-    "web/scene-behaviors.css": "92a05fba1efe817a9612aed412050a1679d7b95e85645fa9a24d5050c060abf1",
+    "web/scene-behavior-menu-targets.css": "a605af72dee676415e62ff99e6a5a226d667fbc66f7486bcfcff0f743963b6f7",
+    "web/scene-behaviors.css": "970ce4241b77008e76d5bd02f79d002132618183eb708d748e509e6dfd773a90",
     "web/scene-camera2d.css": "12d2a73a6cb9212638fad542dcacd017667a0941db4899e27338e58248681a73",
     "web/scene-composition-create.css": "fc419879c7130eac5fb339d223fd6997beab89e7e4acb7e109f0bf9e0ec9f209",
     "web/scene-hud2d.css": "84cccb2e6a8e9a0f2a7c042c4d714dd041de17836d080cae06d25b9a5888a6a4",

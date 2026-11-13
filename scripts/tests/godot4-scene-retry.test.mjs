@@ -14,16 +14,17 @@ const invalid = { errorCode: 'build_scene_retry_inventory_invalid' };
 
 test('every new project exposes a separate retry port while all historical scripts, scenes and business protocol remain exact', async t => {
   const plan = cameraProject(), original = structuredClone(plan), old = await generateGodotPhysicsPlanarIntentProject(plan), generated = await adapter.generate(plan);
-  assert.deepEqual(plan, original); assert.equal(generated.backend.version, '0.46.0');
+  assert.deepEqual(plan, original); assert.equal(generated.backend.version, '0.47.0');
   assert.ok(generated.backend.capabilities.includes('project.scene-retry')); assert.equal(generated.backend.protocolVersion, old.backend.protocolVersion);
   assert.deepEqual(generated.sourceMap, old.sourceMap); assert.deepEqual(generated.resourceFiles, old.resourceFiles);
   for (const [name, bytes] of old.files) if (!['project.godot', 'execution-clock-original.godot'].includes(name)) assert.deepEqual(generated.files.get(name), bytes, name);
   assert.deepEqual(generated.files.get('retry-original.godot'), old.files.get('project.godot'));
   assert.deepEqual(generated.files.get('retry-original-clock.godot'), old.files.get('execution-clock-original.godot'));
-  assert.match(generated.files.get('project.godot').toString(), /run\/main_scene="res:\/\/retry-project\.tscn"/);
+  assert.match(generated.files.get('project.godot').toString(), /run\/main_scene="res:\/\/restart-project\.tscn"/);
+  assert.match(generated.files.get('restart-original.godot').toString(), /run\/main_scene="res:\/\/retry-project\.tscn"/);
   assert.match(generated.files.get('retry-project-runtime.gd').toString(), /^extends "res:\/\/project-runtime\.gd"/);
   const directory = await cameraStage(t, generated), inventory = await validateGodotSceneRetryInventory(directory);
-  assert.deepEqual(inventory.scripts, ['retry-project-runtime.gd']); assert.deepEqual(inventory.innerSettings, old.files.get('project.godot'));
+  assert.deepEqual(inventory.scripts, ['retry-project-runtime.gd', 'restart-project-runtime.gd']); assert.deepEqual(inventory.innerSettings, old.files.get('project.godot'));
   assert.ok(await godotAssemblyScripts(directory)); assert.deepEqual(await adapter.generate(plan), generated);
 });
 
