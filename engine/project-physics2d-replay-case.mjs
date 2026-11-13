@@ -2,7 +2,7 @@
 // performs physics nor authenticates native samples: only a trusted host may
 // supply observations produced by its own completed run.
 import { validateProjectPhysics2DInputReplay } from './project-physics2d-input-replay.mjs';
-import { validateProjectPhysics2DReplayPlan, validateProjectPhysics2DReplayObservation } from './project-physics2d-replay-contract.mjs';
+import { validateProjectPhysics2DReplayPlan, validateProjectPhysics2DReplayObservation, validateProjectPhysics2DReplayTargets } from './project-physics2d-replay-contract.mjs';
 import { freezeProjectRuntimeData, projectRuntimeUuid } from './project-runtime-contracts.mjs';
 
 export const PROJECT_PHYSICS2D_REPLAY_CASE_FORMAT = 'viento-physics2d-replay-case';
@@ -64,6 +64,7 @@ export function validateProjectPhysics2DReplayCase(input, inputPlan) {
   });
   if (inputPlan !== undefined) {
     const plan = validateProjectPhysics2DReplayPlan(inputPlan, { backendId: 'org.viento.godot4', capabilities: ['physics.observe2d'] });
+    program = validateProjectPhysics2DReplayTargets(plan, program);
     const bodies = plan.scenes[0].physics.document.bodies;
     const characters = new Map(bodies.filter(body => body.kind === 'character').map(body => [body.instanceId, body]));
     const colliders = new Map(bodies.filter(body => body.kind !== 'sensor').map(body => [body.id, body]));

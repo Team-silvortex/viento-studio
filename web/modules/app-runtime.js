@@ -92,6 +92,7 @@ import {
   writeDoc,
   loadDocumentFields,
   inspectSceneBehaviorAuthoring,
+  inspectSceneBehaviorReferenceDirectory,
   inspectSceneAudioCreation,
   inspectSceneAudioDirectory,
   inspectSceneAudioUsage,
@@ -114,6 +115,7 @@ let sourceEditorContentEpoch = 0;
 let sceneBehaviorAuthoringAvailable = false;
 let sceneAudioResourcesAvailable = false;
 let sceneAudioDirectoryAvailable = false;
+let sceneBehaviorReferencesAvailable = false;
 let sceneAudioUsageAvailable = false;
 let scenePhysics2DTargetsAvailable = false;
 let scenePhysics2DSpaceAvailable = false;
@@ -2040,6 +2042,7 @@ async function detectEditBackend() {
   state.editBackendAvailable = Boolean(normalizedDetection.available);
   sceneBehaviorAuthoringAvailable = normalizedDetection.available === true && detection.payload?.sceneBehaviorAuthoring === true;
   sceneAudioResourcesAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioCreation === true;
+  sceneBehaviorReferencesAvailable = normalizedDetection.available === true && detection.payload?.sceneBehaviorReferences === true;
   sceneAudioDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioDirectory === true;
   sceneAudioUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioUsage === true;
   scenePhysics2DTargetsAvailable = normalizedDetection.available === true && detection.payload?.scenePhysics2DTargets === true;
@@ -5893,11 +5896,12 @@ async function initApp(options = {}) {
         baseline: editSessionBaselineContent, version: editSessionVersion,
         editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
         creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: sceneBehaviorAuthoringAvailable,
-        audioTracksAvailable: sceneAudioDirectoryAvailable, animationClipsAvailable: sceneAnimationDirectoryAvailable };
+        audioTracksAvailable: sceneAudioDirectoryAvailable, animationClipsAvailable: sceneAnimationDirectoryAvailable, referencesAvailable: sceneBehaviorReferencesAvailable };
     },
     digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
     inspect: payload => inspectSceneBehaviorAuthoring(payload),
     inspectAudioDirectory: payload => inspectSceneAudioDirectory(payload),
+    inspectReferenceDirectory: payload => inspectSceneBehaviorReferenceDirectory(payload),
     inspectAnimationDirectory: payload => inspectSceneAnimationDirectory(payload),
     writeDraft: content => {
       const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;

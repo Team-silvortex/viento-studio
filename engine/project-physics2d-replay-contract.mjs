@@ -4,7 +4,8 @@ import { canonicalJson } from './canonical-json.mjs';
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
 import { validateProjectPhysics2DObservation, PROJECT_PHYSICS2D_TRACE_LIMIT } from './project-physics2d-trace.mjs';
 import { freezeProjectRuntimeData } from './project-runtime-contracts.mjs';
-import { PROJECT_PHYSICS2D_INPUT_REPLAY_DELTA as delta, PROJECT_PHYSICS2D_INPUT_REPLAY_STEPS as steps } from './project-physics2d-input-replay.mjs';
+import { PROJECT_PHYSICS2D_INPUT_REPLAY_DELTA as delta, PROJECT_PHYSICS2D_INPUT_REPLAY_STEPS as steps,
+  PROJECT_PHYSICS2D_INPUT_REPLAY_INSTANCES_CAPABILITY, validateProjectPhysics2DInputReplay } from './project-physics2d-input-replay.mjs';
 
 const unsupported = () => Object.assign(new TypeError('Physics input replay requires one isolated observable physics scene.'), {
   errorCode: 'runtime_physics2d_input_unsupported',
@@ -34,9 +35,31 @@ function inspectPlan(input) {
   return { plan, scene, characters, colliders };
 }
 
-export function validateProjectPhysics2DReplayPlan(input, { backendId, capabilities } = {}) {
+export function getProjectPhysics2DReplayTargets(input) {
+  const { characters } = inspectPlan(input);
+  return freezeProjectRuntimeData(characters.filter(({ actor }) => actor.controls === 'arrows')
+    .map(({ body, actor }) => ({ instanceId: actor.instanceId, objectId: actor.objectId, bodyId: body.id })));
+}
+
+export function validateProjectPhysics2DReplayTargets(input, inputProgram) {
+  const targets = new Set(getProjectPhysics2DReplayTargets(input).map(row => row.instanceId));
+  const program = validateProjectPhysics2DInputReplay(inputProgram);
+  if (program.schemaVersion === 2 && program.steps.some(step => step.inputs.some(row => !targets.has(row.instanceId)))) {
+    throw Object.assign(new TypeError('A physics input target is not a controlled character in the frozen scene.'), {
+      errorCode: 'runtime_physics2d_input_target_invalid',
+    });
+  }
+  return program;
+}
+
+export function validateProjectPhysics2DReplayPlan(input, { backendId, capabilities, program } = {}) {
   if (backendId !== 'org.viento.godot4' || !Array.isArray(capabilities) || !capabilities.includes('physics.observe2d')) throw unsupported();
-  return inspectPlan(input).plan;
+  const plan = inspectPlan(input).plan;
+  if (program !== undefined) {
+    const validated = validateProjectPhysics2DReplayTargets(plan, program);
+    if (validated.schemaVersion === 2 && !capabilities.includes(PROJECT_PHYSICS2D_INPUT_REPLAY_INSTANCES_CAPABILITY)) throw unsupported();
+  }
+  return plan;
 }
 
 export function validateProjectPhysics2DReplayObservation(inputPlan, inputObservation) {

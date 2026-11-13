@@ -1,0 +1,31 @@
+✔ real Godot: fixed input replays horizontal movement and grounded jump through actual physics barriers (5055.918336ms)
+✔ real Godot: malformed replay and authored behavior are refused before staging (3334.510834ms)
+✔ real Godot: failed and cancelled runs remove their owned temporary drivers (3659.016545ms)
+✖ real Godot: shared-object characters have separate directions, jump edges and omission releases (5269.042987ms)
+✔ real Godot: planar stop/slide retain normalized diagonal input and zero unlisted characters (4329.716754ms)
+✔ real Godot: unknown/static/sensor/nonphysics/controls-none targets are refused before staging (3477.800429ms)
+✔ real Godot: failed, cancelled and observer-failed instance runs clean all private scripts and UID companions (3763.413564ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16982.370029
+
+✖ failing tests:
+
+test at scripts/tests/project-physics2d-instance-input-replay-godot.test.mjs:66:1
+✖ real Godot: shared-object characters have separate directions, jump edges and omission releases (5269.042987ms)
+  AssertionError [ERR_ASSERTION]: {"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[{"collider":{"bodyId":"70707070-7070-4070-8070-000000000012","instanceId":"70707070-7070-4070-8070-000000000003"},"normal":[0,-1],"position":[123.359375,190],"remainder":[2.65625,0.7230902910232544],"travel":[1.34375,0.365798681974411]}],"deltaSeconds":0.01666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[116,179.99913024902344],"positionBefore":[112,179.63333129882812],"protocol":1,"requestedMotion":[4,1.0888890027999878],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":13,"stepIndex":4,"timeSeconds":0.06666666666666664,"visitIndex":1}
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-instance-input-replay-godot.test.mjs:78:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -2,6 +2,7 @@ import { setupSceneBehaviorStateBindings } from './app-scene-behavior-state-bind
 import { captureAnimationStateBindings } from '../../engine/animation-state-bindings.mjs';
 import { setupSceneBehaviorParameters } from './app-scene-behavior-parameters.js';
 import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
+import { setupSceneBehaviorReferences } from './app-scene-behavior-references.js';
 import { setupSceneBehaviorAnimationClips } from './app-scene-behavior-animation-clips.js';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
@@ -12,7 +13,7 @@ import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 // This editor owns only its local form and review. The document host owns source
 // versions, dependency checks and applying the resulting unsaved draft.
 export function setupSceneBehaviors({ getContext = () => ({}), getSource = async () => null,
-  inspect = async () => null, applyDraft = async () => null, getAudioTracks, getAnimationClips } = {}) {
+  inspect = async () => null, applyDraft = async () => null, getAudioTracks, getAnimationClips, getReferences } = {}) {
   if (!document.getElementById('sceneBehaviorsStyle')) {
     const style = document.createElement('link'); style.id = 'sceneBehaviorsStyle'; style.rel = 'stylesheet';
     style.href = '/web/scene-behaviors.css'; (document.head || document.body).append(style);
@@ -40,6 +41,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
         <p id="sceneBehaviorsAudioTracksStatus" class="scene-behaviors-note" role="status" aria-live="polite"></p>
         <p id="sceneBehaviorsAudioTracksPath" class="scene-behaviors-note"></p></section>
       <section id="sceneBehaviorsAnimationClipsTools" hidden></section>
+      <section id="sceneBehaviorsReferencesTools" hidden></section>
       <div id="sceneBehaviorsParameters"></div><button id="sceneBehaviorsAddParameter" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加参数"></button>
       <h3 data-i18n="信号映射"></h3><div id="sceneBehaviorsEvents"></div><button id="sceneBehaviorsAddEvent" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加信号映射"></button>
       <p class="scene-behaviors-note" data-i18n="最多32条绑定、8份脚本；每条最多32个参数和8个信号。至少保留一条绑定。"></p></section>
@@ -160,6 +162,10 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   const animationClips = setupSceneBehaviorAnimationClips({ container: el('AnimationClipsTools'), getAnimationClips, translate: t,
     getContext: () => ({ available: getContext().animationClipsAvailable === true, current: current(), pending, source: session?.source, scene: session?.catalog.scene, rows: parameterInputs }),
     onUse: (row, value) => { if (pending || !current() || !parameterInputs.includes(row) || row.type.value !== 'string' || selected !== row.bindingId) return; row.value.value = value; changed(); row.value.focus(); } });
+  const references = setupSceneBehaviorReferences({ container: el('ReferencesTools'), getReferences, translate: t,
+    getContext: () => ({ available: getContext().referencesAvailable === true, current: current(), pending, source: session?.source,
+      scene: session?.catalog.scene, rows: parameterInputs, bindingId: selected, sourceObjectId: el('Source').value, instanceId: el('Instance').value }),
+    onUse: (row, value) => { if (pending || !current() || !parameterInputs.includes(row) || row.type.value !== 'string' || selected !== row.bindingId) return; row.value.value = value; changed(); row.value.focus(); } });
   const stateBindings = setupSceneBehaviorStateBindings({ container: el('StateBindingsTools'), getAnimationClips, translate: t,
     getContext: () => {
       const script = session?.catalog.sources.find(item => item.objectId === el('Source').value);
@@ -244,12 +250,12 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Fixed').textContent = session ? t('场景：{0} · 后端：{1} · 语言：{2}', session.catalog.scene.sourcePath, session.backendId, session.language) : '';
-    refreshAudioTracks(); animationClips.refresh(); parameterInterface.refresh(); stateBindings.refresh();
+    refreshAudioTracks(); animationClips.refresh(); references.refresh(); parameterInterface.refresh(); stateBindings.refresh();
   }
   function close(force = false) {
     if (!force && dirty() && !window.confirm(t('丢弃本次行为表单修改？原文草稿不会改变。'))) return false;
     const target = opener, request = ++epoch; opener = null; session = null; draft = []; selected = ''; pending = false;
-    resetAudioTracks(); animationClips.reset(); parameterInterface.reset(); stateBindings.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
+    resetAudioTracks(); animationClips.reset(); references.reset(); parameterInterface.reset(); stateBindings.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
@@ -283,6 +289,18 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     return clone(value);
   }
   const dependencySignature = value => canonicalJson({ ...value, sources: value.sources.map(({ parameterContract, animationStateBindings, ...source }) => source) });
+  const advisorySignature = source => canonicalJson([source.parameterContract ?? null, source.animationStateBindings ?? null]);
+  function refreshAdvisoryContracts(owner, checked) {
+    // Optional provider availability is not an ordinary approval dependency.
+    // Replace changed source views to revoke old helper buttons, without
+    // replacing form rows, values or a still-valid ordinary proposal.
+    const previous = new Map(owner.catalog.sources.map(source => [source.objectId, source]));
+    const sources = checked.sources.map(source => {
+      const old = previous.get(source.objectId);
+      return old && advisorySignature(old) === advisorySignature(source) ? old : source;
+    });
+    if (sources.some((source, index) => source !== owner.catalog.sources[index])) owner.catalog = { ...owner.catalog, sources };
+  }
   async function open() {
     const context = { ...getContext() }; if (disposed || dialog.open || !eligible(context) || context.busy || context.available !== true) return false;
     const request = ++epoch; opener = document.activeElement; pending = true; message = '正在读取行为绑定与依赖…'; diagnostic = ''; dialog.showModal(); refresh();
@@ -335,6 +353,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       const parsed = inspectSceneBehaviors(candidate.afterContent); if (!parsed.ok || !parsed.value) invalid();
       const checked = catalog(result, owner.source, parsed.value);
       if (dependencySignature(checked) !== owner.catalogSignature) invalid('原文或依赖已变化，请返回后重新打开行为编辑。');
+      refreshAdvisoryContracts(owner, checked);
       proposal = candidate; approvalSignature = form; message = '行为与依赖已检查，请审阅完整原文后应用。'; return true;
     } catch (error) { if (owns()) fail(error, '行为修改未通过检查，输入已保留。'); return false; }
     finally { if (!disposed && request === epoch && session === owner && dialog.open) { pending = false; refresh(); } }
@@ -387,6 +406,6 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     }
     refresh();
   });
-  function dispose() { if (disposed) return; close(true); disposed = true; animationClips.dispose(); parameterInterface.dispose(); stateBindings.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
+  function dispose() { if (disposed) return; close(true); disposed = true; references.dispose(); animationClips.dispose(); parameterInterface.dispose(); stateBindings.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
   refresh(); return Object.freeze({ refresh, dispose, open });
 }

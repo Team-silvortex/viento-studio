@@ -3,6 +3,7 @@
 import { parseJsonSource } from './json-source.mjs';
 import { validateProjectPhysics2DInputReplay } from './project-physics2d-input-replay.mjs';
 import { validateRuntimeCaseSceneDependencies } from './runtime-case-document.mjs';
+import { physicsReplayTargetDependencyDiagnostics } from './physics-replay-target-dependencies.mjs';
 
 export const PHYSICS_REPLAY_DOCUMENT_FORMAT = 'viento-physics2d-replay-document';
 export const PHYSICS_REPLAY_DOCUMENT_FILE_MAX_BYTES = 256 * 1024;
@@ -113,8 +114,11 @@ export function validatePhysicsReplayDocumentDependencies(input, record = {}, so
     const sourcePath = recordFields.sourcePath?.value, ownId = recordFields.id?.value;
     if (recordFields.format?.value !== 'viento-document' || typeof sourcePath !== 'string' || !sourcePath.toLowerCase().endsWith('.json')
       || ownId != null && (!uuid(ownId) || ownId === value.sceneObjectId)) throw error();
-    return validateRuntimeCaseSceneDependencies(value.sceneObjectId, source).diagnostics.map(item => ({ ...item,
-      code: item.code.replace(/^runtime_case/, 'runtime_physics_replay') }));
+    const admitted = validateRuntimeCaseSceneDependencies(value.sceneObjectId, source);
+    const diagnostics = admitted.diagnostics.map(item => ({ ...item, code: item.code.replace(/^runtime_case/, 'runtime_physics_replay') }));
+    if (admitted.plan) diagnostics.push(...physicsReplayTargetDependencyDiagnostics(value.replay, admitted.plan,
+      { code: 'runtime_physics_replay_instance_missing', propertyPath: '/replay' }));
+    return diagnostics;
   } catch (caught) {
     return [issue(caught.errorCode || 'runtime_physics_replay_document_invalid', 'Invalid physics replay document or scene dependency.')];
   }

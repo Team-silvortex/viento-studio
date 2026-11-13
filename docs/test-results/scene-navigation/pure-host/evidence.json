@@ -1,0 +1,168 @@
+{
+  "format": "viento-scene-navigation-pure-host-evidence",
+  "version": 1,
+  "capturedAtUTC": "2026-11-13T00:05:34.211510+00:00",
+  "workingDirectory": "/home/chiharukiryu/cdev/viento-studio",
+  "scope": "Exact-source official scene navigation diagnostics, real saved-author planning and Node/HTTP-service build admission, existing v1 resource-package export/import and relocation; no Godot/native execution or complete application-suite claim.",
+  "historicalSourceHashLimit": "Initial and individual final logs predate this receipt. Their source hashes were not independently captured at start. Only the combined final rerun below has before/after source hashes; historical logs are retained exactly, including all failures.",
+  "logs": [
+    {
+      "path": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-pure-initial.log",
+      "sha256": "1121186e8ff4ccbd60b0fb7192cbdf1102c97e7ce39d075d80357f886343f274",
+      "sourceLog": "/tmp/viento-scene-navigation-pure-initial.log",
+      "sourceLogMtimeUTC": "2026-11-13T00:00:10.001167+00:00",
+      "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-scene-navigation-diagnostics.test.mjs",
+      "result": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1
+      }
+    },
+    {
+      "path": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-pure-final.log",
+      "sha256": "70fad6d24277036a02e9ff01a8439131d325b8ba5575c6c581a636b6fcc316f7",
+      "sourceLog": "/tmp/viento-scene-navigation-pure-final.log",
+      "sourceLogMtimeUTC": "2026-11-13T00:00:23.539432+00:00",
+      "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-scene-navigation-diagnostics.test.mjs",
+      "result": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0
+      }
+    },
+    {
+      "path": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-host-initial.log",
+      "sha256": "b817aa1a39aea5ac8d2576bfe59440b511bd9ebbc7fb74c6ec02316df04d23a5",
+      "sourceLog": "/tmp/viento-scene-navigation-host-initial.log",
+      "sourceLogMtimeUTC": "2026-11-13T00:01:30.571742+00:00",
+      "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-scene-navigation-host.test.mjs",
+      "result": {
+        "tests": 6,
+        "pass": 5,
+        "fail": 1
+      }
+    },
+    {
+      "path": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-host-final.log",
+      "sha256": "49478f4451390680122fd26b7898e04d2c55f63c61c6dec8c2eb0a1006d9c586",
+      "sourceLog": "/tmp/viento-scene-navigation-host-final.log",
+      "sourceLogMtimeUTC": "2026-11-13T00:01:45.674037+00:00",
+      "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-scene-navigation-host.test.mjs",
+      "result": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0
+      }
+    },
+    {
+      "path": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-packages-initial.log",
+      "sha256": "39a561a1b9bda5b488cfe3d98d3e16008bb5da23e3846aca63e3afa7ea1f447f",
+      "sourceLog": "/tmp/viento-scene-navigation-packages-initial.log",
+      "sourceLogMtimeUTC": "2026-11-13T00:03:27.078017+00:00",
+      "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-scene-navigation-packages.test.mjs",
+      "result": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1
+      }
+    },
+    {
+      "path": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-packages-final.log",
+      "sha256": "e399062e2ae95352f54e83e9bf066bf7dbdb0ae6601b1944463687d1be2f487f",
+      "sourceLog": "/tmp/viento-scene-navigation-packages-final.log",
+      "sourceLogMtimeUTC": "2026-11-13T00:04:22.124092+00:00",
+      "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-scene-navigation-packages.test.mjs",
+      "result": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0
+      }
+    }
+  ],
+  "initialFailures": [
+    {
+      "log": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-pure-initial.log",
+      "kind": "test fixture",
+      "reason": "Uppercasing a UUID containing only decimal digits made no change; corrected the test value to contain hexadecimal a. Production unchanged."
+    },
+    {
+      "log": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-host-initial.log",
+      "kind": "test fixture",
+      "reason": "An empty configured HTTP build tool correctly fails existing tool preflight before a job; set a real configured executable path to reach the navigation admission under test. Production unchanged."
+    },
+    {
+      "log": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-packages-initial.log",
+      "kind": "test fixture",
+      "reason": "The new package test used nonexistent audio.emitters rather than existing audio.document.tracks. Corrected the assertion only. Production unchanged."
+    }
+  ],
+  "final": {
+    "command": [
+      "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+      "--test",
+      "scripts/tests/project-scene-navigation-diagnostics.test.mjs",
+      "scripts/tests/project-scene-navigation-host.test.mjs",
+      "scripts/tests/project-scene-navigation-packages.test.mjs"
+    ],
+    "startedAtUTC": "2026-11-13T00:05:33.018205+00:00",
+    "finishedAtUTC": "2026-11-13T00:05:34.211510+00:00",
+    "exitCode": 0,
+    "log": "docs/test-results/scene-navigation/pure-host/combined-final.log",
+    "logSha256": "da58ff1ae09dd03aaa68188a0a607c2d7a4cde58d35b2e65f5242e1e49cf5add",
+    "tests": 17,
+    "pass": 17,
+    "fail": 0,
+    "skip": 0,
+    "sourceHashesBefore": {
+      "engine/project-scene-navigation-diagnostics.mjs": "4b7d74dec4ba3248c9f56618f6ef24db043b5f5b23a1e2a2379643307819ea08",
+      "engine/godot-scene-navigation-scripts.mjs": "285a48cc1f27744ea4a58be378397ccde11610e1b02ce8273284d99aa120b511",
+      "engine/project-assembly-plan.mjs": "1e51eb756a7a155d081e06b9bc4808836fac79e3b091a5c7c07b7310dc6ce22d",
+      "engine/project-input-action-diagnostics.mjs": "16c17bd20730a29450965732cd5d4990b314c1da47b39c4b98b0162571134858",
+      "engine/script-authoring.mjs": "48f40ad30a2187ca9e5aaf717d651824bbe69bc71260f34f83b07f8732af7fdc",
+      "engine/project-shared-state.mjs": "f615021c9f04261c41888d3dc62ee8c65f87627706fdf268d0ce1e3e3ba9a357",
+      "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+      "engine/resource-package.mjs": "fe7eee206331ec6d5dd16c90e76474b1483742e1796921392529b9521db4ac92",
+      "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+      "scripts/adapters/node-project-build.mjs": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+      "scripts/lib/project-build-service.mjs": "40cfad236257a1bff515d2bbca3caf481206ff7201e1cce5692f33ea35075efa",
+      "scripts/lib/resource-package-catalog.mjs": "5bcc3598f8d4451d330243a42dfbfdab8cef2f0b95e6864ad882b91815650e50",
+      "scripts/lib/resource-package-reader.mjs": "835b7a9a4f0c4377eaa4e67638433285df515d44db0a9538e14e1d82c1dae251",
+      "scripts/lib/resource-package-import.mjs": "085ec0979a406a5ea81615edb1e3d7c2e26ec3ba94629b77ba0d3065b935f8ae",
+      "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+      "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+      "scripts/tests/project-scene-navigation-diagnostics.test.mjs": "dcb6366b21f8fc0127b72eb9ebf23fb5cde5ff5035b40e45e90f17dee9bfc0e4",
+      "scripts/tests/project-scene-navigation-host.test.mjs": "1f4e21e2080c4d1722b543e9f23cd6f3313437bedf9c221ce0368fef68eeab0d",
+      "scripts/tests/project-scene-navigation-packages.test.mjs": "e96aec52ddc74d0ddff2be01bba681c149b5575d93cfa97aa543831c1922929a"
+    },
+    "sourceHashesAfter": {
+      "engine/project-scene-navigation-diagnostics.mjs": "4b7d74dec4ba3248c9f56618f6ef24db043b5f5b23a1e2a2379643307819ea08",
+      "engine/godot-scene-navigation-scripts.mjs": "285a48cc1f27744ea4a58be378397ccde11610e1b02ce8273284d99aa120b511",
+      "engine/project-assembly-plan.mjs": "1e51eb756a7a155d081e06b9bc4808836fac79e3b091a5c7c07b7310dc6ce22d",
+      "engine/project-input-action-diagnostics.mjs": "16c17bd20730a29450965732cd5d4990b314c1da47b39c4b98b0162571134858",
+      "engine/script-authoring.mjs": "48f40ad30a2187ca9e5aaf717d651824bbe69bc71260f34f83b07f8732af7fdc",
+      "engine/project-shared-state.mjs": "f615021c9f04261c41888d3dc62ee8c65f87627706fdf268d0ce1e3e3ba9a357",
+      "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+      "engine/resource-package.mjs": "fe7eee206331ec6d5dd16c90e76474b1483742e1796921392529b9521db4ac92",
+      "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+      "scripts/adapters/node-project-build.mjs": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+      "scripts/lib/project-build-service.mjs": "40cfad236257a1bff515d2bbca3caf481206ff7201e1cce5692f33ea35075efa",
+      "scripts/lib/resource-package-catalog.mjs": "5bcc3598f8d4451d330243a42dfbfdab8cef2f0b95e6864ad882b91815650e50",
+      "scripts/lib/resource-package-reader.mjs": "835b7a9a4f0c4377eaa4e67638433285df515d44db0a9538e14e1d82c1dae251",
+      "scripts/lib/resource-package-import.mjs": "085ec0979a406a5ea81615edb1e3d7c2e26ec3ba94629b77ba0d3065b935f8ae",
+      "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+      "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+      "scripts/tests/project-scene-navigation-diagnostics.test.mjs": "dcb6366b21f8fc0127b72eb9ebf23fb5cde5ff5035b40e45e90f17dee9bfc0e4",
+      "scripts/tests/project-scene-navigation-host.test.mjs": "1f4e21e2080c4d1722b543e9f23cd6f3313437bedf9c221ce0368fef68eeab0d",
+      "scripts/tests/project-scene-navigation-packages.test.mjs": "e96aec52ddc74d0ddff2be01bba681c149b5575d93cfa97aa543831c1922929a"
+    },
+    "sourceHashesUnchanged": true
+  },
+  "boundaries": [
+    "Only two exact official script constants are interpreted; one-byte custom source edits and the legacy ready script remain ordinary author code.",
+    "No author document, capability, runtime protocol or resource-package schema is introduced.",
+    "Navigation target strings do not add package dependencies; assembly membership is checked when the complete project plan is assembled.",
+    "HTTP service tool configuration preflight remains earlier than build snapshot admission; with a configured tool navigation errors reject before tool execution/build output.",
+    "CLI evidence covers planning through the existing command API; HTTP service plan/build and direct Node build are covered.",
+    "Source snapshots cover the explicit 19 files listed here, not a claim about every repository file."
+  ]
+}

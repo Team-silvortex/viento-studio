@@ -1,0 +1,613 @@
+{
+  "startedAt": "2026-11-11T07:44:06.047Z",
+  "steps": [
+    "Explicit v1 conversion copies all five actions to each eligible frozen target; cancel preserves the v1 draft, range edits affect only the selected instance, and target selection retains text and focus in three languages.",
+    "The v2 document is explicitly saved and reloaded byte-for-byte; rejecting a dirty replacement retains the draft and does not write.",
+    "A real fixed-step Godot v2 run independently directs shared-definition characters, detects staggered jump edges and wall collision, leaves omitted/non-controlled characters stationary, and preserves full observation identities and frozen project bytes. V1 still broadcasts to all three eligible instances.",
+    "The saved v2 replay and full dependency closure are imported into a separate workspace, explicitly attached to a new project assembly and rebuilt. With the original author workspace renamed offline, the restored replay again drives the same identities and staggered jumps; both workspaces remain byte-identical."
+  ],
+  "screenshots": [
+    "instance-replay-zh-CN-390.png",
+    "instance-replay-en-390.png",
+    "instance-replay-ja-390.png"
+  ],
+  "jobs": [
+    {
+      "kind": "plan",
+      "id": "3b108d4e-8f95-4d53-9d7a-d93b28c09068",
+      "status": "succeeded"
+    },
+    {
+      "kind": "build",
+      "id": "d51778f6-e931-46c7-9cc1-08b17015bfc0",
+      "status": "succeeded",
+      "buildId": "5418ccbb-9b28-4c5a-9bd7-6d6431c1ee41"
+    },
+    {
+      "kind": "run",
+      "id": "698be378-69cc-4d3f-9e31-9935031139be",
+      "status": "succeeded",
+      "buildId": "5418ccbb-9b28-4c5a-9bd7-6d6431c1ee41",
+      "snapshotId": "sha256:16cc3ff552ad414206173bac40c99f642e8456f644dd0aeb9ab288254e8ca45f"
+    },
+    {
+      "kind": "run",
+      "id": "9c20a505-7b5c-4680-834a-fdc70e9f7bea",
+      "status": "succeeded",
+      "buildId": "5418ccbb-9b28-4c5a-9bd7-6d6431c1ee41",
+      "snapshotId": "sha256:16cc3ff552ad414206173bac40c99f642e8456f644dd0aeb9ab288254e8ca45f"
+    },
+    {
+      "kind": "run",
+      "id": "bd41a9fb-b655-40d6-ae5c-86cea5e0a116",
+      "status": "succeeded",
+      "buildId": "5418ccbb-9b28-4c5a-9bd7-6d6431c1ee41",
+      "snapshotId": "sha256:16cc3ff552ad414206173bac40c99f642e8456f644dd0aeb9ab288254e8ca45f"
+    }
+  ],
+  "errors": [],
+  "dialogs": [
+    "替换会覆盖当前未保存的回放草稿。继续吗？",
+    "替换会覆盖当前未保存的回放草稿。继续吗？",
+    "载入会替换当前未保存的回放草稿。继续吗？",
+    "载入会替换当前未保存的回放草稿。继续吗？"
+  ],
+  "layout": {
+    "zh-CN": {
+      "inside": true,
+      "noOverflow": true,
+      "text": "Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+    },
+    "en": {
+      "inside": true,
+      "noOverflow": true,
+      "text": "Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+    },
+    "ja": {
+      "inside": true,
+      "noOverflow": true,
+      "text": "Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+    }
+  },
+  "limitations": [
+    "Real isolated Chrome/HTTP editor and native headless Godot; installed Tauri, Android and Bevy were not tested.",
+    "Only finite character sweeps are observed; source edits remain an unsaved disposable draft."
+  ],
+  "sources": {
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+    "engine/project-physics2d-replay-case.mjs": "48a532cd8548253ff80129ae9c0f6051fe14662bd3b6807e56ebfe55b8947531",
+    "engine/project-physics2d-observation-selection.mjs": "86ac1d8b5e759f7f3b83a103f3ae7ddef379b6cb5db2c16cc1383431d8a80498",
+    "engine/project-physics2d-input-replay.mjs": "7ba19edb11d702171d7e8c5ef8cc682066ada22dfaec68681ae8c35dd01d07d1",
+    "engine/project-physics2d-input-replay-edit.mjs": "b568410ebbc23f604aa238ea9086ecc4cbc72d568b4a52a48b7696b3f50ef5a9",
+    "engine/project-physics2d-replay-contract.mjs": "73489b09570236014aea98d082ddf0f58630753f938a200e76ccfa1f0c23ed37",
+    "engine/physics-replay-document.mjs": "be71c00342effda3ce72db1a724e88faac506fc1fd63f066e136bbd4a569b342",
+    "engine/physics-replay-case-document.mjs": "f4ec61e23183d078b14ee30c74eb01dc6e5fde3323ea5a62b720c96c7b81ad61",
+    "engine/physics-replay-target-dependencies.mjs": "62eceadd8c30035883c6a95fa77e90e695e29703f4f856025ff8cb656b5cbc8a",
+    "scripts/backends/godot4-adapter.mjs": "b9ccda6429118a1be70a1160964d9c9234bbce7b49ee7c93641cf2463a077961",
+    "scripts/backends/godot4-physics-input-replay.mjs": "9aff36ddfd0472aa073554e14822e10838bb0e61964ad132f957a0100c5bba25",
+    "scripts/backends/godot4-physics-instance-input-replay-projection.mjs": "9d5ea8562cbbd79c57203d939bd80fa6eb87f2e2dcc76eba85824f40c1c49c15",
+    "scripts/backends/godot4/physics-instance-input-replay-scene.gd": "1b5c039af875ff89791298e0be30a3028ff6e350f5d9fd162aae0264e01e8342",
+    "scripts/backends/godot4/physics-instance-input-replay-driver.gd": "631a02db174cb98fdb5b4c2262dfab342840abaab70efa0528171dd3b21e64ee",
+    "scripts/adapters/node-project-build.mjs": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+    "scripts/lib/project-build-service.mjs": "5a893c94e1595bb785eaef3f40c990dc899d52c8096ab8558ce513a62372fec1",
+    "scripts/lib/physics-replay-documents.mjs": "9e3be76d3494baa8f01511dac7e9ccd6aa93ac2ed7c19b651eb2950d47218a82",
+    "scripts/lib/physics-replay-case-documents.mjs": "be380dd7dfcc662e93283d58d29b527eea4abc1eb45d05ea12466d806b8464d8",
+    "scripts/lib/resource-package-catalog.mjs": "4162eafd8f2a144ee1f62e62555fd5cabb421e705cc4bb72dd1a0b247288fca0",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-import.mjs": "cfef0473224b16e89f86d3503baec41bbc5f4f4856cc51e93e3638bf78520bc4",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "web/modules/app-physics-replay-targets.js": "05888d3a2d905c9e27434ab220a03a9d0137ba8eaeee411722e688aaef6c405f",
+    "web/modules/app-project-build.js": "84241e8baa22f7a36a7155ea898af7066e99edce577ff56409a59a84f96e35ff",
+    "web/modules/app-physics-replay-documents.js": "c4552b0f8c5c244b02b7841ea58cbece74b228b96915dc2c71e851cca2060050",
+    "web/modules/app-project-physics-observation.js": "c3d554010538ab89916c600326da2347f055dbd7a4de47370a080ec7eb3bcceb",
+    "web/project-build.css": "78a60347f3fe436d880d6b812ce0c1729bf143c499893251901862a0fb462660",
+    "web/i18n/en.js": "b9cc9ce38302cbed5b5d238fd81a15e3d75581aef397d6f2feb026f9c77351f4",
+    "web/i18n/ja.js": "2cfab9d658af86e79f1709f12e8e7a546ee429a0f66df5876b24f28cf0641c1f",
+    "scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs": "fd9ff292c16246e4c4e7c757444e8cdbabe6112d8eabe9deb9d61105c94b6e75",
+    "scripts/tests/physics-instance-replay-smoke.mjs": "c9efe07708031fbda9c3cb77f644a618e251eb45a06e816d4906592c5035f23b"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "assemblyId": "12345678-1234-4234-8234-123456789abc",
+    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "physicsPath": "documents/physics/scene-0.json",
+    "noneId": "92929292-9292-4292-8292-000000000003",
+    "nonphysicalId": "92929292-9292-4292-8292-000000000004"
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "targets": [
+    {
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "bodyId": "70707070-7070-4070-8070-000000000010"
+    },
+    {
+      "instanceId": "92929292-9292-4292-8292-000000000001",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "bodyId": "92929292-9292-4292-8292-000000000005"
+    },
+    {
+      "instanceId": "92929292-9292-4292-8292-000000000002",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "bodyId": "92929292-9292-4292-8292-000000000006"
+    }
+  ],
+  "saved": {
+    "id": "7deb28c0-7dce-4b53-bc6c-f03e8a15a547",
+    "path": "documents/physics-replays/instance-replay.json",
+    "sha256": "cdaffa1314267d29020e7e911499df52e944f279e47927d1a197db533aeeeda9"
+  },
+  "rejections": [
+    {
+      "target": "93939393-9393-4393-8393-939393939393",
+      "status": 422,
+      "code": "runtime_physics2d_input_target_invalid"
+    },
+    {
+      "target": "70707070-7070-4070-8070-000000000003",
+      "status": 422,
+      "code": "runtime_physics2d_input_target_invalid"
+    },
+    {
+      "target": "70707070-7070-4070-8070-000000000002",
+      "status": 422,
+      "code": "runtime_physics2d_input_target_invalid"
+    },
+    {
+      "target": "92929292-9292-4292-8292-000000000003",
+      "status": 422,
+      "code": "runtime_physics2d_input_target_invalid"
+    },
+    {
+      "target": "92929292-9292-4292-8292-000000000004",
+      "status": 422,
+      "code": "runtime_physics2d_input_target_invalid"
+    }
+  ],
+  "v2": {
+    "jobId": "698be378-69cc-4d3f-9e31-9935031139be",
+    "buildId": "5418ccbb-9b28-4c5a-9bd7-6d6431c1ee41",
+    "snapshotId": "sha256:16cc3ff552ad414206173bac40c99f642e8456f644dd0aeb9ab288254e8ca45f",
+    "firstJump": {
+      "bodyId": "70707070-7070-4070-8070-000000000010",
+      "contacts": [
+        {
+          "collider": {
+            "bodyId": "72727272-7272-4272-8272-000000000002",
+            "instanceId": "72727272-7272-4272-8272-000000000001",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "70707070-7070-4070-8070-000000000001",
+              "sourcePath": "documents/physics/scene-0.json",
+              "sourceRevision": "sha256:97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+              "propertyPath": "/bodies/3",
+              "sourceRange": {
+                "start": 1329,
+                "end": 1658,
+                "encoding": "utf-16",
+                "propertyPath": "/bodies/3",
+                "exact": true
+              }
+            }
+          },
+          "normal": [
+            -1,
+            0
+          ],
+          "position": [
+            135,
+            169.42530822753906
+          ],
+          "remainder": [
+            2.9927611351013184,
+            -1.4963805675506592
+          ],
+          "travel": [
+            1.0072388648986816,
+            -0.5036194324493408
+          ]
+        }
+      ],
+      "deltaSeconds": 0.01666666666666666,
+      "event": "sample",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "positionAfter": [
+        124.9253921508789,
+        178.0019989013672
+      ],
+      "positionBefore": [
+        124,
+        180.0019989013672
+      ],
+      "protocol": 1,
+      "requestedMotion": [
+        4,
+        -2
+      ],
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "sequence": 25,
+      "stepIndex": 7,
+      "timeSeconds": 0.11666666666666663,
+      "visitIndex": 1,
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "response": "slide",
+      "source": {
+        "objectId": "70707070-7070-4070-8070-000000000001",
+        "sourcePath": "documents/physics/scene-0.json",
+        "sourceRevision": "sha256:97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+        "propertyPath": "/bodies/0",
+        "sourceRange": {
+          "start": 139,
+          "end": 652,
+          "encoding": "utf-16",
+          "propertyPath": "/bodies/0",
+          "exact": true
+        }
+      },
+      "displacement": [
+        0.9253921508789062,
+        -2
+      ]
+    },
+    "secondJump": {
+      "bodyId": "92929292-9292-4292-8292-000000000005",
+      "contacts": [
+        {
+          "collider": {
+            "bodyId": "72727272-7272-4272-8272-000000000002",
+            "instanceId": "72727272-7272-4272-8272-000000000001",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "70707070-7070-4070-8070-000000000001",
+              "sourcePath": "documents/physics/scene-0.json",
+              "sourceRevision": "sha256:97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+              "propertyPath": "/bodies/3",
+              "sourceRange": {
+                "start": 1329,
+                "end": 1658,
+                "encoding": "utf-16",
+                "propertyPath": "/bodies/3",
+                "exact": true
+              }
+            }
+          },
+          "normal": [
+            1,
+            0
+          ],
+          "position": [
+            145,
+            189.88230895996094
+          ],
+          "remainder": [
+            -3.92578125,
+            -1.962890625
+          ],
+          "travel": [
+            -0.0047149658203125,
+            -0.111541748046875
+          ]
+        }
+      ],
+      "deltaSeconds": 0.01666666666666666,
+      "event": "sample",
+      "instanceId": "92929292-9292-4292-8292-000000000001",
+      "positionAfter": [
+        155.00059509277344,
+        177.92527770996094
+      ],
+      "positionBefore": [
+        155.00531005859375,
+        179.9997100830078
+      ],
+      "protocol": 1,
+      "requestedMotion": [
+        -4,
+        -2
+      ],
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "sequence": 50,
+      "stepIndex": 13,
+      "timeSeconds": 0.2166666666666666,
+      "visitIndex": 1,
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "response": "slide",
+      "source": {
+        "objectId": "70707070-7070-4070-8070-000000000001",
+        "sourcePath": "documents/physics/scene-0.json",
+        "sourceRevision": "sha256:97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+        "propertyPath": "/bodies/4",
+        "sourceRange": {
+          "start": 1664,
+          "end": 2177,
+          "encoding": "utf-16",
+          "propertyPath": "/bodies/4",
+          "exact": true
+        }
+      },
+      "displacement": [
+        -0.0047149658203125,
+        -2.074432373046875
+      ]
+    },
+    "collision": {
+      "bodyId": "70707070-7070-4070-8070-000000000010",
+      "contacts": [
+        {
+          "collider": {
+            "bodyId": "72727272-7272-4272-8272-000000000002",
+            "instanceId": "72727272-7272-4272-8272-000000000001",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "70707070-7070-4070-8070-000000000001",
+              "sourcePath": "documents/physics/scene-0.json",
+              "sourceRevision": "sha256:97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+              "propertyPath": "/bodies/3",
+              "sourceRange": {
+                "start": 1329,
+                "end": 1658,
+                "encoding": "utf-16",
+                "propertyPath": "/bodies/3",
+                "exact": true
+              }
+            }
+          },
+          "normal": [
+            -1,
+            0
+          ],
+          "position": [
+            135,
+            169.42530822753906
+          ],
+          "remainder": [
+            2.9927611351013184,
+            -1.4963805675506592
+          ],
+          "travel": [
+            1.0072388648986816,
+            -0.5036194324493408
+          ]
+        }
+      ],
+      "deltaSeconds": 0.01666666666666666,
+      "event": "sample",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "positionAfter": [
+        124.9253921508789,
+        178.0019989013672
+      ],
+      "positionBefore": [
+        124,
+        180.0019989013672
+      ],
+      "protocol": 1,
+      "requestedMotion": [
+        4,
+        -2
+      ],
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "sequence": 25,
+      "stepIndex": 7,
+      "timeSeconds": 0.11666666666666663,
+      "visitIndex": 1,
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "response": "slide",
+      "source": {
+        "objectId": "70707070-7070-4070-8070-000000000001",
+        "sourcePath": "documents/physics/scene-0.json",
+        "sourceRevision": "sha256:97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+        "propertyPath": "/bodies/0",
+        "sourceRange": {
+          "start": 139,
+          "end": 652,
+          "encoding": "utf-16",
+          "propertyPath": "/bodies/0",
+          "exact": true
+        }
+      },
+      "displacement": [
+        0.9253921508789062,
+        -2
+      ]
+    },
+    "sampleCount": 120
+  },
+  "case": {
+    "jobId": "9c20a505-7b5c-4680-834a-fdc70e9f7bea",
+    "checks": [
+      {
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "stepIndex": 7,
+        "passed": true,
+        "positionAfter": {
+          "expected": [
+            124.9253921508789,
+            178.0019989013672
+          ],
+          "tolerance": [
+            0.01,
+            0.01
+          ],
+          "actual": [
+            124.9253921508789,
+            178.0019989013672
+          ],
+          "passed": true
+        }
+      },
+      {
+        "instanceId": "92929292-9292-4292-8292-000000000001",
+        "stepIndex": 13,
+        "passed": false,
+        "positionAfter": {
+          "expected": [
+            9999,
+            9999
+          ],
+          "tolerance": [
+            0,
+            0
+          ],
+          "actual": [
+            155.00059509277344,
+            177.92527770996094
+          ],
+          "passed": false
+        }
+      }
+    ]
+  },
+  "migration": {
+    "id": "7deb28c0-7dce-4b53-bc6c-f03e8a15a547",
+    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "documentCount": 4,
+    "packageBytes": 6862,
+    "packageSha256": "4b19c5468a9e141b7d27e119b8f398a12f38349b1e20907152c111953175653a",
+    "samples": 120,
+    "originalOffline": true
+  },
+  "authorSnapshot": {
+    "before": {
+      "workspace.json": "df2a7e66bc5d42743401cad3c6cf8e491f2b4689cb1804b9fb796c9a486c7667",
+      "templates/animation.json": "de58ad72590ed868deb853d151f858ead37ed705ef706a08ff84dbfb1a169cff",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/physics.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "e8fbf0c21bb95ef5b8a8bf530a00c4d0d2cc01cb429986bf9bfbfd7b5d6578f2",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "e20d82a661541276f4d042cbc02b37d531b996bda66590a5b21d8d2ed3ab5051",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/70707070-7070-4070-8070-000000000001.json": "ce50eaebe1bb7474d4d0f3a85aef51449f84dfd86e892a8bbe9c2f259bd90236",
+      "metadata/documents/70707070-7070-4070-8070-000000000004.json": "610efa1560b8525c2701955835b594e9b117f8c8fc02de37c6138c0d3710af89",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "a4ed32c9f98ad985c1f69cf57eaad0c38b10c3ea3a923ba485231fab48ef67f7",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "02e8e21900039e9d70c522271bd5a20cb94ee56d830037d01d6b9c485b841408",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/sensor.txt": "7655ec83e62ea45d5264bc7b8aef63a68e15ebf8796528473b6b27fcd40591ac",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "944e945f96941999511bbf50b8132f30a73d5859812f9344a992e9107e9447e2",
+      "documents/projects/demo.json": "a3ff695e11d2a024c67a4020538ba0818e57891f43414cee1391000f78b66a7c",
+      "documents/physics/scene-0.json": "97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "45d00550aca119154097af93a4e95f83ec7289e0da72c44c72f2befa1b179792",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "2ed22c63aafa047860fe9bbf0acd0b5ac91039e07da0d68ed65b34bb32a099b7",
+      "documents/animations/scene-1.json": "c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "afterSave": {
+      "workspace.json": "df2a7e66bc5d42743401cad3c6cf8e491f2b4689cb1804b9fb796c9a486c7667",
+      "templates/animation.json": "de58ad72590ed868deb853d151f858ead37ed705ef706a08ff84dbfb1a169cff",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/physics.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "e8fbf0c21bb95ef5b8a8bf530a00c4d0d2cc01cb429986bf9bfbfd7b5d6578f2",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "e20d82a661541276f4d042cbc02b37d531b996bda66590a5b21d8d2ed3ab5051",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/70707070-7070-4070-8070-000000000001.json": "ce50eaebe1bb7474d4d0f3a85aef51449f84dfd86e892a8bbe9c2f259bd90236",
+      "metadata/documents/70707070-7070-4070-8070-000000000004.json": "610efa1560b8525c2701955835b594e9b117f8c8fc02de37c6138c0d3710af89",
+      "metadata/documents/7deb28c0-7dce-4b53-bc6c-f03e8a15a547.json": "f60690c2027a1ee4e01a341d9766e3b8e0126f9e85edc46c71e1fab771e06274",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "a4ed32c9f98ad985c1f69cf57eaad0c38b10c3ea3a923ba485231fab48ef67f7",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "02e8e21900039e9d70c522271bd5a20cb94ee56d830037d01d6b9c485b841408",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/sensor.txt": "7655ec83e62ea45d5264bc7b8aef63a68e15ebf8796528473b6b27fcd40591ac",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "944e945f96941999511bbf50b8132f30a73d5859812f9344a992e9107e9447e2",
+      "documents/projects/demo.json": "a3ff695e11d2a024c67a4020538ba0818e57891f43414cee1391000f78b66a7c",
+      "documents/physics-replays/instance-replay.json": "cdaffa1314267d29020e7e911499df52e944f279e47927d1a197db533aeeeda9",
+      "documents/physics/scene-0.json": "97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "45d00550aca119154097af93a4e95f83ec7289e0da72c44c72f2befa1b179792",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "2ed22c63aafa047860fe9bbf0acd0b5ac91039e07da0d68ed65b34bb32a099b7",
+      "documents/animations/scene-1.json": "c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "after": {
+      "workspace.json": "df2a7e66bc5d42743401cad3c6cf8e491f2b4689cb1804b9fb796c9a486c7667",
+      "templates/animation.json": "de58ad72590ed868deb853d151f858ead37ed705ef706a08ff84dbfb1a169cff",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/physics.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "e8fbf0c21bb95ef5b8a8bf530a00c4d0d2cc01cb429986bf9bfbfd7b5d6578f2",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "e20d82a661541276f4d042cbc02b37d531b996bda66590a5b21d8d2ed3ab5051",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/70707070-7070-4070-8070-000000000001.json": "ce50eaebe1bb7474d4d0f3a85aef51449f84dfd86e892a8bbe9c2f259bd90236",
+      "metadata/documents/70707070-7070-4070-8070-000000000004.json": "610efa1560b8525c2701955835b594e9b117f8c8fc02de37c6138c0d3710af89",
+      "metadata/documents/7deb28c0-7dce-4b53-bc6c-f03e8a15a547.json": "f60690c2027a1ee4e01a341d9766e3b8e0126f9e85edc46c71e1fab771e06274",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "a4ed32c9f98ad985c1f69cf57eaad0c38b10c3ea3a923ba485231fab48ef67f7",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "02e8e21900039e9d70c522271bd5a20cb94ee56d830037d01d6b9c485b841408",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/sensor.txt": "7655ec83e62ea45d5264bc7b8aef63a68e15ebf8796528473b6b27fcd40591ac",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "944e945f96941999511bbf50b8132f30a73d5859812f9344a992e9107e9447e2",
+      "documents/projects/demo.json": "a3ff695e11d2a024c67a4020538ba0818e57891f43414cee1391000f78b66a7c",
+      "documents/physics-replays/instance-replay.json": "cdaffa1314267d29020e7e911499df52e944f279e47927d1a197db533aeeeda9",
+      "documents/physics/scene-0.json": "97e0cf61d4524b6cfe847454f35a46eb1ddb560333aacb31e2f3587409d6cee0",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "45d00550aca119154097af93a4e95f83ec7289e0da72c44c72f2befa1b179792",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "2ed22c63aafa047860fe9bbf0acd0b5ac91039e07da0d68ed65b34bb32a099b7",
+      "documents/animations/scene-1.json": "c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    }
+  },
+  "frozenProject": {
+    "files": 52,
+    "unchanged": true
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-11T07:44:53.785Z"
+}

@@ -1,0 +1,821 @@
+{
+  "ok": true,
+  "checkedAt": "2026-11-13T02:19:46.490842+00:00",
+  "before": "/tmp/viento-topdown-before/docs/function-atlas.json",
+  "beforeSha256": "ad77871f75f58ba986a744293dafec7a00d67154ec2887599bfabbfa139675bb",
+  "after": "/home/chiharukiryu/cdev/viento-studio/docs/function-atlas.json",
+  "afterSha256": "529ca5fd6655e0760dae7605772b74ee39cb13d87eeea3f5da432234a5b0bfb5",
+  "fileStableDuringCheck": true,
+  "shape": {
+    "sameTopLevelKeys": true,
+    "sameAxesKeys": true,
+    "sameSchemaVersion": true
+  },
+  "meta": {
+    "unchangedOutsideScope": true,
+    "oldScopeExactPrefix": true,
+    "appendedScope": " 2026-11-13另接通晶石庭院俯视收集参考初稿：普通作者工程及实际原窗口/离线ZIP玩法、作者编辑与迁移独立验证；196功能/596实现/809绑定/3236评分/161工作流，旧坐标评分保留。样例不是完整0.3或0.5出口，无新增运行协议或安装验收。",
+    "ok": true
+  },
+  "sections": {
+    "axes.architecture": {
+      "beforeCount": 11,
+      "afterCount": 11,
+      "expectedAdded": 0,
+      "removedOrChangedOldValues": [],
+      "addedValues": [],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "axes.function": {
+      "beforeCount": 195,
+      "afterCount": 196,
+      "expectedAdded": 1,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "boundary": [
+            "一份独立合成作者工程，原设定与游戏投影分开；四个Scene2D与11个关卡实例，三个晶体复用定义并保留独立实例。",
+            "普通GDScript通过现有项目端口与原生触发区完成计分、伤害、门和胜负；不增加后端协议或运行时模板，不修补生成工程，不使用得分／通关测试键。",
+            "拾取隐藏并关闭触发监测，门隐藏并关闭碰撞，直到场景退出前保留实例；没有通用动态增删对象能力声明。",
+            "每次进入危险区扣一点生命，停留不重复；不同成员重试只复位score／health／door_open，局部去重状态随重建清空，其他会话与预算继续。",
+            "原窗口与标准生成工程ZIP离线均通过实际方向键路径；已存在作者工程的编辑取消／保存／重开和三语检查另行验收，不声称从空白逐步界面复建。",
+            "两种作者包的独立库存／正常资源导入与换根重建保留原文、身份和素材；完整作者ZIP隔离解包验证不冒充所有宿主导入窗口。",
+            "有限会话，英文HUD；没有暂停／鼠标菜单、同场景即时重启、跨启动存档、30分钟交互、字体交付、无引擎工具独立发行、Bevy游戏对等或新安装验收。"
+          ],
+          "delivery": "working-tree",
+          "entry": "复制普通作者工程→真实碰撞拾取／伤害→开门与胜负→不同成员重试→作者／资源／生成工程迁移",
+          "group": "创作与工程",
+          "id": "workflow.topdown_collect",
+          "label": "俯视收集参考游戏初稿与真实玩法交付",
+          "next": "用样例复建实际作者任务，减少成员／实例／动作UUID查找与重复接线，再定义同场景重启、暂停与菜单；持续运行、存档和独立发行按路线分别推进。",
+          "platforms": [
+            "Linux Node服务与Chrome156，中英日390px作者检查",
+            "Godot4.7.2音频清理修订；Xvfb/Mesa软件图形及XTest合成键盘"
+          ]
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "axes.implementation": {
+      "beforeCount": 594,
+      "afterCount": 596,
+      "expectedAdded": 2,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "id": "i595",
+          "kind": "prototype",
+          "label": "晶石庭院普通作者数据与独立Godot行为",
+          "language": [
+            "JSON",
+            "Markdown",
+            "GDScript",
+            "SVG"
+          ],
+          "paths": [
+            "examples/topdown-collect/README.md",
+            "examples/topdown-collect/workspace.json",
+            "examples/topdown-collect/documents/guide.md",
+            "examples/topdown-collect/documents/definitions/traveler.md",
+            "examples/topdown-collect/documents/projections/traveler-game.json",
+            "examples/topdown-collect/documents/scenes/level.json",
+            "examples/topdown-collect/documents/projects/game.json",
+            "examples/topdown-collect/documents/scripts/controller.txt",
+            "examples/topdown-collect/documents/scripts/zone.txt",
+            "examples/topdown-collect/documents/scripts/door.txt",
+            "examples/topdown-collect/documents/physics/level.json",
+            "examples/topdown-collect/documents/cameras/level.json",
+            "examples/topdown-collect/documents/hud/level.json",
+            "examples/topdown-collect/documents/audio/level.json",
+            "examples/topdown-collect/documents/audio/win.json",
+            "examples/topdown-collect/documents/animations/crystals.json"
+          ]
+        },
+        {
+          "id": "i596",
+          "kind": "prototype",
+          "label": "参考游戏原窗口、作者编辑、迁移与源码分发回归",
+          "language": [
+            "JavaScript",
+            "Python",
+            "GDScript"
+          ],
+          "paths": [
+            "scripts/tests/topdown-collect.test.mjs",
+            "scripts/tests/topdown-collect-native.test.mjs",
+            "scripts/tests/topdown-collect-smoke.mjs",
+            "scripts/tests/helpers/topdown-keyboard.py",
+            "scripts/tests/helpers/topdown-observer.gd",
+            "scripts/tests/source-archive.test.mjs",
+            "desktop/package-source.py"
+          ]
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "axes.maturity": {
+      "beforeCount": 4,
+      "afterCount": 4,
+      "expectedAdded": 0,
+      "removedOrChangedOldValues": [],
+      "addedValues": [],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "bindings": {
+      "beforeCount": 806,
+      "afterCount": 809,
+      "expectedAdded": 3,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "architecture": "definition",
+          "evidence": [
+            "e3653",
+            "e3654",
+            "e3655",
+            "e3656",
+            "e3657",
+            "e3658",
+            "e3659",
+            "e3660",
+            "e3661",
+            "e3662",
+            "e3663",
+            "e3664",
+            "e3665",
+            "e3666",
+            "e3667",
+            "e3668",
+            "e3669",
+            "e3670",
+            "e3671",
+            "e3672",
+            "e3673",
+            "e3674",
+            "e3675",
+            "e3676",
+            "e3677",
+            "e3678",
+            "e3679",
+            "e3680",
+            "e3681"
+          ],
+          "function": "workflow.topdown_collect",
+          "id": "b808",
+          "implementation": "i595",
+          "role": "原设定／用途投影／场景／依赖声明作为可编辑作者工程交付。"
+        },
+        {
+          "architecture": "runtime-backend",
+          "evidence": [
+            "e3653",
+            "e3654",
+            "e3655",
+            "e3656",
+            "e3657",
+            "e3658",
+            "e3659",
+            "e3660",
+            "e3661",
+            "e3662",
+            "e3663",
+            "e3664",
+            "e3665",
+            "e3666",
+            "e3667",
+            "e3668",
+            "e3669",
+            "e3670",
+            "e3671",
+            "e3672",
+            "e3673",
+            "e3674",
+            "e3675",
+            "e3676",
+            "e3677",
+            "e3678",
+            "e3679",
+            "e3680",
+            "e3681"
+          ],
+          "function": "workflow.topdown_collect",
+          "id": "b809",
+          "implementation": "i595",
+          "role": "普通Godot行为消费既有项目端口与原生传感器，不扩展或修改生成器。"
+        },
+        {
+          "architecture": "quality",
+          "evidence": [
+            "e3653",
+            "e3654",
+            "e3655",
+            "e3656",
+            "e3657",
+            "e3658",
+            "e3659",
+            "e3660",
+            "e3661",
+            "e3662",
+            "e3663",
+            "e3664",
+            "e3665",
+            "e3666",
+            "e3667",
+            "e3668",
+            "e3669",
+            "e3670",
+            "e3671",
+            "e3672",
+            "e3673",
+            "e3674",
+            "e3675",
+            "e3676",
+            "e3677",
+            "e3678",
+            "e3679",
+            "e3680",
+            "e3681"
+          ],
+          "function": "workflow.topdown_collect",
+          "id": "b810",
+          "implementation": "i596",
+          "role": "实际键盘驱动物理玩法，浏览器和三种包各以独立入口验收。"
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "evidence": {
+      "beforeCount": 3652,
+      "afterCount": 3681,
+      "expectedAdded": 29,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "id": "e3653",
+          "kind": "design",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/README.md"
+        },
+        {
+          "id": "e3654",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/workspace.json"
+        },
+        {
+          "id": "e3655",
+          "kind": "design",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/guide.md"
+        },
+        {
+          "id": "e3656",
+          "kind": "design",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/definitions/traveler.md"
+        },
+        {
+          "id": "e3657",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/projections/traveler-game.json"
+        },
+        {
+          "id": "e3658",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/scenes/level.json"
+        },
+        {
+          "id": "e3659",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/projects/game.json"
+        },
+        {
+          "id": "e3660",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/scripts/controller.txt"
+        },
+        {
+          "id": "e3661",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/scripts/zone.txt"
+        },
+        {
+          "id": "e3662",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/scripts/door.txt"
+        },
+        {
+          "id": "e3663",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/physics/level.json"
+        },
+        {
+          "id": "e3664",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/cameras/level.json"
+        },
+        {
+          "id": "e3665",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/hud/level.json"
+        },
+        {
+          "id": "e3666",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/audio/level.json"
+        },
+        {
+          "id": "e3667",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/audio/win.json"
+        },
+        {
+          "id": "e3668",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "examples/topdown-collect/documents/animations/crystals.json"
+        },
+        {
+          "id": "e3669",
+          "kind": "test",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "scripts/tests/topdown-collect.test.mjs"
+        },
+        {
+          "id": "e3670",
+          "kind": "test",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "scripts/tests/topdown-collect-native.test.mjs"
+        },
+        {
+          "id": "e3671",
+          "kind": "test",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "scripts/tests/topdown-collect-smoke.mjs"
+        },
+        {
+          "id": "e3672",
+          "kind": "test",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "scripts/tests/helpers/topdown-keyboard.py"
+        },
+        {
+          "id": "e3673",
+          "kind": "test",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "scripts/tests/helpers/topdown-observer.gd"
+        },
+        {
+          "id": "e3674",
+          "kind": "test",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "scripts/tests/source-archive.test.mjs"
+        },
+        {
+          "id": "e3675",
+          "kind": "source",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "desktop/package-source.py"
+        },
+        {
+          "id": "e3676",
+          "kind": "report",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "docs/test-results/topdown-collect/README.md"
+        },
+        {
+          "id": "e3677",
+          "kind": "report",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "docs/test-results/topdown-collect/final-verification.json"
+        },
+        {
+          "id": "e3678",
+          "kind": "report",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "docs/test-results/topdown-collect/native-final/keyboard/protocol.json"
+        },
+        {
+          "id": "e3679",
+          "kind": "report",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "docs/test-results/topdown-collect/native-final/offline-keyboard/protocol.json"
+        },
+        {
+          "id": "e3680",
+          "kind": "report",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "docs/test-results/topdown-collect/native-final/offline-delivery.json"
+        },
+        {
+          "id": "e3681",
+          "kind": "report",
+          "note": "俯视收集参考初稿；普通作者文件与真实键盘／迁移／编辑器证据分开，不代表完整0.3、长期运行或安装验收。",
+          "path": "docs/test-results/topdown-collect/browser-final/browser.json"
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "workflows": {
+      "beforeCount": 160,
+      "afterCount": 161,
+      "expectedAdded": 1,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "boundary": "已有样例工程的原窗口真实玩法、编辑与三种包验证；完整从空白界面复建、参数选择、暂停菜单、同场景重启、存档、长期运行、字体及当前安装仍缺，不因这里只有一个已建坐标的gaps项而宣称其他缺口完成。",
+          "gaps": [
+            "build.standalone_distribution"
+          ],
+          "id": "topdown-reference-game",
+          "label": "普通作者工程→真实拾取／伤害→开门与胜负→重试→包迁移和工程交付",
+          "steps": [
+            "projection.authoring",
+            "scene.instances_v2",
+            "scene.physics2d",
+            "scene.camera2d_limits",
+            "scene.hud2d",
+            "scene.animation2d",
+            "scene.audio_timeline",
+            "build.project_assembly",
+            "authoring.scene_navigation",
+            "authoring.scene_retry",
+            "workflow.topdown_collect",
+            "backend.project_delivery"
+          ]
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "legacyCoverage": {
+      "beforeCount": 50,
+      "afterCount": 50,
+      "expectedAdded": 0,
+      "removedOrChangedOldValues": [],
+      "addedValues": [],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "cells": {
+      "beforeCount": 3224,
+      "afterCount": 3236,
+      "expectedAdded": 12,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "coordinates": [
+            "definition",
+            "workflow.topdown_collect",
+            "i595",
+            "implementation"
+          ],
+          "reason": "限定参考初稿已组合真实玩法，完整作者复建／暂停菜单仍缺。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "definition",
+            "workflow.topdown_collect",
+            "i595",
+            "verification"
+          ],
+          "reason": "实际窗口和离线ZIP各完成真实拾取／受伤／胜负／重试；三语作者与迁移另验，不外推30分钟或安装。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "definition",
+            "workflow.topdown_collect",
+            "i595",
+            "decoupling"
+          ],
+          "reason": "纯作者工程、后端特定普通行为和只读测试观察分离；无旧后端改写，原生替换尚未验证。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "definition",
+            "workflow.topdown_collect",
+            "i595",
+            "delivery"
+          ],
+          "reason": "未发布源码样例与可迁移工程；应用版本0.2.9、本机安装0.2.0保持。",
+          "value": 2
+        },
+        {
+          "coordinates": [
+            "runtime-backend",
+            "workflow.topdown_collect",
+            "i595",
+            "implementation"
+          ],
+          "reason": "限定参考初稿已组合真实玩法，完整作者复建／暂停菜单仍缺。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "runtime-backend",
+            "workflow.topdown_collect",
+            "i595",
+            "verification"
+          ],
+          "reason": "实际窗口和离线ZIP各完成真实拾取／受伤／胜负／重试；三语作者与迁移另验，不外推30分钟或安装。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "runtime-backend",
+            "workflow.topdown_collect",
+            "i595",
+            "decoupling"
+          ],
+          "reason": "纯作者工程、后端特定普通行为和只读测试观察分离；无旧后端改写，原生替换尚未验证。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "runtime-backend",
+            "workflow.topdown_collect",
+            "i595",
+            "delivery"
+          ],
+          "reason": "未发布源码样例与可迁移工程；应用版本0.2.9、本机安装0.2.0保持。",
+          "value": 2
+        },
+        {
+          "coordinates": [
+            "quality",
+            "workflow.topdown_collect",
+            "i596",
+            "implementation"
+          ],
+          "reason": "限定参考初稿已组合真实玩法，完整作者复建／暂停菜单仍缺。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "quality",
+            "workflow.topdown_collect",
+            "i596",
+            "verification"
+          ],
+          "reason": "实际窗口和离线ZIP各完成真实拾取／受伤／胜负／重试；三语作者与迁移另验，不外推30分钟或安装。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "quality",
+            "workflow.topdown_collect",
+            "i596",
+            "decoupling"
+          ],
+          "reason": "纯作者工程、后端特定普通行为和只读测试观察分离；无旧后端改写，原生替换尚未验证。",
+          "value": 3
+        },
+        {
+          "coordinates": [
+            "quality",
+            "workflow.topdown_collect",
+            "i596",
+            "delivery"
+          ],
+          "reason": "未发布源码样例与可迁移工程；应用版本0.2.9、本机安装0.2.0保持。",
+          "value": 2
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    },
+    "dependencies": {
+      "beforeCount": 600,
+      "afterCount": 616,
+      "expectedAdded": 16,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "from": "world.object-create",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "projection.authoring",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.instances_v2",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.physics2d",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.camera2d",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.camera2d_limits",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.hud2d",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.audio_timeline",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "scene.animation2d",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "build.project_assembly",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "runtime.project_shared_state",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "runtime.project_events",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "authoring.scene_navigation",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "authoring.scene_retry",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "resource.package",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        },
+        {
+          "from": "backend.project_delivery",
+          "reason": "参考游戏组合现有作者、运行或迁移合同；不把样例实现提升为新的通用后端能力。",
+          "relation": "requires",
+          "to": "workflow.topdown_collect"
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "ok": true
+    },
+    "priorities": {
+      "beforeCount": 7,
+      "afterCount": 8,
+      "expectedAdded": 1,
+      "removedOrChangedOldValues": [],
+      "addedValues": [
+        {
+          "acceptance": "按路线从空白逐步复建，补有来源的选择与可审阅参数，再完成重启／暂停和菜单；不改旧评分、不以参考初稿代替0.3或0.5出口。",
+          "functions": [
+            "workflow.topdown_collect",
+            "authoring.scene_navigation",
+            "authoring.scene_retry",
+            "scene.authoring_workflow"
+          ],
+          "label": "把第一款参考初稿变成顺畅可复建的作者任务",
+          "reason": "真实收集／伤害／胜负和迁移已有证据；作者仍需查成员、实例、动作编号，暂停菜单和同场景重启未接通。"
+        }
+      ],
+      "oldPrefixPreserved": true,
+      "duplicateOldKeys": [],
+      "duplicateNewKeys": [],
+      "changedOldKeys": [],
+      "ok": true
+    }
+  },
+  "sourceSnapshot": {
+    "beforeCount": 3030,
+    "afterCount": 3057,
+    "added": [
+      "docs/test-results/topdown-collect/README.md",
+      "docs/test-results/topdown-collect/browser-final/browser.json",
+      "docs/test-results/topdown-collect/final-verification.json",
+      "docs/test-results/topdown-collect/native-final/keyboard/protocol.json",
+      "docs/test-results/topdown-collect/native-final/offline-delivery.json",
+      "docs/test-results/topdown-collect/native-final/offline-keyboard/protocol.json",
+      "examples/topdown-collect/README.md",
+      "examples/topdown-collect/documents/animations/crystals.json",
+      "examples/topdown-collect/documents/audio/level.json",
+      "examples/topdown-collect/documents/audio/win.json",
+      "examples/topdown-collect/documents/cameras/level.json",
+      "examples/topdown-collect/documents/definitions/traveler.md",
+      "examples/topdown-collect/documents/guide.md",
+      "examples/topdown-collect/documents/hud/level.json",
+      "examples/topdown-collect/documents/physics/level.json",
+      "examples/topdown-collect/documents/projections/traveler-game.json",
+      "examples/topdown-collect/documents/projects/game.json",
+      "examples/topdown-collect/documents/scenes/level.json",
+      "examples/topdown-collect/documents/scripts/controller.txt",
+      "examples/topdown-collect/documents/scripts/door.txt",
+      "examples/topdown-collect/documents/scripts/zone.txt",
+      "examples/topdown-collect/workspace.json",
+      "scripts/tests/helpers/topdown-keyboard.py",
+      "scripts/tests/helpers/topdown-observer.gd",
+      "scripts/tests/topdown-collect-native.test.mjs",
+      "scripts/tests/topdown-collect-smoke.mjs",
+      "scripts/tests/topdown-collect.test.mjs"
+    ],
+    "removed": [],
+    "changed": [
+      "desktop/package-source.py",
+      "docs/FUNCTION_MAPPING_2D.md",
+      "docs/MILESTONE_0.5.0.md",
+      "docs/PROJECT_WORKFLOW.md",
+      "docs/ROADMAP.md",
+      "docs/STATUS.md",
+      "scripts/tests/source-archive.test.mjs"
+    ],
+    "currentFileMismatches": [],
+    "ok": true
+  },
+  "newReferences": {
+    "missingEvidencePaths": [],
+    "newEvidenceKinds": {
+      "design": 3,
+      "source": 14,
+      "test": 6,
+      "report": 6
+    },
+    "ok": true
+  },
+  "issues": []
+}

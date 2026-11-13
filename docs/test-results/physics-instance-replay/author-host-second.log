@@ -1,0 +1,46 @@
+✔ acceptance document clones and freezes complete input and checks (3.284563ms)
+✔ strict inspection rejects invalid, duplicate, oversized and accessor data without executing it (6.632175ms)
+✔ requires a valid registered scene dependency without mutating source (3.427434ms)
+✔ package classification keeps acceptance, legacy replay and runtime case independent (3.400463ms)
+✔ v2 acceptance retains independent input and checks for two instances of the same OC (1.783699ms)
+✔ v2 acceptance separately validates input targets even when its expected-check targets remain valid (1.032787ms)
+✔ physics replay document detaches, freezes and retains source identity without run results (2.411559ms)
+✔ physics replay document rejects extra state, invalid input, accessors and polluted identity (0.524513ms)
+✔ source inspection detects partial, escaped and duplicate keys without accepting examples (5.885771ms)
+✔ scene and definition dependencies must exist and be registered without mutating author data (1.737793ms)
+✔ resource inspectors preserve distinct case and physics replay format recognition (48.692815ms)
+✔ v2 replay documents preserve two independent instances of one OC and deep-freeze every input row (1.172281ms)
+✔ v2 replay dependency diagnostics name missing input instance paths without imposing runtime physics eligibility (1.15581ms)
+✔ v2 replay and embedded-case programs save, update and reload same-OC inputs while unknown source targets cause no write (790.785022ms)
+✔ v2 replay and acceptance selectively export their complete dependencies and reload offline after migration (503.506036ms)
+✖ stale v2 input instance references mark source documents invalid and prevent export even when checks still reference valid actors (142.008961ms)
+✔ HTTP and direct Node host reject v2 targets outside the frozen controlled physical directory before jobs or session directories (512.261181ms)
+✔ missing per-instance capability rejects v2 in HTTP and direct host while retaining legacy replay discovery (231.01483ms)
+✔ v2 host eligibility remains bound to the frozen instance directory after the author scene changes (276.633102ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1620.321213
+
+✖ failing tests:
+
+test at scripts/tests/physics-replay-input-instances-documents-e2e.test.mjs:105:1
+✖ stale v2 input instance references mark source documents invalid and prevent export even when checks still reference valid actors (142.008961ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(entry.problems.some(item => item.code === errorCode))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/physics-replay-input-instances-documents-e2e.test.mjs:118:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

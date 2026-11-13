@@ -1,0 +1,70 @@
+✖ camera closure relocates exact independent author bytes and restores same-OC follow identity (23.594885ms)
+✖ stale follow source is exposed by catalog and cannot be exported despite valid metadata (8.655814ms)
+✖ checksum-correct included packages cannot forge camera targets or erase the unique scene opt-in (7.442732ms)
+✖ pinned external scene bytes are revalidated at target selection after reader availability deferral (8.773148ms)
+✔ fixed and follow documents detach and freeze their finite neutral settings (1.94689ms)
+✔ camera admission rejects unknown fields, union ambiguity, identities and numeric limits (0.938701ms)
+✔ strict descriptors never execute accessors or serializers and reject hidden/symbol/sparse data (0.343927ms)
+✔ source inspector recognizes only its top-level marker and rejects duplicate, incomplete and oversized source (1.335104ms)
+✔ unreferenced camera data leaves executable and registration scene plans byte-compatible (17.855689ms)
+✔ both scene versions attach saved cameras after existing scene planning and keep repeated-OC identity (15.576944ms)
+✔ saved dependencies require exact bidirectional opt-in and an unambiguous stable scene membership (14.385801ms)
+✔ invalid saved target diagnoses the camera source pointer while static preview remains available (2.940472ms)
+✔ unavailable, unregistered, duplicate or foreign camera declarations block executable planning (7.044676ms)
+✔ frozen camera admission detaches data and stripping restores the original scene shape (2.576077ms)
+✔ frozen camera admission independently rejects targets, capabilities, source metadata and accessor plans (4.368095ms)
+✔ project envelopes retain the optional camera and independently enforce frozen targets and capability unions (5.059445ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 12
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 173.796591
+
+✖ failing tests:
+
+test at scripts/tests/scene-camera2d-packages.test.mjs:52:1
+✖ camera closure relocates exact independent author bytes and restores same-OC follow identity (23.594885ms)
+  Error: Cannot read this workspace projection
+      at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+      at unavailable (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-world-projection.mjs:15:27)
+      at readWorldSnapshot (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-world-projection.mjs:80:11)
+      at async captureScene (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs:69:20)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-packages.test.mjs:55:56)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    statusCode: 422,
+    payload: {},
+    errorCode: 'world_unavailable'
+  }
+
+test at scripts/tests/scene-camera2d-packages.test.mjs:75:1
+✖ stale follow source is exposed by catalog and cannot be exported despite valid metadata (8.655814ms)
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at readPackageCatalog (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/resource-package-catalog.mjs:133:57)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-packages.test.mjs:77:55)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/scene-camera2d-packages.test.mjs:82:1
+✖ checksum-correct included packages cannot forge camera targets or erase the unique scene opt-in (7.442732ms)
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at readPackageCatalog (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/resource-package-catalog.mjs:133:57)
+      at async exportPack (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-packages.test.mjs:35:19)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-packages.test.mjs:83:38)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/scene-camera2d-packages.test.mjs:93:1
+✖ pinned external scene bytes are revalidated at target selection after reader availability deferral (8.773148ms)
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at readPackageCatalog (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/resource-package-catalog.mjs:133:57)
+      at async exportPack (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-packages.test.mjs:35:19)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-packages.test.mjs:94:38)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

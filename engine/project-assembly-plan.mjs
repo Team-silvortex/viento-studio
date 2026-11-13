@@ -1,3 +1,5 @@
+import { inspectProjectSceneNavigationReferences } from './project-scene-navigation-diagnostics.mjs';
+import { inspectProjectSceneRetryReferences } from './project-scene-retry-diagnostics.mjs';
 // Assemble complete existing scene plans without flattening scene-local state.
 import { inspectProjectAssembly, validateProjectAssemblyDependencies } from './project-assembly.mjs';
 import { createScene2DPlan } from './build-plan.mjs';
@@ -43,6 +45,10 @@ export function createProjectAssemblyPlan(observed, targetRef) {
   if (resources.size > 128) diagnostics.push({ severity: 'error', code: 'build_assembly_limit',
     message: 'A project assembly can include at most 128 distinct resources.', ...location('/sceneIds') });
   if (diagnostics.length) return { ok: false, plan: null, diagnostics };
+  const navigationDiagnostics = inspectProjectSceneNavigationReferences(scenes, source.documents);
+  if (navigationDiagnostics.length) return { ok: false, plan: null, diagnostics: navigationDiagnostics };
+  const retryDiagnostics = inspectProjectSceneRetryReferences(scenes, source.documents);
+  if (retryDiagnostics.length) return { ok: false, plan: null, diagnostics: retryDiagnostics };
   const input = checked.value.schemaVersion === 2 ? source.documents.find(item => item.record?.id === checked.value.inputMapId) : null;
   if (input) capabilities.add('project.input-map');
   const inputDocument = input ? inspectProjectInputMap(input.content) : null;

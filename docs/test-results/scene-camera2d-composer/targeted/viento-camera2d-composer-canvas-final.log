@@ -1,0 +1,40 @@
+✔ real composer draws camera bounds and design reference without images, clipping or source mutation (4.607743ms)
+✔ same-OC follow frame highlights only its stable instance and connects its logical position (1.017298ms)
+✔ drag previews temporary frame and pointerup emits exactly one candidate without applying it (1.64202ms)
+✔ follow dragging changes only offset and an owner can synchronously publish the candidate (1.627323ms)
+✔ release uses the final pointer position, including when its last movement event was not delivered (4.742826ms)
+✔ a non-finite release coordinate cancels the candidate instead of committing an older pointer sample (0.735279ms)
+✔ click without movement does not create a candidate (0.605446ms)
+✔ Escape, active-pointer cancellation and lost capture discard preview without committing (2.056618ms)
+✔ foreign pointer cancellation or release cannot steal an active composition gesture (0.642805ms)
+✔ owner edit permission revoked before move, release or keyboard prevents all candidates (2.299724ms)
+✔ pan, wheel zoom and both fit scopes alter only editor view and cancel pending frame movement (1.486208ms)
+✔ explicit pan cancellation restores the prior editor view and never changes the camera (0.533231ms)
+✔ numeric invalidation and model replacement clear old frames and abandon pending candidates (0.876584ms)
+✔ resize retains fit scope, recomputes view and cancels a temporary frame (1.84957ms)
+✔ large logical surfaces and extreme DPR keep backing allocation within the pixel budget (0.695895ms)
+✔ keyboard arrows propose one world unit or ten with Shift, keeping follow identity and zoom (0.936587ms)
+✔ destroy is terminal, releases capture, disconnects observer and prevents late events or model resurrection (0.616416ms)
+✔ fixed framing uses explicit viewport divided by zoom without consulting actor extent or moving actors (2.209375ms)
+✔ follow framing selects a stable instance and adds world offset to its logical root only (0.51209ms)
+✔ legal coordinate and zoom extremes produce finite full frames even outside author position limits (0.298069ms)
+✔ frame results are detached and deeply frozen without retaining mutable source vectors (0.195597ms)
+✔ camera unions, zoom and viewport sizes are explicit bounded inputs (0.951915ms)
+✔ geometry budgets and unique instance membership are independent of selected framing mode (3.245408ms)
+✔ strict capture rejects accessors, hidden/symbol properties, custom prototypes and sparse or named arrays without invoking code (0.366888ms)
+✔ camera-only fitting centers and contains the complete frame while all-fitting also includes actor rectangles (0.617008ms)
+✔ fitting supports fractional/narrow pixels and all legal world extremes with shared workspace scale bounds (0.642645ms)
+✔ fit rejects malformed/stale frames, unknown scopes, dimensions and accessor options (0.851357ms)
+✔ moving a frame updates only center or offset and clamps each axis without touching zoom or target (0.311104ms)
+✔ zero delta preserves numeric values including signed zero and still returns a detached frozen camera (0.212679ms)
+✔ move rejects invalid deltas and non-data vectors before any getter or source mutation (0.399689ms)
+✔ framing and fitting remain stable at fractional offsets on the author coordinate boundary (2.049454ms)
+✔ the same pure module executes in a browser-style realm without Node, DOM or host callbacks (9.239631ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 100.319356

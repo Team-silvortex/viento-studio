@@ -1,0 +1,76 @@
+✔ native author navigation contracts handle held input, GUI consumption, echoes, focus, refusal retries and duplicate event deliveries (502.614118ms)
+✔ XTest real keyboard completes Menu→Game→Results with GUI consumption, focus, held-key re-entry and true event provenance (17570.627908ms)
+✔ three-scene navigation and HUD input-map project runs from a verified offline ZIP using the same XTest keyboard path (26736.732802ms)
+✔ native bounded fixed camera clamps fractional edges, centers small worlds, and uses actual entry viewport across visits (7772.628118ms)
+✔ native bounded follow applies offset before clamping, follows stable logical instance and ignores animated visual transforms (7634.174799ms)
+✔ native bounded camera observes original physical character movement without clamping or replacing the solver (10929.809778ms)
+✔ native Xvfb bounded camera pixels reflect zoom, pre-clamp offset, small-world centering and real window resize (8503.973946ms)
+✔ bounded camera project ZIP retains full limits and runs offline after the original author and build disappear (17920.251534ms)
+✔ native camera follow selects the logical instance, ignores visual transforms and rebuilds across mixed visits (8371.746431ms)
+✔ native camera zoom boundary eight and authored negative center map world coordinates exactly (7350.189039ms)
+✔ native camera attaches after physical body replacement and follows the original solver (10439.483118ms)
+✔ native Xvfb screenshots show follow instance, independent visual offset and fixed zoom (8032.559409ms)
+✔ recorded camera project ZIP imports, checks and runs after original author/build paths disappear (17210.349713ms)
+✔ native HUD mirrors pure state text/bar semantics without changing revision or world geometry (7500.631756ms)
+✔ native HUD stays screen-anchored through camera movement, real viewport resize and scene re-entry (7944.37783ms)
+✔ native Xvfb HUD pixels survive camera transforms and resize and display authored state at the frozen render boundary (10535.957984ms)
+✔ HUD project ZIP retains authored label/bar and runs offline after original author and build paths disappear (18510.629313ms)
+✔ historical schema4 generation emits protocol11 and inventory12 with independent target modules and unchanged old templates (135.734825ms)
+✔ real instance scope starts stopped without fabricated completions (16750.737936ms)
+✔ real two target clocks retain different clips and visual samples (false) (16300.50942ms)
+✔ real two target clocks retain different clips and visual samples (true) (17844.401123ms)
+✔ real same-frame natural completions are distinct and both target subscriptions are delivered (16061.875477ms)
+✔ real A command cancels only A pending completion while B stays deliverable and can replay (16061.704149ms)
+✔ real same target bindings share a head and queue order decides the last applied clip (16068.826225ms)
+✔ real explicit scene scope preserves automatic whole-scene playback and shared recipients (16773.287327ms)
+✔ real pause_animation() does not affect another target head (17262.381014ms)
+✔ real stop_animation() does not affect another target head (19308.256553ms)
+✔ real seek_animation(0.1) does not affect another target head (18511.49085ms)
+✔ real select_animation_clip(null) does not affect another target head (16517.074579ms)
+✔ real play_animation() does not affect another target head (16599.030731ms)
+✔ real generated v1 state scripts keep source bytes and completion enters only its target controller (16984.26332ms)
+✔ real generated v5 state scripts keep source bytes and completion enters only its target controller (18185.364782ms)
+✔ real mutable port binding cannot retarget a registered origin (16724.238979ms)
+✔ real mixed-scope scene switching revokes old ports and resets same-identity target lanes on reentry (19330.638614ms)
+✔ real replacing a port entire binding cannot borrow another registered target or source (16790.670461ms)
+✔ native author ready audio requests preserve FIFO before their deferred backend calls (13198.700236ms)
+✔ native audio request clocks follow actual idle and physics frames between acceptance and backend application (13116.458294ms)
+✔ native unavailable audio preserves the preceding completed call and explicitly discards the remaining FIFO on abort (13150.765916ms)
+✔ native cancellation retains pending audio requests after 160 state revisions and both observation tails rotate (13333.738651ms)
+✔ native audio retention keeps 128 terminal outcomes plus pending identities and all 148 old business receipts (14429.419768ms)
+✔ native mixed requests keep independent identities while audio backend calls retain priority over animation (16198.137423ms)
+✔ native audio queue capacity rejects request 65 before identity allocation and discards only the 64 accepted requests (13161.696489ms)
+✔ native ready publications settle empty recipients immediately and locate handled and skipped recipients (13272.81194ms)
+✔ native publications precede their synchronous recipient batch on real later idle and physics frames (12980.446626ms)
+✔ native nested publication and a later recipient failure preserve handled evidence without guessing whether pending callbacks ran (12975.640676ms)
+✔ native cancellation retains early publication positions after 160 state frames and clock-window eviction (13313.798652ms)
+✔ native event positions retain 32 settled publications plus pending recipients without trimming the complete business ledger (13720.983088ms)
+✔ native event positions coexist with audio and animation requests while preserving event-first business ordering (15375.821916ms)
+✖ official Godot import and script-check cover intent, one-way platforms and moving-platform scripts (257.417357ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 48
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 665499.879546
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-character-intent-official-build.test.mjs:14:1
+✖ official Godot import and script-check cover intent, one-way platforms and moving-platform scripts (257.417357ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  51 !== 48
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-character-intent-official-build.test.mjs:38:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 51,
+    expected: 48,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

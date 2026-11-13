@@ -89,6 +89,7 @@ export async function editorHarness(overrides = {}) {
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
     prepareCompositionDraftApply: (context, catalog, proposal) => prepareCompositionDraftApply(structuredClone(context), structuredClone(catalog), proposal),
     prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
+    inspectSceneBehaviorReferenceDirectory: async () => { throw new Error('Behavior references are not configured in this editor harness'); },
     inspectSceneAudioDirectory: async () => { throw new Error('Scene audio directory is not configured in this editor harness'); },
     inspectScenePhysics2DTargets: async () => { throw new Error('Scene physics targets are not configured in this editor harness'); },
     inspectSceneAnimationTargets: async () => { throw new Error('Scene animation targets are not configured in this editor harness'); },

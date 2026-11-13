@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-11-11T08:08:38.477812+00:00",
+  "applicationVersion": "0.2.9",
+  "delivery": "working-tree",
+  "executionDescriptorVersion": "0.42.0",
+  "generatedProtocolChanged": false,
+  "oldV1DriverChanged": false,
+  "fullApplication": {
+    "command": "npm run check -- --app-only",
+    "node": "v24.21.0",
+    "log": "app-final.log",
+    "tests": 9096,
+    "pass": 8430,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 666,
+    "todo": 0,
+    "duration_ms": 461036.129121,
+    "syntaxFiles": 1550,
+    "sourceSnapshot": "full-check-source-snapshot-final.json",
+    "all33SourcesStillMatch": true,
+    "skips": "666 explicit environment-dependent native archive, mobile, Bevy, Godot or tool cases. These are not native passes."
+  },
+  "fullApplicationInitial": {
+    "log": "app-initial.log",
+    "tests": 9096,
+    "pass": 8429,
+    "fail": 1,
+    "skipped": 666,
+    "cancelled": 0,
+    "reason": "Only runtime-instance-backends.test.mjs still pinned execution descriptor 0.41.0; corrected exactly to 0.42.0. Production unchanged, entire application rechecked."
+  },
+  "targeted": {
+    "pure": {
+      "tests": 25,
+      "pass": 25,
+      "skipped": 0,
+      "log": "pure-final.log"
+    },
+    "authorHost": {
+      "tests": 31,
+      "pass": 25,
+      "skipped": 6,
+      "log": "author-host-final.log",
+      "scope": "controlled HTTP and direct Node; no native tool in this group"
+    },
+    "backend": {
+      "tests": 24,
+      "pass": 24,
+      "skipped": 0,
+      "log": "backend-native/backend-verified.log",
+      "scope": "5 new native + 3 v1 native + 11 adapter + 5 projection"
+    },
+    "ui": {
+      "tests": 43,
+      "pass": 43,
+      "skipped": 0,
+      "log": "ui-final.log",
+      "command": "node --test scripts/tests/project-physics-replay-ui.test.mjs scripts/tests/project-physics-replay-documents-ui.test.mjs scripts/tests/project-physics-case-documents-ui.test.mjs scripts/tests/i18n.test.mjs scripts/tests/i18n-coverage.test.mjs scripts/tests/i18n-diagnostics.test.mjs"
+    },
+    "adapterCompatibility": {
+      "tests": 28,
+      "pass": 25,
+      "skipped": 3,
+      "log": "adapter-compatibility.log",
+      "command": "node --test scripts/tests/runtime-instance-backends.test.mjs scripts/tests/godot4-adapter.test.mjs scripts/tests/bevy-adapter.test.mjs"
+    }
+  },
+  "realBrowser": {
+    "report": "browser-final-2026-11-11/browser.json",
+    "ok": true,
+    "v2Samples": 120,
+    "v1Samples": 120,
+    "migrationSamples": 120,
+    "originalOffline": true,
+    "oldAuthorFiles": 39,
+    "newExplicitlySavedFiles": 2,
+    "frozenFiles": 52,
+    "sourceGuardCount": 32
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 188,
+    "implementations": 568,
+    "bindings": 780,
+    "cells": 3120,
+    "dependencies": 574,
+    "workflows": 153
+  },
+  "preservation": "preservation.json",
+  "notes": [
+    "Targeted groups overlap each other and the full application; counts are not added as coverage.",
+    "Production and .test sources stayed frozen during the final complete check. Browser source/test hashes remained unchanged after its actual run; only the unrelated stale version assertion was corrected.",
+    "No installed Tauri, Android, Windows/macOS, Bevy physics, physical input devices, continuous running or GPU claim."
+  ]
+}

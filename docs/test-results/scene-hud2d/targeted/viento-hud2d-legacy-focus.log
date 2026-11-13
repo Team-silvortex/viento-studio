@@ -1,0 +1,119 @@
+✔ backend descriptors detach and recursively freeze every admitted field (2.349855ms)
+✔ descriptor schema rejects unknown, missing and host implementation fields (1.842476ms)
+✔ identities, versions and lists remain bounded unique descriptor data (1.279311ms)
+✔ plan schemas and runtime protocol schemas are explicit separate declarations (1.21047ms)
+✔ project plans admit explicit runtime protocols one through eleven without changing author schema (0.843129ms)
+✔ execution operations require seven explicit booleans without support inference (2.566599ms)
+✔ namespaced native extension metadata never implies runtime or GPU support (0.787573ms)
+✔ descriptor admission refuses accessors and inherited authority before getters run (0.390426ms)
+✔ nonserializable, cyclic, sparse, overdeep and oversized DTOs fail closed (0.624913ms)
+✔ support checks admit known plans and platforms with or without optional plan data (0.562644ms)
+✔ unsupported plan format, kind and schema diagnose source without choosing a fallback (0.438036ms)
+✔ missing feature diagnostics retain the scene source and original capability order (0.28782ms)
+✔ all execution, platform, plan and capability rejections remain independently visible (0.30897ms)
+✔ malformed support requests and plan DTOs cannot bypass validation (1.802842ms)
+✔ UI support convenience is explicit, operation-specific and fail closed (0.9117ms)
+✖ portable middleware executes in an isolated JavaScript realm without host globals (11.060481ms)
+✔ Godot descriptor and host contract are immutable, precise and independent of legacy build metadata (2.503648ms)
+✔ adapter preserves frozen v1/v2 file hashes, source owner maps and generator fingerprints (9.418889ms)
+✔ generation owns an admitted plan before asynchronous reads and never shares source objects with its caller (2.628928ms)
+✔ generation rejects unsupported plan headers and required capabilities without rewriting author inputs (1.415862ms)
+✔ availability remains a non-executing stat/access check and identification retains Godot version pinning (195.887197ms)
+✔ real spawned processes receive legacy Godot flags, literal arguments and isolated host paths (304.061282ms)
+✔ unsupported modes and invalid capture combinations are rejected before any process starts (3.443642ms)
+✔ phase execution delegates cancellation, deadlines and observer failures to the shared process owner (176.797079ms)
+✔ diagnostics and event readers retain v1/v2 source ownership and reject redirected runtime locations (2.368271ms)
+✔ cleanup removes only known generated caches and never follows their links into source data (2.892171ms)
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (48.137332ms)
+✖ scene build: deterministic, movable, frozen bytes; portable planner has no host globals (135.636915ms)
+✔ scene build: rejects unknown features, missing references, invalid values and unbound resources at source fields (92.338399ms)
+✔ scene snapshot rejects links, missing images and unfinished source transactions without writes (50.417173ms)
+✔ scene snapshot detects an author edit during image capture (36.780524ms)
+✔ process lifecycle: missing tool, nonzero exit, bounded logs, timeout, cancellation and descendant cleanup (575.073761ms)
+✔ build request validation and a missing engine never create an output or modify source (29.907023ms)
+﹣ real Godot: build/import, cold run from frozen input, movement states, safeguards and failure cleanup (0.2357ms) # Set VIENTO_GODOT_BIN to run the real Godot integration
+✔ camera closure relocates exact independent author bytes and restores same-OC follow identity (303.317703ms)
+✔ stale follow source is exposed by catalog and cannot be exported despite valid metadata (41.19987ms)
+✔ checksum-correct included packages cannot forge camera targets or erase the unique scene opt-in (74.178177ms)
+✔ pinned external scene bytes are revalidated at target selection after reader availability deferral (69.230763ms)
+✔ camera2d.create workspace 2 preview/apply publishes exactly three files (168.750721ms)
+✔ camera2d.create workspace 3 preview/apply publishes exactly three files (116.172703ms)
+✔ camera2d v13 SIGKILL at intent/- (243.089895ms)
+✔ camera2d v13 SIGKILL at source-ready/0 (205.21471ms)
+✔ camera2d v13 SIGKILL at data/0 (221.372608ms)
+✔ camera2d v13 SIGKILL at source-ready/1 (207.868048ms)
+✔ camera2d v13 SIGKILL at data/1 (216.243644ms)
+✔ camera2d v13 SIGKILL at source-ready/2 (212.177553ms)
+✔ camera2d v13 SIGKILL at data/2 (212.549793ms)
+✔ camera2d v13 SIGKILL at commit/- (226.02588ms)
+✔ camera2d v13 SIGKILL at head/- (209.566682ms)
+✔ ordinary data-phase failure rolls back and a lost post-commit response converges (112.352323ms)
+✔ owned source or foreign registration edits block recovery without any publication (397.818673ms)
+✔ v13 rejects rehashed forged dependencies, altered reverse link and unlisted stage files (784.467291ms)
+✔ recovery is restartable in rollback and forward replay without restoring changed author definitions (621.98577ms)
+✔ simultaneous first camera creates cannot publish two opt-ins (61.619566ms)
+✔ invalid declaration, bad UTF-8 budget and stale target do not publish (94.410681ms)
+✔ symlinked output directory cannot redirect creation outside the author document root (18.380902ms)
+✔ same-size definition replacement preserving mtime is caught before intent publication (47.725699ms)
+✔ foreign metadata temporary files or a symlink cannot be hidden by recovery (356.13632ms)
+ℹ tests 58
+ℹ suites 0
+ℹ pass 54
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 4880.529171
+
+✖ failing tests:
+
+test at scripts/tests/backend-capabilities.test.mjs:218:1
+✖ portable middleware executes in an isolated JavaScript realm without host globals (11.060481ms)
+  evalmachine.<anonymous>:431
+      const stateApi = (() => { import { PROJECT_RUNTIME_MAX_VISITS, projectRuntimeUuid as uuid, projectRuntimeExact as exact, copyProjectRuntimeData as copy,
+                                ^^^^^^
+  
+  SyntaxError: Cannot use import statement outside a module
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInContext (node:vm:300:10)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-capabilities.test.mjs:227:6)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/godot4-adapter.test.mjs:188:1
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (48.137332ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      contractVersion: 1,
+      id: 'org.viento.godot4',
+  +   sha256: 'a306be88ff7d040231d9c94d888cd99ba6a75c79b587eb86a4e11df62ec664ab'
+  -   sha256: '34e19cc4c5857842c20c8457606a0821cb61b6370e5a38a16fb87649661aa5fb'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/godot4-adapter.test.mjs:198:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { id: 'org.viento.godot4', contractVersion: 1, sha256: 'a306be88ff7d040231d9c94d888cd99ba6a75c79b587eb86a4e11df62ec664ab' },
+    expected: { id: 'org.viento.godot4', contractVersion: 1, sha256: '34e19cc4c5857842c20c8457606a0821cb61b6370e5a38a16fb87649661aa5fb' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-build.test.mjs:49:1
+✖ scene build: deterministic, movable, frozen bytes; portable planner has no host globals (135.636915ms)
+  evalmachine.<anonymous>:431
+      const stateApi = (() => {   invalidProjectRuntime as invalid } from './project-runtime-contracts.mjs';
+                                                        ^^
+  
+  SyntaxError: Unexpected identifier 'as'
+      at new Script (node:vm:117:7)
+      at createScript (node:vm:269:10)
+      at Object.runInNewContext (node:vm:310:10)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-build.test.mjs:66:23)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

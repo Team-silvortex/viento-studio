@@ -1,0 +1,1839 @@
+{
+  "startedAt": "2026-11-11T08:26:47.257Z",
+  "browser": "Chrome/156.0.8078.73",
+  "steps": [],
+  "errors": [],
+  "svgRequests": [],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "This verifies authoring world coordinates, not a runtime camera, embedded engine viewport, packaged Tauri IPC or device acceptance."
+  ],
+  "sources": {
+    "engine/scene-workspace-view.mjs": "6bdb24f69845f177c191968c64db8eabd18d1ca156e6ce6627bd1718beb40286",
+    "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
+    "engine/scene-source-layout.mjs": "94ef1c1d1130c1d751fdb909df570cc2f125a3119bc0f1a790f2012c2611738d",
+    "engine/scene-draft-preview.mjs": "fa99b49e02927f7bd7c41082aa11a62605a14a660b01f50245b518d14e98b53c",
+    "engine/scene-preview-contract.mjs": "c500754da05884cc73f99c597d8367fad2a1515235e2d2c0c57377de1f34506b",
+    "engine/studio-core.mjs": "da06d763f7887f2a9013ae347788120c4e24f7c87f2694eae996f100247645b8",
+    "engine/studio-core.wasm": "46c7db77458f98623b9478df0f992fe8244802283581d40d28281e8a8ae031c1",
+    "web/modules/app-scene-preview-canvas.js": "a0f6b8336e5ad5a7bb4b1192eac7b34fa965545b82a5a50ed538d779dd123442",
+    "web/modules/app-scene-preview.js": "ece421114ee18ae88e138a0072afe2b5f47154173e9f2f371a1ab85bdb11e5a8",
+    "web/modules/app-scene-layout.js": "cef18064993f45d655a17ee01bd9bf77beef8a791841c4a70818f9f57348a42e",
+    "web/modules/app-scene-outline.js": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
+    "web/scene-preview.css": "e6e322dca16ec01d0436679296a5f45acf2e000116377d5349521acd35677c11",
+    "web/project-build.css": "78a60347f3fe436d880d6b812ce0c1729bf143c499893251901862a0fb462660",
+    "web/i18n/en.js": "d54feb9b84cbf589cc9cde90dfcb9455004b41c114ed06ab2f5c290fee7f16cd",
+    "web/i18n/ja.js": "92e911b63ef88854357f0d99e9340bf862e6ca04ccbfbf2a6b8a8bdd283918f5",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430",
+    "scripts/lib/resource-package-catalog.mjs": "4162eafd8f2a144ee1f62e62555fd5cabb421e705cc4bb72dd1a0b247288fca0",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-import.mjs": "cfef0473224b16e89f86d3503baec41bbc5f4f4856cc51e93e3638bf78520bc4",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+    "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+    "scripts/tests/scene-world-workspace-smoke.mjs": "11c419ae7afe89e9c9ea0a5d12d3eae66497b45f04ed0d7ed3f7cf1e4b0b067d"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "ok": false,
+  "failure": "Error: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":97,\"scriptId\":\"316\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: Unexpected token ';'\",\"objectId\":\"8453706040059576225.1.2\"}}\n    at evaluate (file://<home>/cdev/viento-studio/scripts/tests/scene-world-workspace-smoke.mjs:127:40)\n    at async file://<home>/cdev/viento-studio/scripts/tests/scene-world-workspace-smoke.mjs:208:3",
+  "screenshots": [
+    {
+      "path": "failure.png",
+      "bytes": 399943,
+      "sha256": "1a403b29d36d3fe16a7a86764c4c4731371b7475ec1fe0df2fb2eaf30c1dc9df"
+    }
+  ],
+  "pageFailure": {
+    "text": "收起目录\nV\nViento Studio\n0.2.9\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n输入映射\n×\n全部（4）\n文档（4）\n当前显示 4 个文档（共 4 个） （静态生成 2026/11/11 16:26:47）\n分类 文档（4）\n文档（4）\na\n文档 · 文档\n可编辑\ncore\n文档 · 文档\n可编辑\nrpg-npc\n文档 · 文档\n可编辑\nrpg-player\n文档 · 文档\n可编辑\n类型：文档\n分组：文档\n路径：DOCS-STANDARD/DOCUMENTS/SCENES/A.JSON\na\n文档 · 文档 · json\n新建文档\n开始编辑\n刷新预览\n新建场景配方\n新建脚本\n源文件：documents/scenes/a.json\na\n分类：文档\n文档\n类型：文档\n文件信息\n内容\nformat\nviento-scene2d\nschemaVersion\n3\ntitle\nA · text draft preview\nviewport\n640\n480\nbackground\n#101827\ngroups\ngroupId\nc554bdc7-80ca-45ac-b2d5-1f066bf319c0\nname\n原文 Town😀\ngroupId\naaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\nname\n居民 Residents\nparentGroupId\nc554bdc7-80ca-45ac-b2d5-1f066bf319c0\nactors\ninstanceId\n88303819-b841-4c98-9212-504205d009ba\nobjectId\n8ae691d6-86b1-4a9d-9ac9-600325eb1c88\ngroupId\nc554bdc7-80ca-45ac-b2d5-1f066bf319c0\nposition\n-240\n-120\nuseProjectionDefaults\ntrue\ninstanceId\ncba4bb20-3e35-43fc-8ca6-d5d941f10ae5\nobjectId\n8ae691d6-86b1-4a9d-9ac9-600325eb1c88\ngroupId\naaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\nposition\n1360\n760\nuseProjectionDefaults\ntrue\nsize\n120\n60\nimageResourceId\nf0e34bcb-a5ec-471b-a48d-601a54ef0032\ninstanceId\n360aa3b7-1b94-4e13-a3d0-58dea1553a59\nobjectId\n661868dc-2a09-4bf1-b6bd-b1d769e3dc53\nposition\n300\n240\nuseProjectionDefaults\ntrue",
+    "captures": [],
+    "editor": "﻿{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 3,\n  \"title\": \"A · text draft preview\",\n  \"viewport\": [\n    6.40e2,\n    480\n  ],\n  \"background\": \"#101827\",\n  \"groups\": [\n    {\n      \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\n      \"name\": \"原文 Town😀\"\n    },\n    {\n      \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\n      \"name\": \"居民 Residents\",\n      \"parentGroupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\"\n    }\n  ],\n  \"actors\": [\n    {\n      \"instanceId\": \"88303819-b841-4c98-9212-504205d009ba\",\n      \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\n      \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\n      \"position\": [\n        -240,\n        -120\n      ],\n      \"useProjectionDefaults\": true\n    },\n    {\n      \"instanceId\": \"cba4bb20-3e35-43fc-8ca6-d5d941f10ae5\",\n      \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\n      \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\n      \"position\": [\n        1360,\n        760\n      ],\n      \"useProjectionDefaults\": true,\n      \"size\": [\n        120,\n        60\n      ],\n      \"imageResourceId\": \"f0e34bcb-a5ec-471b-a48d-601a54ef0032\"\n    },\n    {\n      \"instanceId\": \"360aa3b7-1b94-4e13-a3d0-58dea1553a59\",\n      \"objectId\": \"661868dc-2a09-4bf1-b6bd-b1d769e3dc53\",\n      \"position\": [\n        300,\n        240\n      ],\n      \"useProjectionDefaults\": true\n    }\n  ]\n}\n",
+    "state": {
+      "docs": [
+        {
+          "id": "8bf44d47-78c1-4233-8860-7b1ac2967227",
+          "assetRefs": [
+            "f0e34bcb-a5ec-471b-a48d-601a54ef0032"
+          ],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/scenes/a.json",
+          "title": "a",
+          "name": "a",
+          "category": "document",
+          "displayPath": "docs-standard/documents/scenes/a.json",
+          "relations": [
+            {
+              "kind": "references",
+              "targetId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+              "slot": ""
+            },
+            {
+              "kind": "references",
+              "targetId": "661868dc-2a09-4bf1-b6bd-b1d769e3dc53",
+              "slot": ""
+            }
+          ],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "kv",
+                    "key": "format",
+                    "value": "viento-scene2d"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "schemaVersion",
+                    "value": 3
+                  },
+                  {
+                    "type": "kv",
+                    "key": "title",
+                    "value": "A · text draft preview"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "viewport",
+                    "value": [
+                      640,
+                      480
+                    ]
+                  },
+                  {
+                    "type": "kv",
+                    "key": "background",
+                    "value": "#101827"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "groups",
+                    "value": [
+                      {
+                        "groupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0",
+                        "name": "原文 Town😀"
+                      },
+                      {
+                        "groupId": "aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad",
+                        "name": "居民 Residents",
+                        "parentGroupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "kv",
+                    "key": "actors",
+                    "value": [
+                      {
+                        "instanceId": "88303819-b841-4c98-9212-504205d009ba",
+                        "objectId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+                        "groupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0",
+                        "position": [
+                          -240,
+                          -120
+                        ],
+                        "useProjectionDefaults": true
+                      },
+                      {
+                        "instanceId": "cba4bb20-3e35-43fc-8ca6-d5d941f10ae5",
+                        "objectId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+                        "groupId": "aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad",
+                        "position": [
+                          1360,
+                          760
+                        ],
+                        "useProjectionDefaults": true,
+                        "size": [
+                          120,
+                          60
+                        ],
+                        "imageResourceId": "f0e34bcb-a5ec-471b-a48d-601a54ef0032"
+                      },
+                      {
+                        "instanceId": "360aa3b7-1b94-4e13-a3d0-58dea1553a59",
+                        "objectId": "661868dc-2a09-4bf1-b6bd-b1d769e3dc53",
+                        "position": [
+                          300,
+                          240
+                        ],
+                        "useProjectionDefaults": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "文档",
+          "source": {
+            "path": "docs-standard/documents/scenes/a.json",
+            "extension": ".json",
+            "size": 1419,
+            "modifiedAt": "2026-11-11T08:26:47.765Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/scenes/a.json",
+            "title": "a",
+            "category": "document",
+            "group": "文档",
+            "purpose": "文档",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "format": "viento-scene2d",
+            "schemaVersion": 3,
+            "title": "A · text draft preview",
+            "viewport": [
+              640,
+              480
+            ],
+            "background": "#101827",
+            "groups": [
+              {
+                "groupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0",
+                "name": "原文 Town😀"
+              },
+              {
+                "groupId": "aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad",
+                "name": "居民 Residents",
+                "parentGroupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0"
+              }
+            ],
+            "actors": [
+              {
+                "instanceId": "88303819-b841-4c98-9212-504205d009ba",
+                "objectId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+                "groupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0",
+                "position": [
+                  -240,
+                  -120
+                ],
+                "useProjectionDefaults": true
+              },
+              {
+                "instanceId": "cba4bb20-3e35-43fc-8ca6-d5d941f10ae5",
+                "objectId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+                "groupId": "aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad",
+                "position": [
+                  1360,
+                  760
+                ],
+                "useProjectionDefaults": true,
+                "size": [
+                  120,
+                  60
+                ],
+                "imageResourceId": "f0e34bcb-a5ec-471b-a48d-601a54ef0032"
+              },
+              {
+                "instanceId": "360aa3b7-1b94-4e13-a3d0-58dea1553a59",
+                "objectId": "661868dc-2a09-4bf1-b6bd-b1d769e3dc53",
+                "position": [
+                  300,
+                  240
+                ],
+                "useProjectionDefaults": true
+              }
+            ]
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "a"
+            },
+            {
+              "key": "format",
+              "value": "viento-scene2d"
+            },
+            {
+              "key": "schemaVersion",
+              "value": "3"
+            },
+            {
+              "key": "title",
+              "value": "A · text draft preview"
+            },
+            {
+              "key": "viewport",
+              "value": "640\n480"
+            },
+            {
+              "key": "background",
+              "value": "#101827"
+            },
+            {
+              "key": "groups",
+              "value": "{\n  \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\n  \"name\": \"原文 Town😀\"\n}\n{\n  \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\n  \"name\": \"居民 Residents\",\n  \"parentGroupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\"\n}"
+            },
+            {
+              "key": "actors",
+              "value": "{\n  \"instanceId\": \"88303819-b841-4c98-9212-504205d009ba\",\n  \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\n  \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\n  \"position\": [\n    -240,\n    -120\n  ],\n  \"useProjectionDefaults\": true\n}\n{\n  \"instanceId\": \"cba4bb20-3e35-43fc-8ca6-d5d941f10ae5\",\n  \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\n  \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\n  \"position\": [\n    1360,\n    760\n  ],\n  \"useProjectionDefaults\": true,\n  \"size\": [\n    120,\n    60\n  ],\n  \"imageResourceId\": \"f0e34bcb-a5ec-471b-a48d-601a54ef0032\"\n}\n{\n  \"instanceId\": \"360aa3b7-1b94-4e13-a3d0-58dea1553a59\",\n  \"objectId\": \"661868dc-2a09-4bf1-b6bd-b1d769e3dc53\",\n  \"position\": [\n    300,\n    240\n  ],\n  \"useProjectionDefaults\": true\n}"
+            }
+          ],
+          "outline": [
+            {
+              "id": "a",
+              "title": "a",
+              "level": 1,
+              "anchor": "#a",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "json",
+              "value": {
+                "format": "viento-scene2d",
+                "schemaVersion": 3,
+                "title": "A · text draft preview",
+                "viewport": [
+                  640,
+                  480
+                ],
+                "background": "#101827",
+                "groups": [
+                  {
+                    "groupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0",
+                    "name": "原文 Town😀"
+                  },
+                  {
+                    "groupId": "aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad",
+                    "name": "居民 Residents",
+                    "parentGroupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0"
+                  }
+                ],
+                "actors": [
+                  {
+                    "instanceId": "88303819-b841-4c98-9212-504205d009ba",
+                    "objectId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+                    "groupId": "c554bdc7-80ca-45ac-b2d5-1f066bf319c0",
+                    "position": [
+                      -240,
+                      -120
+                    ],
+                    "useProjectionDefaults": true
+                  },
+                  {
+                    "instanceId": "cba4bb20-3e35-43fc-8ca6-d5d941f10ae5",
+                    "objectId": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+                    "groupId": "aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad",
+                    "position": [
+                      1360,
+                      760
+                    ],
+                    "useProjectionDefaults": true,
+                    "size": [
+                      120,
+                      60
+                    ],
+                    "imageResourceId": "f0e34bcb-a5ec-471b-a48d-601a54ef0032"
+                  },
+                  {
+                    "instanceId": "360aa3b7-1b94-4e13-a3d0-58dea1553a59",
+                    "objectId": "661868dc-2a09-4bf1-b6bd-b1d769e3dc53",
+                    "position": [
+                      300,
+                      240
+                    ],
+                    "useProjectionDefaults": true
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "json",
+          "lastModified": "2026-11-11T08:26:47.765Z",
+          "size": 1419,
+          "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"A · text draft preview\",\r\n  \"viewport\": [\r\n    6.40e2,\r\n    480\r\n  ],\r\n  \"background\": \"#101827\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\r\n      \"name\": \"原文 Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\r\n      \"name\": \"居民 Residents\",\r\n      \"parentGroupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"instanceId\": \"88303819-b841-4c98-9212-504205d009ba\",\r\n      \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\r\n      \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\r\n      \"position\": [\r\n        -240,\r\n        -120\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    },\r\n    {\r\n      \"instanceId\": \"cba4bb20-3e35-43fc-8ca6-d5d941f10ae5\",\r\n      \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\r\n      \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\r\n      \"position\": [\r\n        1360,\r\n        760\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        120,\r\n        60\r\n      ],\r\n      \"imageResourceId\": \"f0e34bcb-a5ec-471b-a48d-601a54ef0032\"\r\n    },\r\n    {\r\n      \"instanceId\": \"360aa3b7-1b94-4e13-a3d0-58dea1553a59\",\r\n      \"objectId\": \"661868dc-2a09-4bf1-b6bd-b1d769e3dc53\",\r\n      \"position\": [\r\n        300,\r\n        240\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    }\r\n  ]\r\n}\r\n",
+          "heroImages": [
+            "assets/media/images/f0e34bcb-a5ec-471b-a48d-601a54ef0032.svg"
+          ],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/8281cc7833e1fd3b6d826e240b6435303a764ee94de993f5c39a99f35b6558d1.json",
+          "parser": {
+            "contentType": "json",
+            "format": "json",
+            "profile": "json",
+            "lineCount": 58,
+            "fieldCount": 7,
+            "blockCount": 1
+          },
+          "parserStats": {
+            "blockCount": 1,
+            "headingCount": 0,
+            "paragraphCount": 0,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 0
+          },
+          "owners": [],
+          "ownedDocuments": [],
+          "_searchText": "a a docs-standard/documents/scenes/a.json 文档 document json format viento-scene2d schemaversion 3 title a · text draft preview viewport 640,480 background #101827 groups [object object],[object object] actors [object object],[object object],[object object] _header a format viento-scene2d schemaversion 3 title a · text draft preview viewport 640\n480 background #101827 groups {\n  \"groupid\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\n  \"name\": \"原文 town😀\"\n}\n{\n  \"groupid\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\n  \"name\": \"居民 residents\",\n  \"parentgroupid\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\"\n} actors {\n  \"instanceid\": \"88303819-b841-4c98-9212-504205d009ba\",\n  \"objectid\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\n  \"groupid\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\n  \"position\": [\n    -240,\n    -120\n  ],\n  \"useprojectiondefaults\": true\n}\n{\n  \"instanceid\": \"cba4bb20-3e35-43fc-8ca6-d5d941f10ae5\",\n  \"objectid\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\n  \"groupid\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\n  \"position\": [\n    1360,\n    760\n  ],\n  \"useprojectiondefaults\": true,\n  \"size\": [\n    120,\n    60\n  ],\n  \"imageresourceid\": \"f0e34bcb-a5ec-471b-a48d-601a54ef0032\"\n}\n{\n  \"instanceid\": \"360aa3b7-1b94-4e13-a3d0-58dea1553a59\",\n  \"objectid\": \"661868dc-2a09-4bf1-b6bd-b1d769e3dc53\",\n  \"position\": [\n    300,\n    240\n  ],\n  \"useprojectiondefaults\": true\n} json   [object object] a #a",
+          "sourcePath": "docs-standard/documents/scenes/a.json",
+          "_heroImagesOrdered": [
+            "assets/media/images/f0e34bcb-a5ec-471b-a48d-601a54ef0032.svg"
+          ],
+          "_sourceCachedText": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"A · text draft preview\",\r\n  \"viewport\": [\r\n    6.40e2,\r\n    480\r\n  ],\r\n  \"background\": \"#101827\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\r\n      \"name\": \"原文 Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\r\n      \"name\": \"居民 Residents\",\r\n      \"parentGroupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"instanceId\": \"88303819-b841-4c98-9212-504205d009ba\",\r\n      \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\r\n      \"groupId\": \"c554bdc7-80ca-45ac-b2d5-1f066bf319c0\",\r\n      \"position\": [\r\n        -240,\r\n        -120\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    },\r\n    {\r\n      \"instanceId\": \"cba4bb20-3e35-43fc-8ca6-d5d941f10ae5\",\r\n      \"objectId\": \"8ae691d6-86b1-4a9d-9ac9-600325eb1c88\",\r\n      \"groupId\": \"aaaf6c0f-73c2-4fb8-9135-0f0311cdc6ad\",\r\n      \"position\": [\r\n        1360,\r\n        760\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        120,\r\n        60\r\n      ],\r\n      \"imageResourceId\": \"f0e34bcb-a5ec-471b-a48d-601a54ef0032\"\r\n    },\r\n    {\r\n      \"instanceId\": \"360aa3b7-1b94-4e13-a3d0-58dea1553a59\",\r\n      \"objectId\": \"661868dc-2a09-4bf1-b6bd-b1d769e3dc53\",\r\n      \"position\": [\r\n        300,\r\n        240\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    }\r\n  ]\r\n}\r\n",
+          "_sourceVersion": "sha256:e22ebae6db0966df194bba9703722b1096a65100fdd60be2cd8ec0aaa1c6637b",
+          "_sourceLastModified": "2026-11-11T08:26:47.765Z",
+          "_renderSignature": "docsstandarddocumentsscenesajson||a||docsstandarddocumentsscenesajson||document||文档||json||sha256e22ebae6db0966df194bba9703722b1096a65100fdd60be2cd8ec0aaa1c6637b||formatvientoscene2dschemaversion3titleatextdraftpreviewviewport640e2480background101827groupsgroupidc554bdc780ca45acb2d51f066bf319c0name原文towngroupidaaaf6c0f73c24fb891350f0311cdc6adname居民residentsparentgroupidc554bdc780ca45acb2d51f066bf319c0actorsinstanceid88303819b8414c989212504205d009baobjectid8ae691d686b14a9d9ac9600325eb1c88groupidc554bdc780ca45acb2d51f066bf319c0position240120useprojectiondefaultstrueinstanceidcba4bb203e3543fc8ca6d5d941f10ae5objectid8ae691d686b14a9d9ac9600325eb1c88groupidaaaf6c0f73c24fb891350f0311cdc6adposition1360760useprojectiondefaultstruesize12060imageresourceidf0e34bcba5ec471ba48d601a54ef0032instanceid360aa3b71b944e13a3d058dea1553a59objectid661868dc2a094bf1b6bdb1d769e3dc53position300240useprojectiondefaultstrue||actorsgroupidc554bdc780ca45acb2d51f066bf319c0instanceid88303819b8414c989212504205d009baobjectid8ae691d686b14a9d9ac9600325eb1c88position240120useprojectiondefaultstruegroupidaaaf6c0f73c24fb891350f0311cdc6adimageresourceidf0e34bcba5ec471ba48d601a54ef0032instanceidcba4bb203e3543fc8ca6d5d941f10ae5objectid8ae691d686b14a9d9ac9600325eb1c88position1360760size12060useprojectiondefaultstrueinstanceid360aa3b71b944e13a3d058dea1553a59objectid661868dc2a094bf1b6bdb1d769e3dc53position300240useprojectiondefaultstruebackground101827formatvientoscene2dgroupsgroupidc554bdc780ca45acb2d51f066bf319c0name原文towngroupidaaaf6c0f73c24fb891350f0311cdc6adname居民residentsparentgroupidc554bdc780ca45acb2d51f066bf319c0schemaversion3titleatextdraftpreviewviewport640480||keyheadervalueakeyformatvaluevientoscene2dkeyschemaversionvalue3keytitlevalueatextdraftpreviewkeyviewportvalue640480keybackgroundvalue101827keygroupsvaluegroupidc554bdc780ca45acb2d51f066bf319c0name原文towngroupidaaaf6c0f73c24fb891350f0311cdc6adname居民residentsparentgroupidc554bdc780ca45acb2d51f066bf319c0keyactorsvalueinstanceid88303819b8414c989212504205d009baobjectid8ae691d686b14a9d9ac9600325eb1c88groupidc554bdc780ca45acb2d51f066bf319c0position240120useprojectiondefaultstrueinstanceidcba4bb203e3543fc8ca6d5d941f10ae5objectid8ae691d686b14a9d9ac9600325eb1c88groupidaaaf6c0f73c24fb891350f0311cdc6adposition1360760useprojectiondefaultstruesize12060imageresourceidf0e34bcba5ec471ba48d601a54ef0032instanceid360aa3b71b944e13a3d058dea1553a59objectid661868dc2a094bf1b6bdb1d769e3dc53position300240useprojectiondefaultstrue||keytexttitletypejsonvalueactorsgroupidc554bdc780ca45acb2d51f066bf319c0instanceid88303819b8414c989212504205d009baobjectid8ae691d686b14a9d9ac9600325eb1c88position240120useprojectiondefaultstruegroupidaaaf6c0f73c24fb891350f0311cdc6adimageresourceidf0e34bcba5ec471ba48d601a54ef0032instanceidcba4bb203e3543fc8ca6d5d941f10ae5objectid8ae691d686b14a9d9ac9600325eb1c88position1360760size12060useprojectiondefaultstrueinstanceid360aa3b71b944e13a3d058dea1553a59objectid661868dc2a094bf1b6bdb1d769e3dc53position300240useprojectiondefaultstruebackground101827formatvientoscene2dgroupsgroupidc554bdc780ca45acb2d51f066bf319c0name原文towngroupidaaaf6c0f73c24fb891350f0311cdc6adname居民residentsparentgroupidc554bdc780ca45acb2d51f066bf319c0schemaversion3titleatextdraftpreviewviewport640480||anchorachildrenidalevel1titlea||schemaversionvientolayoutv1sectionsanchorblockskeyformattypekvvaluevientoscene2dkeyschemaversiontypekvvalue3keytitletypekvvalueatextdraftpreviewkeyviewporttypekvvalue640480keybackgroundtypekvvalue101827keygroupstypekvvaluegroupidc554bdc780ca45acb2d51f066bf319c0name原文towngroupidaaaf6c0f73c24fb891350f0311cdc6adname居民residentsparentgroupidc554bdc780ca45acb2d51f066bf319c0keyactorstypekvvaluegroupidc554bdc780ca45acb2d51f066bf319c0instanceid88303819b8414c989212504205d009baobjectid8ae691d686b14a9d9ac9600325eb1c88position240120useprojectiondefaultstruegroupidaaaf6c0f73c24fb891350f0311cdc6adimageresourceidf0e34bcba5ec471ba48d601a54ef0032instanceidcba4bb203e3543fc8ca6d5d941f10ae5objectid8ae691d686b14a9d9ac9600325eb1c88position1360760size12060useprojectiondefaultstrueinstanceid360aa3b71b944e13a3d058dea1553a59objectid661868dc2a094bf1b6bdb1d769e3dc53position300240useprojectiondefaultstrueidsection1level1title内容titlekey内容||||",
+          "_contentRenderMode": "card-only",
+          "_editorSource": "docs-standard/documents/scenes/a.json"
+        },
+        {
+          "id": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+          "assetRefs": [],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/core.md",
+          "title": "Traveler / 旅人",
+          "name": "core",
+          "category": "document",
+          "displayPath": "docs-standard/documents/core.md",
+          "relations": [],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "paragraph",
+                    "text": "故事属于原 OC。"
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "文档",
+          "source": {
+            "path": "docs-standard/documents/core.md",
+            "extension": ".md",
+            "size": 51,
+            "modifiedAt": "2026-11-11T08:26:47.475Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/core.md",
+            "title": "Traveler / 旅人",
+            "category": "document",
+            "group": "文档",
+            "purpose": "文档",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "_header": "Traveler / 旅人"
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "Traveler / 旅人"
+            },
+            {
+              "key": "段落",
+              "value": "故事属于原 OC。"
+            }
+          ],
+          "outline": [
+            {
+              "id": "traveler-旅人",
+              "title": "Traveler / 旅人",
+              "level": 1,
+              "anchor": "#traveler-旅人",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "heading",
+              "level": 1,
+              "title": "Traveler / 旅人",
+              "anchor": "#traveler-旅人"
+            },
+            {
+              "type": "paragraph",
+              "text": "故事属于原 OC。"
+            }
+          ],
+          "type": "md",
+          "lastModified": "2026-11-11T08:26:47.475Z",
+          "size": 51,
+          "content": "﻿# Traveler / 旅人\r\n\r\n故事属于原 OC。  \r\n",
+          "heroImages": [],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/22fe0d0dc046ba8e1810ea44ddc44dab8db5f22945da91b025d1ea7a64894348.json",
+          "parser": {
+            "contentType": "text",
+            "format": "structured-text",
+            "profile": "heading-text",
+            "lineCount": 4,
+            "fieldCount": 1,
+            "blockCount": 2
+          },
+          "parserStats": {
+            "blockCount": 2,
+            "headingCount": 1,
+            "paragraphCount": 1,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 0
+          },
+          "owners": [],
+          "ownedDocuments": [],
+          "_searchText": "traveler / 旅人 core docs-standard/documents/core.md 文档 document md _header traveler / 旅人 _header traveler / 旅人 段落 故事属于原 oc。 heading traveler / 旅人   paragraph    traveler / 旅人 #traveler-旅人",
+          "sourcePath": "docs-standard/documents/core.md",
+          "_heroImagesOrdered": [],
+          "_sourceVersion": "",
+          "_sourceLastModified": "2026-11-11T08:26:47.475Z",
+          "_renderSignature": "docsstandarddocumentscoremd||traveler旅人||docsstandarddocumentscoremd||document||文档||md||20261111t082647475z||traveler旅人故事属于原oc||headertraveler旅人||keyheadervaluetraveler旅人key段落value故事属于原oc||keytexttitletraveler旅人typeheadingvaluekeytext故事属于原octitletypeparagraphvalue||anchortraveler旅人childrenidtraveler旅人level1titletraveler旅人||schemaversionvientolayoutv1sectionsanchorblockstext故事属于原octypeparagraphidsection1level1title内容titlekey内容||||"
+        },
+        {
+          "id": "661868dc-2a09-4bf1-b6bd-b1d769e3dc53",
+          "assetRefs": [
+            "8f4d49bc-7021-4b05-9370-44bc83dac64b"
+          ],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/projections/rpg-npc.json",
+          "title": "rpg-npc",
+          "name": "rpg-npc",
+          "category": "document",
+          "displayPath": "docs-standard/documents/projections/rpg-npc.json",
+          "relations": [
+            {
+              "kind": "references",
+              "targetId": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+              "slot": "projection-source"
+            }
+          ],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "kv",
+                    "key": "format",
+                    "value": "viento-object-projection"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "schemaVersion",
+                    "value": 1
+                  },
+                  {
+                    "type": "kv",
+                    "key": "title",
+                    "value": "Traveler · NPC"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "sourceObjectId",
+                    "value": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "template",
+                    "value": {
+                      "packageId": "org.viento.projection.rpg-npc",
+                      "version": "1.0.0",
+                      "digest": "sha256:79d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5ba",
+                      "snapshot": {
+                        "id": "org.viento.projection.rpg-npc",
+                        "version": "1.0.0",
+                        "label": "RPG NPC",
+                        "family": "game",
+                        "lineage": [
+                          {
+                            "id": "org.viento.projection.character",
+                            "version": "1.0.0"
+                          },
+                          {
+                            "id": "org.viento.projection.game",
+                            "version": "1.0.0"
+                          },
+                          {
+                            "id": "org.viento.projection.rpg",
+                            "version": "1.0.0"
+                          }
+                        ],
+                        "fields": [
+                          {
+                            "id": "role",
+                            "label": "角色定位",
+                            "type": "string",
+                            "default": "",
+                            "limits": {
+                              "maxLength": 4096
+                            }
+                          },
+                          {
+                            "id": "width",
+                            "label": "宽度",
+                            "type": "number",
+                            "default": 80,
+                            "limits": {
+                              "min": 1,
+                              "max": 2048
+                            }
+                          },
+                          {
+                            "id": "height",
+                            "label": "高度",
+                            "type": "number",
+                            "default": 80,
+                            "limits": {
+                              "min": 1,
+                              "max": 2048
+                            }
+                          },
+                          {
+                            "id": "color",
+                            "label": "颜色",
+                            "type": "string",
+                            "default": "#ffffff",
+                            "limits": {
+                              "maxLength": 4096
+                            }
+                          },
+                          {
+                            "id": "speed",
+                            "label": "移动速度",
+                            "type": "number",
+                            "default": 0,
+                            "limits": {
+                              "min": 0,
+                              "max": 2000
+                            }
+                          },
+                          {
+                            "id": "controls",
+                            "label": "移动控制",
+                            "type": "enum",
+                            "default": "none",
+                            "options": [
+                              "arrows",
+                              "none"
+                            ]
+                          },
+                          {
+                            "id": "image",
+                            "label": "图片",
+                            "type": "image",
+                            "default": ""
+                          },
+                          {
+                            "id": "level",
+                            "label": "等级",
+                            "type": "number",
+                            "default": 1,
+                            "limits": {
+                              "min": 1,
+                              "max": 999
+                            }
+                          },
+                          {
+                            "id": "health",
+                            "label": "生命值",
+                            "type": "number",
+                            "default": 100,
+                            "limits": {
+                              "min": 0,
+                              "max": 1000000
+                            }
+                          },
+                          {
+                            "id": "interactable",
+                            "label": "可交互",
+                            "type": "boolean",
+                            "default": true
+                          }
+                        ],
+                        "runtime": {
+                          "kind": "scene2d-actor",
+                          "width": "width",
+                          "height": "height",
+                          "color": "color",
+                          "speed": "speed",
+                          "controls": "controls",
+                          "image": "image"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "kv",
+                    "key": "configuration",
+                    "value": {
+                      "role": "",
+                      "width": 80,
+                      "height": 80,
+                      "color": "#ffffff",
+                      "speed": 0,
+                      "controls": "none",
+                      "image": "8f4d49bc-7021-4b05-9370-44bc83dac64b",
+                      "level": 1,
+                      "health": 100,
+                      "interactable": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "文档",
+          "source": {
+            "path": "docs-standard/documents/projections/rpg-npc.json",
+            "extension": ".json",
+            "size": 3235,
+            "modifiedAt": "2026-11-11T08:26:47.639Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/projections/rpg-npc.json",
+            "title": "rpg-npc",
+            "category": "document",
+            "group": "文档",
+            "purpose": "文档",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "format": "viento-object-projection",
+            "schemaVersion": 1,
+            "title": "Traveler · NPC",
+            "sourceObjectId": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+            "template": {
+              "packageId": "org.viento.projection.rpg-npc",
+              "version": "1.0.0",
+              "digest": "sha256:79d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5ba",
+              "snapshot": {
+                "id": "org.viento.projection.rpg-npc",
+                "version": "1.0.0",
+                "label": "RPG NPC",
+                "family": "game",
+                "lineage": [
+                  {
+                    "id": "org.viento.projection.character",
+                    "version": "1.0.0"
+                  },
+                  {
+                    "id": "org.viento.projection.game",
+                    "version": "1.0.0"
+                  },
+                  {
+                    "id": "org.viento.projection.rpg",
+                    "version": "1.0.0"
+                  }
+                ],
+                "fields": [
+                  {
+                    "id": "role",
+                    "label": "角色定位",
+                    "type": "string",
+                    "default": "",
+                    "limits": {
+                      "maxLength": 4096
+                    }
+                  },
+                  {
+                    "id": "width",
+                    "label": "宽度",
+                    "type": "number",
+                    "default": 80,
+                    "limits": {
+                      "min": 1,
+                      "max": 2048
+                    }
+                  },
+                  {
+                    "id": "height",
+                    "label": "高度",
+                    "type": "number",
+                    "default": 80,
+                    "limits": {
+                      "min": 1,
+                      "max": 2048
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "label": "颜色",
+                    "type": "string",
+                    "default": "#ffffff",
+                    "limits": {
+                      "maxLength": 4096
+                    }
+                  },
+                  {
+                    "id": "speed",
+                    "label": "移动速度",
+                    "type": "number",
+                    "default": 0,
+                    "limits": {
+                      "min": 0,
+                      "max": 2000
+                    }
+                  },
+                  {
+                    "id": "controls",
+                    "label": "移动控制",
+                    "type": "enum",
+                    "default": "none",
+                    "options": [
+                      "arrows",
+                      "none"
+                    ]
+                  },
+                  {
+                    "id": "image",
+                    "label": "图片",
+                    "type": "image",
+                    "default": ""
+                  },
+                  {
+                    "id": "level",
+                    "label": "等级",
+                    "type": "number",
+                    "default": 1,
+                    "limits": {
+                      "min": 1,
+                      "max": 999
+                    }
+                  },
+                  {
+                    "id": "health",
+                    "label": "生命值",
+                    "type": "number",
+                    "default": 100,
+                    "limits": {
+                      "min": 0,
+                      "max": 1000000
+                    }
+                  },
+                  {
+                    "id": "interactable",
+                    "label": "可交互",
+                    "type": "boolean",
+                    "default": true
+                  }
+                ],
+                "runtime": {
+                  "kind": "scene2d-actor",
+                  "width": "width",
+                  "height": "height",
+                  "color": "color",
+                  "speed": "speed",
+                  "controls": "controls",
+                  "image": "image"
+                }
+              }
+            },
+            "configuration": {
+              "role": "",
+              "width": 80,
+              "height": 80,
+              "color": "#ffffff",
+              "speed": 0,
+              "controls": "none",
+              "image": "8f4d49bc-7021-4b05-9370-44bc83dac64b",
+              "level": 1,
+              "health": 100,
+              "interactable": true
+            }
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "rpg-npc"
+            },
+            {
+              "key": "format",
+              "value": "viento-object-projection"
+            },
+            {
+              "key": "schemaVersion",
+              "value": "1"
+            },
+            {
+              "key": "title",
+              "value": "Traveler · NPC"
+            },
+            {
+              "key": "sourceObjectId",
+              "value": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f"
+            },
+            {
+              "key": "template",
+              "value": "{\n  \"packageId\": \"org.viento.projection.rpg-npc\",\n  \"version\": \"1.0.0\",\n  \"digest\": \"sha256:79d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5ba\",\n  \"snapshot\": {\n    \"id\": \"org.viento.projection.rpg-npc\",\n    \"version\": \"1.0.0\",\n    \"label\": \"RPG NPC\",\n    \"family\": \"game\",\n    \"lineage\": [\n      {\n        \"id\": \"org.viento.projection.character\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.game\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.rpg\",\n        \"version\": \"1.0.0\"\n      }\n    ],\n    \"fields\": [\n      {\n        \"id\": \"role\",\n        \"label\": \"角色定位\",\n        \"type\": \"string\",\n        \"default\": \"\",\n        \"limits\": {\n          \"maxLength\": 4096\n        }\n      },\n      {\n        \"id\": \"width\",\n        \"label\": \"宽度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"height\",\n        \"label\": \"高度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"color\",\n        \"label\": \"颜色\",\n        \"type\": \"string\",\n        \"default\": \"#ffffff\",\n        \"limits\": {\n          \"maxLength\": 4096\n        }\n      },\n      {\n        \"id\": \"speed\",\n        \"label\": \"移动速度\",\n        \"type\": \"number\",\n        \"default\": 0,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 2000\n        }\n      },\n      {\n        \"id\": \"controls\",\n        \"label\": \"移动控制\",\n        \"type\": \"enum\",\n        \"default\": \"none\",\n        \"options\": [\n          \"arrows\",\n          \"none\"\n        ]\n      },\n      {\n        \"id\": \"image\",\n        \"label\": \"图片\",\n        \"type\": \"image\",\n        \"default\": \"\"\n      },\n      {\n        \"id\": \"level\",\n        \"label\": \"等级\",\n        \"type\": \"number\",\n        \"default\": 1,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 999\n        }\n      },\n      {\n        \"id\": \"health\",\n        \"label\": \"生命值\",\n        \"type\": \"number\",\n        \"default\": 100,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 1000000\n        }\n      },\n      {\n        \"id\": \"interactable\",\n        \"label\": \"可交互\",\n        \"type\": \"boolean\",\n        \"default\": true\n      }\n    ],\n    \"runtime\": {\n      \"kind\": \"scene2d-actor\",\n      \"width\": \"width\",\n      \"height\": \"height\",\n      \"color\": \"color\",\n      \"speed\": \"speed\",\n      \"controls\": \"controls\",\n      \"image\": \"image\"\n    }\n  }\n}"
+            },
+            {
+              "key": "configuration",
+              "value": "{\n  \"role\": \"\",\n  \"width\": 80,\n  \"height\": 80,\n  \"color\": \"#ffffff\",\n  \"speed\": 0,\n  \"controls\": \"none\",\n  \"image\": \"8f4d49bc-7021-4b05-9370-44bc83dac64b\",\n  \"level\": 1,\n  \"health\": 100,\n  \"interactable\": true\n}"
+            }
+          ],
+          "outline": [
+            {
+              "id": "rpg-npc",
+              "title": "rpg-npc",
+              "level": 1,
+              "anchor": "#rpg-npc",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "json",
+              "value": {
+                "format": "viento-object-projection",
+                "schemaVersion": 1,
+                "title": "Traveler · NPC",
+                "sourceObjectId": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+                "template": {
+                  "packageId": "org.viento.projection.rpg-npc",
+                  "version": "1.0.0",
+                  "digest": "sha256:79d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5ba",
+                  "snapshot": {
+                    "id": "org.viento.projection.rpg-npc",
+                    "version": "1.0.0",
+                    "label": "RPG NPC",
+                    "family": "game",
+                    "lineage": [
+                      {
+                        "id": "org.viento.projection.character",
+                        "version": "1.0.0"
+                      },
+                      {
+                        "id": "org.viento.projection.game",
+                        "version": "1.0.0"
+                      },
+                      {
+                        "id": "org.viento.projection.rpg",
+                        "version": "1.0.0"
+                      }
+                    ],
+                    "fields": [
+                      {
+                        "id": "role",
+                        "label": "角色定位",
+                        "type": "string",
+                        "default": "",
+                        "limits": {
+                          "maxLength": 4096
+                        }
+                      },
+                      {
+                        "id": "width",
+                        "label": "宽度",
+                        "type": "number",
+                        "default": 80,
+                        "limits": {
+                          "min": 1,
+                          "max": 2048
+                        }
+                      },
+                      {
+                        "id": "height",
+                        "label": "高度",
+                        "type": "number",
+                        "default": 80,
+                        "limits": {
+                          "min": 1,
+                          "max": 2048
+                        }
+                      },
+                      {
+                        "id": "color",
+                        "label": "颜色",
+                        "type": "string",
+                        "default": "#ffffff",
+                        "limits": {
+                          "maxLength": 4096
+                        }
+                      },
+                      {
+                        "id": "speed",
+                        "label": "移动速度",
+                        "type": "number",
+                        "default": 0,
+                        "limits": {
+                          "min": 0,
+                          "max": 2000
+                        }
+                      },
+                      {
+                        "id": "controls",
+                        "label": "移动控制",
+                        "type": "enum",
+                        "default": "none",
+                        "options": [
+                          "arrows",
+                          "none"
+                        ]
+                      },
+                      {
+                        "id": "image",
+                        "label": "图片",
+                        "type": "image",
+                        "default": ""
+                      },
+                      {
+                        "id": "level",
+                        "label": "等级",
+                        "type": "number",
+                        "default": 1,
+                        "limits": {
+                          "min": 1,
+                          "max": 999
+                        }
+                      },
+                      {
+                        "id": "health",
+                        "label": "生命值",
+                        "type": "number",
+                        "default": 100,
+                        "limits": {
+                          "min": 0,
+                          "max": 1000000
+                        }
+                      },
+                      {
+                        "id": "interactable",
+                        "label": "可交互",
+                        "type": "boolean",
+                        "default": true
+                      }
+                    ],
+                    "runtime": {
+                      "kind": "scene2d-actor",
+                      "width": "width",
+                      "height": "height",
+                      "color": "color",
+                      "speed": "speed",
+                      "controls": "controls",
+                      "image": "image"
+                    }
+                  }
+                },
+                "configuration": {
+                  "role": "",
+                  "width": 80,
+                  "height": 80,
+                  "color": "#ffffff",
+                  "speed": 0,
+                  "controls": "none",
+                  "image": "8f4d49bc-7021-4b05-9370-44bc83dac64b",
+                  "level": 1,
+                  "health": 100,
+                  "interactable": true
+                }
+              }
+            }
+          ],
+          "type": "json",
+          "lastModified": "2026-11-11T08:26:47.639Z",
+          "size": 3235,
+          "content": "{\n  \"format\": \"viento-object-projection\",\n  \"schemaVersion\": 1,\n  \"title\": \"Traveler · NPC\",\n  \"sourceObjectId\": \"1f5f8cfc-c843-4e94-9181-21c2081a3f3f\",\n  \"template\": {\n    \"packageId\": \"org.viento.projection.rpg-npc\",\n    \"version\": \"1.0.0\",\n    \"digest\": \"sha256:79d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5ba\",\n    \"snapshot\": {\n      \"id\": \"org.viento.projection.rpg-npc\",\n      \"version\": \"1.0.0\",\n      \"label\": \"RPG NPC\",\n      \"family\": \"game\",\n      \"lineage\": [\n        {\n          \"id\": \"org.viento.projection.character\",\n          \"version\": \"1.0.0\"\n        },\n        {\n          \"id\": \"org.viento.projection.game\",\n          \"version\": \"1.0.0\"\n        },\n        {\n          \"id\": \"org.viento.projection.rpg\",\n          \"version\": \"1.0.0\"\n        }\n      ],\n      \"fields\": [\n        {\n          \"id\": \"role\",\n          \"label\": \"角色定位\",\n          \"type\": \"string\",\n          \"default\": \"\",\n          \"limits\": {\n            \"maxLength\": 4096\n          }\n        },\n        {\n          \"id\": \"width\",\n          \"label\": \"宽度\",\n          \"type\": \"number\",\n          \"default\": 80,\n          \"limits\": {\n            \"min\": 1,\n            \"max\": 2048\n          }\n        },\n        {\n          \"id\": \"height\",\n          \"label\": \"高度\",\n          \"type\": \"number\",\n          \"default\": 80,\n          \"limits\": {\n            \"min\": 1,\n            \"max\": 2048\n          }\n        },\n        {\n          \"id\": \"color\",\n          \"label\": \"颜色\",\n          \"type\": \"string\",\n          \"default\": \"#ffffff\",\n          \"limits\": {\n            \"maxLength\": 4096\n          }\n        },\n        {\n          \"id\": \"speed\",\n          \"label\": \"移动速度\",\n          \"type\": \"number\",\n          \"default\": 0,\n          \"limits\": {\n            \"min\": 0,\n            \"max\": 2000\n          }\n        },\n        {\n          \"id\": \"controls\",\n          \"label\": \"移动控制\",\n          \"type\": \"enum\",\n          \"default\": \"none\",\n          \"options\": [\n            \"arrows\",\n            \"none\"\n          ]\n        },\n        {\n          \"id\": \"image\",\n          \"label\": \"图片\",\n          \"type\": \"image\",\n          \"default\": \"\"\n        },\n        {\n          \"id\": \"level\",\n          \"label\": \"等级\",\n          \"type\": \"number\",\n          \"default\": 1,\n          \"limits\": {\n            \"min\": 1,\n            \"max\": 999\n          }\n        },\n        {\n          \"id\": \"health\",\n          \"label\": \"生命值\",\n          \"type\": \"number\",\n          \"default\": 100,\n          \"limits\": {\n            \"min\": 0,\n            \"max\": 1000000\n          }\n        },\n        {\n          \"id\": \"interactable\",\n          \"label\": \"可交互\",\n          \"type\": \"boolean\",\n          \"default\": true\n        }\n      ],\n      \"runtime\": {\n        \"kind\": \"scene2d-actor\",\n        \"width\": \"width\",\n        \"height\": \"height\",\n        \"color\": \"color\",\n        \"speed\": \"speed\",\n        \"controls\": \"controls\",\n        \"image\": \"image\"\n      }\n    }\n  },\n  \"configuration\": {\n    \"role\": \"\",\n    \"width\": 80,\n    \"height\": 80,\n    \"color\": \"#ffffff\",\n    \"speed\": 0,\n    \"controls\": \"none\",\n    \"image\": \"8f4d49bc-7021-4b05-9370-44bc83dac64b\",\n    \"level\": 1,\n    \"health\": 100,\n    \"interactable\": true\n  }\n}\n",
+          "heroImages": [
+            "assets/media/images/8f4d49bc-7021-4b05-9370-44bc83dac64b.svg"
+          ],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/51e3b8f4094c638fbc9ab81c3972a27e893753a2d3515c820800b05f3f2240c4.json",
+          "parser": {
+            "contentType": "json",
+            "format": "json",
+            "profile": "json",
+            "lineCount": 145,
+            "fieldCount": 6,
+            "blockCount": 1
+          },
+          "parserStats": {
+            "blockCount": 1,
+            "headingCount": 0,
+            "paragraphCount": 0,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 0
+          },
+          "owners": [],
+          "ownedDocuments": [],
+          "_searchText": "rpg-npc rpg-npc docs-standard/documents/projections/rpg-npc.json 文档 document json format viento-object-projection schemaversion 1 title traveler · npc sourceobjectid 1f5f8cfc-c843-4e94-9181-21c2081a3f3f template [object object] configuration [object object] _header rpg-npc format viento-object-projection schemaversion 1 title traveler · npc sourceobjectid 1f5f8cfc-c843-4e94-9181-21c2081a3f3f template {\n  \"packageid\": \"org.viento.projection.rpg-npc\",\n  \"version\": \"1.0.0\",\n  \"digest\": \"sha256:79d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5ba\",\n  \"snapshot\": {\n    \"id\": \"org.viento.projection.rpg-npc\",\n    \"version\": \"1.0.0\",\n    \"label\": \"rpg npc\",\n    \"family\": \"game\",\n    \"lineage\": [\n      {\n        \"id\": \"org.viento.projection.character\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.game\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.rpg\",\n        \"version\": \"1.0.0\"\n      }\n    ],\n    \"fields\": [\n      {\n        \"id\": \"role\",\n        \"label\": \"角色定位\",\n        \"type\": \"string\",\n        \"default\": \"\",\n        \"limits\": {\n          \"maxlength\": 4096\n        }\n      },\n      {\n        \"id\": \"width\",\n        \"label\": \"宽度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"height\",\n        \"label\": \"高度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"color\",\n        \"label\": \"颜色\",\n        \"type\": \"string\",\n        \"default\": \"#ffffff\",\n        \"limits\": {\n          \"maxlength\": 4096\n        }\n      },\n      {\n        \"id\": \"speed\",\n        \"label\": \"移动速度\",\n        \"type\": \"number\",\n        \"default\": 0,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 2000\n        }\n      },\n      {\n        \"id\": \"controls\",\n        \"label\": \"移动控制\",\n        \"type\": \"enum\",\n        \"default\": \"none\",\n        \"options\": [\n          \"arrows\",\n          \"none\"\n        ]\n      },\n      {\n        \"id\": \"image\",\n        \"label\": \"图片\",\n        \"type\": \"image\",\n        \"default\": \"\"\n      },\n      {\n        \"id\": \"level\",\n        \"label\": \"等级\",\n        \"type\": \"number\",\n        \"default\": 1,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 999\n        }\n      },\n      {\n        \"id\": \"health\",\n        \"label\": \"生命值\",\n        \"type\": \"number\",\n        \"default\": 100,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 1000000\n        }\n      },\n      {\n        \"id\": \"interactable\",\n        \"label\": \"可交互\",\n        \"type\": \"boolean\",\n        \"default\": true\n      }\n    ],\n    \"runtime\": {\n      \"kind\": \"scene2d-actor\",\n      \"width\": \"width\",\n      \"height\": \"height\",\n      \"color\": \"color\",\n      \"speed\": \"speed\",\n      \"controls\": \"controls\",\n      \"image\": \"image\"\n    }\n  }\n} configuration {\n  \"role\": \"\",\n  \"width\": 80,\n  \"height\": 80,\n  \"color\": \"#ffffff\",\n  \"speed\": 0,\n  \"controls\": \"none\",\n  \"image\": \"8f4d49bc-7021-4b05-9370-44bc83dac64b\",\n  \"level\": 1,\n  \"health\": 100,\n  \"interactable\": true\n} json   [object object] rpg-npc #rpg-npc",
+          "sourcePath": "docs-standard/documents/projections/rpg-npc.json",
+          "_heroImagesOrdered": [
+            "assets/media/images/8f4d49bc-7021-4b05-9370-44bc83dac64b.svg"
+          ],
+          "_sourceVersion": "",
+          "_sourceLastModified": "2026-11-11T08:26:47.639Z",
+          "_renderSignature": "docsstandarddocumentsprojectionsrpgnpcjson||rpgnpc||docsstandarddocumentsprojectionsrpgnpcjson||document||文档||json||20261111t082647639z||formatvientoobjectprojectionschemaversion1titletravelernpcsourceobjectid1f5f8cfcc8434e94918121c2081a3f3ftemplatepackageidorgvientoprojectionrpgnpcversion100digestsha25679d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5basnapshotidorgvientoprojectionrpgnpcversion100labelrpgnpcfamilygamelineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100fieldsidrolelabel角色定位typestringdefaultlimitsmaxlength4096idwidthlabel宽度typenumberdefault80limitsmin1max2048idheightlabel高度typenumberdefault80limitsmin1max2048idcolorlabel颜色typestringdefaultfffffflimitsmaxlength4096idspeedlabel移动速度typenumberdefault0limitsmin0max2000idcontrolslabel移动控制typeenumdefaultnoneoptionsarrowsnoneidimagelabel图片typeimagedefaultidlevellabel等级typenumberdefault1limitsmin1max999idhealthlabel生命值typenumberdefault100limitsmin0max1000000idinteractablelabel可交互typebooleandefaulttrueruntimekindscene2dactorwidthwidthheightheightcolorcolorspeedspeedcontrolscontrolsimageimageconfigurationrolewidth80height80colorffffffspeed0controlsnoneimage8f4d49bc70214b05937044bc83dac64blevel1health100interactabletrue||configurationcolorffffffcontrolsnonehealth100height80image8f4d49bc70214b05937044bc83dac64binteractabletruelevel1rolespeed0width80formatvientoobjectprojectionschemaversion1sourceobjectid1f5f8cfcc8434e94918121c2081a3f3ftemplatedigestsha25679d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5bapackageidorgvientoprojectionrpgnpcsnapshotfamilygamefieldsdefaultidrolelabel角色定位limitsmaxlength4096typestringdefault80idwidthlabel宽度limitsmax2048min1typenumberdefault80idheightlabel高度limitsmax2048min1typenumberdefaultffffffidcolorlabel颜色limitsmaxlength4096typestringdefault0idspeedlabel移动速度limitsmax2000min0typenumberdefaultnoneidcontrolslabel移动控制optionsarrowsnonetypeenumdefaultidimagelabel图片typeimagedefault1idlevellabel等级limitsmax999min1typenumberdefault100idhealthlabel生命值limitsmax1000000min0typenumberdefaulttrueidinteractablelabel可交互typebooleanidorgvientoprojectionrpgnpclabelrpgnpclineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100runtimecolorcolorcontrolscontrolsheightheightimageimagekindscene2dactorspeedspeedwidthwidthversion100version100titletravelernpc||keyheadervaluerpgnpckeyformatvaluevientoobjectprojectionkeyschemaversionvalue1keytitlevaluetravelernpckeysourceobjectidvalue1f5f8cfcc8434e94918121c2081a3f3fkeytemplatevaluepackageidorgvientoprojectionrpgnpcversion100digestsha25679d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5basnapshotidorgvientoprojectionrpgnpcversion100labelrpgnpcfamilygamelineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100fieldsidrolelabel角色定位typestringdefaultlimitsmaxlength4096idwidthlabel宽度typenumberdefault80limitsmin1max2048idheightlabel高度typenumberdefault80limitsmin1max2048idcolorlabel颜色typestringdefaultfffffflimitsmaxlength4096idspeedlabel移动速度typenumberdefault0limitsmin0max2000idcontrolslabel移动控制typeenumdefaultnoneoptionsarrowsnoneidimagelabel图片typeimagedefaultidlevellabel等级typenumberdefault1limitsmin1max999idhealthlabel生命值typenumberdefault100limitsmin0max1000000idinteractablelabel可交互typebooleandefaulttrueruntimekindscene2dactorwidthwidthheightheightcolorcolorspeedspeedcontrolscontrolsimageimagekeyconfigurationvaluerolewidth80height80colorffffffspeed0controlsnoneimage8f4d49bc70214b05937044bc83dac64blevel1health100interactabletrue||keytexttitletypejsonvalueconfigurationcolorffffffcontrolsnonehealth100height80image8f4d49bc70214b05937044bc83dac64binteractabletruelevel1rolespeed0width80formatvientoobjectprojectionschemaversion1sourceobjectid1f5f8cfcc8434e94918121c2081a3f3ftemplatedigestsha25679d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5bapackageidorgvientoprojectionrpgnpcsnapshotfamilygamefieldsdefaultidrolelabel角色定位limitsmaxlength4096typestringdefault80idwidthlabel宽度limitsmax2048min1typenumberdefault80idheightlabel高度limitsmax2048min1typenumberdefaultffffffidcolorlabel颜色limitsmaxlength4096typestringdefault0idspeedlabel移动速度limitsmax2000min0typenumberdefaultnoneidcontrolslabel移动控制optionsarrowsnonetypeenumdefaultidimagelabel图片typeimagedefault1idlevellabel等级limitsmax999min1typenumberdefault100idhealthlabel生命值limitsmax1000000min0typenumberdefaulttrueidinteractablelabel可交互typebooleanidorgvientoprojectionrpgnpclabelrpgnpclineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100runtimecolorcolorcontrolscontrolsheightheightimageimagekindscene2dactorspeedspeedwidthwidthversion100version100titletravelernpc||anchorrpgnpcchildrenidrpgnpclevel1titlerpgnpc||schemaversionvientolayoutv1sectionsanchorblockskeyformattypekvvaluevientoobjectprojectionkeyschemaversiontypekvvalue1keytitletypekvvaluetravelernpckeysourceobjectidtypekvvalue1f5f8cfcc8434e94918121c2081a3f3fkeytemplatetypekvvaluedigestsha25679d9affca0af765354d206b6645e74b995917b0248a9b57fe734bba54085e5bapackageidorgvientoprojectionrpgnpcsnapshotfamilygamefieldsdefaultidrolelabel角色定位limitsmaxlength4096typestringdefault80idwidthlabel宽度limitsmax2048min1typenumberdefault80idheightlabel高度limitsmax2048min1typenumberdefaultffffffidcolorlabel颜色limitsmaxlength4096typestringdefault0idspeedlabel移动速度limitsmax2000min0typenumberdefaultnoneidcontrolslabel移动控制optionsarrowsnonetypeenumdefaultidimagelabel图片typeimagedefault1idlevellabel等级limitsmax999min1typenumberdefault100idhealthlabel生命值limitsmax1000000min0typenumberdefaulttrueidinteractablelabel可交互typebooleanidorgvientoprojectionrpgnpclabelrpgnpclineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100runtimecolorcolorcontrolscontrolsheightheightimageimagekindscene2dactorspeedspeedwidthwidthversion100version100keyconfigurationtypekvvaluecolorffffffcontrolsnonehealth100height80image8f4d49bc70214b05937044bc83dac64binteractabletruelevel1rolespeed0width80idsection1level1title内容titlekey内容||||"
+        },
+        {
+          "id": "8ae691d6-86b1-4a9d-9ac9-600325eb1c88",
+          "assetRefs": [
+            "8f4d49bc-7021-4b05-9370-44bc83dac64b"
+          ],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/projections/rpg-player.json",
+          "title": "rpg-player",
+          "name": "rpg-player",
+          "category": "document",
+          "displayPath": "docs-standard/documents/projections/rpg-player.json",
+          "relations": [
+            {
+              "kind": "references",
+              "targetId": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+              "slot": "projection-source"
+            }
+          ],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "kv",
+                    "key": "format",
+                    "value": "viento-object-projection"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "schemaVersion",
+                    "value": 1
+                  },
+                  {
+                    "type": "kv",
+                    "key": "title",
+                    "value": "Traveler · Player"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "sourceObjectId",
+                    "value": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "template",
+                    "value": {
+                      "packageId": "org.viento.projection.rpg-player",
+                      "version": "1.0.0",
+                      "digest": "sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd",
+                      "snapshot": {
+                        "id": "org.viento.projection.rpg-player",
+                        "version": "1.0.0",
+                        "label": "RPG 玩家角色",
+                        "family": "game",
+                        "lineage": [
+                          {
+                            "id": "org.viento.projection.character",
+                            "version": "1.0.0"
+                          },
+                          {
+                            "id": "org.viento.projection.game",
+                            "version": "1.0.0"
+                          },
+                          {
+                            "id": "org.viento.projection.rpg",
+                            "version": "1.0.0"
+                          }
+                        ],
+                        "fields": [
+                          {
+                            "id": "role",
+                            "label": "角色定位",
+                            "type": "string",
+                            "default": "",
+                            "limits": {
+                              "maxLength": 4096
+                            }
+                          },
+                          {
+                            "id": "width",
+                            "label": "宽度",
+                            "type": "number",
+                            "default": 80,
+                            "limits": {
+                              "min": 1,
+                              "max": 2048
+                            }
+                          },
+                          {
+                            "id": "height",
+                            "label": "高度",
+                            "type": "number",
+                            "default": 80,
+                            "limits": {
+                              "min": 1,
+                              "max": 2048
+                            }
+                          },
+                          {
+                            "id": "color",
+                            "label": "颜色",
+                            "type": "string",
+                            "default": "#ffffff",
+                            "limits": {
+                              "maxLength": 4096
+                            }
+                          },
+                          {
+                            "id": "speed",
+                            "label": "移动速度",
+                            "type": "number",
+                            "default": 160,
+                            "limits": {
+                              "min": 0,
+                              "max": 2000
+                            }
+                          },
+                          {
+                            "id": "controls",
+                            "label": "移动控制",
+                            "type": "enum",
+                            "default": "arrows",
+                            "options": [
+                              "arrows",
+                              "none"
+                            ]
+                          },
+                          {
+                            "id": "image",
+                            "label": "图片",
+                            "type": "image",
+                            "default": ""
+                          },
+                          {
+                            "id": "level",
+                            "label": "等级",
+                            "type": "number",
+                            "default": 1,
+                            "limits": {
+                              "min": 1,
+                              "max": 999
+                            }
+                          },
+                          {
+                            "id": "health",
+                            "label": "生命值",
+                            "type": "number",
+                            "default": 100,
+                            "limits": {
+                              "min": 0,
+                              "max": 1000000
+                            }
+                          }
+                        ],
+                        "runtime": {
+                          "kind": "scene2d-actor",
+                          "width": "width",
+                          "height": "height",
+                          "color": "color",
+                          "speed": "speed",
+                          "controls": "controls",
+                          "image": "image"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "kv",
+                    "key": "configuration",
+                    "value": {
+                      "role": "",
+                      "width": 80,
+                      "height": 80,
+                      "color": "#ffffff",
+                      "speed": 180,
+                      "controls": "arrows",
+                      "image": "8f4d49bc-7021-4b05-9370-44bc83dac64b",
+                      "level": 1,
+                      "health": 100
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "文档",
+          "source": {
+            "path": "docs-standard/documents/projections/rpg-player.json",
+            "extension": ".json",
+            "size": 3095,
+            "modifiedAt": "2026-11-11T08:26:47.559Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/projections/rpg-player.json",
+            "title": "rpg-player",
+            "category": "document",
+            "group": "文档",
+            "purpose": "文档",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "format": "viento-object-projection",
+            "schemaVersion": 1,
+            "title": "Traveler · Player",
+            "sourceObjectId": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+            "template": {
+              "packageId": "org.viento.projection.rpg-player",
+              "version": "1.0.0",
+              "digest": "sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd",
+              "snapshot": {
+                "id": "org.viento.projection.rpg-player",
+                "version": "1.0.0",
+                "label": "RPG 玩家角色",
+                "family": "game",
+                "lineage": [
+                  {
+                    "id": "org.viento.projection.character",
+                    "version": "1.0.0"
+                  },
+                  {
+                    "id": "org.viento.projection.game",
+                    "version": "1.0.0"
+                  },
+                  {
+                    "id": "org.viento.projection.rpg",
+                    "version": "1.0.0"
+                  }
+                ],
+                "fields": [
+                  {
+                    "id": "role",
+                    "label": "角色定位",
+                    "type": "string",
+                    "default": "",
+                    "limits": {
+                      "maxLength": 4096
+                    }
+                  },
+                  {
+                    "id": "width",
+                    "label": "宽度",
+                    "type": "number",
+                    "default": 80,
+                    "limits": {
+                      "min": 1,
+                      "max": 2048
+                    }
+                  },
+                  {
+                    "id": "height",
+                    "label": "高度",
+                    "type": "number",
+                    "default": 80,
+                    "limits": {
+                      "min": 1,
+                      "max": 2048
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "label": "颜色",
+                    "type": "string",
+                    "default": "#ffffff",
+                    "limits": {
+                      "maxLength": 4096
+                    }
+                  },
+                  {
+                    "id": "speed",
+                    "label": "移动速度",
+                    "type": "number",
+                    "default": 160,
+                    "limits": {
+                      "min": 0,
+                      "max": 2000
+                    }
+                  },
+                  {
+                    "id": "controls",
+                    "label": "移动控制",
+                    "type": "enum",
+                    "default": "arrows",
+                    "options": [
+                      "arrows",
+                      "none"
+                    ]
+                  },
+                  {
+                    "id": "image",
+                    "label": "图片",
+                    "type": "image",
+                    "default": ""
+                  },
+                  {
+                    "id": "level",
+                    "label": "等级",
+                    "type": "number",
+                    "default": 1,
+                    "limits": {
+                      "min": 1,
+                      "max": 999
+                    }
+                  },
+                  {
+                    "id": "health",
+                    "label": "生命值",
+                    "type": "number",
+                    "default": 100,
+                    "limits": {
+                      "min": 0,
+                      "max": 1000000
+                    }
+                  }
+                ],
+                "runtime": {
+                  "kind": "scene2d-actor",
+                  "width": "width",
+                  "height": "height",
+                  "color": "color",
+                  "speed": "speed",
+                  "controls": "controls",
+                  "image": "image"
+                }
+              }
+            },
+            "configuration": {
+              "role": "",
+              "width": 80,
+              "height": 80,
+              "color": "#ffffff",
+              "speed": 180,
+              "controls": "arrows",
+              "image": "8f4d49bc-7021-4b05-9370-44bc83dac64b",
+              "level": 1,
+              "health": 100
+            }
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "rpg-player"
+            },
+            {
+              "key": "format",
+              "value": "viento-object-projection"
+            },
+            {
+              "key": "schemaVersion",
+              "value": "1"
+            },
+            {
+              "key": "title",
+              "value": "Traveler · Player"
+            },
+            {
+              "key": "sourceObjectId",
+              "value": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f"
+            },
+            {
+              "key": "template",
+              "value": "{\n  \"packageId\": \"org.viento.projection.rpg-player\",\n  \"version\": \"1.0.0\",\n  \"digest\": \"sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd\",\n  \"snapshot\": {\n    \"id\": \"org.viento.projection.rpg-player\",\n    \"version\": \"1.0.0\",\n    \"label\": \"RPG 玩家角色\",\n    \"family\": \"game\",\n    \"lineage\": [\n      {\n        \"id\": \"org.viento.projection.character\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.game\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.rpg\",\n        \"version\": \"1.0.0\"\n      }\n    ],\n    \"fields\": [\n      {\n        \"id\": \"role\",\n        \"label\": \"角色定位\",\n        \"type\": \"string\",\n        \"default\": \"\",\n        \"limits\": {\n          \"maxLength\": 4096\n        }\n      },\n      {\n        \"id\": \"width\",\n        \"label\": \"宽度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"height\",\n        \"label\": \"高度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"color\",\n        \"label\": \"颜色\",\n        \"type\": \"string\",\n        \"default\": \"#ffffff\",\n        \"limits\": {\n          \"maxLength\": 4096\n        }\n      },\n      {\n        \"id\": \"speed\",\n        \"label\": \"移动速度\",\n        \"type\": \"number\",\n        \"default\": 160,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 2000\n        }\n      },\n      {\n        \"id\": \"controls\",\n        \"label\": \"移动控制\",\n        \"type\": \"enum\",\n        \"default\": \"arrows\",\n        \"options\": [\n          \"arrows\",\n          \"none\"\n        ]\n      },\n      {\n        \"id\": \"image\",\n        \"label\": \"图片\",\n        \"type\": \"image\",\n        \"default\": \"\"\n      },\n      {\n        \"id\": \"level\",\n        \"label\": \"等级\",\n        \"type\": \"number\",\n        \"default\": 1,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 999\n        }\n      },\n      {\n        \"id\": \"health\",\n        \"label\": \"生命值\",\n        \"type\": \"number\",\n        \"default\": 100,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 1000000\n        }\n      }\n    ],\n    \"runtime\": {\n      \"kind\": \"scene2d-actor\",\n      \"width\": \"width\",\n      \"height\": \"height\",\n      \"color\": \"color\",\n      \"speed\": \"speed\",\n      \"controls\": \"controls\",\n      \"image\": \"image\"\n    }\n  }\n}"
+            },
+            {
+              "key": "configuration",
+              "value": "{\n  \"role\": \"\",\n  \"width\": 80,\n  \"height\": 80,\n  \"color\": \"#ffffff\",\n  \"speed\": 180,\n  \"controls\": \"arrows\",\n  \"image\": \"8f4d49bc-7021-4b05-9370-44bc83dac64b\",\n  \"level\": 1,\n  \"health\": 100\n}"
+            }
+          ],
+          "outline": [
+            {
+              "id": "rpg-player",
+              "title": "rpg-player",
+              "level": 1,
+              "anchor": "#rpg-player",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "json",
+              "value": {
+                "format": "viento-object-projection",
+                "schemaVersion": 1,
+                "title": "Traveler · Player",
+                "sourceObjectId": "1f5f8cfc-c843-4e94-9181-21c2081a3f3f",
+                "template": {
+                  "packageId": "org.viento.projection.rpg-player",
+                  "version": "1.0.0",
+                  "digest": "sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd",
+                  "snapshot": {
+                    "id": "org.viento.projection.rpg-player",
+                    "version": "1.0.0",
+                    "label": "RPG 玩家角色",
+                    "family": "game",
+                    "lineage": [
+                      {
+                        "id": "org.viento.projection.character",
+                        "version": "1.0.0"
+                      },
+                      {
+                        "id": "org.viento.projection.game",
+                        "version": "1.0.0"
+                      },
+                      {
+                        "id": "org.viento.projection.rpg",
+                        "version": "1.0.0"
+                      }
+                    ],
+                    "fields": [
+                      {
+                        "id": "role",
+                        "label": "角色定位",
+                        "type": "string",
+                        "default": "",
+                        "limits": {
+                          "maxLength": 4096
+                        }
+                      },
+                      {
+                        "id": "width",
+                        "label": "宽度",
+                        "type": "number",
+                        "default": 80,
+                        "limits": {
+                          "min": 1,
+                          "max": 2048
+                        }
+                      },
+                      {
+                        "id": "height",
+                        "label": "高度",
+                        "type": "number",
+                        "default": 80,
+                        "limits": {
+                          "min": 1,
+                          "max": 2048
+                        }
+                      },
+                      {
+                        "id": "color",
+                        "label": "颜色",
+                        "type": "string",
+                        "default": "#ffffff",
+                        "limits": {
+                          "maxLength": 4096
+                        }
+                      },
+                      {
+                        "id": "speed",
+                        "label": "移动速度",
+                        "type": "number",
+                        "default": 160,
+                        "limits": {
+                          "min": 0,
+                          "max": 2000
+                        }
+                      },
+                      {
+                        "id": "controls",
+                        "label": "移动控制",
+                        "type": "enum",
+                        "default": "arrows",
+                        "options": [
+                          "arrows",
+                          "none"
+                        ]
+                      },
+                      {
+                        "id": "image",
+                        "label": "图片",
+                        "type": "image",
+                        "default": ""
+                      },
+                      {
+                        "id": "level",
+                        "label": "等级",
+                        "type": "number",
+                        "default": 1,
+                        "limits": {
+                          "min": 1,
+                          "max": 999
+                        }
+                      },
+                      {
+                        "id": "health",
+                        "label": "生命值",
+                        "type": "number",
+                        "default": 100,
+                        "limits": {
+                          "min": 0,
+                          "max": 1000000
+                        }
+                      }
+                    ],
+                    "runtime": {
+                      "kind": "scene2d-actor",
+                      "width": "width",
+                      "height": "height",
+                      "color": "color",
+                      "speed": "speed",
+                      "controls": "controls",
+                      "image": "image"
+                    }
+                  }
+                },
+                "configuration": {
+                  "role": "",
+                  "width": 80,
+                  "height": 80,
+                  "color": "#ffffff",
+                  "speed": 180,
+                  "controls": "arrows",
+                  "image": "8f4d49bc-7021-4b05-9370-44bc83dac64b",
+                  "level": 1,
+                  "health": 100
+                }
+              }
+            }
+          ],
+          "type": "json",
+          "lastModified": "2026-11-11T08:26:47.559Z",
+          "size": 3095,
+          "content": "{\n  \"format\": \"viento-object-projection\",\n  \"schemaVersion\": 1,\n  \"title\": \"Traveler · Player\",\n  \"sourceObjectId\": \"1f5f8cfc-c843-4e94-9181-21c2081a3f3f\",\n  \"template\": {\n    \"packageId\": \"org.viento.projection.rpg-player\",\n    \"version\": \"1.0.0\",\n    \"digest\": \"sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd\",\n    \"snapshot\": {\n      \"id\": \"org.viento.projection.rpg-player\",\n      \"version\": \"1.0.0\",\n      \"label\": \"RPG 玩家角色\",\n      \"family\": \"game\",\n      \"lineage\": [\n        {\n          \"id\": \"org.viento.projection.character\",\n          \"version\": \"1.0.0\"\n        },\n        {\n          \"id\": \"org.viento.projection.game\",\n          \"version\": \"1.0.0\"\n        },\n        {\n          \"id\": \"org.viento.projection.rpg\",\n          \"version\": \"1.0.0\"\n        }\n      ],\n      \"fields\": [\n        {\n          \"id\": \"role\",\n          \"label\": \"角色定位\",\n          \"type\": \"string\",\n          \"default\": \"\",\n          \"limits\": {\n            \"maxLength\": 4096\n          }\n        },\n        {\n          \"id\": \"width\",\n          \"label\": \"宽度\",\n          \"type\": \"number\",\n          \"default\": 80,\n          \"limits\": {\n            \"min\": 1,\n            \"max\": 2048\n          }\n        },\n        {\n          \"id\": \"height\",\n          \"label\": \"高度\",\n          \"type\": \"number\",\n          \"default\": 80,\n          \"limits\": {\n            \"min\": 1,\n            \"max\": 2048\n          }\n        },\n        {\n          \"id\": \"color\",\n          \"label\": \"颜色\",\n          \"type\": \"string\",\n          \"default\": \"#ffffff\",\n          \"limits\": {\n            \"maxLength\": 4096\n          }\n        },\n        {\n          \"id\": \"speed\",\n          \"label\": \"移动速度\",\n          \"type\": \"number\",\n          \"default\": 160,\n          \"limits\": {\n            \"min\": 0,\n            \"max\": 2000\n          }\n        },\n        {\n          \"id\": \"controls\",\n          \"label\": \"移动控制\",\n          \"type\": \"enum\",\n          \"default\": \"arrows\",\n          \"options\": [\n            \"arrows\",\n            \"none\"\n          ]\n        },\n        {\n          \"id\": \"image\",\n          \"label\": \"图片\",\n          \"type\": \"image\",\n          \"default\": \"\"\n        },\n        {\n          \"id\": \"level\",\n          \"label\": \"等级\",\n          \"type\": \"number\",\n          \"default\": 1,\n          \"limits\": {\n            \"min\": 1,\n            \"max\": 999\n          }\n        },\n        {\n          \"id\": \"health\",\n          \"label\": \"生命值\",\n          \"type\": \"number\",\n          \"default\": 100,\n          \"limits\": {\n            \"min\": 0,\n            \"max\": 1000000\n          }\n        }\n      ],\n      \"runtime\": {\n        \"kind\": \"scene2d-actor\",\n        \"width\": \"width\",\n        \"height\": \"height\",\n        \"color\": \"color\",\n        \"speed\": \"speed\",\n        \"controls\": \"controls\",\n        \"image\": \"image\"\n      }\n    }\n  },\n  \"configuration\": {\n    \"role\": \"\",\n    \"width\": 80,\n    \"height\": 80,\n    \"color\": \"#ffffff\",\n    \"speed\": 180,\n    \"controls\": \"arrows\",\n    \"image\": \"8f4d49bc-7021-4b05-9370-44bc83dac64b\",\n    \"level\": 1,\n    \"health\": 100\n  }\n}\n",
+          "heroImages": [
+            "assets/media/images/8f4d49bc-7021-4b05-9370-44bc83dac64b.svg"
+          ],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/1a5a2c501f16c52f12d964360b2dd39ed3e93bc90d3bec8f58cd060e32c5de8e.json",
+          "parser": {
+            "contentType": "json",
+            "format": "json",
+            "profile": "json",
+            "lineCount": 138,
+            "fieldCount": 6,
+            "blockCount": 1
+          },
+          "parserStats": {
+            "blockCount": 1,
+            "headingCount": 0,
+            "paragraphCount": 0,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 0
+          },
+          "owners": [],
+          "ownedDocuments": [],
+          "_searchText": "rpg-player rpg-player docs-standard/documents/projections/rpg-player.json 文档 document json format viento-object-projection schemaversion 1 title traveler · player sourceobjectid 1f5f8cfc-c843-4e94-9181-21c2081a3f3f template [object object] configuration [object object] _header rpg-player format viento-object-projection schemaversion 1 title traveler · player sourceobjectid 1f5f8cfc-c843-4e94-9181-21c2081a3f3f template {\n  \"packageid\": \"org.viento.projection.rpg-player\",\n  \"version\": \"1.0.0\",\n  \"digest\": \"sha256:a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcd\",\n  \"snapshot\": {\n    \"id\": \"org.viento.projection.rpg-player\",\n    \"version\": \"1.0.0\",\n    \"label\": \"rpg 玩家角色\",\n    \"family\": \"game\",\n    \"lineage\": [\n      {\n        \"id\": \"org.viento.projection.character\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.game\",\n        \"version\": \"1.0.0\"\n      },\n      {\n        \"id\": \"org.viento.projection.rpg\",\n        \"version\": \"1.0.0\"\n      }\n    ],\n    \"fields\": [\n      {\n        \"id\": \"role\",\n        \"label\": \"角色定位\",\n        \"type\": \"string\",\n        \"default\": \"\",\n        \"limits\": {\n          \"maxlength\": 4096\n        }\n      },\n      {\n        \"id\": \"width\",\n        \"label\": \"宽度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"height\",\n        \"label\": \"高度\",\n        \"type\": \"number\",\n        \"default\": 80,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 2048\n        }\n      },\n      {\n        \"id\": \"color\",\n        \"label\": \"颜色\",\n        \"type\": \"string\",\n        \"default\": \"#ffffff\",\n        \"limits\": {\n          \"maxlength\": 4096\n        }\n      },\n      {\n        \"id\": \"speed\",\n        \"label\": \"移动速度\",\n        \"type\": \"number\",\n        \"default\": 160,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 2000\n        }\n      },\n      {\n        \"id\": \"controls\",\n        \"label\": \"移动控制\",\n        \"type\": \"enum\",\n        \"default\": \"arrows\",\n        \"options\": [\n          \"arrows\",\n          \"none\"\n        ]\n      },\n      {\n        \"id\": \"image\",\n        \"label\": \"图片\",\n        \"type\": \"image\",\n        \"default\": \"\"\n      },\n      {\n        \"id\": \"level\",\n        \"label\": \"等级\",\n        \"type\": \"number\",\n        \"default\": 1,\n        \"limits\": {\n          \"min\": 1,\n          \"max\": 999\n        }\n      },\n      {\n        \"id\": \"health\",\n        \"label\": \"生命值\",\n        \"type\": \"number\",\n        \"default\": 100,\n        \"limits\": {\n          \"min\": 0,\n          \"max\": 1000000\n        }\n      }\n    ],\n    \"runtime\": {\n      \"kind\": \"scene2d-actor\",\n      \"width\": \"width\",\n      \"height\": \"height\",\n      \"color\": \"color\",\n      \"speed\": \"speed\",\n      \"controls\": \"controls\",\n      \"image\": \"image\"\n    }\n  }\n} configuration {\n  \"role\": \"\",\n  \"width\": 80,\n  \"height\": 80,\n  \"color\": \"#ffffff\",\n  \"speed\": 180,\n  \"controls\": \"arrows\",\n  \"image\": \"8f4d49bc-7021-4b05-9370-44bc83dac64b\",\n  \"level\": 1,\n  \"health\": 100\n} json   [object object] rpg-player #rpg-player",
+          "sourcePath": "docs-standard/documents/projections/rpg-player.json",
+          "_heroImagesOrdered": [
+            "assets/media/images/8f4d49bc-7021-4b05-9370-44bc83dac64b.svg"
+          ],
+          "_sourceVersion": "",
+          "_sourceLastModified": "2026-11-11T08:26:47.559Z",
+          "_renderSignature": "docsstandarddocumentsprojectionsrpgplayerjson||rpgplayer||docsstandarddocumentsprojectionsrpgplayerjson||document||文档||json||20261111t082647559z||formatvientoobjectprojectionschemaversion1titletravelerplayersourceobjectid1f5f8cfcc8434e94918121c2081a3f3ftemplatepackageidorgvientoprojectionrpgplayerversion100digestsha256a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcdsnapshotidorgvientoprojectionrpgplayerversion100labelrpg玩家角色familygamelineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100fieldsidrolelabel角色定位typestringdefaultlimitsmaxlength4096idwidthlabel宽度typenumberdefault80limitsmin1max2048idheightlabel高度typenumberdefault80limitsmin1max2048idcolorlabel颜色typestringdefaultfffffflimitsmaxlength4096idspeedlabel移动速度typenumberdefault160limitsmin0max2000idcontrolslabel移动控制typeenumdefaultarrowsoptionsarrowsnoneidimagelabel图片typeimagedefaultidlevellabel等级typenumberdefault1limitsmin1max999idhealthlabel生命值typenumberdefault100limitsmin0max1000000runtimekindscene2dactorwidthwidthheightheightcolorcolorspeedspeedcontrolscontrolsimageimageconfigurationrolewidth80height80colorffffffspeed180controlsarrowsimage8f4d49bc70214b05937044bc83dac64blevel1health100||configurationcolorffffffcontrolsarrowshealth100height80image8f4d49bc70214b05937044bc83dac64blevel1rolespeed180width80formatvientoobjectprojectionschemaversion1sourceobjectid1f5f8cfcc8434e94918121c2081a3f3ftemplatedigestsha256a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcdpackageidorgvientoprojectionrpgplayersnapshotfamilygamefieldsdefaultidrolelabel角色定位limitsmaxlength4096typestringdefault80idwidthlabel宽度limitsmax2048min1typenumberdefault80idheightlabel高度limitsmax2048min1typenumberdefaultffffffidcolorlabel颜色limitsmaxlength4096typestringdefault160idspeedlabel移动速度limitsmax2000min0typenumberdefaultarrowsidcontrolslabel移动控制optionsarrowsnonetypeenumdefaultidimagelabel图片typeimagedefault1idlevellabel等级limitsmax999min1typenumberdefault100idhealthlabel生命值limitsmax1000000min0typenumberidorgvientoprojectionrpgplayerlabelrpg玩家角色lineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100runtimecolorcolorcontrolscontrolsheightheightimageimagekindscene2dactorspeedspeedwidthwidthversion100version100titletravelerplayer||keyheadervaluerpgplayerkeyformatvaluevientoobjectprojectionkeyschemaversionvalue1keytitlevaluetravelerplayerkeysourceobjectidvalue1f5f8cfcc8434e94918121c2081a3f3fkeytemplatevaluepackageidorgvientoprojectionrpgplayerversion100digestsha256a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcdsnapshotidorgvientoprojectionrpgplayerversion100labelrpg玩家角色familygamelineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100fieldsidrolelabel角色定位typestringdefaultlimitsmaxlength4096idwidthlabel宽度typenumberdefault80limitsmin1max2048idheightlabel高度typenumberdefault80limitsmin1max2048idcolorlabel颜色typestringdefaultfffffflimitsmaxlength4096idspeedlabel移动速度typenumberdefault160limitsmin0max2000idcontrolslabel移动控制typeenumdefaultarrowsoptionsarrowsnoneidimagelabel图片typeimagedefaultidlevellabel等级typenumberdefault1limitsmin1max999idhealthlabel生命值typenumberdefault100limitsmin0max1000000runtimekindscene2dactorwidthwidthheightheightcolorcolorspeedspeedcontrolscontrolsimageimagekeyconfigurationvaluerolewidth80height80colorffffffspeed180controlsarrowsimage8f4d49bc70214b05937044bc83dac64blevel1health100||keytexttitletypejsonvalueconfigurationcolorffffffcontrolsarrowshealth100height80image8f4d49bc70214b05937044bc83dac64blevel1rolespeed180width80formatvientoobjectprojectionschemaversion1sourceobjectid1f5f8cfcc8434e94918121c2081a3f3ftemplatedigestsha256a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcdpackageidorgvientoprojectionrpgplayersnapshotfamilygamefieldsdefaultidrolelabel角色定位limitsmaxlength4096typestringdefault80idwidthlabel宽度limitsmax2048min1typenumberdefault80idheightlabel高度limitsmax2048min1typenumberdefaultffffffidcolorlabel颜色limitsmaxlength4096typestringdefault160idspeedlabel移动速度limitsmax2000min0typenumberdefaultarrowsidcontrolslabel移动控制optionsarrowsnonetypeenumdefaultidimagelabel图片typeimagedefault1idlevellabel等级limitsmax999min1typenumberdefault100idhealthlabel生命值limitsmax1000000min0typenumberidorgvientoprojectionrpgplayerlabelrpg玩家角色lineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100runtimecolorcolorcontrolscontrolsheightheightimageimagekindscene2dactorspeedspeedwidthwidthversion100version100titletravelerplayer||anchorrpgplayerchildrenidrpgplayerlevel1titlerpgplayer||schemaversionvientolayoutv1sectionsanchorblockskeyformattypekvvaluevientoobjectprojectionkeyschemaversiontypekvvalue1keytitletypekvvaluetravelerplayerkeysourceobjectidtypekvvalue1f5f8cfcc8434e94918121c2081a3f3fkeytemplatetypekvvaluedigestsha256a9875a8948173f3ee04ddeea3311508bddb401330a0b1c4a80617ddade542fcdpackageidorgvientoprojectionrpgplayersnapshotfamilygamefieldsdefaultidrolelabel角色定位limitsmaxlength4096typestringdefault80idwidthlabel宽度limitsmax2048min1typenumberdefault80idheightlabel高度limitsmax2048min1typenumberdefaultffffffidcolorlabel颜色limitsmaxlength4096typestringdefault160idspeedlabel移动速度limitsmax2000min0typenumberdefaultarrowsidcontrolslabel移动控制optionsarrowsnonetypeenumdefaultidimagelabel图片typeimagedefault1idlevellabel等级limitsmax999min1typenumberdefault100idhealthlabel生命值limitsmax1000000min0typenumberidorgvientoprojectionrpgplayerlabelrpg玩家角色lineageidorgvientoprojectioncharacterversion100idorgvientoprojectiongameversion100idorgvientoprojectionrpgversion100runtimecolorcolorcontrolscontrolsheightheightimageimagekindscene2dactorspeedspeedwidthwidthversion100version100keyconfigurationtypekvvaluecolorffffffcontrolsarrowshealth100height80image8f4d49bc70214b05937044bc83dac64blevel1rolespeed180width80idsection1level1title内容titlekey内容||||"
+        }
+      ],
+      "activePath": "docs-standard/documents/scenes/a.json",
+      "activeTab": "all",
+      "generatedStatus": "（静态生成 2026/11/11 16:26:47）",
+      "editInputMode": "source",
+      "editBlockDrafts": [],
+      "editHasUnsavedChanges": false,
+      "isSidebarCollapsed": false,
+      "mode": "edit",
+      "editBackendAvailable": true,
+      "isEditing": false,
+      "isRebuilding": false,
+      "isSaving": false,
+      "isExporting": false,
+      "isMutatingWorld": false,
+      "isImportingMedia": false,
+      "isLoadingSource": false,
+      "isLoadingTemplate": false,
+      "isLoadingFields": false,
+      "isCreating": false,
+      "isCreatePathValid": true,
+      "activeCreateType": "document",
+      "activeEditPath": "",
+      "activeEditSource": "",
+      "activeCreatePath": "",
+      "activeEditSourceVersion": "",
+      "workspace": {
+        "id": "c3d8ab3c-7e72-48a2-93f0-fb211812847a",
+        "name": "Scene source layout smoke",
+        "version": 3,
+        "paths": {
+          "documents": "documents",
+          "templates": "templates",
+          "metadata": "metadata"
+        },
+        "configurable": true,
+        "projectTypes": true,
+        "documentTypes": [
+          {
+            "id": "document",
+            "label": "文档",
+            "directory": "",
+            "parserProfile": "structured",
+            "template": "document.md",
+            "templateSource": "templates/document.md",
+            "content": ""
+          }
+        ]
+      },
+      "generatedAt": "2026-11-11T08:26:47.966Z"
+    }
+  },
+  "serviceFailure": {
+    "supported": true,
+    "available": true,
+    "reason": null,
+    "toolStatus": {
+      "format": "viento-execution-tool-status",
+      "schemaVersion": 1,
+      "backendId": "org.viento.godot4",
+      "status": "unchecked",
+      "reason": null,
+      "identity": null
+    },
+    "assemblyDocuments": true,
+    "platform": "linux",
+    "backend": {
+      "format": "viento-execution-backend",
+      "schemaVersion": 1,
+      "id": "org.viento.godot4",
+      "label": "Godot 4",
+      "version": "0.42.0",
+      "platforms": [
+        "linux"
+      ],
+      "plans": [
+        {
+          "kind": "scene2d",
+          "schemaVersion": 1,
+          "runtimeProtocolVersion": 1
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 2,
+          "runtimeProtocolVersion": 2
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 3,
+          "runtimeProtocolVersion": 3
+        },
+        {
+          "kind": "project",
+          "schemaVersion": 1,
+          "runtimeProtocolVersion": 11
+        },
+        {
+          "kind": "project",
+          "schemaVersion": 2,
+          "runtimeProtocolVersion": 11
+        }
+      ],
+      "capabilities": [
+        "physics.input-replay-instances2d",
+        "physics.planar-intent2d",
+        "physics.platform-control2d",
+        "physics.platform-vertical2d",
+        "project.input-map",
+        "physics.character-intent2d",
+        "runtime.audio-requests",
+        "runtime.animation-requests",
+        "runtime.execution-frames",
+        "runtime.execution-clock",
+        "physics.platform-events2d",
+        "physics.platform-motion2d",
+        "physics.character-drop-through2d",
+        "physics.character-contacts2d",
+        "physics.one-way-platform2d",
+        "physics.character-events2d",
+        "physics.character-motion2d",
+        "physics.observe2d",
+        "physics.bodies2d",
+        "physics.character2d",
+        "physics.sensors2d",
+        "physics.character-slide2d",
+        "scene2d",
+        "input.arrows",
+        "state.movement",
+        "image",
+        "behavior.bindings",
+        "behavior.gdscript",
+        "runtime.control-replay",
+        "runtime.control-replay.instances",
+        "audio.nonspatial",
+        "audio.timeline",
+        "project.scenes",
+        "project.scene-switching",
+        "project.shared-state",
+        "project.events",
+        "project.audio-control",
+        "project.animation-control",
+        "project.animation-completion",
+        "project.animation-state-snapshots",
+        "project.animation-state-entries",
+        "project.animation-state-entry-triggers",
+        "animation.visual2d",
+        "animation.sprite2d",
+        "animation.clips2d",
+        "animation.instances2d"
+      ],
+      "execution": {
+        "build": true,
+        "headlessLogic": true,
+        "windowPreview": true,
+        "windowCapture": true,
+        "offscreenRender": false,
+        "embeddedViewport": false,
+        "gpuCompute": false
+      },
+      "extensions": []
+    },
+    "scenes": [
+      {
+        "id": "8bf44d47-78c1-4233-8860-7b1ac2967227",
+        "sourcePath": "documents/scenes/a.json",
+        "title": "A · text draft preview"
+      }
+    ],
+    "previewDocuments": [
+      {
+        "id": "8bf44d47-78c1-4233-8860-7b1ac2967227",
+        "sourcePath": "documents/scenes/a.json",
+        "title": "A · text draft preview",
+        "kind": "scene"
+      }
+    ],
+    "catalogDiagnostic": null,
+    "job": null,
+    "latestBuild": null,
+    "projects": [],
+    "projectManagement": {
+      "format": "viento-backend-project-management",
+      "schemaVersion": 1,
+      "scope": "host-catalog",
+      "retentionLimit": 3,
+      "preservedCount": 0,
+      "previousSessions": "explicit-verify",
+      "delivery": "viento-build-delivery-v1",
+      "catalogDiagnostic": null
+    }
+  },
+  "finishedAt": "2026-11-11T08:26:49.648Z"
+}

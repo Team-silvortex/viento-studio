@@ -25,7 +25,7 @@ async function harness(t, initialModel=model(), options={}) {
   const calls=[],applied=[],views=[],current={editable:true}; let callbacks,source=content,reads=0,reloads=0,worldReads=0,worldChange=value=>value,worldError=null;
   const h = await dialogHarness('app-scene-layout', {
     createSceneLayoutDraft, API_PATHS:{DOC:'/api/doc'}, WORLD_API_PATH, crypto: webcrypto,
-    createScenePreviewCanvas: options => { callbacks=options; return Object.fromEntries(['setScene','setVisible','setImages','select','selectMany','setMultiSelect','setEditing','setSnap','setGrid','fit','zoom'].map(name=>[name,(...args)=>views.push({name,args})])); },
+    createScenePreviewCanvas: options => { callbacks=options; return Object.fromEntries(['setScene','setVisible','setImages','select','selectMany','setMultiSelect','setEditing','setSnap','setGrid','fit','fitAll','focusSelection','zoom'].map(name=>[name,(...args)=>views.push({name,args})])); },
     requestWorldCommand: request => { const wait=deferred(); calls.push({request,...wait}); return wait.promise; },
     readDocSource: async () => { reads++; return {content:source}; },
     fetchJsonApiRequest: async (url, options) => {
@@ -464,4 +464,26 @@ test('nested group selection includes every descendant and one group alignment i
   const search = h.element('sceneLayoutSearch'); search.value = secondId; search.dispatch('input');
   list.querySelector(`button[data-group-id="${groups[0].groupId}"]`).click(); assert.deepEqual(selectedIds(h), [actorId, secondId], 'filtered group still selects all descendants');
   const child = list.querySelector(`input[data-group-id="${groups[1].groupId}"]`); child.dispatch('change'); assert.deepEqual(selectedIds(h), [actorId]);
+});
+
+
+test('world framing keeps layout history, author positions and an existing save review intact', async t => {
+  const h = await harness(t);
+  h.element('sceneLayoutClearSelection').click();
+  assert.equal(h.element('sceneLayoutFocusSelection').disabled, true);
+  h.element('sceneLayoutSelectAll').click();
+  assert.equal(h.element('sceneLayoutFocusSelection').disabled, false);
+  h.element('sceneLayoutFitAll').click(); h.element('sceneLayoutFocusSelection').click();
+  assert.equal(h.calls.length, 0); assert.equal(h.element('sceneLayoutDialog').dataset.dirty, 'false');
+  assert.equal(h.element('sceneLayoutUndo').disabled, true);
+  h.move(-1500, 2500); await h.check(); const approved = h.calls[0].request.content;
+  assert.equal(h.element('sceneLayoutSave').disabled, false);
+  h.element('sceneLayoutFitAll').click(); h.element('sceneLayoutFocusSelection').click();
+  h.callbacks.onViewChange({ scale: .0017 }); assert.equal(h.element('sceneLayoutZoom').textContent, '0.17%');
+  assert.equal(h.element('sceneLayoutSave').disabled, false); assert.equal(h.calls.length, 1);
+  assert.equal(h.element('sceneLayoutSource').textContent, approved);
+  assert.equal(h.element('sceneLayoutX').value, '-1500'); assert.equal(h.element('sceneLayoutY').value, '2500');
+  assert.ok(h.views.some(row => row.name === 'fitAll')); assert.ok(h.views.some(row => row.name === 'focusSelection'));
+  h.element('sceneLayoutUndo').click(); assert.equal(h.element('sceneLayoutX').value, '100');
+  assert.equal(h.element('sceneLayoutUndo').disabled, true);
 });

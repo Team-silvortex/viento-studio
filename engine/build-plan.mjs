@@ -5,6 +5,8 @@ import { resolveSceneBehaviors } from './scene-behaviors.mjs';
 import { resolveSceneAudio, SCENE_AUDIO_CAPABILITIES } from './scene-audio.mjs';
 import { resolveSceneAnimation, sceneAnimationCapabilities } from './scene-animation.mjs';
 import { resolveScenePhysics2D, scenePhysics2DCapabilities } from './scene-physics2d.mjs';
+import { resolveSceneCamera2D, sceneCamera2DCapabilities } from './scene-camera2d.mjs';
+import { resolveSceneHUD2D, sceneHUD2DCapabilities } from './scene-hud2d.mjs';
 export const SCENE2D_CAPABILITIES = ['scene2d', 'input.arrows', 'state.movement', 'image'];
 export { PROJECT_BUILD_API_PATH } from './project-build-contract.mjs';
 
@@ -43,8 +45,16 @@ export function attachSceneBehaviorPlan(observed, plan) {
     requiredCapabilities: [...audible.requiredCapabilities, ...sceneAnimationCapabilities(animation.animation.document)] } : audible;
   const physics = resolveScenePhysics2D(observed, animated);
   if (!physics.ok) return { ok: false, plan: null, diagnostics: physics.diagnostics };
-  return { ok: true, plan: physics.physics ? { ...animated, physics: physics.physics,
-    requiredCapabilities: [...animated.requiredCapabilities, ...scenePhysics2DCapabilities(physics.physics.document)] } : animated, diagnostics: [] };
+  const physical = physics.physics ? { ...animated, physics: physics.physics,
+    requiredCapabilities: [...animated.requiredCapabilities, ...scenePhysics2DCapabilities(physics.physics.document)] } : animated;
+  const camera = resolveSceneCamera2D(observed, physical);
+  if (!camera.ok) return { ok: false, plan: null, diagnostics: camera.diagnostics };
+  const framed = camera.camera2d ? { ...physical, camera2d: camera.camera2d,
+    requiredCapabilities: [...physical.requiredCapabilities, ...sceneCamera2DCapabilities(camera.camera2d.document)] } : physical;
+  const hud = resolveSceneHUD2D(observed, framed);
+  if (!hud.ok) return { ok: false, plan: null, diagnostics: hud.diagnostics };
+  return { ok: true, plan: hud.hud2d ? { ...framed, hud2d: hud.hud2d,
+    requiredCapabilities: [...framed.requiredCapabilities, ...sceneHUD2DCapabilities(hud.hud2d.document)] } : framed, diagnostics: [] };
 }
 
 // Recovery checks frozen declaration and guarded registrations only, retaining

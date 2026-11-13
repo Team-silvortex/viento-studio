@@ -1,0 +1,4367 @@
+{
+  "startedAt": "2026-11-11T10:49:32.597Z",
+  "steps": [
+    "Ordered label and bar drafts, all sample states and three languages are exercised without writing. Explicit creation registers both references; a real 409 retains the draft and needs a new review before the only source is saved and reopened."
+  ],
+  "screenshots": [
+    "hud-fields-zh-CN-390.png",
+    "hud-preview-zh-CN-390.png",
+    "hud-fields-en-390.png",
+    "hud-preview-en-390.png",
+    "hud-fields-ja-390.png",
+    "hud-preview-ja-390.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "放弃未保存的 HUD 修改？"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noOverflow": true,
+      "anchor": {
+        "left": 45,
+        "right": 330,
+        "top": 91.4375,
+        "bottom": 135.4375,
+        "mainTop": 62,
+        "mainBottom": 702
+      },
+      "title": "场景 HUD",
+      "save": {
+        "text": "保存 HUD 设置",
+        "left": 143.453125,
+        "right": 246.546875,
+        "top": 792,
+        "bottom": 821
+      },
+      "cancel": {
+        "text": "取消修改",
+        "left": 256.90625,
+        "right": 360,
+        "top": 792,
+        "bottom": 821
+      }
+    },
+    "en": {
+      "noOverflow": true,
+      "anchor": {
+        "left": 45,
+        "right": 330,
+        "top": 82.4375,
+        "bottom": 119.4375,
+        "mainTop": 59,
+        "mainBottom": 703
+      },
+      "title": "Scene HUD",
+      "save": {
+        "text": "Save HUD settings",
+        "left": 142.65625,
+        "right": 247.328125,
+        "top": 781,
+        "bottom": 821
+      },
+      "cancel": {
+        "text": "Cancel change",
+        "left": 255.328125,
+        "right": 360,
+        "top": 788,
+        "bottom": 814
+      }
+    },
+    "ja": {
+      "noOverflow": true,
+      "anchor": {
+        "left": 45,
+        "right": 330,
+        "top": 91.4375,
+        "bottom": 135.4375,
+        "mainTop": 62,
+        "mainBottom": 685
+      },
+      "title": "シーン HUD",
+      "save": {
+        "text": "HUD 設定を保存",
+        "left": 142.65625,
+        "right": 247.328125,
+        "top": 775,
+        "bottom": 821
+      },
+      "cancel": {
+        "text": "変更をキャンセル",
+        "left": 255.328125,
+        "right": 360,
+        "top": 775,
+        "bottom": 821
+      }
+    }
+  },
+  "limitations": [
+    "Actual Chrome HTTP HUD authoring in a disposable workspace; native HUD runtime is independently tested elsewhere.",
+    "Sample values are editor-only and never read or mutate game state."
+  ],
+  "sources": {
+    "engine/scene-hud2d.mjs": "025841a62c3d49548d88c4d5eed4d48bb1e0fcf7d161057ced2af3657143bb30",
+    "engine/scene-hud2d-view.mjs": "fda2fde99eed91943b36a625724b5fbf535b9a8d8e21a76a2b74f515d4782064",
+    "engine/world-hud2d-create.mjs": "2af4b35ec512686f79a1af591d90e4847d0993f3e044c8f7e124fd8c6907f1b1",
+    "engine/world-command-contract.mjs": "ce61c773cdcd10bdedd104ba580d5475f033f9e70028c3359d57e7aac324e0cf",
+    "engine/project-shared-state.mjs": "f615021c9f04261c41888d3dc62ee8c65f87627706fdf268d0ce1e3e3ba9a357",
+    "scripts/lib/scene-hud2d-documents.mjs": "ee7143bb241ed182503d079a06f1130ef0e831f09a0c6ffb59d9d721e0ed8dba",
+    "scripts/lib/runtime-author-documents.mjs": "0dbcf3f69440e62d6e4e3ef710b6af77e59b339d0741d5b95c3920024b949073",
+    "scripts/lib/world-hud2d-create-transaction.mjs": "a02a26244e9716c8192f76ea7ee206e8070611567c93acc5e891bc18e25b6b3a",
+    "scripts/lib/world-transactions.mjs": "f065c5cb55de0634bacbfd808d78fa8a1bd2067014e2358026549a902d5b3f3a",
+    "scripts/adapters/node-world-commands.mjs": "8bfe4fca4f2a5c20481bf69065584d98586b457ff48e2d8c85071d9abebea98e",
+    "scripts/lib/project-build-service.mjs": "40cfad236257a1bff515d2bbca3caf481206ff7201e1cce5692f33ea35075efa",
+    "scripts/lib/doc-api-service.mjs": "12dae93e1df9d8bad578ac51bb999ed9856389595f37c3a40450582e093a6ef7",
+    "scripts/lib/doc-api-contract.mjs": "fb0333e2d1523f7d3c8eaff8858e895feacd74e61bd6924fa6f1a80910896b1c",
+    "scripts/lib/doc-server-routes.mjs": "a8d8d493af946ba8caed524b08a209c0b825f2c9721824283b787a210d747ae6",
+    "web/modules/app-scene-hud2d.js": "8ff350198d046497a32139f19f01c6d9690378793c5261b8d3490e1ac70480b3",
+    "web/scene-hud2d.css": "84cccb2e6a8e9a0f2a7c042c4d714dd041de17836d080cae06d25b9a5888a6a4",
+    "web/modules/app-project-build.js": "db22673ad7b54505146f21804df9fefcdb391780ca23285976bde77fe125851e",
+    "web/modules/app-doc-service.js": "19837e57630b1b1355d3100a68557f1b570e26db96ca8266f362a1715a24a3d8",
+    "web/i18n/en.js": "2da2d32f018e7dfffec1899786ca1affa72b7997a85ee80e52102790ad0ec2c9",
+    "web/i18n/ja.js": "8c52b9498fe459acf4ca093f17304cf749ef5215b0a63d9e667b0642be257726",
+    "scripts/tests/helpers/project-scene-switching-fixture.mjs": "4fed28eecac986482d7138b160f07accc8fc313634df7610646d26bc2239712b",
+    "scripts/tests/helpers/project-assembly-backend-fixture.mjs": "487a55312e69ab18ceda96b483044c5c72ad91a3c8c7faa6879d0caa56d8ca75",
+    "scripts/tests/scene-hud2d-smoke.mjs": "eb7f4beee3ec61f3f2216c8c687c27ecada300b9cbc822511e6ca4ee451e4a63"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "sceneId": "12345678-1234-4234-8234-123456789abd",
+    "assemblyId": "12345678-1234-4234-8234-123456789abc",
+    "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "sceneViewport": [
+      640,
+      480
+    ],
+    "entryViewport": [
+      800,
+      480
+    ],
+    "instances": [
+      "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2"
+    ],
+    "sceneActors": [
+      {
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "position": [
+          -100,
+          -80
+        ],
+        "size": [
+          40,
+          40
+        ],
+        "color": "#d02040",
+        "speed": 0,
+        "controls": "none",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+      },
+      {
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "position": [
+          1400,
+          900
+        ],
+        "size": [
+          40,
+          40
+        ],
+        "color": "#20d080",
+        "speed": 0,
+        "controls": "none",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2"
+      }
+    ]
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "previewSamples": [
+    {
+      "kind": "missing",
+      "text": "Score: — pt",
+      "ratio": 0.25
+    },
+    {
+      "kind": "zero",
+      "text": "Score: 0 pt",
+      "ratio": 0
+    },
+    {
+      "kind": "false",
+      "text": "Score: false pt",
+      "ratio": 0.25
+    },
+    {
+      "kind": "empty",
+      "text": "Score:  pt",
+      "ratio": 0.25
+    },
+    {
+      "kind": "number",
+      "text": "Score: 50 pt",
+      "ratio": 0.5
+    }
+  ],
+  "creation": {
+    "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+    "sceneId": "12345678-1234-4234-8234-123456789abd",
+    "changed": [
+      "documents/hud/main.json",
+      "metadata/documents/a57d099c-1aa8-47e7-b90f-9001daa24346.json",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json"
+    ],
+    "document": {
+      "format": "viento-scene-hud2d",
+      "schemaVersion": 1,
+      "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+      "elements": [
+        {
+          "id": "ee4c6cf0-3e95-4e0d-9b74-3801f073d388",
+          "kind": "bar",
+          "anchor": "bottom-left",
+          "offset": [
+            16,
+            16
+          ],
+          "size": [
+            200,
+            20
+          ],
+          "key": "health",
+          "min": 0,
+          "max": 100,
+          "fallback": 25,
+          "fillColor": "#37c98c",
+          "backgroundColor": "#334455"
+        },
+        {
+          "id": "86ffd664-cee4-4eff-8bf7-a59bb3a5903e",
+          "kind": "label",
+          "anchor": "top-right",
+          "offset": [
+            -10,
+            16
+          ],
+          "size": [
+            200,
+            32
+          ],
+          "fontSize": 20,
+          "color": "#ffffff",
+          "content": {
+            "kind": "state",
+            "key": "score",
+            "prefix": "Score: ",
+            "suffix": " pt",
+            "missing": "—"
+          }
+        }
+      ]
+    }
+  },
+  "conflict": {
+    "status": 409,
+    "retainedDraft": true,
+    "requiredFreshReview": true
+  },
+  "authorSnapshot": {
+    "before": {
+      "workspace.json": "b27c628191a64a1c39bdeb4f0a3e60a5d8011c60050c9765792fabce30a44f68",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "e09e80715ff0b4182cb1379c3f885b27dda7650dac226295815024222d089c7c",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "b321646873f978def85f061b03f97b0dda509d7659079dee8288ee41460487cb",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "4f6192e84dde6c393ec7215432aae60e5aae70e40aa0e1bb5dd14d21ec183962",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "185d90b4d875aec7a986ee19898d92a3cf1c21bf8fe50ca658b9ddd90630f106",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scenes/audio.json": "47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143",
+      "documents/scenes/demo.json": "4fb8d8cd81dd9095ea590e29d76a3bf022e650abd11fbe650a2544c471509e54",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "e89b5cb990b4a40075ad4f37723170b2c04b32f5a18320d726425eb076efae35",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "created": {
+      "workspace.json": "b27c628191a64a1c39bdeb4f0a3e60a5d8011c60050c9765792fabce30a44f68",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "18ef36dac61005aa18ad50c1eb7aa6b16ba098183cf1d5b5aad4eb9a561049d3",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/a57d099c-1aa8-47e7-b90f-9001daa24346.json": "65be17f8f6275917e20004c4dab0cf510c08c73254b316f73f6023a030bc51b0",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "b321646873f978def85f061b03f97b0dda509d7659079dee8288ee41460487cb",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "4f6192e84dde6c393ec7215432aae60e5aae70e40aa0e1bb5dd14d21ec183962",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "185d90b4d875aec7a986ee19898d92a3cf1c21bf8fe50ca658b9ddd90630f106",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scenes/audio.json": "47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143",
+      "documents/scenes/demo.json": "4fb8d8cd81dd9095ea590e29d76a3bf022e650abd11fbe650a2544c471509e54",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/hud/main.json": "a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "e89b5cb990b4a40075ad4f37723170b2c04b32f5a18320d726425eb076efae35",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "after": {
+      "workspace.json": "b27c628191a64a1c39bdeb4f0a3e60a5d8011c60050c9765792fabce30a44f68",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "18ef36dac61005aa18ad50c1eb7aa6b16ba098183cf1d5b5aad4eb9a561049d3",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/a57d099c-1aa8-47e7-b90f-9001daa24346.json": "65be17f8f6275917e20004c4dab0cf510c08c73254b316f73f6023a030bc51b0",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "b321646873f978def85f061b03f97b0dda509d7659079dee8288ee41460487cb",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "4f6192e84dde6c393ec7215432aae60e5aae70e40aa0e1bb5dd14d21ec183962",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "185d90b4d875aec7a986ee19898d92a3cf1c21bf8fe50ca658b9ddd90630f106",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scenes/audio.json": "47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143",
+      "documents/scenes/demo.json": "4fb8d8cd81dd9095ea590e29d76a3bf022e650abd11fbe650a2544c471509e54",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/hud/main.json": "c140a3863094bbd55186e141337607179a48cda2fcb013493d5932b026698669",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "e89b5cb990b4a40075ad4f37723170b2c04b32f5a18320d726425eb076efae35",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    }
+  },
+  "requests": [
+    {
+      "request": {
+        "command": "hud2d.create",
+        "mode": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+        "actorRef": {
+          "kind": "user",
+          "id": "studio-hud2d"
+        },
+        "objectId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+        "documentType": "document",
+        "sourcePath": "documents/hud/main.json",
+        "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"cda24e21-c71d-409b-a098-88c726ac81e7\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"a609447c-7af4-4185-aa95-0e7643d643d4\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+        "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+        "sceneObjectRevision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0",
+        "sceneSourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+      },
+      "status": 200,
+      "result": {
+        "status": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+        "revision": "sha256:0e4ff0b395e1d5ff6273ab3cc95e91d00f9ac87a4a92a6ec1ab656d911e35921",
+        "proposal": {
+          "format": "viento-changeset",
+          "schemaVersion": 1,
+          "id": "proposal:2954f0f31eed984b4d9b660f05522d1cd351ed9beb8267529d8fe56460ea75fb",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "actorRef": {
+            "kind": "user",
+            "id": "studio-hud2d"
+          },
+          "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+          "commands": [
+            {
+              "id": "hud2d.create",
+              "input": {
+                "command": "hud2d.create",
+                "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+                "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+                "actorRef": {
+                  "kind": "user",
+                  "id": "studio-hud2d"
+                },
+                "objectId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+                "documentType": "document",
+                "sourcePath": "documents/hud/main.json",
+                "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"cda24e21-c71d-409b-a098-88c726ac81e7\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"a609447c-7af4-4185-aa95-0e7643d643d4\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+                "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+                "sceneObjectRevision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0",
+                "sceneSourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+              }
+            }
+          ],
+          "preconditions": [
+            {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "revision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0"
+            },
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "revision": "sha256:15654ad61c809e1302763cd90cf44bb7a3e6482f35b679a8c3e3aad4148c3cad"
+            }
+          ],
+          "affectedObjects": [
+            "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+            "12345678-1234-4234-8234-123456789abd"
+          ],
+          "state": "proposed"
+        },
+        "changes": [
+          {
+            "kind": "hud2d.create",
+            "objectId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+            "sourcePath": "documents/hud/main.json",
+            "beforeSourceRevision": null,
+            "afterSourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79",
+            "beforeText": null,
+            "afterText": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"cda24e21-c71d-409b-a098-88c726ac81e7\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"a609447c-7af4-4185-aa95-0e7643d643d4\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+            "recordPath": "metadata/documents/3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b.json",
+            "record": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+              "sourcePath": "documents/hud/main.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            }
+          },
+          {
+            "kind": "relation.add",
+            "objectId": "12345678-1234-4234-8234-123456789abd",
+            "sourcePath": "documents/scenes/audio.json",
+            "targetObjectId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+            "targetSourcePath": "documents/hud/main.json",
+            "recordPath": "metadata/documents/12345678-1234-4234-8234-123456789abd.json",
+            "relation": {
+              "kind": "references",
+              "targetId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+              "slot": "hud2d"
+            },
+            "beforeRecordRevision": "sha256:e09e80715ff0b4182cb1379c3f885b27dda7650dac226295815024222d089c7c",
+            "afterRecordRevision": "sha256:bb577eb30bd2ab1dbab86dc077cf4e13d0ab2c9c5216d191a301595a7be436cd"
+          }
+        ],
+        "object": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/document",
+          "typeVersion": 1,
+          "revision": "sha256:5974d27e94b99ef9a73df536baa0a9047919f6cbcde0a5fbaed8960a08aa6149",
+          "readOnly": true,
+          "name": "main",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene-hud2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "1"
+            },
+            "field-2": {
+              "label": "sceneObjectId",
+              "group": "",
+              "kind": "string",
+              "value": "12345678-1234-4234-8234-123456789abd"
+            },
+            "field-3": {
+              "label": "[1] / id",
+              "group": "elements",
+              "kind": "string",
+              "value": "cda24e21-c71d-409b-a098-88c726ac81e7"
+            },
+            "field-4": {
+              "label": "[1] / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "bar"
+            },
+            "field-5": {
+              "label": "[1] / anchor",
+              "group": "elements",
+              "kind": "string",
+              "value": "bottom-left"
+            },
+            "field-6": {
+              "label": "[1] / offset / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-7": {
+              "label": "[1] / offset / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-8": {
+              "label": "[1] / size / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "200"
+            },
+            "field-9": {
+              "label": "[1] / size / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-10": {
+              "label": "[1] / key",
+              "group": "elements",
+              "kind": "string",
+              "value": "health"
+            },
+            "field-11": {
+              "label": "[1] / min",
+              "group": "elements",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-12": {
+              "label": "[1] / max",
+              "group": "elements",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-13": {
+              "label": "[1] / fallback",
+              "group": "elements",
+              "kind": "number",
+              "value": "25"
+            },
+            "field-14": {
+              "label": "[1] / fillColor",
+              "group": "elements",
+              "kind": "string",
+              "value": "#37c98c"
+            },
+            "field-15": {
+              "label": "[1] / backgroundColor",
+              "group": "elements",
+              "kind": "string",
+              "value": "#334455"
+            },
+            "field-16": {
+              "label": "[2] / id",
+              "group": "elements",
+              "kind": "string",
+              "value": "a609447c-7af4-4185-aa95-0e7643d643d4"
+            },
+            "field-17": {
+              "label": "[2] / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "label"
+            },
+            "field-18": {
+              "label": "[2] / anchor",
+              "group": "elements",
+              "kind": "string",
+              "value": "top-right"
+            },
+            "field-19": {
+              "label": "[2] / offset / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "-10"
+            },
+            "field-20": {
+              "label": "[2] / offset / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-21": {
+              "label": "[2] / size / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "200"
+            },
+            "field-22": {
+              "label": "[2] / size / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "32"
+            },
+            "field-23": {
+              "label": "[2] / fontSize",
+              "group": "elements",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-24": {
+              "label": "[2] / color",
+              "group": "elements",
+              "kind": "string",
+              "value": "#ffffff"
+            },
+            "field-25": {
+              "label": "[2] / content / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "state"
+            },
+            "field-26": {
+              "label": "[2] / content / key",
+              "group": "elements",
+              "kind": "string",
+              "value": "score"
+            },
+            "field-27": {
+              "label": "[2] / content / prefix",
+              "group": "elements",
+              "kind": "string",
+              "value": "Score: "
+            },
+            "field-28": {
+              "label": "[2] / content / suffix",
+              "group": "elements",
+              "kind": "string",
+              "value": " pt"
+            },
+            "field-29": {
+              "label": "[2] / content / missing",
+              "group": "elements",
+              "kind": "string",
+              "value": "—"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 14,
+                  "end": 34,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 55,
+                  "end": 56,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 77,
+                  "end": 115,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 151,
+                  "end": 189,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 205,
+                  "end": 210,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 228,
+                  "end": 241,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 269,
+                  "end": 271,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 281,
+                  "end": 283,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 317,
+                  "end": 320,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 330,
+                  "end": 332,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 355,
+                  "end": 363,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 378,
+                  "end": 379,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 394,
+                  "end": 397,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 417,
+                  "end": 419,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 440,
+                  "end": 449,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 476,
+                  "end": 485,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 511,
+                  "end": 549,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 565,
+                  "end": 572,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 590,
+                  "end": 601,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 629,
+                  "end": 632,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 642,
+                  "end": 644,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 678,
+                  "end": 681,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 691,
+                  "end": 693,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 721,
+                  "end": 723,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-24",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 740,
+                  "end": 749,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-25",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 786,
+                  "end": 793,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-26",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 810,
+                  "end": 817,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-27",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 837,
+                  "end": 846,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-28",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 866,
+                  "end": 871,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            },
+            {
+              "propertyPath": "/properties/field-29",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 892,
+                  "end": 895,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/hud/main.json",
+              "sourceRevision": "sha256:0fc66902a4412e14c631aeb968f18bb4cb97196372336344defdeab59fd89f79"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "document",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+              "sourcePath": "documents/hud/main.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+              "sourcePath": "documents/hud/main.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "Document / 文档"
+            }
+          }
+        },
+        "scene": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "12345678-1234-4234-8234-123456789abd",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/scene",
+          "typeVersion": 1,
+          "revision": "sha256:6a988e5ab3c873cd61fb3f8442cf63040e06a82fa8536048970f603413993542",
+          "readOnly": true,
+          "name": "audio",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "2"
+            },
+            "field-2": {
+              "label": "title",
+              "group": "",
+              "kind": "string",
+              "value": "Second scene with shared actors and audio"
+            },
+            "field-3": {
+              "label": "[1]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "640"
+            },
+            "field-4": {
+              "label": "[2]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "480"
+            },
+            "field-5": {
+              "label": "background",
+              "group": "",
+              "kind": "string",
+              "value": "#0d1829"
+            },
+            "field-6": {
+              "label": "[1] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-7": {
+              "label": "[1] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "-100"
+            },
+            "field-8": {
+              "label": "[1] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "-80"
+            },
+            "field-9": {
+              "label": "[1] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-10": {
+              "label": "[1] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-11": {
+              "label": "[1] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#d02040"
+            },
+            "field-12": {
+              "label": "[1] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-13": {
+              "label": "[1] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-14": {
+              "label": "[1] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+            },
+            "field-15": {
+              "label": "[2] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-16": {
+              "label": "[2] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "1400"
+            },
+            "field-17": {
+              "label": "[2] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "900"
+            },
+            "field-18": {
+              "label": "[2] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-19": {
+              "label": "[2] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-20": {
+              "label": "[2] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#20d080"
+            },
+            "field-21": {
+              "label": "[2] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-22": {
+              "label": "[2] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-23": {
+              "label": "[2] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 14,
+                  "end": 30,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 51,
+                  "end": 52,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 65,
+                  "end": 108,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 130,
+                  "end": 133,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 139,
+                  "end": 142,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 164,
+                  "end": 173,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 213,
+                  "end": 251,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 281,
+                  "end": 285,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 295,
+                  "end": 298,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 332,
+                  "end": 334,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 344,
+                  "end": 346,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 371,
+                  "end": 380,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 397,
+                  "end": 398,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 418,
+                  "end": 424,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 446,
+                  "end": 484,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 516,
+                  "end": 554,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 584,
+                  "end": 588,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 598,
+                  "end": 601,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 635,
+                  "end": 637,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 647,
+                  "end": 649,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 674,
+                  "end": 683,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 700,
+                  "end": 701,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 721,
+                  "end": 727,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 749,
+                  "end": 787,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/scenes/audio.json",
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "scene",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "12345678-1234-4234-8234-123456789ac1",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+                  "slot": "hud2d"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "12345678-1234-4234-8234-123456789ac1",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+                  "slot": "hud2d"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "场景 / Scene"
+            }
+          }
+        },
+        "relation": {
+          "id": "relation:627fad9842cdf0a36e1727565626e0c5d130d651464ad25703315837e579abfc",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "sourceObjectId": "12345678-1234-4234-8234-123456789abd",
+          "targetObjectId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+          "typeRef": "io.viento.relation/references",
+          "properties": {
+            "kind": "references",
+            "targetId": "3c51c8ff-e5c6-4d2a-bad6-d439f2289f2b",
+            "slot": "hud2d"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "command": "hud2d.create",
+        "mode": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+        "actorRef": {
+          "kind": "user",
+          "id": "studio-hud2d"
+        },
+        "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+        "documentType": "document",
+        "sourcePath": "documents/hud/main.json",
+        "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+        "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+        "sceneObjectRevision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0",
+        "sceneSourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+      },
+      "status": 200,
+      "result": {
+        "status": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+        "revision": "sha256:44f9dc2f059deef1a7ac3fe596d2f854722a6cd8ddd1fab1dbf5fda3e68c5b6a",
+        "proposal": {
+          "format": "viento-changeset",
+          "schemaVersion": 1,
+          "id": "proposal:cd1e9ba34e7129fca8c5558b9085e267a0f1138de5ec946593b1df8f05a39c09",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "actorRef": {
+            "kind": "user",
+            "id": "studio-hud2d"
+          },
+          "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+          "commands": [
+            {
+              "id": "hud2d.create",
+              "input": {
+                "command": "hud2d.create",
+                "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+                "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+                "actorRef": {
+                  "kind": "user",
+                  "id": "studio-hud2d"
+                },
+                "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+                "documentType": "document",
+                "sourcePath": "documents/hud/main.json",
+                "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+                "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+                "sceneObjectRevision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0",
+                "sceneSourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+              }
+            }
+          ],
+          "preconditions": [
+            {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "revision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0"
+            },
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "revision": "sha256:15654ad61c809e1302763cd90cf44bb7a3e6482f35b679a8c3e3aad4148c3cad"
+            }
+          ],
+          "affectedObjects": [
+            "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "12345678-1234-4234-8234-123456789abd"
+          ],
+          "state": "proposed"
+        },
+        "changes": [
+          {
+            "kind": "hud2d.create",
+            "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "sourcePath": "documents/hud/main.json",
+            "beforeSourceRevision": null,
+            "afterSourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393",
+            "beforeText": null,
+            "afterText": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+            "recordPath": "metadata/documents/a57d099c-1aa8-47e7-b90f-9001daa24346.json",
+            "record": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "sourcePath": "documents/hud/main.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            }
+          },
+          {
+            "kind": "relation.add",
+            "objectId": "12345678-1234-4234-8234-123456789abd",
+            "sourcePath": "documents/scenes/audio.json",
+            "targetObjectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "targetSourcePath": "documents/hud/main.json",
+            "recordPath": "metadata/documents/12345678-1234-4234-8234-123456789abd.json",
+            "relation": {
+              "kind": "references",
+              "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "slot": "hud2d"
+            },
+            "beforeRecordRevision": "sha256:e09e80715ff0b4182cb1379c3f885b27dda7650dac226295815024222d089c7c",
+            "afterRecordRevision": "sha256:18ef36dac61005aa18ad50c1eb7aa6b16ba098183cf1d5b5aad4eb9a561049d3"
+          }
+        ],
+        "object": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/document",
+          "typeVersion": 1,
+          "revision": "sha256:028d4f85096472c4a9f2df89de245fef8b0f6a381a50c5307fc575ca5567d78f",
+          "readOnly": true,
+          "name": "main",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene-hud2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "1"
+            },
+            "field-2": {
+              "label": "sceneObjectId",
+              "group": "",
+              "kind": "string",
+              "value": "12345678-1234-4234-8234-123456789abd"
+            },
+            "field-3": {
+              "label": "[1] / id",
+              "group": "elements",
+              "kind": "string",
+              "value": "ee4c6cf0-3e95-4e0d-9b74-3801f073d388"
+            },
+            "field-4": {
+              "label": "[1] / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "bar"
+            },
+            "field-5": {
+              "label": "[1] / anchor",
+              "group": "elements",
+              "kind": "string",
+              "value": "bottom-left"
+            },
+            "field-6": {
+              "label": "[1] / offset / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-7": {
+              "label": "[1] / offset / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-8": {
+              "label": "[1] / size / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "200"
+            },
+            "field-9": {
+              "label": "[1] / size / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-10": {
+              "label": "[1] / key",
+              "group": "elements",
+              "kind": "string",
+              "value": "health"
+            },
+            "field-11": {
+              "label": "[1] / min",
+              "group": "elements",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-12": {
+              "label": "[1] / max",
+              "group": "elements",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-13": {
+              "label": "[1] / fallback",
+              "group": "elements",
+              "kind": "number",
+              "value": "25"
+            },
+            "field-14": {
+              "label": "[1] / fillColor",
+              "group": "elements",
+              "kind": "string",
+              "value": "#37c98c"
+            },
+            "field-15": {
+              "label": "[1] / backgroundColor",
+              "group": "elements",
+              "kind": "string",
+              "value": "#334455"
+            },
+            "field-16": {
+              "label": "[2] / id",
+              "group": "elements",
+              "kind": "string",
+              "value": "86ffd664-cee4-4eff-8bf7-a59bb3a5903e"
+            },
+            "field-17": {
+              "label": "[2] / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "label"
+            },
+            "field-18": {
+              "label": "[2] / anchor",
+              "group": "elements",
+              "kind": "string",
+              "value": "top-right"
+            },
+            "field-19": {
+              "label": "[2] / offset / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "-10"
+            },
+            "field-20": {
+              "label": "[2] / offset / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-21": {
+              "label": "[2] / size / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "200"
+            },
+            "field-22": {
+              "label": "[2] / size / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "32"
+            },
+            "field-23": {
+              "label": "[2] / fontSize",
+              "group": "elements",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-24": {
+              "label": "[2] / color",
+              "group": "elements",
+              "kind": "string",
+              "value": "#ffffff"
+            },
+            "field-25": {
+              "label": "[2] / content / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "state"
+            },
+            "field-26": {
+              "label": "[2] / content / key",
+              "group": "elements",
+              "kind": "string",
+              "value": "score"
+            },
+            "field-27": {
+              "label": "[2] / content / prefix",
+              "group": "elements",
+              "kind": "string",
+              "value": "Score: "
+            },
+            "field-28": {
+              "label": "[2] / content / suffix",
+              "group": "elements",
+              "kind": "string",
+              "value": " pt"
+            },
+            "field-29": {
+              "label": "[2] / content / missing",
+              "group": "elements",
+              "kind": "string",
+              "value": "—"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 14,
+                  "end": 34,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 55,
+                  "end": 56,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 77,
+                  "end": 115,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 151,
+                  "end": 189,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 205,
+                  "end": 210,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 228,
+                  "end": 241,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 269,
+                  "end": 271,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 281,
+                  "end": 283,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 317,
+                  "end": 320,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 330,
+                  "end": 332,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 355,
+                  "end": 363,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 378,
+                  "end": 379,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 394,
+                  "end": 397,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 417,
+                  "end": 419,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 440,
+                  "end": 449,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 476,
+                  "end": 485,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 511,
+                  "end": 549,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 565,
+                  "end": 572,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 590,
+                  "end": 601,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 629,
+                  "end": 632,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 642,
+                  "end": 644,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 678,
+                  "end": 681,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 691,
+                  "end": 693,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 721,
+                  "end": 723,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-24",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 740,
+                  "end": 749,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-25",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 786,
+                  "end": 793,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-26",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 810,
+                  "end": 817,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-27",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 837,
+                  "end": 846,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-28",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 866,
+                  "end": 871,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-29",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 892,
+                  "end": 895,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/hud/main.json",
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "document",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "sourcePath": "documents/hud/main.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "sourcePath": "documents/hud/main.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "Document / 文档"
+            }
+          }
+        },
+        "scene": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "12345678-1234-4234-8234-123456789abd",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/scene",
+          "typeVersion": 1,
+          "revision": "sha256:8a1a98a807e512a562dd68328c943728554d1a5bc198cf7cc7f735f28a2e6427",
+          "readOnly": true,
+          "name": "audio",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "2"
+            },
+            "field-2": {
+              "label": "title",
+              "group": "",
+              "kind": "string",
+              "value": "Second scene with shared actors and audio"
+            },
+            "field-3": {
+              "label": "[1]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "640"
+            },
+            "field-4": {
+              "label": "[2]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "480"
+            },
+            "field-5": {
+              "label": "background",
+              "group": "",
+              "kind": "string",
+              "value": "#0d1829"
+            },
+            "field-6": {
+              "label": "[1] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-7": {
+              "label": "[1] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "-100"
+            },
+            "field-8": {
+              "label": "[1] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "-80"
+            },
+            "field-9": {
+              "label": "[1] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-10": {
+              "label": "[1] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-11": {
+              "label": "[1] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#d02040"
+            },
+            "field-12": {
+              "label": "[1] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-13": {
+              "label": "[1] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-14": {
+              "label": "[1] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+            },
+            "field-15": {
+              "label": "[2] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-16": {
+              "label": "[2] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "1400"
+            },
+            "field-17": {
+              "label": "[2] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "900"
+            },
+            "field-18": {
+              "label": "[2] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-19": {
+              "label": "[2] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-20": {
+              "label": "[2] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#20d080"
+            },
+            "field-21": {
+              "label": "[2] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-22": {
+              "label": "[2] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-23": {
+              "label": "[2] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 14,
+                  "end": 30,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 51,
+                  "end": 52,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 65,
+                  "end": 108,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 130,
+                  "end": 133,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 139,
+                  "end": 142,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 164,
+                  "end": 173,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 213,
+                  "end": 251,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 281,
+                  "end": 285,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 295,
+                  "end": 298,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 332,
+                  "end": 334,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 344,
+                  "end": 346,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 371,
+                  "end": 380,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 397,
+                  "end": 398,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 418,
+                  "end": 424,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 446,
+                  "end": 484,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 516,
+                  "end": 554,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 584,
+                  "end": 588,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 598,
+                  "end": 601,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 635,
+                  "end": 637,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 647,
+                  "end": 649,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 674,
+                  "end": 683,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 700,
+                  "end": 701,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 721,
+                  "end": 727,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 749,
+                  "end": 787,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/scenes/audio.json",
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "scene",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "12345678-1234-4234-8234-123456789ac1",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+                  "slot": "hud2d"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "12345678-1234-4234-8234-123456789ac1",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+                  "slot": "hud2d"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "场景 / Scene"
+            }
+          }
+        },
+        "relation": {
+          "id": "relation:06b89a3d56c0b7f052ec0d5db5d0d9218ed862c7318368e9c40332d96490a270",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "sourceObjectId": "12345678-1234-4234-8234-123456789abd",
+          "targetObjectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+          "typeRef": "io.viento.relation/references",
+          "properties": {
+            "kind": "references",
+            "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "slot": "hud2d"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "command": "hud2d.create",
+        "mode": "apply",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+        "actorRef": {
+          "kind": "user",
+          "id": "studio-hud2d"
+        },
+        "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+        "documentType": "document",
+        "sourcePath": "documents/hud/main.json",
+        "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+        "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+        "sceneObjectRevision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0",
+        "sceneSourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+      },
+      "status": 200,
+      "result": {
+        "status": "applied",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+        "revision": "sha256:44f9dc2f059deef1a7ac3fe596d2f854722a6cd8ddd1fab1dbf5fda3e68c5b6a",
+        "proposal": {
+          "format": "viento-changeset",
+          "schemaVersion": 1,
+          "id": "proposal:cd1e9ba34e7129fca8c5558b9085e267a0f1138de5ec946593b1df8f05a39c09",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "actorRef": {
+            "kind": "user",
+            "id": "studio-hud2d"
+          },
+          "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+          "commands": [
+            {
+              "id": "hud2d.create",
+              "input": {
+                "command": "hud2d.create",
+                "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+                "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+                "actorRef": {
+                  "kind": "user",
+                  "id": "studio-hud2d"
+                },
+                "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+                "documentType": "document",
+                "sourcePath": "documents/hud/main.json",
+                "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+                "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+                "sceneObjectRevision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0",
+                "sceneSourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+              }
+            }
+          ],
+          "preconditions": [
+            {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "revision": "sha256:1f2b5fdc90cb05f7cdc383f1401e14300abaae67437afccf8e93d8d34f0a29b0"
+            },
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "revision": "sha256:15654ad61c809e1302763cd90cf44bb7a3e6482f35b679a8c3e3aad4148c3cad"
+            }
+          ],
+          "affectedObjects": [
+            "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "12345678-1234-4234-8234-123456789abd"
+          ],
+          "state": "proposed"
+        },
+        "changes": [
+          {
+            "kind": "hud2d.create",
+            "objectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "sourcePath": "documents/hud/main.json",
+            "beforeSourceRevision": null,
+            "afterSourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393",
+            "beforeText": null,
+            "afterText": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [\n    {\n      \"id\": \"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\n      \"kind\": \"bar\",\n      \"anchor\": \"bottom-left\",\n      \"offset\": [\n        16,\n        16\n      ],\n      \"size\": [\n        200,\n        20\n      ],\n      \"key\": \"health\",\n      \"min\": 0,\n      \"max\": 100,\n      \"fallback\": 25,\n      \"fillColor\": \"#37c98c\",\n      \"backgroundColor\": \"#334455\"\n    },\n    {\n      \"id\": \"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\n      \"kind\": \"label\",\n      \"anchor\": \"top-right\",\n      \"offset\": [\n        -10,\n        16\n      ],\n      \"size\": [\n        200,\n        32\n      ],\n      \"fontSize\": 20,\n      \"color\": \"#ffffff\",\n      \"content\": {\n        \"kind\": \"state\",\n        \"key\": \"score\",\n        \"prefix\": \"Score: \",\n        \"suffix\": \" pt\",\n        \"missing\": \"—\"\n      }\n    }\n  ]\n}\n",
+            "recordPath": "metadata/documents/a57d099c-1aa8-47e7-b90f-9001daa24346.json",
+            "record": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "sourcePath": "documents/hud/main.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            }
+          },
+          {
+            "kind": "relation.add",
+            "objectId": "12345678-1234-4234-8234-123456789abd",
+            "sourcePath": "documents/scenes/audio.json",
+            "targetObjectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "targetSourcePath": "documents/hud/main.json",
+            "recordPath": "metadata/documents/12345678-1234-4234-8234-123456789abd.json",
+            "relation": {
+              "kind": "references",
+              "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "slot": "hud2d"
+            },
+            "beforeRecordRevision": "sha256:e09e80715ff0b4182cb1379c3f885b27dda7650dac226295815024222d089c7c",
+            "afterRecordRevision": "sha256:18ef36dac61005aa18ad50c1eb7aa6b16ba098183cf1d5b5aad4eb9a561049d3"
+          }
+        ],
+        "object": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/document",
+          "typeVersion": 1,
+          "revision": "sha256:028d4f85096472c4a9f2df89de245fef8b0f6a381a50c5307fc575ca5567d78f",
+          "readOnly": true,
+          "name": "main",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene-hud2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "1"
+            },
+            "field-2": {
+              "label": "sceneObjectId",
+              "group": "",
+              "kind": "string",
+              "value": "12345678-1234-4234-8234-123456789abd"
+            },
+            "field-3": {
+              "label": "[1] / id",
+              "group": "elements",
+              "kind": "string",
+              "value": "ee4c6cf0-3e95-4e0d-9b74-3801f073d388"
+            },
+            "field-4": {
+              "label": "[1] / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "bar"
+            },
+            "field-5": {
+              "label": "[1] / anchor",
+              "group": "elements",
+              "kind": "string",
+              "value": "bottom-left"
+            },
+            "field-6": {
+              "label": "[1] / offset / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-7": {
+              "label": "[1] / offset / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-8": {
+              "label": "[1] / size / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "200"
+            },
+            "field-9": {
+              "label": "[1] / size / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-10": {
+              "label": "[1] / key",
+              "group": "elements",
+              "kind": "string",
+              "value": "health"
+            },
+            "field-11": {
+              "label": "[1] / min",
+              "group": "elements",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-12": {
+              "label": "[1] / max",
+              "group": "elements",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-13": {
+              "label": "[1] / fallback",
+              "group": "elements",
+              "kind": "number",
+              "value": "25"
+            },
+            "field-14": {
+              "label": "[1] / fillColor",
+              "group": "elements",
+              "kind": "string",
+              "value": "#37c98c"
+            },
+            "field-15": {
+              "label": "[1] / backgroundColor",
+              "group": "elements",
+              "kind": "string",
+              "value": "#334455"
+            },
+            "field-16": {
+              "label": "[2] / id",
+              "group": "elements",
+              "kind": "string",
+              "value": "86ffd664-cee4-4eff-8bf7-a59bb3a5903e"
+            },
+            "field-17": {
+              "label": "[2] / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "label"
+            },
+            "field-18": {
+              "label": "[2] / anchor",
+              "group": "elements",
+              "kind": "string",
+              "value": "top-right"
+            },
+            "field-19": {
+              "label": "[2] / offset / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "-10"
+            },
+            "field-20": {
+              "label": "[2] / offset / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "16"
+            },
+            "field-21": {
+              "label": "[2] / size / [1]",
+              "group": "elements",
+              "kind": "number",
+              "value": "200"
+            },
+            "field-22": {
+              "label": "[2] / size / [2]",
+              "group": "elements",
+              "kind": "number",
+              "value": "32"
+            },
+            "field-23": {
+              "label": "[2] / fontSize",
+              "group": "elements",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-24": {
+              "label": "[2] / color",
+              "group": "elements",
+              "kind": "string",
+              "value": "#ffffff"
+            },
+            "field-25": {
+              "label": "[2] / content / kind",
+              "group": "elements",
+              "kind": "string",
+              "value": "state"
+            },
+            "field-26": {
+              "label": "[2] / content / key",
+              "group": "elements",
+              "kind": "string",
+              "value": "score"
+            },
+            "field-27": {
+              "label": "[2] / content / prefix",
+              "group": "elements",
+              "kind": "string",
+              "value": "Score: "
+            },
+            "field-28": {
+              "label": "[2] / content / suffix",
+              "group": "elements",
+              "kind": "string",
+              "value": " pt"
+            },
+            "field-29": {
+              "label": "[2] / content / missing",
+              "group": "elements",
+              "kind": "string",
+              "value": "—"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 14,
+                  "end": 34,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 55,
+                  "end": 56,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 77,
+                  "end": 115,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 151,
+                  "end": 189,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 205,
+                  "end": 210,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 228,
+                  "end": 241,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 269,
+                  "end": 271,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 281,
+                  "end": 283,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 317,
+                  "end": 320,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 330,
+                  "end": 332,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 355,
+                  "end": 363,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 378,
+                  "end": 379,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 394,
+                  "end": 397,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 417,
+                  "end": 419,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 440,
+                  "end": 449,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 476,
+                  "end": 485,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 511,
+                  "end": 549,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 565,
+                  "end": 572,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 590,
+                  "end": 601,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 629,
+                  "end": 632,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 642,
+                  "end": 644,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 678,
+                  "end": 681,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 691,
+                  "end": 693,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 721,
+                  "end": 723,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-24",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 740,
+                  "end": 749,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-25",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 786,
+                  "end": 793,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-26",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 810,
+                  "end": 817,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-27",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 837,
+                  "end": 846,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-28",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 866,
+                  "end": 871,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            },
+            {
+              "propertyPath": "/properties/field-29",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/hud/main.json",
+                "range": {
+                  "start": 892,
+                  "end": 895,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/hud/main.json",
+              "sourceRevision": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "document",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "sourcePath": "documents/hud/main.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "12345678-1234-4234-8234-123456789abd",
+                  "slot": "scene"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+              "sourcePath": "documents/hud/main.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "Document / 文档"
+            }
+          }
+        },
+        "scene": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "12345678-1234-4234-8234-123456789abd",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/scene",
+          "typeVersion": 1,
+          "revision": "sha256:8a1a98a807e512a562dd68328c943728554d1a5bc198cf7cc7f735f28a2e6427",
+          "readOnly": true,
+          "name": "audio",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "2"
+            },
+            "field-2": {
+              "label": "title",
+              "group": "",
+              "kind": "string",
+              "value": "Second scene with shared actors and audio"
+            },
+            "field-3": {
+              "label": "[1]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "640"
+            },
+            "field-4": {
+              "label": "[2]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "480"
+            },
+            "field-5": {
+              "label": "background",
+              "group": "",
+              "kind": "string",
+              "value": "#0d1829"
+            },
+            "field-6": {
+              "label": "[1] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-7": {
+              "label": "[1] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "-100"
+            },
+            "field-8": {
+              "label": "[1] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "-80"
+            },
+            "field-9": {
+              "label": "[1] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-10": {
+              "label": "[1] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-11": {
+              "label": "[1] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#d02040"
+            },
+            "field-12": {
+              "label": "[1] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-13": {
+              "label": "[1] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-14": {
+              "label": "[1] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+            },
+            "field-15": {
+              "label": "[2] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-16": {
+              "label": "[2] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "1400"
+            },
+            "field-17": {
+              "label": "[2] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "900"
+            },
+            "field-18": {
+              "label": "[2] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-19": {
+              "label": "[2] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "40"
+            },
+            "field-20": {
+              "label": "[2] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#20d080"
+            },
+            "field-21": {
+              "label": "[2] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-22": {
+              "label": "[2] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-23": {
+              "label": "[2] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 14,
+                  "end": 30,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 51,
+                  "end": 52,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 65,
+                  "end": 108,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 130,
+                  "end": 133,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 139,
+                  "end": 142,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 164,
+                  "end": 173,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 213,
+                  "end": 251,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 281,
+                  "end": 285,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 295,
+                  "end": 298,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 332,
+                  "end": 334,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 344,
+                  "end": 346,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 371,
+                  "end": 380,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 397,
+                  "end": 398,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 418,
+                  "end": 424,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 446,
+                  "end": 484,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 516,
+                  "end": 554,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 584,
+                  "end": 588,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 598,
+                  "end": 601,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 635,
+                  "end": 637,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 647,
+                  "end": 649,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 674,
+                  "end": 683,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 700,
+                  "end": 701,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 721,
+                  "end": 727,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/audio.json",
+                "range": {
+                  "start": 749,
+                  "end": 787,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/scenes/audio.json",
+              "sourceRevision": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "scene",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "12345678-1234-4234-8234-123456789ac1",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+                  "slot": "hud2d"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "12345678-1234-4234-8234-123456789ac1",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+                  "slot": "hud2d"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "场景 / Scene"
+            }
+          }
+        },
+        "relation": {
+          "id": "relation:06b89a3d56c0b7f052ec0d5db5d0d9218ed862c7318368e9c40332d96490a270",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "sourceObjectId": "12345678-1234-4234-8234-123456789abd",
+          "targetObjectId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+          "typeRef": "io.viento.relation/references",
+          "properties": {
+            "kind": "references",
+            "targetId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+            "slot": "hud2d"
+          }
+        },
+        "receipt": {
+          "format": "viento-transaction-receipt",
+          "schemaVersion": 1,
+          "transactionId": "502d386a-cbd7-4ff1-8f5e-04d3bf7a7a07",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "proposalId": "proposal:cd1e9ba34e7129fca8c5558b9085e267a0f1138de5ec946593b1df8f05a39c09",
+          "baseRevision": "sha256:27331d908591aee5ff733a10a9dee6523e8ca8c72b7a4de7e38c43c5fd1bde7c",
+          "revision": "sha256:44f9dc2f059deef1a7ac3fe596d2f854722a6cd8ddd1fab1dbf5fda3e68c5b6a",
+          "state": "committed"
+        }
+      }
+    },
+    {
+      "request": {
+        "action": "hud2d-save",
+        "sceneId": "12345678-1234-4234-8234-123456789abd",
+        "sceneVersion": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143",
+        "documentId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+        "expectedVersion": "sha256:a0d8fdf582ac6fc2733b313f7e14233a374309fb8067ecbd5287e31e02e29393",
+        "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [{\"id\":\"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\"kind\":\"bar\",\"anchor\":\"bottom-left\",\"offset\":[16,16],\"size\":[200,20],\"key\":\"health\",\"min\":0,\"max\":100,\"fallback\":25,\"fillColor\":\"#37c98c\",\"backgroundColor\":\"#334455\"},{\"id\":\"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\"kind\":\"label\",\"anchor\":\"top-right\",\"offset\":[-10,16],\"size\":[200,32],\"fontSize\":20,\"color\":\"#ffffff\",\"content\":{\"kind\":\"state\",\"key\":\"score\",\"prefix\":\"Points: \",\"suffix\":\" pt\",\"missing\":\"—\"}}]\n}\n"
+      },
+      "status": 409,
+      "result": {
+        "ok": false,
+        "error": "The case changed; reload or save a new copy.",
+        "errorCode": "scene_hud2d_document_conflict",
+        "requestId": "1794394177282-13"
+      }
+    },
+    {
+      "request": {
+        "action": "hud2d-save",
+        "sceneId": "12345678-1234-4234-8234-123456789abd",
+        "sceneVersion": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143",
+        "documentId": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+        "expectedVersion": "sha256:f5401cc46f6ece103a53dec24fcd2ed32ae32afcfa1e7c818a8af08f95ef9f60",
+        "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [{\"id\":\"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\"kind\":\"bar\",\"anchor\":\"bottom-left\",\"offset\":[16,16],\"size\":[200,20],\"key\":\"health\",\"min\":0,\"max\":100,\"fallback\":25,\"fillColor\":\"#37c98c\",\"backgroundColor\":\"#334455\"},{\"id\":\"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\"kind\":\"label\",\"anchor\":\"top-right\",\"offset\":[-10,16],\"size\":[200,32],\"fontSize\":20,\"color\":\"#ffffff\",\"content\":{\"kind\":\"state\",\"key\":\"score\",\"prefix\":\"Points: \",\"suffix\":\" pt\",\"missing\":\"—\"}}]\n}\n "
+      },
+      "status": 200,
+      "result": {
+        "id": "a57d099c-1aa8-47e7-b90f-9001daa24346",
+        "path": "documents/hud/main.json",
+        "title": "main.json",
+        "version": "sha256:c140a3863094bbd55186e141337607179a48cda2fcb013493d5932b026698669",
+        "sceneId": "12345678-1234-4234-8234-123456789abd",
+        "valid": true,
+        "diagnostics": [],
+        "content": "{\n  \"format\": \"viento-scene-hud2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"elements\": [{\"id\":\"ee4c6cf0-3e95-4e0d-9b74-3801f073d388\",\"kind\":\"bar\",\"anchor\":\"bottom-left\",\"offset\":[16,16],\"size\":[200,20],\"key\":\"health\",\"min\":0,\"max\":100,\"fallback\":25,\"fillColor\":\"#37c98c\",\"backgroundColor\":\"#334455\"},{\"id\":\"86ffd664-cee4-4eff-8bf7-a59bb3a5903e\",\"kind\":\"label\",\"anchor\":\"top-right\",\"offset\":[-10,16],\"size\":[200,32],\"fontSize\":20,\"color\":\"#ffffff\",\"content\":{\"kind\":\"state\",\"key\":\"score\",\"prefix\":\"Points: \",\"suffix\":\" pt\",\"missing\":\"—\"}}]\n}\n ",
+        "definition": [
+          {
+            "id": "ee4c6cf0-3e95-4e0d-9b74-3801f073d388",
+            "kind": "bar",
+            "anchor": "bottom-left",
+            "offset": [
+              16,
+              16
+            ],
+            "size": [
+              200,
+              20
+            ],
+            "key": "health",
+            "min": 0,
+            "max": 100,
+            "fallback": 25,
+            "fillColor": "#37c98c",
+            "backgroundColor": "#334455"
+          },
+          {
+            "id": "86ffd664-cee4-4eff-8bf7-a59bb3a5903e",
+            "kind": "label",
+            "anchor": "top-right",
+            "offset": [
+              -10,
+              16
+            ],
+            "size": [
+              200,
+              32
+            ],
+            "fontSize": 20,
+            "color": "#ffffff",
+            "content": {
+              "kind": "state",
+              "key": "score",
+              "prefix": "Points: ",
+              "suffix": " pt",
+              "missing": "—"
+            }
+          }
+        ],
+        "sceneVersion": "sha256:47103c68a38b1ff89d83ab339180f5794a4ae389ece24d98c3037d8e87488143"
+      }
+    }
+  ],
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-11T10:49:38.049Z",
+  "assertions": 80
+}

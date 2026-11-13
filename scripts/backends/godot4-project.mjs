@@ -2,6 +2,7 @@ import { validateGodotPlanarIntentInventory } from './godot4-physics-planar-inte
 // One engine-neutral assembly becomes one visible Godot project. Only known
 // host-generated files are relocated; author GDScript bytes remain untouched.
 import fs from 'node:fs/promises';
+import { validateGodotSceneRetryInventory } from './godot4-scene-retry-inventory.mjs';
 import path from 'node:path';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
@@ -153,6 +154,7 @@ export async function generateGodotAssemblyProject(input) {
 
 /** Read only a bounded, generated inventory; author text never selects scripts. */
 export async function godotAssemblyScripts(directory, signal) {
+  const retry = await validateGodotSceneRetryInventory(directory, signal);
   await validateGodotPlanarIntentInventory(directory, signal);
   let value, bytes;
   try { bytes = await readBuildFile(path.join(directory, 'assembly.json'), 4 * 1024 * 1024, signal); value = JSON.parse(bytes); }
@@ -210,7 +212,7 @@ export async function godotAssemblyScripts(directory, signal) {
     if (wrappers.size !== expected.size) invalid();
   }
   for (const script of scripts) await readBuildFile(await resolveContainedPath(directory, path.join(directory, script)), 65536, signal);
-  return scripts;
+  return [...scripts, ...(retry?.scripts || [])];
 }
 
 export function godotAssemblyDiagnostics(result, plan) {

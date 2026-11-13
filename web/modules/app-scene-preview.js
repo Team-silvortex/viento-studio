@@ -49,7 +49,9 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     <p id="scenePreviewDraft" class="build-hint" hidden data-i18n="存在未保存草稿；预览仍使用上次保存的场景和投影。"></p>
     <div class="scene-preview-toolbar"><button id="scenePreviewRefresh" type="button" class="doc-btn"></button>
     <button id="scenePreviewDraftRefresh" type="button" class="doc-btn" data-i18n="预览当前草稿"></button>
-    <button id="scenePreviewFit" type="button" class="doc-btn doc-btn-ghost" data-i18n="适应画布"></button>
+    <button id="scenePreviewFit" type="button" class="doc-btn doc-btn-ghost" data-i18n="适应运行视口"></button>
+      <button id="scenePreviewFitAll" type="button" class="doc-btn doc-btn-ghost" data-i18n="聚焦全部对象"></button>
+      <button id="scenePreviewFocusSelection" type="button" class="doc-btn doc-btn-ghost" data-i18n="聚焦当前选择"></button>
     <button id="scenePreviewZoomOut" type="button" class="doc-btn doc-btn-ghost" data-i18n="缩小"></button>
     <output id="scenePreviewZoom" aria-live="off"></output>
     <button id="scenePreviewZoomIn" type="button" class="doc-btn doc-btn-ghost" data-i18n="放大"></button>
@@ -58,6 +60,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     <p id="scenePreviewProvenance" class="build-hint"></p>
     <p id="scenePreviewSummary" class="build-hint"></p>
     <p id="scenePreviewComposition" class="build-hint" hidden></p><div id="scenePreviewSceneSources" class="scene-preview-toolbar" hidden></div>
+    <p class="build-hint" data-i18n="边框表示初始运行视口，框外仍是场景世界。取景只改变编辑视图，不改变场景坐标。"></p>
     <p class="build-hint" id="scenePreviewHelp" data-i18n="点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。"></p>
     <section id="scenePreviewAnimation" hidden></section>
     <div class="scene-preview-layout"><canvas id="scenePreviewCanvas" tabindex="0" aria-describedby="scenePreviewHelp" data-i18n-aria-label="已保存的二维场景预览"></canvas>
@@ -125,7 +128,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   }
   const modelOrigin = () => model ? { sourcePath: model.scene.sourcePath, draft: model.draft || null } : null;
   const canvas = createScenePreviewCanvas({ canvas: el('scenePreviewCanvas'), onSelect(id) { selectedGroup = null; selected = id; renderSelection(); },
-    onViewChange(view) { el('scenePreviewZoom').textContent = `${Math.round(view.scale * 100)}%`; } });
+    onViewChange(view) { el('scenePreviewZoom').textContent = `${view.scale < 0.01 ? Number((view.scale * 100).toPrecision(3)) : Math.round(view.scale * 100)}%`; } });
   const animation = typeof setupScenePreviewAnimation === 'function' ? setupScenePreviewAnimation({ container: el('scenePreviewAnimation'),
     setSample: sample => canvas.setVisualSample?.(sample), setInstanceSamples: samples => canvas.setInstanceVisualSamples?.(samples), onActiveChange: () => render(),
   }) : { setAvailable() {}, setVisible() {}, setPreview() {}, reset() {}, stop() {}, isActive: () => false, destroy() {} };
@@ -202,6 +205,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     const group = model?.sceneStructure?.groups?.find(item => item.groupId === selectedGroup);
     const groupProvenance = model?.sourceLocations?.groups?.find(item => item.groupId === selectedGroup);
     outline.setSelection(selected ? [selected] : []);
+    el('scenePreviewFocusSelection').disabled = !actor;
     const properties = el('scenePreviewProperties');
     el('scenePreviewInspector').hidden = !actor && !group;
     el('scenePreviewSelection').textContent = actor || group ? t('已选择：{0}', (actor || group).name) : t(animation.isActive() ? '动画预览中，请从对象列表选择角色。' : '从画布或对象列表选择角色。');
@@ -258,7 +262,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     el('scenePreviewRefresh').textContent = t(isComposition() ? '预览已保存配方' : '预览已保存场景');
     el('scenePreviewRefresh').disabled = !available || !sceneId || busy;
     el('scenePreviewDraftRefresh').disabled = !available || !sceneId || busy || !canPreviewDraft();
-    for (const id of ['scenePreviewFit', 'scenePreviewZoomIn', 'scenePreviewZoomOut', 'scenePreviewGrid']) el(id).disabled = !model;
+    for (const id of ['scenePreviewFit', 'scenePreviewFitAll', 'scenePreviewZoomIn', 'scenePreviewZoomOut', 'scenePreviewGrid']) el(id).disabled = !model;
     el('scenePreviewEdit').hidden = isComposition();
     el('scenePreviewEdit').disabled = isComposition() || !model || Boolean(model.draft) || busy || !context.editable || context.dirty || context.creating || context.busy || context.canEditScene === false;
     el('scenePreviewSource').disabled = !model;
@@ -429,6 +433,8 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   el('scenePreviewRefresh').addEventListener('click', () => { if (state !== 'loading') void refresh(); });
   el('scenePreviewDraftRefresh').addEventListener('click', () => { if (state !== 'loading') void refresh('draft'); });
   el('scenePreviewFit').addEventListener('click', () => canvas.fit());
+  el('scenePreviewFitAll').addEventListener('click', () => { if (visible && available && model && !disposed) canvas.fitAll(); });
+  el('scenePreviewFocusSelection').addEventListener('click', () => { if (visible && available && model?.actors.some(actor => sceneActorIdentity(actor) === selected) && !disposed) canvas.focusSelection(); });
   el('scenePreviewZoomIn').addEventListener('click', () => canvas.zoom(1.25));
   el('scenePreviewZoomOut').addEventListener('click', () => canvas.zoom(0.8));
   el('scenePreviewGrid').addEventListener('change', () => canvas.setGrid(el('scenePreviewGrid').checked));

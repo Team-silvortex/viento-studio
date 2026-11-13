@@ -1,0 +1,34 @@
+{
+  "recordedAtUtc": "2026-11-11T08:55:56.979175+00:00",
+  "scope": "domain and author resource packages only; no native engine execution",
+  "finalCommand": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/scene-camera2d.test.mjs scripts/tests/scene-camera2d-packages.test.mjs scripts/tests/scene-physics2d-build-integration.test.mjs scripts/tests/project-assembly-packages.test.mjs scripts/tests/resource-packages.test.mjs",
+  "results": {
+    "tests": 61,
+    "pass": 60,
+    "skip": 1,
+    "fail": 0
+  },
+  "logs": [
+    "/tmp/viento-camera2d-pure-initial.log",
+    "/tmp/viento-camera2d-domain-initial.log",
+    "/tmp/viento-camera2d-domain-second.log",
+    "/tmp/viento-camera2d-domain-third.log",
+    "/tmp/viento-camera2d-domain-final.log"
+  ],
+  "fixtureFailures": [
+    "initial package tests: paths/assetStores missing from new fixture workspace",
+    "second package test: v3 target configured with v2 legacy directory names; corrected target version to 2"
+  ],
+  "hashTiming": "Hashes collected immediately after final targeted regression, not claimed test-start/test-end hashes.",
+  "sources": {
+    "engine/scene-camera2d.mjs": "d7f0313e851021f4da068636383792b0f0fe9ed3cc04898d3375ff0bb668f504",
+    "engine/build-plan.mjs": "dc4f1dceed1f9f478f5f93132d709c681a398fd0c79f353608e06e4805bd6537",
+    "engine/project-assembly-plan-contract.mjs": "37633347be0ed14172a9f5a00f11cfcbfed67b93b5c27e848fa6db11e45a7aa4",
+    "scripts/lib/resource-package-catalog.mjs": "843b56d822149bfda746ea1111b05893d6f16d5ed8f297ad532a90f0bc60dd75",
+    "scripts/lib/resource-package-reader.mjs": "6f378d2c181ee61d681b2cab24f2b30e7ad263fcc2412df86f857644fd3f284b",
+    "scripts/lib/resource-package-import.mjs": "8336fe4b5a62a0c09b13ff1a4d023f95934f98e4decf2755429247ff0c1a6db0",
+    "scripts/tests/scene-camera2d.test.mjs": "a99f98bd18cf71d0b7a7d590bdaca6c054e821d867957dee12d2a7a70afc7c66",
+    "scripts/tests/scene-camera2d-packages.test.mjs": "7df0a612926af6ec64243517d3ffadeb6dcb7ad8dbb31bb93e289434497f7c7e",
+    "scripts/tests/helpers/scene-camera2d-fixture.mjs": "59d25d9c0d13af67501eaf7a75ec0946992abf989f7f5285392ed4ea0b5a1d88"
+  }
+}

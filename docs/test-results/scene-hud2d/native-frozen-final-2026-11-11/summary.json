@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "nativeTests": 4,
+  "nativeFailures": 0,
+  "backendTests": 9,
+  "backendFailures": 0,
+  "hudSamples": 15,
+  "pngCount": 4,
+  "zip": "hud-project.zip",
+  "allNineAnchorsComparedToPureView": true,
+  "authoredPortStateMutations": 6,
+  "HUDStateMutations": 0,
+  "frozenSourceHashesIdenticalAcrossAllFourNativeTests": true,
+  "allGeneratedFilesRetainedByteExact": true,
+  "historicalGDAndTextHEADFilesUnchanged": 78,
+  "previousCameraGDUnchanged": 3,
+  "noHUD": {
+    "plain": {
+      "files": 23,
+      "version": "0.34.0"
+    },
+    "camera1": {
+      "files": 30,
+      "version": "0.43.0"
+    },
+    "camera2": {
+      "files": 32,
+      "version": "0.44.0"
+    },
+    "payloadSourceMapCapabilitiesVersionUnchanged": true,
+    "cameraSourceFingerprintChangesRecorded": true
+  },
+  "descriptorVersion": "0.45.0",
+  "HUDGeneratedVersion": "0.45.0",
+  "runtimeProtocolUpgrade": false,
+  "originalAuthorAndBuildUnavailableDuringOfflineRun": true,
+  "renderer": "Actual Xvfb window using llvmpipe software GL; no hardware-GPU claim",
+  "exploratoryFindings": [
+    {
+      "kind": "test-parser",
+      "cause": "The new test counted legacy VIENTO_PROJECT lines, while current execution frames wrap business events in VIENTO_EXECUTION_FRAME.frame.",
+      "resolution": "Parse the existing envelope and verify all six state events retain the real author binding."
+    },
+    {
+      "kind": "renderer",
+      "cause": "Refreshing Control size only at frame_pre_draw updated node values but queued pixels one frame late after scene processing was frozen.",
+      "resolution": "Refresh synchronously on inherited NOTIFICATION_DISABLED before the unchanged smoke render boundary; strict same-frame 75% bar pixels now pass without an extra frame."
+    }
+  ]
+}

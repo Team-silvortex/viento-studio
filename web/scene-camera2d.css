@@ -1,0 +1,28 @@
+.scene-camera2d { box-sizing:border-box; width:min(760px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); margin:auto; padding:0; border:1px solid #33536a; border-radius:14px; color:#d8e9f8; background:#101c2b; overflow:hidden; }
+.scene-camera2d[open] { display:flex; flex-direction:column; }
+.scene-camera2d::backdrop { background:rgba(2,8,18,.76); }
+.scene-camera2d [hidden] { display:none!important; }
+.scene-camera2d header,.scene-camera2d footer { flex:none; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; padding:14px 18px; }
+.scene-camera2d h2 { margin:0; font-size:1.2rem; }
+.scene-camera2d main { min-height:0; overflow:auto; padding:0 18px; }
+.scene-camera2d #sceneCamera2DStatus { flex:none; max-height:12dvh; overflow:auto; padding:0 18px; }
+.scene-camera2d p { overflow-wrap:anywhere; color:#a1bbcf; }
+.scene-camera2d fieldset { min-width:0; padding:12px; border:1px solid #33536a; }
+.scene-camera2d label { display:grid; gap:5px; margin:8px 0; min-width:0; }
+.scene-camera2d input,.scene-camera2d select { box-sizing:border-box; width:100%; min-width:0; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
+.scene-camera2d .camera-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.scene-camera2d pre { white-space:pre-wrap; overflow-wrap:anywhere; padding:12px; background:#0a1422; font-size:.8rem; }
+.scene-camera2d .doc-btn { white-space:normal; }
+@media(max-width:480px) { .scene-camera2d header,.scene-camera2d footer { padding:10px; } .scene-camera2d main { padding:0 10px; } .scene-camera2d footer .doc-btn { flex:1 1 100px; } }
+
+.scene-camera2d .camera-composer { margin:16px 0; border-top:1px solid #33536a; padding-top:8px; }
+.scene-camera2d .camera-composer h3 { font-size:1rem; }
+.scene-camera2d .camera-composer canvas { display:block; width:100%; height:320px; box-sizing:border-box; border:1px solid #45657b; border-radius:6px; touch-action:none; outline-offset:2px; }
+.scene-camera2d .camera-composer canvas[aria-disabled="true"] { opacity:.55; }
+.scene-camera2d .camera-composer-toolbar { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.scene-camera2d .camera-composer-source { font-size:.8rem; overflow-wrap:anywhere; }
+@media(max-width:480px) { .scene-camera2d .camera-composer canvas { height:240px; } }
+
+.scene-camera2d label.camera-limits-toggle { display:flex; align-items:center; gap:8px; }
+.scene-camera2d .camera-limits-toggle input { width:auto; flex:none; }
+.scene-camera2d .camera-limits-help { grid-column:1 / -1; }

@@ -3,6 +3,7 @@
 import { parseJsonSource } from './json-source.mjs';
 import { validateProjectPhysics2DReplayCase } from './project-physics2d-replay-case.mjs';
 import { validateRuntimeCaseSceneDependencies } from './runtime-case-document.mjs';
+import { physicsReplayTargetDependencyDiagnostics } from './physics-replay-target-dependencies.mjs';
 
 export const PHYSICS_REPLAY_CASE_DOCUMENT_FORMAT = 'viento-physics2d-replay-case-document';
 export const PHYSICS_REPLAY_CASE_DOCUMENT_FILE_MAX_BYTES = 256 * 1024;
@@ -119,6 +120,8 @@ export function validatePhysicsReplayCaseDocumentDependencies(input, record = {}
     // A saved check names stable Scene2D instances, not actor definitions. The
     // physics body's ownership is checked against the frozen runtime plan.
     if (admitted.plan) {
+      diagnostics.push(...physicsReplayTargetDependencyDiagnostics(value.case.program, admitted.plan,
+        { code: 'runtime_physics_case_instance_missing', propertyPath: '/case/program' }));
       const instances = new Set(admitted.plan.actors.map(actor => actor.instanceId));
       value.case.checks.forEach((check, index) => {
         if (!instances.has(check.instanceId)) diagnostics.push(issue('runtime_physics_case_instance_missing',

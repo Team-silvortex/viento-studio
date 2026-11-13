@@ -40,7 +40,7 @@ Team-silvortex/viento-studio
 3. **设计版本、构建快照、运行状态分别管理。** 运行值不会悄悄覆盖设计值。
 4. **工程类型包负责领域语义与构建规则。** 内核只承担身份、类型、关系、事务、约束、构建与观察契约。
 5. **保留既有数据与语义契约，渐进替换实现。** 当前可移植引擎和 Web/Tauri 宿主继续工作，未来 GUI 迁到 ns-nova；第一个可用版本无需等待整个原生体系完成。
-6. **Viento 是 ns-nova 的官方 GUI 编辑器与 IDE，原生执行采用 Nuislang、ns-nova 与 yalivia runtime。** 长期允许 1–2 个副引擎，承接早期替补和独立工程目标；Godot 4 已承担首个受限场景后端，Bevy 保留为第二候选，后续支持级别以实测决定。
+6. **Viento 是 ns-nova 的官方 GUI 编辑器与 IDE，原生执行采用 Nuislang、ns-nova 与 yalivia runtime。** 长期允许 1–2 个副引擎，承接早期替补和独立工程目标；Godot 4 已承担首个受限场景后端，Bevy 已接入两个独立的受限 Linux 无头通道，具体支持范围以[后端指南](BEVY_BACKEND.md)和实测为准。
 7. **GUI 宿主与工程后端独立。** ns-nova 绘制 IDE 时仍可编辑、构建、调试副引擎工程；原生特性通过能力扩展开放，不受副引擎共有功能限制。
 8. **采用快速实验迭代与原生异构计算能力。** 允许依赖和接口持续演进，通过窄适配边界、版本记录与契约测试控制影响；ns-nova 的 GPU 计算和渲染能力可直接通过原生扩展开放。成熟是长期目标，作者数据的保护与恢复仍是现有约束。
 
@@ -62,9 +62,11 @@ Team-silvortex/viento-studio
 
 2026-10-03 用户确认：Viento 是 ns-nova 的官方 GUI 编辑器，自身 GUI 将由 ns-nova 重写；原生执行采用 Nuislang、ns-nova 与 yalivia runtime，并允许长期支持 1–2 个副引擎。副引擎首先承担原生体系早期替补，原生就绪后仍可作为工程目标保留。编辑器无关的引擎核心、关闭渲染的无头运行和可嵌入的渲染视口分开定义，见 [ADR 0008](adr/0008-native-nuis-and-bootstrap-runtime.md)。
 
-Godot 4 当前以独立进程实现受限 Scene2D 构建／运行，Bevy 保留为第二副引擎与宿主驱动方式的候选。LibGodot 的资料依据保留在 ADR 0008；本项目尚未验证库嵌入或与 ns-nova 的视口互操作。命令行运行、正常窗口和嵌入能力分别验收。
+Godot 4 当前以独立进程实现受限 Scene2D 构建／运行，Bevy 已提供数据与 Rust 作者行为两条受限无头通道；两者不推导出图形窗口或与 Godot 功能对等。LibGodot 的资料依据保留在 ADR 0008；本项目尚未验证库嵌入或与 ns-nova 的视口互操作。命令行运行、正常窗口和嵌入能力分别验收。
 
 项目与依赖的实验性已被接受，不将 API 暂未稳定作为停止集成的理由。ns-nova 按原生异构计算引擎定位，GUI、场景、计算与资源处理均可使用其 GPU 能力。计算／渲染扩展与控制命令、持久存储分开，具体资源通道、会话归属与验证方式见 ADR 0008 的“实验性演进与异构计算”。
+
+2026-11-11 用户进一步明确：当前先完善整条功能范式，之后整个 Studio 原生化，JS 与 Tauri 实现将被替换。近期交付以实际作者任务为单位：设定／投影、场景布置、行为与资源、运行反馈、组装与交付；每次保留能独立重放的作者样例和结果。界面框架、Node／HTTP 传输及 JavaScript 特有对象防护属于当前宿主实现，原生端继承必要的数据与失败语义，不要求复刻 JS 原型或长期维持两套通信结构。共享 Rust 继续承接已有领域规则；新的原生沉淀按实际功能价值推进，不以先完成全面语言迁移作为功能扩展的前置条件。
 
 现有 OC 三类模板仍用于文档设计；可执行场景和行为使用显式声明。过渡后端不解释任意 Nuis 程序，也不能用模拟协议或 Godot 结果宣称 yalivia 已通过。当前构建入口和边界见 [构建与运行](PROJECT_BUILD.md)，后续原生接入、GPU 纵切和 GUI 迁移见 [演进路线](ROADMAP.md)。
 
@@ -160,7 +162,7 @@ flowchart TB
     Packages --> Build
     Build --> Providers[Build / Resource / Runtime Providers]
     Providers --> Local[首个副引擎：Godot 4 场景子集]
-    Providers --> Secondary[第二副引擎候选：Bevy]
+    Providers --> Secondary[副引擎：Bevy 受限无头通道]
     Providers --> Native[Nuis 原生目标：待对接]
     Native --> NovaScene[ns-nova 异构计算、场景与渲染]
     Native --> Yalivia[yalivia 运行生命周期]
@@ -403,7 +405,7 @@ Viento 的 World revision 以不可变 ArtifactRevision 发布到 Cyanrex；一�
 
 ## 10. 分阶段施工路线与首批里程碑
 
-本节保留初始阶段编号和长期验收目标，便于关联 ADR 与历史工作；它不是当前待办清单。仓库迁移已完成，语义命令和构建也已有受限纵切。实际支持范围见 [STATUS](STATUS.md)，下一阶段工作和进入条件统一在 [ROADMAP](ROADMAP.md) 维护，不根据未知人力承诺日历时间。
+本节保留初始阶段编号和长期验收目标，便于关联 ADR 与历史工作；它不是当前待办清单。仓库迁移已完成，语义命令和构建也已有受限纵切。实际支持范围见 [STATUS](STATUS.md)，下一阶段工作和进入条件统一在 [ROADMAP](ROADMAP.md) 维护，不根据未知人力承诺日历时间。当前 0.3／0.4／0.5 是产品验收分组，与本节历史 V 编号不一一对应；最终出口由[0.5.0 里程碑](MILESTONE_0.5.0.md)负责。
 
 | 阶段 | 核心目标 | 阶段验收 |
 |---|---|---|
@@ -472,3 +474,7 @@ Viento 的 World revision 以不可变 ArtifactRevision 发布到 Cyanrex；一�
 [v-type-schema]: https://github.com/Team-silvortex/viento-studio/blob/bda0d3c4e5d8f90b4fff4914317809630c933583/schemas/project-type-v1.schema.json
 [v-testing]: https://github.com/Team-silvortex/viento-studio/blob/bda0d3c4e5d8f90b4fff4914317809630c933583/docs/TESTING.md
 [v-document-store]: https://github.com/Team-silvortex/viento-studio/blob/bda0d3c4e5d8f90b4fff4914317809630c933583/engine/document-store.mjs
+
+## 2D 完整工作流目标与 HUD 增量
+
+[0.5.0 验收门槛](MILESTONE_0.5.0.md)用两款参考游戏验证从空白创作到独立发行。屏幕 HUD 的作者声明、纯显示规则和依赖见[场景 HUD](SCENE_HUD2D.md)；其他现有语义与边界查[当前架构](ARCHITECTURE.md)，实际进度查[状态页](STATUS.md)，实施顺序查[路线图](ROADMAP.md)。原生端继承身份、来源、命令、会话和恢复合同，替换当前 JS／Node／Web／Tauri 实现；已有 HUD 专项不证明完整游戏、独立发行或候选安装。

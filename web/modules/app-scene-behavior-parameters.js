@@ -56,10 +56,13 @@ export function setupSceneBehaviorParameters({ container, getContext = () => ({}
     }
     container.hidden = false;
     el('InterfaceTitle').textContent = translate('脚本参数接口');
-    el('InterfaceNote').textContent = translate('接口提示不会自动修改或删除参数。新增参数留空时播放完整动画；可继续用片段选择器填入编号。');
     el('Declarations').replaceChildren(); el('Issues').replaceChildren();
     let value;
     try { value = review(context); } catch { value = { status: 'unavailable', missing: [], unknown: [], typeMismatches: [], invalidValues: [], duplicateNames: [], canAddMissing: false }; }
+    const animationOnly = value.status === 'ready' && context.contract.parameters.length > 0 && context.contract.parameters.every(row => row.referenceKind === 'animation-clip');
+    el('InterfaceNote').textContent = translate(animationOnly
+      ? '接口提示不会自动修改或删除参数。新增参数留空时播放完整动画；可继续用片段选择器填入编号。'
+      : '接口提示不会自动修改或删除参数。补齐仅添加缺失的默认项，已有值保持；仍需检查、审阅并普通保存。');
     container.dataset.status = value.status;
     const statusKey = { modified: '脚本源码已手改，参数辅助已停用；普通参数编辑仍可使用。', unsupported: '此脚本声明版本暂不支持参数辅助；普通参数编辑仍可使用。',
       unavailable: '当前无法读取脚本参数接口；普通参数编辑仍可使用。', incompatible: '脚本参数接口与当前后端或语言不匹配；普通参数编辑仍可使用。' }[value.status];

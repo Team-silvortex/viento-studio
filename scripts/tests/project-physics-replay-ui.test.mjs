@@ -191,3 +191,67 @@ test('timeline labels translate in place and polling retains raw caret and focus
   assert.equal(raw.value, value); assert.equal(raw.selectionStart, 2); assert.equal(raw.selectionEnd, 5);
   assert.equal(h.document.activeElement, raw);
 });
+
+const replayTargetId = n => `77777777-7777-4777-8777-${String(n).padStart(12, '0')}`;
+function instanceState() {
+  const state = initial(); state.backend.version = '0.42.0'; state.backend.capabilities.push('physics.input-replay-instances2d');
+  state.latestBuild.physicsReplayInstancesAvailable = true;
+  state.latestBuild.physicsReplayTargets = [1, 2, 3].map(n => ({ instanceId: replayTargetId(n), bodyId: replayTargetId(10 + n), objectId: replayTargetId(99), name: 'Shared OC <img src=x>' }));
+  return state;
+}
+const changeTarget = (h, n) => { const picker = h.element('projectBuildPhysicsReplayTarget'); picker.value = replayTargetId(n); picker.dispatch('change'); return picker; };
+const targetInput = (program, step, n) => program.steps[step].inputs.find(row => row.instanceId === replayTargetId(n));
+
+test('conversion is explicit, can be cancelled, copies all global input and has no author or runtime effect', async () => {
+  const h = await harness(instanceState()), raw = h.element('projectBuildPhysicsReplayProgram');
+  const before = JSON.parse(raw.value), text = raw.value + '\n'; h.input(text);
+  const calls = h.calls.length; h.runtime.window.confirm = () => false;
+  h.element('projectBuildPhysicsReplayInstances').click(); assert.equal(raw.value, text);
+  h.runtime.window.confirm = () => true; h.element('projectBuildPhysicsReplayInstances').click();
+  const converted = JSON.parse(raw.value); assert.equal(converted.schemaVersion, 2);
+  converted.steps.forEach((step, index) => { for (const row of step.inputs) { const { instanceId, ...keys } = row; assert.deepEqual(keys, before.steps[index]); assert.ok([1, 2, 3].some(n => instanceId === replayTargetId(n))); } });
+  assert.equal(h.calls.length, calls); assert.equal(h.context.dirty, false);
+  const picker = h.element('projectBuildPhysicsReplayTarget');
+  assert.equal(picker.querySelector('img'), null);
+  [...picker.children].forEach((option, index) => { assert.ok(option.textContent.startsWith(`${index + 1}. Shared OC <img src=x>`)); assert.equal(option.title, option.textContent); assert.ok(option.textContent.endsWith(replayTargetId(index + 1))); });
+  assert.equal(h.element('projectBuildPhysicsReplayInstances').hidden, true);
+});
+
+test('instance selection changes only the view and range edits preserve all other character inputs', async () => {
+  const h = await harness(instanceState()); h.element('projectBuildPhysicsReplayInstances').click();
+  const raw = h.element('projectBuildPhysicsReplayProgram'), before = JSON.parse(raw.value), text = raw.value, calls = h.calls.length;
+  const picker = changeTarget(h, 2); assert.equal(raw.value, text); assert.equal(picker.value, replayTargetId(2));
+  h.element('projectBuildPhysicsRangeAction').value = 'left'; h.element('projectBuildPhysicsRangeStart').value = '2'; h.element('projectBuildPhysicsRangeEnd').value = '4';
+  h.element('projectBuildPhysicsRangePress').click(); const after = JSON.parse(raw.value);
+  for (let step = 0; step < 30; step++) {
+    assert.deepEqual(targetInput(after, step, 1), targetInput(before, step, 1)); assert.deepEqual(targetInput(after, step, 3), targetInput(before, step, 3));
+    if (step >= 1 && step <= 3) assert.equal(targetInput(after, step, 2).left, true);
+  }
+  assert.equal(h.calls.length, calls); assert.equal(h.context.dirty, false);
+  const cell = h.element('projectBuildPhysicsTimeline').querySelectorAll('[data-action]').find(item => item.dataset.action === 'jump' && item.dataset.step === '29');
+  const stable = raw.value; cell.click(); assert.equal(raw.value, stable);
+});
+
+test('polling and translations preserve target, cell DOM, local text and focus in per-instance mode', async () => {
+  const state = instanceState(), h = await harness(state); h.element('projectBuildPhysicsReplayInstances').click();
+  const picker = changeTarget(h, 2), raw = h.element('projectBuildPhysicsReplayProgram'), text = raw.value;
+  const cell = h.element('projectBuildPhysicsTimeline').querySelectorAll('[data-action]')[31]; picker.focus();
+  await h.refresh(); assert.equal(h.document.activeElement, picker); assert.equal(picker.value, replayTargetId(2));
+  for (const dictionary of [en, ja, {}]) { h.language(dictionary); assert.equal(h.document.activeElement, picker); assert.equal(h.element('projectBuildPhysicsReplayTarget'), picker); }
+  cell.focus(); cell.dispatch('focus'); await h.refresh(); assert.equal(h.document.activeElement, cell);
+  assert.equal(raw.value, text); assert.equal(h.element('projectBuildPhysicsTimeline').querySelectorAll('[data-action]')[31], cell);
+});
+
+test('per-instance replay dispatches its complete program and refuses unavailable targets or capability locally', async () => {
+  const h = await harness(instanceState()); h.element('projectBuildPhysicsReplayInstances').click();
+  const raw = h.element('projectBuildPhysicsReplayProgram'), program = JSON.parse(raw.value); h.element('projectBuildPhysicsReplay').click(); await flushDialogs();
+  assert.deepEqual(h.calls.at(-1).body, { action: 'run', buildId: 'build-one', mode: 'headless', physicsControlProgram: program });
+  const invalid = structuredClone(program); invalid.steps[0].inputs[0].instanceId = replayTargetId(500);
+  // Keep the union within the data budget, so this is a frozen target failure.
+  for (const step of invalid.steps) for (const row of step.inputs) if (row.instanceId === replayTargetId(1)) row.instanceId = replayTargetId(500);
+  const calls = h.calls.length; h.input(JSON.stringify(invalid)); h.element('projectBuildPhysicsReplay').click(); await flushDialogs();
+  assert.equal(h.calls.length, calls); assert.match(h.element('projectBuildPhysicsReplayError').textContent, /不可用/);
+  const unavailable = instanceState(); unavailable.backend.capabilities = ['physics.observe2d']; await h.refresh(unavailable);
+  h.input(JSON.stringify(program)); const count = h.calls.length; h.element('projectBuildPhysicsReplay').click(); await flushDialogs(); assert.equal(h.calls.length, count);
+  assert.equal(h.element('projectBuildPhysicsReplayTarget').disabled, true);
+});

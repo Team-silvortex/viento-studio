@@ -1,0 +1,74 @@
+✔ fit world includes negative and off-viewport actor geometry as well as the default viewport frame (2.117666ms)
+✔ selection focus frames only supplied actor bounds, including negative positions, without expanding to the viewport (0.227511ms)
+✔ empty world geometry retains the default viewport frame and small selections respect the maximum zoom (0.182043ms)
+✔ all legal extreme actor coordinates fit a narrow author workspace far below the former 2-percent zoom floor (0.377131ms)
+✔ view calculations neither mutate source geometry nor retain caller-owned containers (0.356512ms)
+✔ world and selection geometry admit only finite bounded explicit data and at most 128 actors (2.23323ms)
+✔ workspace data capture refuses getters, hidden fields, sparse arrays, symbols and foreign prototypes without executing code (0.573061ms)
+✖ visible-world grid covers negative coordinates and anchors exact zero without clipping to a runtime viewport (0.840289ms)
+✔ grid coarsens as zoom decreases but never becomes finer than the independent 32-unit snap base (0.426858ms)
+✖ grid maintains a bounded budget at minimum zoom, maximum pixel sizes and far negative or positive pans (0.398442ms)
+✔ invalid, overflowing or precision-collapsed grid transforms are rejected rather than producing unbounded or invented lines (0.390698ms)
+✔ same source runs in a browser-style realm without Node imports or prototype coercion (7.363096ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 58.922505
+
+✖ failing tests:
+
+test at scripts/tests/scene-workspace-view.test.mjs:117:1
+✖ visible-world grid covers negative coordinates and anchors exact zero without clipping to a runtime viewport (0.840289ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + -0
+  - 0
+  
+      at file://<APP_ROOT>/scripts/tests/scene-workspace-view.test.mjs:25:14
+      at Array.forEach (<anonymous>)
+      at inspectGrid (file://<APP_ROOT>/scripts/tests/scene-workspace-view.test.mjs:23:12)
+      at TestContext.<anonymous> (file://<APP_ROOT>/scripts/tests/scene-workspace-view.test.mjs:122:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: -0,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-workspace-view.test.mjs:134:1
+✖ grid maintains a bounded budget at minimum zoom, maximum pixel sizes and far negative or positive pans (0.398442ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + -0
+  - 0
+  
+      at file://<APP_ROOT>/scripts/tests/scene-workspace-view.test.mjs:25:14
+      at Array.forEach (<anonymous>)
+      at inspectGrid (file://<APP_ROOT>/scripts/tests/scene-workspace-view.test.mjs:23:12)
+      at TestContext.<anonymous> (file://<APP_ROOT>/scripts/tests/scene-workspace-view.test.mjs:138:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: -0,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

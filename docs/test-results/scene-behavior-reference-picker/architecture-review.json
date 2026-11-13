@@ -1,0 +1,106 @@
+{
+  "format": "viento-reference-architecture-review",
+  "schemaVersion": 1,
+  "checkedAtUTC": "2026-11-13T03:08:24.312549+00:00",
+  "scope": "Independent read-only review of the behavior String-reference directory, source host, authenticated transport, parameter chooser and existing atlas boundaries. No repository writes were made during this review.",
+  "findings": [],
+  "blockingFindings": 0,
+  "verified": [
+    "Wire and source-bound catalog are distinct: only the private brand, exact five source fields and matching saved scene descriptor permit reference use. Nested DTO data is detached, bounded and frozen without invoking accessors.",
+    "Local instances retain individual instance UUIDs, including repeated definition UUIDs. Names, definition identities and source paths are visible; current String parameter destination is an explicit labelled control.",
+    "One or multiple saved containing assemblies never auto-select. Member scene UUIDs and authored portable actions come only from the explicitly selected assembly and its declared input map; built-in ui_* actions are absent.",
+    "Missing or malformed selected assembly, members or input map reject instead of returning an empty selected context. Directory browsing does not require rendering validity, engine availability or asset bytes.",
+    "World revision includes all observed document content, source revisions, registration metadata, parser descriptors and resource registration descriptors. It is intentionally conservative for saved dependency staleness.",
+    "Each insertion re-reads the directory, verifies the saved World revision and complete catalog fingerprint, then synchronously checks source, binding, implementation, instance, row identity, parameter key, String type and current value before changing one scalar.",
+    "Capability withdrawal, source/binding changes, reset/close/dispose and an observed ordinary-check pending transition revoke earlier operations. Stale row edits retain their text and receive an actionable retry hint.",
+    "The new optional capability uses an independent generation and cannot revoke an already reviewed ordinary proposal. Reading and selecting do not change form values, author files or review; insertion returns through the existing review/draft/ordinary-Save path.",
+    "HTTP accepts only the authenticated author JSON POST, rejects query/extra fields, returns no-store, and is unavailable on the browse host. No new runtime protocol, persistent format, generated output or backend capability is introduced.",
+    "Native labels, status role/live region, choice descriptions, textContent rendering, responsive single-column controls and focus-preserving language refresh are present."
+  ],
+  "resolvedReviewItems": [
+    "Observed pending true then false permanently cancels earlier reference loads/insertion.",
+    "A manually changed target row ends revalidation with a stale-operation hint instead of a stuck loading status.",
+    "Instance details separately display instance UUID, definition UUID and original source path."
+  ],
+  "verificationObserved": [
+    {
+      "command": "node --test --test-isolation=none scripts/tests/scene-behavior-reference-directory.test.mjs scripts/tests/scene-behavior-reference-directory-service.test.mjs",
+      "tests": 20,
+      "passed": 20,
+      "failed": 0,
+      "runBy": "this reviewer"
+    },
+    {
+      "command": "node --test --test-isolation=none scripts/tests/scene-behavior-reference-host.test.mjs",
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "runBy": "this reviewer"
+    },
+    {
+      "command": "node --test --test-isolation=none scripts/tests/scene-behavior-references-ui.test.mjs scripts/tests/scene-behavior-reference-transport.test.mjs",
+      "tests": 16,
+      "passed": 16,
+      "failed": 0,
+      "runBy": "this reviewer"
+    },
+    {
+      "scope": "Final focused and neighbor run",
+      "tests": 477,
+      "passed": 471,
+      "skipped": 6,
+      "failed": 0,
+      "runBy": "parent; reported 2026-11-13 03:06 UTC"
+    },
+    {
+      "scope": "Actual Chrome browser smoke",
+      "screenshots": 11,
+      "layouts": 9,
+      "runtimeErrors": 0,
+      "runBy": "parent; reported 2026-11-13 03:06 UTC"
+    }
+  ],
+  "atlas": {
+    "legacyObjectsCoordinatesAndScoresUnchanged": true,
+    "sharedFileAffectedBindingCount": 241,
+    "sharedFileAffectedFunctionCount": 111,
+    "analysis": "Shared runtime, author HTTP service, translation and behavior UI containers are witnesses for many older bindings. A changed witness file does not change every historical feature contract. The added reference capability is an isolated optional branch; existing source snapshots, ordinary dependencyRevision, proposal/apply guards and neighboring audio/animation contracts remain separate.",
+    "recommendation": "Retain historical scores and coordinates. Add the new working-tree reference feature and scoped evidence separately. Do not raise installed-delivery, native gameplay, Rust-core or Bevy parity scores from this browser authoring change.",
+    "gate": "The reported 477-test focused/neighbor pass supports retaining old bindings. Parent-owned complete application check is still running; its terminal result must be recorded before final delivery.",
+    "directNeighborBindings": [
+      "b542",
+      "b576",
+      "b579",
+      "b601",
+      "b602",
+      "b603",
+      "b604",
+      "b605",
+      "b606",
+      "b658"
+    ],
+    "affectedBindingDetails": "/tmp/viento-reference-atlas-affected-bindings.json"
+  },
+  "backendPreservation": {
+    "baselineFiles": 86,
+    "changed": []
+  },
+  "sourceHashes": {
+    "engine/scene-behavior-reference-directory.mjs": "290e4c35c05081c1cd22c3e42b07a5a69a43af4ff9f1f74d3ecc59464dcbc904",
+    "scripts/lib/scene-behavior-reference-directory-service.mjs": "3d8a46da54cec6d580a333a34fc7525cad19fa56728644087ac9d4708128b4f8",
+    "web/modules/app-scene-behavior-references.js": "02ac34e7374a2eb9b2c24a85f86f68ec8487adcab7fb21dbfd78af3bcccdb605",
+    "web/modules/app-scene-behaviors.js": "deb769b59a5ffe3bf9abbbf7b96d83c31d1a53c96353b66514686a97fbee7dba",
+    "web/modules/app-behavior-source.js": "6c68d1b59bcaf8898a0b6cd6e49c08fbe19fbc5ec7008b3646e4a432216e34c7",
+    "web/modules/app-runtime.js": "a05d20392415c142bfe0fe6edf40558ee5446ad0c85585ef5596a10a1c6d2e99",
+    "web/modules/app-doc-service.js": "1d4f66bfaa5a34e42864256e1a785291b827205bc2a427b2009aef0e03d6dcec",
+    "scripts/lib/doc-api-service.mjs": "717ce0c94a70bea6ebeeda311aa257fdc326250356ba0c98566ab99a2fdd6f49",
+    "scripts/lib/doc-server-routes.mjs": "90a67813f9c7357c139f9fd8da2bb0ea2a3fff440f05deb58c8f8d21372135fd",
+    "web/scene-behaviors.css": "92a05fba1efe817a9612aed412050a1679d7b95e85645fa9a24d5050c060abf1",
+    "scripts/tests/scene-behavior-reference-picker-smoke.mjs": "9a1cacc2e73f78dc98b5101512398a3e8431905fb8eb0bd826ae3fc8a6e6c101"
+  },
+  "limitations": [
+    "The complete application check is owned by the parent and was pending at this review timestamp; this memo does not claim its success.",
+    "A reference remains an ordinary authored String. This change does not assign parameter meaning, create runtime objects/actions, introduce persistent reference validation, or guarantee an arbitrary manually typed value.",
+    "No installed desktop/Android, from-blank GUI authoring, new native gameplay, independent distribution, complete Rust/GPU migration, ns-nova implementation or Bevy semantic parity is claimed."
+  ]
+}

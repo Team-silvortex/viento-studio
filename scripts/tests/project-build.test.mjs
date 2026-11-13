@@ -60,8 +60,25 @@ test('scene build: deterministic, movable, frozen bytes; portable planner has no
   const resolveScene2DModel = vm.runInNewContext(`${modelSource.replace(/^import .*\n/gm, '').replaceAll('export ', '')}\nresolveScene2DModel`,
     { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies, parseJsonSource, locateJsonSource, sceneActorIdentity, validateSceneGroups });
   const source = await fs.readFile(new URL('../../engine/build-plan.mjs', import.meta.url), 'utf8');
-  const portable = vm.runInNewContext(`${source.replace(/^import .*\n/gm, '').replace(/^export \{.*\} from .*\n/gm, '').replaceAll('export ', '')}\ncreateScene2DPlan`,
-    { resolveScene2DModel, resolveSceneBehaviors, resolveSceneAudio, SCENE_AUDIO_CAPABILITIES, resolveSceneAnimation, sceneAnimationCapabilities, resolveScenePhysics2D, scenePhysics2DCapabilities });
+  const [cameraSource, jsonSource, pathSource, hudSource, stateSource, canonicalSource, runtimeSource] = await Promise.all(['scene-camera2d', 'json-source', 'source-path', 'scene-hud2d', 'project-shared-state', 'canonical-json', 'project-runtime-contracts']
+    .map(name => fs.readFile(new URL(`../../engine/${name}.mjs`, import.meta.url), 'utf8')));
+  const script = content => content.replace(/^import[\s\S]*?from ['"][^'"]+['"];?\n/gm, '').replace(/^export \{.*\} from .*\n/gm, '').replaceAll('export ', '');
+  const portable = vm.runInNewContext(`
+    const cameraJson = (() => { ${script(jsonSource)}; return {parseJsonSource,locateJsonSource}; })();
+    const cameraPath = (() => { ${script(pathSource)}; return {normalizeSourcePath}; })();
+    const cameraApi = (() => { const {parseJsonSource,locateJsonSource} = cameraJson; const {normalizeSourcePath} = cameraPath;
+      ${script(cameraSource)}; return {resolveSceneCamera2D,sceneCamera2DCapabilities}; })();
+    const canonicalApi = (() => { ${script(canonicalSource)}; return {canonicalJson}; })();
+    const runtimeApi = (() => { ${script(runtimeSource)}; return {PROJECT_RUNTIME_MAX_VISITS,projectRuntimeUuid,projectRuntimeExact,copyProjectRuntimeData,invalidProjectRuntime}; })();
+    const stateApi = (() => { const {canonicalJson} = canonicalApi;
+      const {PROJECT_RUNTIME_MAX_VISITS,projectRuntimeUuid:uuid,projectRuntimeExact:exact,copyProjectRuntimeData:copy,invalidProjectRuntime:invalid} = runtimeApi;
+      ${script(stateSource)}; return {projectSharedStateKey}; })();
+    const hudApi = (() => { const {parseJsonSource,locateJsonSource} = cameraJson; const {normalizeSourcePath} = cameraPath; const {projectSharedStateKey} = stateApi;
+      ${script(hudSource)}; return {resolveSceneHUD2D,sceneHUD2DCapabilities}; })();
+    const {resolveSceneHUD2D,sceneHUD2DCapabilities} = hudApi;
+    const {resolveSceneCamera2D,sceneCamera2DCapabilities} = cameraApi;
+    ${script(source)}; createScene2DPlan`,
+    { TextEncoder, resolveScene2DModel, resolveSceneBehaviors, resolveSceneAudio, SCENE_AUDIO_CAPABILITIES, resolveSceneAnimation, sceneAnimationCapabilities, resolveScenePhysics2D, scenePhysics2DCapabilities });
   const observed = await readWorldSnapshot(root);
   assert.deepEqual(JSON.parse(JSON.stringify(portable(observed, scene))), createScene2DPlan(observed, scene));
   assert.deepEqual(checkBuildCapabilities(captured.plan, { capabilities: [] }).map(item => item.capability), captured.plan.requiredCapabilities);

@@ -1,0 +1,24 @@
+✔ neutral camera support admits fixed and stable-follow standalone and assembly plans (29.925174ms)
+✔ backends without camera capability refuse before an operation is dispatched (4.620895ms)
+✔ omitting camera flags from standalone, assembly or both member and assembly never hides the declaration (5.255436ms)
+✖ camera support validates frozen target membership instead of trusting a capability flag (3.619704ms)
+✔ misplaced/malformed camera envelopes and accessors fail without invoking getters (3.680501ms)
+✔ generated camera receipts require both registered provider and actual producer capabilities (3.923775ms)
+✔ no-camera plans retain old producer receipts without a camera capability list (3.034509ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 182.792343
+
+✖ failing tests:
+
+test at scripts/tests/scene-camera2d-admission.test.mjs:50:1
+✖ camera support validates frozen target membership instead of trusting a capability flag (3.619704ms)
+  TypeError: Cannot assign to read only property 'document' of object '#<Object>'
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-admission.test.mjs:53:21)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

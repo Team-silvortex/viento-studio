@@ -218,17 +218,50 @@ test('UI support convenience is explicit, operation-specific and fail closed', (
 test('portable middleware executes in an isolated JavaScript realm without host globals', async () => {
   const source = await fs.readFile(new URL('../../engine/backend-capabilities.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(source.replace(/^\s*\/\/.*$/gmu, ''), /(?:from\s+['"]node:|\b(?:process|Buffer|window)\b|(?<!\.)\bdocument\b)/u);
-  const context = vm.createContext({});
-  vm.runInContext(`${source.replaceAll('export ', '')}\nglobalThis.backendApi = {validateExecutionBackendDescriptor, checkExecutionBackendSupport, canExecuteBackend};`, context);
+  const [jsonSource, pathSource, cameraSource, hudSource, stateSource, canonicalSource, runtimeSource] = await Promise.all(['json-source', 'source-path', 'scene-camera2d', 'scene-hud2d', 'project-shared-state', 'canonical-json', 'project-runtime-contracts']
+    .map(name => fs.readFile(new URL(`../../engine/${name}.mjs`, import.meta.url), 'utf8')));
+  const script = value => value.replace(/^import[\s\S]*?from ['"][^'"]+['"];?\n/gmu, '').replaceAll('export ', '');
+  const context = vm.createContext({ TextEncoder });
+  // Load the actual portable dependency sources in this realm. Passing the Node
+  // validator would weaken its strict realm boundary and hide browser failures.
+  vm.runInContext(`
+    const jsonApi = (() => { ${script(jsonSource)}; return {parseJsonSource, locateJsonSource}; })();
+    const pathApi = (() => { ${script(pathSource)}; return {normalizeSourcePath}; })();
+    const cameraApi = (() => { const {parseJsonSource, locateJsonSource} = jsonApi; const {normalizeSourcePath} = pathApi;
+      ${script(cameraSource)}; return {validateSceneCamera2DPlan, SCENE_CAMERA2D_CAPABILITY, sceneCamera2DCapabilities}; })();
+    const canonicalApi = (() => { ${script(canonicalSource)}; return {canonicalJson}; })();
+    const runtimeApi = (() => { ${script(runtimeSource)}; return {PROJECT_RUNTIME_MAX_VISITS,projectRuntimeUuid,projectRuntimeExact,copyProjectRuntimeData,invalidProjectRuntime}; })();
+    const stateApi = (() => { const {canonicalJson} = canonicalApi;
+      const {PROJECT_RUNTIME_MAX_VISITS,projectRuntimeUuid:uuid,projectRuntimeExact:exact,copyProjectRuntimeData:copy,invalidProjectRuntime:invalid} = runtimeApi;
+      ${script(stateSource)}; return {projectSharedStateKey}; })();
+    const hudApi = (() => { const {parseJsonSource,locateJsonSource} = jsonApi; const {normalizeSourcePath} = pathApi; const {projectSharedStateKey} = stateApi;
+      ${script(hudSource)}; return {validateSceneHUD2DPlan,SCENE_HUD2D_CAPABILITY,sceneHUD2DCapabilities}; })();
+    const {validateSceneHUD2DPlan,SCENE_HUD2D_CAPABILITY,sceneHUD2DCapabilities} = hudApi;
+    (() => { const {validateSceneCamera2DPlan, SCENE_CAMERA2D_CAPABILITY, sceneCamera2DCapabilities} = cameraApi;
+      ${script(source)}; globalThis.backendApi = {validateExecutionBackendDescriptor, checkExecutionBackendSupport, canExecuteBackend}; })();
+  `, context);
   assert.equal(vm.runInContext('typeof process + ":" + typeof Buffer + ":" + typeof document + ":" + typeof window', context), 'undefined:undefined:undefined:undefined');
   const result = vm.runInContext(`
     const input = ${JSON.stringify(descriptor())};
     const scenePlan = ${JSON.stringify(plan())};
     const frozen = backendApi.validateExecutionBackendDescriptor(input);
     input.execution.windowPreview = false;
+    const cameraPlan = JSON.parse(JSON.stringify(scenePlan));
+    cameraPlan.actors = [{instanceId:'11111111-1111-4111-8111-111111111111',objectId:'22222222-2222-4222-8222-222222222222'}];
+    cameraPlan.requiredCapabilities.push('scene.camera2d');
+    cameraPlan.camera2d = {format:'viento-camera2d-plan',schemaVersion:1,
+      manifest:{objectId:'33333333-3333-4333-8333-333333333333',sourcePath:'documents/cameras/view.json',sourceRevision:'sha256:'+'a'.repeat(64)},
+      document:{format:'viento-scene-camera2d',schemaVersion:1,sceneObjectId:cameraPlan.scene.objectId,
+        camera:{mode:'follow',targetInstanceId:cameraPlan.actors[0].instanceId,offset:[-20,10],zoom:2}}};
+    const cameraBackend = {...frozen,capabilities:[...frozen.capabilities,'scene.camera2d']};
+    const cameraValid = backendApi.checkExecutionBackendSupport(cameraBackend,{operation:'build',plan:cameraPlan});
+    const cameraMissing = backendApi.checkExecutionBackendSupport(frozen,{operation:'build',plan:cameraPlan}).some(item=>item.code==='build_capability_missing');
+    cameraPlan.camera2d.document.camera.targetInstanceId = '44444444-4444-4444-8444-444444444444';
+    const cameraInvalid = backendApi.checkExecutionBackendSupport(cameraBackend,{operation:'build',plan:cameraPlan}).some(item=>item.code==='build_camera2d_invalid');
     JSON.stringify({frozen: Object.isFrozen(frozen.execution), preserved: frozen.execution.windowPreview,
       supported: backendApi.checkExecutionBackendSupport(frozen, {operation:'build', platform:'linux', plan:scenePlan}),
-      offscreen: backendApi.canExecuteBackend(frozen, 'offscreenRender'), unknown: backendApi.canExecuteBackend(null, 'build')});
+      offscreen: backendApi.canExecuteBackend(frozen, 'offscreenRender'), unknown: backendApi.canExecuteBackend(null, 'build'),
+      cameraValid,cameraMissing,cameraInvalid});
   `, context);
-  assert.deepEqual(JSON.parse(result), { frozen: true, preserved: true, supported: [], offscreen: false, unknown: false });
+  assert.deepEqual(JSON.parse(result), { frozen: true, preserved: true, supported: [], offscreen: false, unknown: false, cameraValid: [], cameraMissing: true, cameraInvalid: true });
 });

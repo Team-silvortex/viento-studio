@@ -22,11 +22,11 @@ function preview(sceneId = sceneOne, previewId = previewOne) {
 async function harness() {
   const calls = [], assets = [], opened = [], edited = [], viewCalls = [];
   const context = { editable: true, dirty: false, creating: false, busy: false, canEditScene: true };
-  let sourceAction = () => true;
+  let sourceAction = () => true, canvasCallbacks;
   const h = await dialogHarness('app-scene-preview', {
     SCENE_PREVIEW_API_PATH: '/api/scene-preview',
     location: { href: 'http://127.0.0.1/web/', origin: 'http://127.0.0.1' },
-    createScenePreviewCanvas: () => Object.fromEntries(['setScene', 'setImages', 'setVisible', 'select', 'fit', 'zoom', 'setGrid', 'destroy'].map(name => [name, (...args) => viewCalls.push({ name, args })])),
+    createScenePreviewCanvas: options => { canvasCallbacks = options; return Object.fromEntries(['setScene', 'setImages', 'setVisible', 'select', 'fit', 'fitAll', 'focusSelection', 'zoom', 'setGrid', 'destroy'].map(name => [name, (...args) => viewCalls.push({ name, args })])); },
     fetchJsonApiRequest: (url, request) => {
       const wait = deferred(), call = { url, request, ...wait }; calls.push(call);
       if (request.method === 'DELETE') wait.resolve({ payload: { ok: true } });
@@ -40,7 +40,7 @@ async function harness() {
   controller.setAvailable(true); controller.setScene(sceneOne); controller.setVisible(true);
   const post = () => calls.filter(call => call.request.method === 'POST').at(-1);
   const resolve = async value => { post().resolve({ payload: value }); await flushDialogs(); };
-  return { ...h, container, context, controller, calls, assets, opened, edited, viewCalls, post, resolve, setSourceAction: value => { sourceAction = value; } };
+  return { ...h, container, context, controller, calls, assets, opened, edited, viewCalls, post, resolve, setSourceAction: value => { sourceAction = value; }, canvasCallbacks };
 }
 
 test('saved scene preview does not require a build or runtime and never submits a write', async () => {
@@ -163,15 +163,15 @@ test('fit, point conversion and focal zoom preserve scene coordinates', () => {
   const next = zoomSceneView(view, 2, 184, 244); assert.equal(next.scale, 2);
   assert.deepEqual(canvasToScene(next, 184, 244), [160, 220]);
   assert.equal(zoomSceneView(view, 100000, 0, 0).scale, 16);
-  assert.equal(zoomSceneView(view, 0.000001, 0, 0).scale, 0.02);
+  assert.equal(zoomSceneView(view, 0.00000001, 0, 0).scale, 0.000001);
 });
 
-test('canvas hit testing uses actor centers, reverse draw order, and scene clipping', () => {
+test('canvas hit testing uses actor centers and reverse draw order throughout the scene world', () => {
   const scene = { viewport: [800, 480] }, first = { objectId: 'first', position: [100, 80], size: [60, 40] }, second = { ...first, objectId: 'second' };
   assert.equal(hitTestScene(scene, [first, second], 100, 80), 'second');
   assert.equal(hitTestScene(scene, [first], 70, 60), 'first');
   assert.equal(hitTestScene(scene, [first], 69.9, 60), null);
-  assert.equal(hitTestScene(scene, [{ ...first, position: [-5, 10] }], -1, 10), null);
+  assert.equal(hitTestScene(scene, [{ ...first, position: [-5, 10] }], -1, 10), 'first');
 });
 
 test('texture tint multiplies all RGBA channels and preserves transparent pixels', () => {
@@ -328,4 +328,23 @@ test('invalid Unicode title in saved scene has a specific preview diagnostic and
   assert.match(h.element('scenePreviewDiagnostics').textContent, /场景标题包含无效的 Unicode 字符/);
   h.element('scenePreviewDiagnostics').querySelector('button').click();
   assert.equal(h.opened.at(-1)[1].propertyPath, '/title');
+});
+
+
+test('world framing and selected framing stay read-only and unavailable owners cannot invoke them', async () => {
+  const h = await harness();
+  assert.equal(h.element('scenePreviewFitAll').disabled, true);
+  assert.equal(h.element('scenePreviewFocusSelection').disabled, true);
+  const value = preview(); value.actors[0].position = [-1500, 2500]; await h.resolve(value);
+  const posts = h.calls.length;
+  h.element('scenePreviewFitAll').click(); assert.ok(h.viewCalls.some(row => row.name === 'fitAll'));
+  h.element('scenePreviewObjects').querySelector('button').click();
+  assert.equal(h.element('scenePreviewFocusSelection').disabled, false);
+  h.element('scenePreviewFocusSelection').click(); assert.ok(h.viewCalls.some(row => row.name === 'focusSelection'));
+  h.canvasCallbacks.onViewChange({ scale: .0017 }); assert.equal(h.element('scenePreviewZoom').textContent, '0.17%');
+  assert.equal(h.calls.length, posts); assert.equal(h.context.dirty, false);
+  h.controller.setVisible(false);
+  const framed = h.viewCalls.filter(row => ['fitAll', 'focusSelection'].includes(row.name)).length;
+  h.element('scenePreviewFitAll').dispatch('click'); h.element('scenePreviewFocusSelection').dispatch('click');
+  assert.equal(h.viewCalls.filter(row => ['fitAll', 'focusSelection'].includes(row.name)).length, framed);
 });

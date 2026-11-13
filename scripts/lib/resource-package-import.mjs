@@ -5,7 +5,7 @@ import { readWorkspace, readRegistry, resolveAssetRoot, walkFiles, assertPortabl
 import { workspacePaths, projectDefinition, resolveDocumentDefinition, validateProjectTypes } from './project-layout.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
 import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeAuthorDocument,
-  inspectPackageRuntimeCaseSuite, inspectPackageProjectAssembly, packageDocumentClassification } from './resource-package-catalog.mjs';
+  inspectPackageRuntimeCaseSuite, inspectPackageProjectAssembly, inspectPackageSceneCamera2D, inspectPackageSceneHUD2D, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { packageFileHash } from './resource-package-export.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { appendRecordItem, replaceRecordString } from '../../engine/world-record-edit.mjs';
@@ -18,6 +18,8 @@ import { packageError } from '../../engine/resource-package.mjs';
 import { validateObjectProjection, inspectObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
+import { sceneCamera2DDocumentIds, validateSceneCamera2DDependencies } from '../../engine/scene-camera2d.mjs';
+import { sceneHUD2DDocumentIds, validateSceneHUD2DDependencies } from '../../engine/scene-hud2d.mjs';
 import { runtimeAuthorDocumentIds, validateRuntimeAuthorDocumentDependencies } from './runtime-author-package.mjs';
 import { runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies } from '../../engine/runtime-case-suite.mjs';
 
@@ -128,7 +130,7 @@ export async function planPackageImport(root, pack, signal) {
     const urls = [...media.urls, ...collectAssetImageRefs(media.text, sourcePath).map(file => `/${file.split('/').map(encodeURIComponent).join('/')}`)];
     for (const url of urls) if (!assetUrls.has(mediaUrl(url))) conflict(sourcePath, 'dependency');
   };
-  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], assemblyChecks = [], dependencySources = new Map();
+  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], assemblyChecks = [], cameraChecks = [], hudChecks = [], dependencySources = new Map();
   const mappedById = new Map(mappedDocuments.map(record => [record.id, record]));
   for (const item of pack.manifest.documents) {
     const bytes = await readPackageBytes(pack.content, item.sourcePath, signal), record = mappedById.get(item.id);
@@ -139,6 +141,8 @@ export async function planPackageImport(root, pack, signal) {
     const runtimeCase = inspectPackageRuntimeAuthorDocument(bytes, item.sourcePath);
     const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
     const assembly = inspectPackageProjectAssembly(bytes, item.sourcePath);
+    const camera = inspectPackageSceneCamera2D(bytes, item.sourcePath);
+    const hud = inspectPackageSceneHUD2D(bytes, item.sourcePath);
     // Keep a classification, not every incoming source body. The dependency
     // validators need only availability and projection/composition identity;
     // the archive already pins the actual bytes separately.
@@ -149,6 +153,8 @@ export async function planPackageImport(root, pack, signal) {
     if (runtimeCase.recognized) caseChecks.push({ record, checked: runtimeCase });
     if (suite.recognized) suiteChecks.push({ record, checked: suite });
     if (assembly.recognized) assemblyChecks.push({ record, checked: assembly });
+    if (camera.recognized) cameraChecks.push({ record, checked: camera });
+    if (hud.recognized) hudChecks.push({ record, checked: hud });
   }
   for (const { record, checked } of compositionChecks) {
     // Repeat source-derived declaration checks even when a caller supplies an
@@ -250,6 +256,55 @@ export async function planPackageImport(root, pack, signal) {
       behaviorSources.set(actorId, { record: actor, sourcePath: actor.sourcePath, content });
     }
     if (validateSceneBehaviorDependencies(checked.value, record, { documents: [...projectionSources.values(), ...behaviorSources.values()] }).length) conflict(record.sourcePath, 'dependency');
+  }
+  // Included camera declarations own only their saved scene identity. Excluded
+  // requirements become inspectable here; re-pin those target bytes before
+  // returning a plan so final import publication repeats the same admission.
+  const cameraSources = new Map();
+  for (const { record, checked } of cameraChecks) {
+    if (!checked.ok || sceneCamera2DDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    const sceneId = checked.value.sceneObjectId, incoming = pack.manifest.documents.find(item => item.id === sceneId);
+    const requirement = requiredById.get(sceneId), dependency = incoming ? mappedById.get(sceneId) : registry.documents.find(item => item.id === sceneId);
+    if (dependency && (incoming || requirement?.category === 'document') && !cameraSources.has(sceneId)) {
+      let content = null;
+      try {
+        const bytes = incoming ? await readPackageBytes(pack.content, incoming.sourcePath, signal)
+          : await readPackageBytes(root, dependency.sourcePath, signal);
+        if (!incoming) {
+          const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+          if (canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+          dependencySources.set(sceneId, { id: sceneId, store: 'project', path: dependency.sourcePath, content: fingerprint });
+        }
+        content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT' && !(error instanceof TypeError)) throw error; }
+      cameraSources.set(sceneId, { record: dependency, sourcePath: dependency.sourcePath, content });
+    }
+    if (validateSceneCamera2DDependencies(checked.value, record, { documents: [...cameraSources.values()] }).length) conflict(record.sourcePath, 'dependency');
+  }
+  const hudSources = new Map();
+  for (const { record, checked } of hudChecks) {
+    if (!checked.ok || sceneHUD2DDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    const sceneId = checked.value.sceneObjectId, incoming = pack.manifest.documents.find(item => item.id === sceneId);
+    const requirement = requiredById.get(sceneId), dependency = incoming ? mappedById.get(sceneId) : registry.documents.find(item => item.id === sceneId);
+    if (dependency && (incoming || requirement?.category === 'document') && !hudSources.has(sceneId)) {
+      let content = null;
+      try {
+        const bytes = incoming ? await readPackageBytes(pack.content, incoming.sourcePath, signal)
+          : await readPackageBytes(root, dependency.sourcePath, signal);
+        if (!incoming) {
+          const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+          if (canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+          dependencySources.set(sceneId, { id: sceneId, store: 'project', path: dependency.sourcePath, content: fingerprint });
+        }
+        content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT' && !(error instanceof TypeError)) throw error; }
+      hudSources.set(sceneId, { record: dependency, sourcePath: dependency.sourcePath, content });
+    }
+    if (validateSceneHUD2DDependencies(checked.value, record, { documents: [...hudSources.values()] }).length) conflict(record.sourcePath, 'dependency');
   }
   const caseSources = new Map();
   for (const { record, checked } of caseChecks) {

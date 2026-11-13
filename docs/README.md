@@ -2,9 +2,9 @@
 
 从要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。主线是 **设定 → 投影 → 场景实现 → 组装构建 → 工程交付**，各专题沿同一份作者数据工作。
 
-[快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
+[快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [0.5.0 验收目标](MILESTONE_0.5.0.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
 
-当前源码的[0.2.9 发布记录](RELEASE_0.2.9.md)与[发布检查](test-results/release-0.2.9/README.md)分别说明功能收录和升版验证；上一版见[0.2.8 发布记录](RELEASE_0.2.8.md)。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
+当前源码的[0.2.10 发布记录](RELEASE_0.2.10.md)与[发布检查](test-results/release-0.2.10/README.md)分别说明功能收录和升版验证；上一版见[0.2.9 发布记录](RELEASE_0.2.9.md)。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
 
 ## 第一次使用
 
@@ -12,6 +12,7 @@
 | --- | --- |
 | 选择启动方式、创建第一份工程、体验样例 | [快速开始](GETTING_STARTED.md) |
 | 判断源码功能、安装包与平台差异 | [当前能力与平台](STATUS.md) |
+| 了解接下来先做什么、0.3／0.4／0.5 如何验收 | [分阶段开发路线](ROADMAP.md#内置创作到交付的推进顺序)、[下一轮三项工作](ROADMAP.md#接下来的三项开发工作) |
 | 配置类型、编辑正文、保存与迁移 | [项目工作流](PROJECT_WORKFLOW.md) |
 | 在字段表中修改数值、文字和开关 | [字段编辑](FIELD_EDITING.md) |
 | 使用图片、视频与音频，切换界面语言 | [图片／视频／音频](MEDIA_RESOURCES.md)、[三语设置](LANGUAGES.md) |
@@ -24,8 +25,13 @@
 
 | 需要做什么 | 从这里开始 |
 | --- | --- |
+| 打开可编辑的俯视收集游戏初稿、查看玩法和迁移边界 | [晶石庭院](../examples/topdown-collect/README.md)、[本轮证据](test-results/topdown-collect/README.md) |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
+| 设置运行主相机的固定中心／实例跟随，保留独立编辑取景 | [二维运行主相机](SCENE_CAMERA2D.md) |
+| 编辑屏幕文本／状态条、锚点与共享状态样本 | [场景 HUD](SCENE_HUD2D.md) |
 | 新建多演员配方、起始排布、九域编辑及生成独立运行场景 | [场景片段组合](SCENE_COMPOSITION.md) |
+| 用按键开始游戏、用玩法事件进入结果场景 | [场景导航行为](SCENE_NAVIGATION.md) |
+| 从失败页重试关卡并复位分数、生命等状态 | [关卡重试](SCENE_RETRY.md) |
 | 多场景项目、启动入口、键盘映射、运行与工程交付 | [项目组装](PROJECT_ASSEMBLY.md) |
 | 跨场景保留计数／标记，查看变更与行为来源 | [项目共享状态](PROJECT_SHARED_STATE.md) |
 | 行为间发布／订阅通知，查看处理顺序、来源与精确回执位置 | [项目事件](PROJECT_EVENTS.md)、[事件位置观察](BACKEND_MIDDLEWARE.md#项目事件发布与投递位置) |
@@ -92,6 +98,7 @@
 
 - [Epic of Viento Line](examples/README.md)：独立官方作品，说明现有作品如何使用通用定义。
 - [Scene3D](../examples/scene3d/README.md)：独立方块、相机和方向光；只读预览与显式 Godot 工程导出。
+- [Crystal Courtyard / 晶石庭院](../examples/topdown-collect/README.md)：普通作者工程中的四场景、真实收集／伤害、开门、胜负与不同成员重试；可复制编辑和迁移，仍为有限会话初稿。
 - [Scene2D](../examples/scene2d/README.md)：仓库内合成工程，验证从设计声明到运行产物。
 - [场景片段组合](../examples/scene-composition/README.md)：单文件配方展开到现有 v3；已保存／当前草稿可预览并查看贡献来源，单实例局部覆盖可检查后应用到当前原文草稿并普通保存。已保存配方可在预览中显式生成独立 Scene2D，再进入构建与工程交付。
 - [关键帧动画](../examples/scene-animation/README.md)：独立视觉偏移、旋转、缩放和透明度，无外部素材。
@@ -103,3 +110,7 @@
 `test-results/` 保存日志、截图和源码摘要。[当前图谱](FUNCTION_ATLAS.md) 以四维坐标维护架构、功能、实现和成熟度；旧 b.4.3 图谱继续保存历史状态，不再承担当前能力目录。旧报告表示当时的状态；当前操作入口从本页进入，当前平台判断以 [STATUS](STATUS.md) 为准。
 
 0.2.6 运行观察专题：[调度时钟](test-results/runtime-execution-clock/README.md)、[因果锚点](test-results/runtime-causal-anchors/README.md)、[业务帧](test-results/runtime-execution-frames/README.md)、[动画请求](test-results/runtime-animation-requests/README.md)、[音频请求](test-results/runtime-audio-requests/README.md)、[事件位置](test-results/runtime-event-positions/README.md)及[只读面板](test-results/runtime-event-positions-ui/README.md)。各报告保留升版前的验证范围与版本，当前合同见[执行中间层](BACKEND_MIDDLEWARE.md)。
+
+## 2D 完整工作流目标与导航入口
+
+[开发路线](ROADMAP.md#内置创作到交付的推进顺序)按第一款完整游戏、持续运行与交付候选、稳定验收三个阶段推进；[0.5.0 门槛](MILESTONE_0.5.0.md)以两款参考游戏的完整任务判断。当前相机、只读 HUD、导航和重试已有源码入口，[晶石庭院初稿](../examples/topdown-collect/README.md)进一步组合真实收集、伤害、开门与胜负；从空白界面复建、同场景重启、暂停菜单、存档、长期运行与独立发行仍待完成。当前事实和证据查[状态页](STATUS.md)，不外推到旧安装版。

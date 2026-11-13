@@ -1,5 +1,7 @@
 // Portable admission checks only. Executables, artifact generators and process
 // lifecycle belong to host adapters; a descriptor never supplies runnable code.
+import { validateSceneCamera2DPlan, SCENE_CAMERA2D_CAPABILITY, sceneCamera2DCapabilities } from './scene-camera2d.mjs';
+import { validateSceneHUD2DPlan, SCENE_HUD2D_CAPABILITY, sceneHUD2DCapabilities } from './scene-hud2d.mjs';
 const SCENE_PHYSICS2D_CAPABILITIES = ['physics.bodies2d', 'physics.character2d', 'physics.sensors2d'];
 
 export const EXECUTION_BACKEND_DESCRIPTOR_SCHEMA_VERSION = 1;
@@ -150,7 +152,7 @@ function supportRequest(input) {
     text(target.sourcePath, 4096);
     if (plan.kind === 'project') {
       if (![1, 2].includes(plan.schemaVersion) || (plan.schemaVersion === 2) !== Object.hasOwn(plan, 'inputMap') || Object.hasOwn(plan, 'scene') || Object.hasOwn(plan, 'actors')
-        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio') || Object.hasOwn(plan, 'animation') || Object.hasOwn(plan, 'physics')
+        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio') || Object.hasOwn(plan, 'animation') || Object.hasOwn(plan, 'physics') || Object.hasOwn(plan, 'camera2d') || Object.hasOwn(plan, 'hud2d')
         || !Array.isArray(plan.scenes) || !plan.scenes.length || plan.scenes.length > 32
         || new Set(plan.scenes.map(scene => scene?.scene?.objectId)).size !== plan.scenes.length
         || !plan.scenes.some(scene => scene?.scene?.objectId === plan.entrySceneId)
@@ -161,6 +163,10 @@ function supportRequest(input) {
     if (Object.hasOwn(plan, 'audio') && (!plain(plan.audio) || plan.audio.format !== 'viento-audio-plan' || plan.audio.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'physics') && (plan.kind !== 'scene2d' || ![2, 3].includes(plan.schemaVersion)
       || !plain(plan.physics) || plan.physics.format !== 'viento-physics2d-plan' || plan.physics.schemaVersion !== 1)) throw invalid();
+    if (Object.hasOwn(plan, 'camera2d') && (plan.kind !== 'scene2d' || ![2, 3].includes(plan.schemaVersion)
+      || !plain(plan.camera2d) || plan.camera2d.format !== 'viento-camera2d-plan' || plan.camera2d.schemaVersion !== 1)) throw invalid();
+    if (Object.hasOwn(plan, 'hud2d') && (plan.kind !== 'scene2d' || ![1, 2, 3].includes(plan.schemaVersion)
+      || !plain(plan.hud2d) || plan.hud2d.format !== 'viento-hud2d-plan' || plan.hud2d.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'behaviors')) {
       if (!plain(plan.behaviors) || plan.behaviors.format !== 'viento-behavior-plan' || plan.behaviors.schemaVersion !== 1) throw invalid();
       token(plan.behaviors.backendId, NAMESPACE, 192);
@@ -223,6 +229,38 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
         if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
           `Backend lacks capability: ${capability}`, { capability }));
       }
+    }
+    if (Object.hasOwn(plan, 'camera2d')) {
+      // Derive the requirement from the explicit declaration as well as the
+      // advertised list. Removing both scene/project flags cannot downgrade a
+      // camera to a backend that silently ignores it.
+      let cameraCapabilities = [SCENE_CAMERA2D_CAPABILITY];
+      try { cameraCapabilities = sceneCamera2DCapabilities(plan.camera2d.document); }
+      catch { diagnostics.push(diagnostic('build_camera2d_invalid', 'The camera author declaration is invalid.')); }
+      for (const capability of cameraCapabilities) {
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_camera2d_invalid',
+          'Camera plans must explicitly require every declared camera capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
+      try { validateSceneCamera2DPlan({ ...plan, requiredCapabilities: [...new Set([...plan.requiredCapabilities, ...cameraCapabilities])] }); }
+      catch { diagnostics.push(diagnostic('build_camera2d_invalid', 'The explicit camera does not match its frozen scene.')); }
+    }
+    if (Object.hasOwn(plan, 'hud2d')) {
+      // Derive the requirement from the explicit declaration as well as the
+      // advertised list. Removing both scene/project flags cannot downgrade a
+      // hud to a backend that silently ignores it.
+      let hudCapabilities = [SCENE_HUD2D_CAPABILITY];
+      try { hudCapabilities = sceneHUD2DCapabilities(plan.hud2d.document); }
+      catch { diagnostics.push(diagnostic('build_hud2d_invalid', 'The hud author declaration is invalid.')); }
+      for (const capability of hudCapabilities) {
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_hud2d_invalid',
+          'HUD plans must explicitly require every declared hud capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
+      try { validateSceneHUD2DPlan({ ...plan, requiredCapabilities: [...new Set([...plan.requiredCapabilities, ...hudCapabilities])] }); }
+      catch { diagnostics.push(diagnostic('build_hud2d_invalid', 'The explicit hud does not match its frozen scene.')); }
     }
     if (plan.physics) {
       const bodies = Array.isArray(plan.physics.document?.bodies) ? plan.physics.document.bodies : [];

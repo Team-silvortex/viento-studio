@@ -1,0 +1,30 @@
+✔ saved official action and event bindings retain ordinary assembly/behavior formats and exact sources (154.992593ms)
+✔ saved missing, foreign, current and uppercase targets are assembly errors with exact author locations (99.717982ms)
+✔ CLI and HTTP-service planning refuse invalid navigation before exposing any plan (72.44755ms)
+✖ Node and HTTP-service build rejection precedes tool invocation and output directory creation (30.039377ms)
+✔ ordinary edited and legacy ready scripts retain their old target semantics (78.975523ms)
+✔ invalid saved action/event parameters are located and blocking, not silently converted (76.646259ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 659.799497
+
+✖ failing tests:
+
+test at scripts/tests/project-scene-navigation-host.test.mjs:82:1
+✖ Node and HTTP-service build rejection precedes tool invocation and output directory creation (30.039377ms)
+  Error: Configure the selected backend tool on the local host before building.
+      at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/project-build-service.mjs:42:47)
+      at Object.command (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/project-build-service.mjs:785:61)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-scene-navigation-host.test.mjs:90:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    statusCode: 422,
+    payload: {},
+    errorCode: 'build_tool_required'
+  }

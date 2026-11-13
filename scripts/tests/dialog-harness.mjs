@@ -177,6 +177,7 @@ export async function dialogHarness(module, overrides = {}) {
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
+    setupSceneBehaviorReferences: () => ({ refresh() {}, reset() {}, dispose() {} }),
     setupSceneLayout: () => ({ setAvailable() {}, open() {} }),
     setupSceneCompositionOverrides: () => ({ open() {}, refresh() {}, destroy() {} }),
     setupSceneCompositionLayout: () => ({ open() {}, refresh() {}, destroy() {} }),
@@ -204,6 +205,12 @@ export async function dialogHarness(module, overrides = {}) {
     appendAnimationStateTrialStep, truncateAnimationStateTrialSequence,
     setupAnimationStateEventPreview: options => setupAnimationStateEventPreview({ ...options, getTable: () => JSON.parse(JSON.stringify(options.getTable())) }),
     ...overrides,
+    // Browser form DTOs stay in one realm. This fixture runs the real form in
+    // a VM and its injected edit port in Node; transport only that form-built
+    // JSON candidate, while direct pure-module adversarial tests stay strict.
+    ...(typeof overrides.editSceneCamera2DSource === 'function' ? {
+      editSceneCamera2DSource: (content, camera) => overrides.editSceneCamera2DSource(content, JSON.parse(JSON.stringify(camera))),
+    } : {}),
   });
   if (['app-scene-preview', 'app-scene-layout', 'app-scene-outline'].includes(module)) {
     const outlineSource = (await fs.readFile(new URL('../../web/modules/app-scene-outline.js', import.meta.url), 'utf8'))
@@ -223,6 +230,22 @@ export async function dialogHarness(module, overrides = {}) {
       const renderer = (await fs.readFile(new URL('../../web/modules/app-project-physics-diagram.js', import.meta.url), 'utf8'))
         .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
       vm.runInContext(`(() => { ${renderer}\nglobalThis.setupProjectPhysicsDiagram = setupProjectPhysicsDiagram; })()`, runtime);
+    }
+  }
+  if (['app-project-build', 'app-physics-replay-targets'].includes(module)) {
+    const inputContract = (await fs.readFile(new URL('../../engine/project-physics2d-input-replay.mjs', import.meta.url), 'utf8')).replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(`(() => { ${inputContract}\nglobalThis.validateProjectPhysics2DInputReplay = validateProjectPhysics2DInputReplay; })()`, runtime);
+    // Exercise the real strict validator in the value's own fixture realm.
+    // Browser JSON/edit values use the VM; HTTP fixture records use Node.
+    // Neither requests nor responses are cloned or serialized at this boundary.
+    const browserInputValidator = runtime.validateProjectPhysics2DInputReplay;
+    runtime.validateProjectPhysics2DInputReplay = value => value && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype
+      ? validateProjectPhysics2DInputReplay(value) : browserInputValidator(value);
+    const inputEdit = (await fs.readFile(new URL('../../engine/project-physics2d-input-replay-edit.mjs', import.meta.url), 'utf8')).replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(`(() => { const count = 30, targetLimit = 8, validate = globalThis.validateProjectPhysics2DInputReplay; ${inputEdit}\nglobalThis.setProjectPhysics2DInputReplayRange = setProjectPhysics2DInputReplayRange; globalThis.convertProjectPhysics2DInputReplayToInstances = convertProjectPhysics2DInputReplayToInstances; })()`, runtime);
+    if (module === 'app-project-build') {
+      const targets = (await fs.readFile(new URL('../../web/modules/app-physics-replay-targets.js', import.meta.url), 'utf8')).replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
+      vm.runInContext(`(() => { ${targets}\nglobalThis.setupPhysicsReplayTargets = setupPhysicsReplayTargets; })()`, runtime);
     }
   }
   if (module === 'app-project-build') {

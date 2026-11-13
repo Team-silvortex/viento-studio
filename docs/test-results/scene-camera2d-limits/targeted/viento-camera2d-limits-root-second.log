@@ -1,0 +1,61 @@
+✔ bounded fixed and follow planning derive both capabilities and preserve independent author revisions (34.739077ms)
+✔ a provider with the base camera but no world-bound capability rejects bounded plans (7.211019ms)
+✔ removing bounded capability from member and assembly cannot silently downgrade the explicit declaration (6.966315ms)
+✔ bounded producer receipts require the actual producer capability independently of the registered adapter (4.81968ms)
+✔ malformed bounded declarations cannot hide behind both capability flags (6.905609ms)
+✔ legacy camera plans still need only the base capability and retain v1 author documents (4.130391ms)
+✖ non-finite bounded values are refused at the neutral request boundary (3.406386ms)
+✖ bounded camera preview is read-only and existing creation atomically publishes three exact files (124.578343ms)
+✔ bounds edits save only camera source, honor revisions, preserve formatting and explicitly return to v1 (193.920294ms)
+✔ invalid bounded create/save and stale scene dependencies leave every author byte intact (84.289208ms)
+✖ bounded author dependency package restores exact v2 bytes and same-OC follow UUID at a new root (133.024824ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 8
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 716.672344
+
+✖ failing tests:
+
+test at scripts/tests/scene-camera2d-limits-admission.test.mjs:76:1
+✖ non-finite bounded values are refused at the neutral request boundary (3.406386ms)
+  TypeError: Cannot assign to read only property 'top' of object '#<Object>'
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-limits-admission.test.mjs:78:91)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/scene-camera2d-limits-author.test.mjs:40:1
+✖ bounded camera preview is read-only and existing creation atomically publishes three exact files (124.578343ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Set(4) {
+  +   '.viento/world-transactions/head.json',
+  - Set(3) {
+      'documents/cameras/world.json',
+      'metadata/documents/91919191-9191-4919-8919-000000000001.json',
+      'metadata/documents/91919191-9191-4919-8919-000000000002.json'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-limits-author.test.mjs:45:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Set(4) { 'metadata/documents/91919191-9191-4919-8919-000000000001.json', 'metadata/documents/91919191-9191-4919-8919-000000000002.json', 'documents/cameras/world.json', '.viento/world-transactions/head.json' },
+    expected: Set(3) { 'documents/cameras/world.json', 'metadata/documents/91919191-9191-4919-8919-000000000002.json', 'metadata/documents/91919191-9191-4919-8919-000000000001.json' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-camera2d-limits-author.test.mjs:71:1
+✖ bounded author dependency package restores exact v2 bytes and same-OC follow UUID at a new root (133.024824ms)
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at planPackageImport (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/resource-package-import.mjs:35:57)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-limits-author.test.mjs:79:18)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

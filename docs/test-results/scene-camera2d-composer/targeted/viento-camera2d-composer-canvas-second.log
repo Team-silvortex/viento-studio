@@ -1,0 +1,70 @@
+✔ real composer draws camera bounds and design reference without images, clipping or source mutation (3.729228ms)
+✔ same-OC follow frame highlights only its stable instance and connects its logical position (0.854003ms)
+✔ drag previews temporary frame and pointerup emits exactly one candidate without applying it (1.476571ms)
+✔ follow dragging changes only offset and an owner can synchronously publish the candidate (1.122196ms)
+✔ release uses the final pointer position, including when its last movement event was not delivered (3.022132ms)
+✔ a non-finite release coordinate cancels the candidate instead of committing an older pointer sample (0.684054ms)
+✔ click without movement does not create a candidate (0.579116ms)
+✔ Escape, active-pointer cancellation and lost capture discard preview without committing (1.674883ms)
+✔ foreign pointer cancellation or release cannot steal an active composition gesture (0.761669ms)
+✔ owner edit permission revoked before move, release or keyboard prevents all candidates (1.990506ms)
+✔ pan, wheel zoom and both fit scopes alter only editor view and cancel pending frame movement (0.960793ms)
+✔ explicit pan cancellation restores the prior editor view and never changes the camera (0.344978ms)
+✔ numeric invalidation and model replacement clear old frames and abandon pending candidates (0.737023ms)
+✔ resize retains fit scope, recomputes view and cancels a temporary frame (1.298537ms)
+✔ keyboard arrows propose one world unit or ten with Shift, keeping follow identity and zoom (1.032949ms)
+✖ destroy is terminal, releases capture, disconnects observer and prevents late events or model resurrection (1.560378ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 95.956669
+
+✖ failing tests:
+
+test at scripts/tests/scene-camera2d-composer-canvas.test.mjs:190:1
+✖ destroy is terminal, releases capture, disconnects observer and prevents late events or model resurrection (1.560378ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   bounds: {
+  +     bottom: 1036,
+  +     left: 1276,
+  +     right: 1676,
+  +     top: 796
+  +   },
+  +   center: [
+  +     1476,
+  +     916
+  +   ],
+  +   mode: 'follow',
+  +   size: [
+  +     400,
+  +     240
+  +   ],
+  +   targetInstanceId: '98989898-9898-4989-8989-000000000002',
+  +   targetPosition: [
+  +     1500,
+  +     900
+  +   ]
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-composer-canvas.test.mjs:195:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { mode: 'follow', targetInstanceId: '98989898-9898-4989-8989-000000000002', center: [ 1476, 916 ], size: [ 400, 240 ], bounds: { left: 1276, top: 796, right: 1676, bottom: 1036 }, targetPosition: [ 1500, 900 ] },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -284,15 +284,19 @@ test('real Godot: drop-through removes support before an intent jump is consider
   assert.ok(out.velocity > 0, JSON.stringify(out)); assert.equal(out.afterGrounded, false);
 });
 
-test('ineligible arrows-only projects retain the previous generated backend and every file byte', async t => {
+test('ineligible arrows-only projects retain historical content beneath the retry wrapper', async t => {
   const f = await scenePhysics2DCharacterEventsAuthor(t, { jump: false, controls: 'arrows' });
   const captured = await captureBuildSnapshot(f.author, f.assemblyId);
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
   const previous = await generateGodotAudioRequestsProject(captured.plan);
   const generated = await adapter.generate(captured.plan);
-  assert.deepEqual(generated.backend, previous.backend);
-  assert.deepEqual([...generated.files.keys()], [...previous.files.keys()]);
-  for (const [name, bytes] of previous.files) assert.deepEqual(generated.files.get(name), bytes, name);
+  assert.equal(generated.backend.version, '0.46.0'); assert.equal(generated.backend.protocolVersion, previous.backend.protocolVersion);
+  assert.deepEqual(generated.sourceMap, previous.sourceMap); assert.deepEqual(generated.resourceFiles, previous.resourceFiles);
+  assert.equal(generated.files.size, previous.files.size + 5);
+  for (const [name, bytes] of previous.files) {
+    const retained = name === 'project.godot' ? 'retry-original.godot' : name === 'execution-clock-original.godot' ? 'retry-original-clock.godot' : name;
+    assert.deepEqual(generated.files.get(retained), bytes, name);
+  }
 });
 
 test('real Godot: the built-in author starter drives movement and a jump using normal inputs', real, async t => {

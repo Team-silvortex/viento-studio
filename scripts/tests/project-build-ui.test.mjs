@@ -551,7 +551,7 @@ test('materialization host context reports session, selection and external busy 
 
 
 test('successful plan displays input-action warning, keeps build available and navigates to the exact binding', async () => {
-  const message = '角色动作未在项目输入映射中找到。请检查行为参数和映射；脚本也可能在运行时注册该动作。';
+  const message = '行为动作未在项目输入映射中找到。请检查行为参数和映射；脚本也可能在运行时注册该动作。';
   assert.ok(en[message]); assert.ok(ja[message]);
   const sourcePath = 'documents/behaviors/demo.json', sourceRevision = `sha256:${'a'.repeat(64)}`;
   const range = { encoding:'utf-16', start:20, end:35, exact:true, propertyPath:'/bindings/0/parameters/right_action' };
@@ -559,7 +559,7 @@ test('successful plan displays input-action warning, keeps build available and n
     sourcePath, sourceRevision, propertyPath:range.propertyPath, sourceRange:range };
   const h = await harness({ state:{ ...initial(), job:job('plan', 'succeeded', { plan, diagnostics:[warning] }) } });
   const item = h.element('projectBuildDiagnostics').querySelector('li');
-  assert.equal(item.dataset.severity, 'warning'); assert.match(item.textContent, /角色动作未在项目输入映射中找到/);
+  assert.equal(item.dataset.severity, 'warning'); assert.match(item.textContent, /行为动作未在项目输入映射中找到/);
   assert.equal(h.element('projectBuildGenerate').disabled, false);
   item.querySelector('button').click(); await flushDialogs();
   assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], sourcePath);
@@ -568,7 +568,7 @@ test('successful plan displays input-action warning, keeps build available and n
 
 
 test('successful legacy project plan shows the non-blocking missing-input-map warning in all languages', async () => {
-  const message = '项目没有配置输入映射。请检查角色动作参数；脚本也可能在运行时注册该动作。';
+  const message = '项目没有配置输入映射。请检查行为动作参数；脚本也可能在运行时注册该动作。';
   assert.ok(en[message]); assert.ok(ja[message]);
   const warning = { code:'build_input_action_unconfigured', severity:'warning', message:'The project has no input map.',
     sourcePath:'documents/behaviors/demo.json', propertyPath:'/bindings/0/parameters/right_action' };

@@ -16,7 +16,7 @@ import { queryProjectRuntimeObservation } from '../../engine/project-runtime-que
 import { validateSceneControlProgram, validateSceneControlPlan } from '../../engine/scene-control-program.mjs';
 import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
 import { validateProjectPhysics2DReplayCase, evaluateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
-import { validateProjectPhysics2DReplayPlan } from '../../engine/project-physics2d-replay-contract.mjs';
+import { validateProjectPhysics2DReplayPlan, getProjectPhysics2DReplayTargets } from '../../engine/project-physics2d-replay-contract.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { buildTargetIdentity, scenePlans, entryScenePlan, isProjectControlEntryEligible } from '../../engine/build-target.mjs';
@@ -25,6 +25,8 @@ import { backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 import { createProjectAssemblyDocumentService } from './project-assembly-documents.mjs';
 import { createRuntimeCaseDocumentService } from './runtime-case-documents.mjs';
 import { createPhysicsReplayDocumentService } from './physics-replay-documents.mjs';
+import { createSceneHUD2DDocumentService } from './scene-hud2d-documents.mjs';
+import { createSceneCamera2DDocumentService } from './scene-camera2d-documents.mjs';
 import { createPhysicsReplayCaseDocumentService } from './physics-replay-case-documents.mjs';
 import { createRuntimeCaseSuiteDocumentService, captureRuntimeCaseSuite } from './runtime-case-suites.mjs';
 import { summarizeRuntimeCaseSuite } from '../../engine/runtime-case-suite.mjs';
@@ -80,6 +82,8 @@ export function createProjectBuildService(root, {
   if (!Number.isSafeInteger(executionTimeoutMs) || executionTimeoutMs < 1 || executionTimeoutMs > 300000) throw fail('build_timeout_invalid', 'Execution phase timeout must be 1–300000 ms.');
   const adapter = backendRegistry.resolve(backendId);
   const assemblyDocuments = createProjectAssemblyDocumentService(root, { onWrite: onAuthorWrite });
+  const hud2DDocuments = createSceneHUD2DDocumentService(root, { onWrite: onAuthorWrite });
+  const camera2DDocuments = createSceneCamera2DDocumentService(root, { onWrite: onAuthorWrite });
   const caseDocuments = createRuntimeCaseDocumentService(root, { onWrite: onAuthorWrite });
   const physicsReplayDocuments = createPhysicsReplayDocumentService(root, { onWrite: onAuthorWrite });
   const physicsReplayCaseDocuments = createPhysicsReplayCaseDocumentService(root, { onWrite: onAuthorWrite });
@@ -212,6 +216,12 @@ export function createProjectBuildService(root, {
       const entry = { id: summary.id, sceneId: summary.sceneId, targetId: summary.sceneId, targetKind: 'project', backendId,
         snapshotId: summary.snapshotId, title: summary.title, planSchemaVersion: frozenPlan.schemaVersion,
         entrySceneId: frozenPlan.entrySceneId, sceneCount: frozenPlan.scenes.length, physicsReplayAvailable,
+        physicsReplayInstancesAvailable: physicsReplayAvailable && adapter.descriptor.capabilities.includes('physics.input-replay-instances2d'),
+        ...(physicsReplayAvailable && adapter.descriptor.capabilities.includes('physics.input-replay-instances2d') ? {
+          physicsReplayTargets: getProjectPhysics2DReplayTargets(frozenPlan).map(target => {
+            const actor = entryScene.actors.find(value => value.instanceId === target.instanceId);
+            return { ...target, name: (actor?.name || target.objectId).replace(/\s+/gu, ' ').trim().slice(0, 160) || target.objectId };
+          }) } : {}),
         controlReplayAvailable: Boolean(controlPlan),
         ...(controlPlan ? { controlSceneId: controlPlan.scene.objectId, controlSourcePath: controlPlan.scene.sourcePath,
           controlPlanSchemaVersion: controlPlan.schemaVersion, controlActorCount: controlPlan.actors.length,
@@ -613,7 +623,7 @@ export function createProjectBuildService(root, {
   async function command(payload) {
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)
-      || !['plan', 'build', 'run', 'cancel', 'inspect', 'inspect-project', 'select-project', 'tool-check', 'case-list', 'case-load', 'case-save', 'physics-replay-list', 'physics-replay-load', 'physics-replay-save', 'physics-case-list', 'physics-case-load', 'physics-case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report', 'assembly-list', 'assembly-load', 'assembly-save'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
+      || !['plan', 'build', 'run', 'cancel', 'inspect', 'inspect-project', 'select-project', 'tool-check', 'case-list', 'case-load', 'case-save', 'physics-replay-list', 'physics-replay-load', 'physics-replay-save', 'physics-case-list', 'physics-case-load', 'physics-case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report', 'assembly-list', 'assembly-load', 'assembly-save', 'camera2d-inspect', 'camera2d-save', 'hud2d-inspect', 'hud2d-save'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
     const allowed = { plan: ['action', 'sceneId', 'targetId'], build: ['action', 'sceneId', 'targetId', 'expectedSnapshotId'], run: ['action', 'buildId', 'mode', 'controlProgram', 'physicsControlProgram', 'physicsReplayCase', 'physicsReplaySceneId', 'runtimeCase', 'runtimeCaseSceneId', 'expectedSnapshotId'], cancel: ['action', 'jobId'],
       inspect: ['action', 'jobId', 'instanceId', 'objectId'], 'inspect-project': ['action', 'buildId'], 'select-project': ['action', 'buildId'], 'tool-check': ['action'],
       'physics-case-list': ['action', 'sceneId'], 'physics-case-load': ['action', 'documentId'],
@@ -625,6 +635,10 @@ export function createProjectBuildService(root, {
       'suite-list':['action','sceneId'],'suite-load':['action','documentId'],
       'suite-save':['action','sceneId','sceneVersion','content','documentId','expectedVersion','sourcePath','documentType'],
       'suite-run':['action','buildId','suiteDocumentId','expectedVersion','expectedSnapshotId','runtimeCaseSceneId'],
+      'hud2d-inspect': ['action', 'sceneId'],
+      'hud2d-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion'],
+      'camera2d-inspect': ['action', 'sceneId'],
+      'camera2d-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion'],
       'assembly-list': ['action'], 'assembly-load': ['action', 'documentId'],
       'assembly-save': ['action', 'worldId', 'baseRevision', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
       'suite-report':['action','jobId','documentId'] }[payload.action];
@@ -662,6 +676,14 @@ export function createProjectBuildService(root, {
         }
       });
     }
+    if (payload.action === 'camera2d-inspect') return caseOperation(() => camera2DDocuments.inspect(payload.sceneId));
+    if (payload.action === 'camera2d-save') return caseOperation(async () => {
+      const result = await camera2DDocuments.save(payload); catalogAt = 0; return result;
+    });
+    if (payload.action === 'hud2d-inspect') return caseOperation(() => hud2DDocuments.inspect(payload.sceneId));
+    if (payload.action === 'hud2d-save') return caseOperation(async () => {
+      const result = await hud2DDocuments.save(payload); catalogAt = 0; return result;
+    });
     if (payload.action === 'assembly-list') return caseOperation(() => assemblyDocuments.list());
     if (payload.action === 'assembly-load') return caseOperation(() => assemblyDocuments.load(payload.documentId));
     if (payload.action === 'assembly-save') return caseOperation(async () => {
@@ -771,6 +793,11 @@ export function createProjectBuildService(root, {
       }
       if (physicsControlProgram && !builds.get(payload.buildId).physicsReplayAvailable) {
         throw fail('runtime_physics2d_input_unsupported', 'This frozen project does not support physics input replay.', 422);
+      }
+      if (physicsControlProgram) {
+        try { validateProjectPhysics2DReplayPlan(builds.get(payload.buildId).physicsReplayPlan,
+          { backendId, capabilities: adapter.descriptor.capabilities, program: physicsControlProgram }); }
+        catch (error) { throw fail(error.errorCode || 'runtime_physics2d_input_unsupported', 'Physics input does not match this frozen build.', 422); }
       }
       if (physicsReplayCase) {
         try { physicsReplayCase = validateProjectPhysics2DReplayCase(physicsReplayCase, builds.get(payload.buildId).physicsReplayPlan); }

@@ -1,0 +1,132 @@
+✔ saved exact retry sources offer bounded defaults without source text, mutation, or a manifest migration (85.476868ms)
+✔ ordinary edits and lookalike exports have no retry contract; saved source edits still revoke the dependency revision (66.463244ms)
+✔ a fresh retry-only service never loads the optional core adapter, while unavailable animation contracts do not remove retry defaults (275.20452ms)
+✖ an empty retry binding stays empty until explicit defaults, then named choices use the existing review and draft path (77.916416ms)
+✖ adding missing retry defaults preserves existing values, unknown rows and unfinished numeric text (95.597657ms)
+✔ old Add and Rename controls cannot follow a different binding, source or reopened dialog (71.765738ms)
+✔ withdrawing reference, sound and animation helpers leaves retry defaults and ordinary review available (47.821196ms)
+✔ fresh advisory contract withdrawal, revival and changed defaults revoke old helper controls without revoking an ordinary proposal (88.972115ms)
+✔ only current refreshed defaults may be explicitly added, and all-animation contracts retain their existing note (48.784969ms)
+✔ an advisory change on another source preserves the active source helper and its pending rename choice (33.967366ms)
+✖ explicit retry defaults → named references → review → ordinary Save → frozen assembly (documents) (514.347436ms)
+✖ explicit retry defaults → named references → review → ordinary Save → frozen assembly (design-data) (198.070056ms)
+✔ a saved retry source edit rejects an old proposal; ordinary manual parameters remain applicable without any optional picker (441.668668ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 9
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2156.425913
+
+✖ failing tests:
+
+test at scripts/tests/scene-retry-parameter-ui.test.mjs:97:1
+✖ an empty retry binding stays empty until explicit defaults, then named choices use the existing review and draft path (77.916416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + ''
+  - '00000000-0000-4000-8000-000000000004'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-retry-parameter-ui.test.mjs:111:87)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: '00000000-0000-4000-8000-000000000004',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-retry-parameter-ui.test.mjs:123:1
+✖ adding missing retry defaults preserves existing values, unknown rows and unfinished numeric text (95.597657ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        name: 'action_name',
+        type: 'number',
+        value: '0'
+  ...
+        type: 'string',
+  +     value: '  authored\nvalue  '
+  -     value: '  authored\r\nvalue  '
+      },
+      {
+        name: 'amount',
+        type: 'number',
+        value: '2'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-retry-parameter-ui.test.mjs:135:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-retry-parameter-workflow.test.mjs:79:55
+✖ explicit retry defaults → named references → review → ordinary Save → frozen assembly (documents) (514.347436ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bindingId: '99999999-9999-4999-8999-999999999992',
+  +   declaration: {
+  +     objectId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+  +     propertyPath: '/bindings/1',
+  +     sourcePath: 'documents/behaviors/demo.json',
+  +     sourceRevision: 'sha256:926d7c57251b4079e2aa327e77b31833221ae4a83f375f32a367ae8d39759a6f'
+  +   },
+      events: [],
+      implementation: {
+        backendId: 'org.viento.godot4',
+        language: 'gdscript',
+        sourceObjectId: 'ffffffff-ffff-4fff-8fff-ffffffffffff'
+      },
+      instanceId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2',
+  +   objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      parameters: {
+        action_name: 'retry_game',
+        state_values_json: '{ "score":17,"health":3 }',
+        target_scene_id: '12345678-1234-4234-8234-123456789abd',
+        untouched_extra: false
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-retry-parameter-workflow.test.mjs:100:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Object],
+    expected: [Object],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-retry-parameter-workflow.test.mjs:79:55
+✖ explicit retry defaults → named references → review → ordinary Save → frozen assembly (design-data) (198.070056ms)
+  Error: Server exited: file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43
+      throw new Error('不受支持的作品库目录声明');
+            ^
+  
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/paths.mjs:10:26
+      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+      at async node:internal/modules/esm/loader:647:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+  
+  Node.js v24.21.0
+  
+      at ChildProcess.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers.mjs:79:62)
+      at ChildProcess.wrapper (node:events:639:12)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:295:12)

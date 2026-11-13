@@ -9,6 +9,7 @@ import { SCENE_PHYSICS2D_TARGETS_API_PATH } from '../../engine/scene-physics2d-t
 import { SCENE_AUDIO_USAGE_API_PATH } from '../../engine/scene-audio-usage.mjs';
 import { SCENE_AUDIO_DIRECTORY_API_PATH } from '../../engine/scene-audio-directory.mjs';
 import { SCENE_COMPOSITION_CREATE_API_PATH } from '../../engine/scene-composition-create.mjs';
+import { SCENE_BEHAVIOR_REFERENCE_DIRECTORY_API_PATH } from '../../engine/scene-behavior-reference-directory.mjs';
 import { SCENE_BEHAVIOR_DIRECTORY_API_PATH } from '../../engine/scene-behavior-directory.mjs';
 import { SCENE_AUDIO_CREATION_API_PATH } from '../../engine/scene-audio-creation-contract.mjs';
 import { SCENE_BEHAVIOR_CREATION_API_PATH } from '../../engine/scene-behavior-creation-contract.mjs';
@@ -328,7 +329,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
-  if ([SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_PHYSICS2D_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_PHYSICS2D_TARGETS_API_PATH, SCENE_PHYSICS2D_SPACE_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
+  if ([SCENE_BEHAVIOR_REFERENCE_DIRECTORY_API_PATH, SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_PHYSICS2D_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_PHYSICS2D_TARGETS_API_PATH, SCENE_PHYSICS2D_SPACE_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -711,6 +712,17 @@ async function handleApiRequest({
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },
     },
+    [SCENE_BEHAVIOR_REFERENCE_DIRECTORY_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.sceneBehaviorReferenceDirectory) throw Object.assign(new Error('Behavior references require an editor session.'), { statusCode: 403, errorCode: 'scene_behavior_reference_directory_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid behavior reference query.'), { statusCode: 400, errorCode: 'scene_behavior_reference_directory_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.sceneBehaviorReferenceDirectory.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
     [SCENE_AUDIO_DIRECTORY_API_PATH]: {
       [API_METHODS.POST]: async () => {
         try {
@@ -833,6 +845,10 @@ async function handleApiRequest({
             throw Object.assign(new Error('Invalid animation creation request origin.'), { statusCode: 403, errorCode: 'scene_animation_creation_forbidden' });
           if (payload?.command === 'physics2d.create' && ((request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) || request.headers['sec-fetch-site'] === 'cross-site'))
             throw Object.assign(new Error('Invalid physics creation request origin.'), { statusCode: 403, errorCode: 'scene_physics2d_creation_forbidden' });
+          if (payload?.command === 'camera2d.create' && ((request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) || request.headers['sec-fetch-site'] === 'cross-site'))
+            throw Object.assign(new Error('Invalid camera creation request origin.'), { statusCode: 403, errorCode: 'scene_camera2d_creation_forbidden' });
+          if (payload?.command === 'hud2d.create' && ((request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) || request.headers['sec-fetch-site'] === 'cross-site'))
+            throw Object.assign(new Error('Invalid HUD creation request origin.'), { statusCode: 403, errorCode: 'scene_hud2d_creation_forbidden' });
           sendApiResponse(response, await service.executeWorldCommand(payload), requestId);
           return 200;
         } catch (error) {

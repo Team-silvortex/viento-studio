@@ -1,7 +1,7 @@
 // Read-only authoring catalog. Source text remains data; this service never
 // starts a tool, edits registrations or grants runtime authority.
 import { createHash } from 'node:crypto';
-import { hasScriptParameterDeclaration, discoverScriptParameterContract } from '../../engine/script-parameter-discovery.mjs';
+import { requiresScriptParameterCore, discoverScriptParameterContract } from '../../engine/script-parameter-discovery.mjs';
 import { discoverAnimationStateBindings } from '../../engine/animation-state-bindings.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { inspectSceneBehaviors, validateSceneBehaviorDependencies, SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
@@ -108,7 +108,7 @@ export function createSceneBehaviorAuthoringService(root) {
     // The optional provider consumes only this captured source. A missing or
     // older core must not remove the ordinary behavior editor. No source text
     // crosses the catalog boundary and the existing dependency hash pins it.
-    if (sourceDocuments.some(document => hasScriptParameterDeclaration(document.content))) {
+    if (sourceDocuments.some(document => requiresScriptParameterCore(document.content))) {
       // The loader records expected core absence in metadata. Module failures
       // remain errors rather than silently disguising an implementation bug.
       await import('../adapters/node-studio-core.mjs');

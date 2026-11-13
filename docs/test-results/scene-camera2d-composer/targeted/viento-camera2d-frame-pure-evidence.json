@@ -1,0 +1,38 @@
+{
+  "recordedAtUtc": "2026-11-11T09:52:08.051720+00:00",
+  "scope": "Finite camera composition geometry only; no browser DOM, author writes, image decoding, animation or native engine execution. Browser-style VM executes the same module with only imported numeric workspace constants.",
+  "commands": [
+    "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/scene-camera2d-frame.test.mjs",
+    "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/scene-camera2d-frame.test.mjs scripts/tests/scene-workspace-view.test.mjs scripts/tests/scene-camera2d.test.mjs"
+  ],
+  "logs": [
+    "/tmp/viento-camera2d-frame-pure-initial.log",
+    "/tmp/viento-camera2d-frame-pure-final.log"
+  ],
+  "results": {
+    "new": {
+      "tests": 15,
+      "pass": 15,
+      "skip": 0,
+      "fail": 0
+    },
+    "finalRelated": {
+      "tests": 41,
+      "pass": 41,
+      "skip": 0,
+      "fail": 0
+    }
+  },
+  "initialFailure": null,
+  "hashTiming": "Collected after final targeted tests, not represented as start/end hashes.",
+  "sources": {
+    "engine/scene-camera2d-frame.mjs": "d4e211c071fe48122752b73fc61310a470dc915b6afc79e16b614bea0f185f77",
+    "scripts/tests/scene-camera2d-frame.test.mjs": "1aa5913de6d8e4109251382ce7231355f48ee9735a29354eedc8800a3d177ac3"
+  },
+  "boundaries": [
+    "Camera source/viewport/actor identity are supplied as finite detached semantic data; no dummy scene document UUID or author permission is created.",
+    "Actor membership and all fit ranges are strict; frame follow targetPosition must agree with the supplied geometry.",
+    "Drag candidates only change bounded center/offset; zoom/target remain unchanged and zero delta preserves original numeric values.",
+    "No old production, test or evidence file was modified by this slice."
+  ]
+}

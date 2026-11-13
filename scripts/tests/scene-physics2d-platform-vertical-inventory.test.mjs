@@ -155,7 +155,7 @@ test('vertical generation composes with input mapping and captures callers befor
   plan.inputMap.document.actions[0].keys[0] = 'KeyS';
   plan.scenes.find(scene => scene.physics).physics.document.bodies.find(body => body.platformMotion?.kind === 'vertical').platformMotion.offsetY = -8192;
   const generated = await pending;
-  assert.equal(generated.backend.version, '0.40.0');
+  assert.equal(generated.backend.version, '0.46.0');
   for (const capability of ['physics.platform-vertical2d', 'project.input-map']) assert.ok(generated.backend.capabilities.includes(capability));
   assert.match(generated.files.get('project.godot').toString(), /player_jump=\{[\s\S]*?"physical_keycode":87/);
   assert.doesNotMatch(generated.files.get('project.godot').toString(), /"physical_keycode":83/);

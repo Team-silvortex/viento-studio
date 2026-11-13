@@ -1,0 +1,46 @@
+✔ build UI checks a frozen plan, submits that snapshot, and waits for an explicit run (550.772771ms)
+✔ tool identity checks preserve approved plans, author drafts and control input through closing and reopening (472.050065ms)
+✔ tool failures disable execution, preserve plan checks and render only safe status text (393.743363ms)
+✔ external tool checks use read polling and cannot start build jobs or another probe (253.254739ms)
+✔ legacy hosts hide tool checking and malformed identities cannot replace accepted build state (401.756363ms)
+✔ a lost tool-check response is reconciled by reading status without repeating the process (406.470924ms)
+✔ offline author catalog blocks new plans and builds while preserving frozen execution, tools and runtime observations (487.115532ms)
+✔ scene switching cannot reuse another scene plan or artifact (503.476563ms)
+✔ saving a layout refreshes preview and invalidates the approved build plan without submitting a job (430.452282ms)
+✔ draft, creation, busy and browse guards prevent task submission even when context changed after rendering (511.949722ms)
+✔ closing a running task preserves it and polling, while dirty drafts still allow cancellation (433.45477ms)
+✔ a lost submission response is reconciled with GET without resubmitting the task (394.406056ms)
+✔ diagnostics retain exact source coordinates, protect declined navigation, and render details as text (176.138369ms)
+✔ preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks (583.114743ms)
+✔ late source navigation cannot close a reopened dialog or replace a newer navigation focus (462.544622ms)
+✔ queued dialog-close focus is discarded when the dialog is reopened before the close event (278.929631ms)
+✔ multiple queued close events focus the final closed session only once (282.93942ms)
+✔ snapshot conflicts invalidate the approved plan and preserve original error details (318.282214ms)
+✔ an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry (280.29845ms)
+✔ all build dialog user messages have English and Japanese translations (4.17479ms)
+✔ asynchronous snapshot conflicts invalidate the plan after the job completes (393.459826ms)
+✔ editor build context resolves generated source paths without changing the active draft (41.066897ms)
+✔ source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command (233.646838ms)
+✔ source layout bridge discards delayed opens after scene or dialog ownership changes (640.921624ms)
+✔ source apply propagates live origin ownership to the asynchronous editor host (948.839937ms)
+✔ problem rows belong to their task rather than the selected scene, and replaced rows cannot navigate (277.431808ms)
+✔ identical polling preserves problem navigation ownership while newer results revoke it (313.466212ms)
+✔ malformed or foreign backend problems clear navigation and show an explicit unavailable result (310.836516ms)
+✔ recipe materialization is offered only for a saved writable preview selection (392.226004ms)
+✔ materialized scene becomes the build selection and requires a fresh explicit plan (457.423207ms)
+✔ materialization host context reports session, selection and external busy state independently (674.821147ms)
+✔ successful plan displays input-action warning, keeps build available and navigates to the exact binding (396.495872ms)
+✔ successful legacy project plan shows the non-blocking missing-input-map warning in all languages (342.856005ms)
+✔ build diagnostics explain invalid Unicode titles and link to their source (364.742981ms)
+✔ official action retry uses its built-in default and explicit mapped action without warnings (1.630138ms)
+✔ missing custom retry action preserves binding identity and exact parameter range (0.901032ms)
+✔ event navigation and edited retry scripts do not acquire inferred input semantics (0.180843ms)
+✔ retry and generalized behavior action messages are translated in English and Japanese (0.206001ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13614.38181

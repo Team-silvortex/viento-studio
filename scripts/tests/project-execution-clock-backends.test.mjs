@@ -53,7 +53,7 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
   assert.equal(current.backend.capabilities.includes('physics.character-intent2d'), intent);
   const movingScenes = f.captured.plan.scenes.filter(scene => scene.physics?.document.bodies.some(body => body.platformMotion));
   assert.equal(current.backend.capabilities.includes('physics.platform-control2d'), movingScenes.length > 0);
-  assert.equal(current.backend.version, movingScenes.length ? '0.40.0' : intent ? '0.37.0' : f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : current.backend.protocolVersion === 4 ? '0.34.0' : '0.35.0');
+  assert.equal(current.backend.version, '0.46.0');
   if (movingScenes.length) {
     assert.deepEqual(JSON.parse(current.files.get('platform-control-project.json')), { format: 'viento-godot-platform-control-project', schemaVersion: 1,
       sceneIds: movingScenes.map(scene => scene.scene.objectId) });

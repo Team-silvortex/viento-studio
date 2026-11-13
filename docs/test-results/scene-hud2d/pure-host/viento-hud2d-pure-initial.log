@@ -1,0 +1,40 @@
+✔ HUD anchors place rectangle pivots in screen space and respond only to viewport dimensions (3.742506ms)
+✔ state label distinguishes missing, zero, false and empty string without mutating samples (1.053066ms)
+✔ number presentation quantizes ties away from zero, trims decimal zeros and never uses exponents or locale (0.616431ms)
+✔ legal state control characters display replacements and Unicode truncation counts whole codepoints (0.540686ms)
+✔ bar uses fallback only for missing/non-number values and clamps display ratio without rewriting values (1.196111ms)
+✔ view results fully detach and freeze state-derived text, viewport and geometry (0.379918ms)
+✔ sample state is bounded scalar data with strict own descriptors and never executes getters (1.198164ms)
+✔ the same HUD layout/value source executes in a browser realm with no DOM, Node or host (7.580015ms)
+file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-hud2d.test.mjs:23
+  assert.equal(validate(document(Array.from({ length: 32 }, (_, n) => hudLabel(hudId(100 + n)))))).elements.length, 32);
+                                                                                                                      ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:319:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:89:18)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12)
+    at node:internal/modules/esm/loader:636:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:362:14)
+
+Node.js v24.21.0
+✖ scripts/tests/scene-hud2d.test.mjs (26.616116ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93.279359
+
+✖ failing tests:
+
+test at scripts/tests/scene-hud2d.test.mjs:1:1
+✖ scripts/tests/scene-hud2d.test.mjs (26.616116ms)
+  'test failed'

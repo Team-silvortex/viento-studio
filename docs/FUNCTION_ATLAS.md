@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-11-11**。源码版本 **0.2.9**；审查基线为提交 `00c06ffe9bad9389f3d4aeb344064b07ec522bb6`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-11-13**。源码版本 **0.2.10**；审查基线为提交 `82baaea9024bda118cc301c28f68d6a6bc4b1282`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 187 |
-| 实现单元（含规划占位） | 564 |
-| 已审查实现关系 | 776 |
-| 显式评分单元 | 3104 |
-| 语义依赖边 | 569 |
-| 工作流切片 | 152 |
+| 功能 | 198 |
+| 实现单元（含规划占位） | 600 |
+| 已审查实现关系 | 815 |
+| 显式评分单元 | 3260 |
+| 语义依赖边 | 623 |
+| 工作流切片 | 163 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2855 |
+| 引用并校验指纹的文件 | 3090 |
 
 ## 评分锚点
 
@@ -94,6 +94,7 @@
 5. **区分可迁移工程交付与独立游戏发行**：项目组装、运行时场景切换与会话共享标量状态由独立坐标记录；生成Godot工程ZIP需相应工具，目标平台独立发行仍需单独定义。 验收：定义目标平台导出预设、工具模板和冻结资源清单，并在没有开发引擎的目标环境运行产物。 涉及 [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly)、[项目内运行时场景切换与逐访问观察](#runtime.project_scene_switching)、[项目会话共享标量状态与历史写入来源](#runtime.project_shared_state)、[已核对生成工程的可移植交付包](#backend.project_delivery)、[独立游戏发行产物](#build.standalone_distribution)。
 6. **补真实交付与目标平台证据**：Rust布局、来源/实例/分组、单源草稿预览及坐标回写已纳入0\.0\.7源码并保留专题证据；对应Tauri安装产物与目标WebView仍需实测。 验收：对对应实际安装包重跑Linux关键流程及Android设备范围；Windows/macOS单独验收。 涉及 [源码、桌面与移动资源交付](#delivery.packaging)、[Android 无 Node 编辑宿主](#host.android-editing)、[Rust布局草稿、原子批次与撤销历史](#core.history_migration)、[布局草稿、多选与显式事务保存](#scene.layout_draft)、[Rust布局检查、保存与未知结果工作流](#core.save_state_migration)、[Scene2D v2 独立实例与定义复用](#scene.instances_v2)、[Scene2D v3 逻辑分组、共享大纲与后代选择](#scene.groups_v3)、[当前场景原文草稿的只读预览与精确定位](#scene.text_draft_preview)、[当前源码草稿的布局调整与精确回写](#scene.source_layout)。
 7. **在已有持久目录之上补删除审阅与缓存迁移**：跨服务工程登记、恢复与显式运行选择已接入，不再将它们写为未来任务；当前缺少手动移除／删除审阅、跨路径迁移及可见容量预算。 验收：只处理应用拥有且经审阅的派生产物；保留作者数据、外部修改、未知文件和旧会话报告，分别验收取消／恢复。 涉及 [后端工程持久列表、冻结选择与旧执行链对接](#backend.project_catalog)、[后端派生工程清单、只读核对与服务回收](#backend.project_management)。
+8. **把第一款参考初稿变成顺畅可复建的作者任务**：真实收集／伤害／胜负和迁移已有证据；作者仍需查成员、实例、动作编号，暂停菜单和同场景重启未接通。 验收：按路线从空白逐步复建，补有来源的选择与可审阅参数，再完成重启／暂停和菜单；不改旧评分、不以参考初稿代替0\.3或0\.5出口。 涉及 [俯视收集参考游戏初稿与真实玩法交付](#workflow.topdown_collect)、[按动作／事件导航场景的内置作者链](#authoring.scene_navigation)、[失败页重试关卡与显式状态初始化](#authoring.scene_retry)、[独立场景创作流程、候选验收与宿主接口](#scene.authoring_workflow)。
 
 ## 业务工作流
 
@@ -253,6 +254,17 @@
 | [物理验收结果→精确样本→双方声明来源→普通保存与重新验收](function-atlas.html#workflow=physics-case-inspection) | [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [二维角色物理步与移动碰撞的有界只读观察](#runtime.physics2d_observation) → [物理验收条目到精确样本与声明来源的只读调试](#runtime.physics2d_case_inspection) → [场景来源模型与修订守护的原文定位](#scene.source_model) | 本次未登记额外缺口（不表示完成） | 受限Godot有限物理验收的只读调试；样本选择、原文导航和作者保存分别授权；0\.2\.9源码/真实Linux浏览器证据不等于安装或其他后端支持。 |
 | [自由平面角色→普通四动作TXT→双实例意图→实际碰撞→作者恢复与离线工程](function-atlas.html#workflow=scene-physics2d-planar-intent) | [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [自由平面角色的行为局部二维运动意图](#runtime.physics2d_planar_intent) → [二维角色物理步与移动碰撞的有界只读观察](#runtime.physics2d_observation) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | Godot局部二维行为意图，旧重力接口与唯一求解保持；无跨后端语义互译、全局按实例回放、设备键盘或安装验收。 |
 | [物理观察/可选验收条目→精确样本→等比端点与法线→独立声明来源](function-atlas.html#workflow=physics-sample-diagram) | [二维角色物理步与移动碰撞的有界只读观察](#runtime.physics2d_observation) → [物理验收条目到精确样本与声明来源的只读调试](#runtime.physics2d_case_inspection) → [精确物理样本的等比位移与接触示意](#runtime.physics2d_sample_diagram) → [场景来源模型与修订守护的原文定位](#scene.source_model) | 本次未登记额外缺口（不表示完成） | 验收是可选入口，普通样本选择同样可查看。有限扫掠的只读示意不是路径或碰撞求解；0\.2\.9源码与实际Linux浏览器/原生证据不外推安装和其他后端。 |
+| [冻结角色目录→明确逐实例输入→原生回放/验收→精确样本→作者包离线恢复重跑](function-atlas.html#workflow=physics2d-instance-input-replay) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [按稳定角色实例独立物理输入回放、作者保存与验收](#runtime.physics2d_instance_replay) → [二维角色物理步与移动碰撞的有界只读观察](#runtime.physics2d_observation) → [物理验收条目到精确样本与声明来源的只读调试](#runtime.physics2d_case_inspection) → [精确物理样本的等比位移与接触示意](#runtime.physics2d_sample_diagram) → [场景来源模型与修订守护的原文定位](#scene.source_model) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 本次未登记额外缺口（不表示完成） | 单入口、无作者行为/声音/动画的Godot物理工程，稳定实例稀疏输入与每实例跳跃边沿；保存/迁移和运行权限分别准入。验收/示意/回源为可选调试支路。真实Linux浏览器和无头证据不外推多场景、媒体/行为组合、其他后端、shell CLI或安装。 |
+| [有效场景→框外世界对象→全部/逻辑选择取景→原布局历史与审阅保存](function-atlas.html#workflow=scene2d-world-workspace) | [场景来源模型与修订守护的原文定位](#scene.source_model) → [无需引擎的已保存场景预览](#scene.saved_preview) → [作者世界工作平面、全部取景与逻辑选择聚焦](#scene.world_workspace) → [布局草稿、多选与显式事务保存](#scene.layout_draft) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) | 本次未登记额外缺口（不表示完成） | viewport只是初始运行参考框，作者工作平面不裁切合法框外对象。取景本身只读且取消未提交手势；后续坐标编辑仍走原Rust历史/原文检查/普通保存。真实HTTP/Chrome与Godot/依赖包恢复按最终报告范围留证；不代表运行相机、native GUI、打包安装或完整应用已验收。 |
+| [场景→运行主相机→审阅显式保存→Godot实际取景→作者包与工程ZIP迁移](function-atlas.html#workflow=scene-camera2d) | [场景来源模型与修订守护的原文定位](#scene.source_model) → [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [二维运行主相机、固定中心与稳定实例跟随](#scene.camera2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [已核对生成工程的可移植交付包](#backend.project_delivery) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 本次未登记额外缺口（不表示完成） | 仅Godot组装固定/稳定实例跟随，世界/物理坐标不变，编辑取景独立；窗口、有限物理和实际动画轨道按各自真实证据验收，不外推高级镜头、HUD、其他后端或安装。 |
+| [场景逻辑几何→相机构图候选→重新审阅保存→Godot窗口核对](function-atlas.html#workflow=scene-camera2d-composition) | [场景来源模型与修订守护的原文定位](#scene.source_model) → [二维相机逻辑构图、临时拖动候选与视口参照](#scene.camera2d_composer) → [二维运行主相机、固定中心与稳定实例跟随](#scene.camera2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 逻辑几何示意与设计/组装入口视口参照；手势不持保存权，不含素材动画或运行模拟，真实窗口仅使用保存后的作者值。 |
+| [相机边界→期望／实际构图→显式保存→真实取景→作者包与离线工程](function-atlas.html#workflow=scene-camera2d-world-limits) | [场景来源模型与修订守护的原文定位](#scene.source_model) → [二维运行主相机、固定中心与稳定实例跟随](#scene.camera2d) → [二维相机逻辑构图、临时拖动候选与视口参照](#scene.camera2d_composer) → [二维相机世界边界与期望／实际取景](#scene.camera2d_limits) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [已核对生成工程的可移植交付包](#backend.project_delivery) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 本次未登记额外缺口（不表示完成） | 显式v2固定或逻辑实例跟随，真实viewport/zoom按轴夹持/居中，角色位置与物理不受限；包含软件窗口和离线ZIP，未外推HUD/其他平台或安装。 |
+| [HUD文本/状态条→屏幕样本→审阅保存→共享状态显示→迁移/离线工程](function-atlas.html#workflow=scene-hud2d-author-runtime-delivery) | [场景来源模型与修订守护的原文定位](#scene.source_model) → [二维屏幕 HUD 文本与状态条](#scene.hud2d) → [项目会话共享标量状态与历史写入来源](#runtime.project_shared_state) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [已核对生成工程的可移植交付包](#backend.project_delivery) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 本次未登记额外缺口（不表示完成） | 只读屏幕显示/九点锚与Godot组装，非菜单输入/字体资源/存档/持续运行/独立发行；以0\.5\.0参考小游戏继续补齐。 |
+| [动作开始→事件结果→新按返回→组装迁移／离线工程](function-atlas.html#workflow=scene-navigation-action-event-author) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [按动作／事件导航场景的内置作者链](#authoring.scene_navigation) → [二维屏幕 HUD 文本与状态条](#scene.hud2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [项目内运行时场景切换与逐访问观察](#runtime.project_scene_switching) → [已核对生成工程的可移植交付包](#backend.project_delivery) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 本次未登记额外缺口（不表示完成） | 开始/游玩/结果的导航入口，XTest合成窗口输入与真实作者保存；不等于胜负规则、鼠标菜单、暂停/重开、存档、长期会话或独立发行。 |
+| [开始初始化→游玩失败→失败页按键重试→明确状态复位→迁移交付](function-atlas.html#workflow=scene-retry-declared-initial-state) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [按动作／事件导航场景的内置作者链](#authoring.scene_navigation) → [失败页重试关卡与显式状态初始化](#authoring.scene_retry) → [项目会话共享标量状态与历史写入来源](#runtime.project_shared_state) → [二维屏幕 HUD 文本与状态条](#scene.hud2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [已核对生成工程的可移植交付包](#backend.project_delivery) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 本次未登记额外缺口（不表示完成） | 只含另一个成员重试和声明键复位；真实窗口合成输入与普通作者保存分别验证，不表示完整胜负、暂停、长期会话、存档或独立发行完成。 |
+| [普通作者工程→真实拾取／伤害→开门与胜负→重试→包迁移和工程交付](function-atlas.html#workflow=topdown-reference-game) | [同一 OC 的子模板及多份用途投影创建／编辑](#projection.authoring) → [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [二维相机世界边界与期望／实际取景](#scene.camera2d_limits) → [二维屏幕 HUD 文本与状态条](#scene.hud2d) → [2D视觉关键帧编辑、保存态场景预览与Godot工程执行](#scene.animation2d) → [独立场景音轨与有限时间提示](#scene.audio_timeline) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [按动作／事件导航场景的内置作者链](#authoring.scene_navigation) → [失败页重试关卡与显式状态初始化](#authoring.scene_retry) → [俯视收集参考游戏初稿与真实玩法交付](#workflow.topdown_collect) → [已核对生成工程的可移植交付包](#backend.project_delivery) | [独立游戏发行产物](#build.standalone_distribution) | 已有样例工程的原窗口真实玩法、编辑与三种包验证；完整从空白界面复建、参数选择、暂停菜单、同场景重启、存档、长期运行、字体及当前安装仍缺，不因这里只有一个已建坐标的gaps项而宣称其他缺口完成。 |
+| [保存态目录→显式组装／参考→String填入→原文审阅保存](function-atlas.html#workflow=behavior-parameter-references) | [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [按名称连接成员、实例与输入动作参数](#behavior.parameter_references) | 本次未登记额外缺口（不表示完成） | 只证明已有行为的三类参数辅助；无隐藏关系或参数用途推断，不是完整作者游戏任务的完成断言。 |
+| [空白结构后的场景/脚本→显式默认项→名称接线→保存→HUD运行](function-atlas.html#workflow=retry-default-parameter-pilot) | [独立场景创作流程、候选验收与宿主接口](#scene.authoring_workflow) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [官方重试参数默认项与空白两场景接线](#behavior.retry_parameter_defaults) → [按名称连接成员、实例与输入动作参数](#behavior.parameter_references) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [二维屏幕 HUD 文本与状态条](#scene.hud2d) | 本次未登记额外缺口（不表示完成） | 限定零正文初始化后通过界面建立的两场景试点；名称参考是显式可选交接，普通手填仍可。没有桌面库创建、整款游戏复建、同场景重启或阶段出口完成断言。 |
 
 ## 功能与实现切片
 
@@ -3651,6 +3663,199 @@
 平台：Linux本地HTTP/真实Chrome中英日390px及宽屏；真实Godot4.7.2有限碰撞和自然零输入样本、0.2.9源码收录；不外推安装、Android、Windows/macOS或Bevy物理。边界：纯模型复用完整物理观察准入，精确序号无回退，返回独立深冻结的原始样本与等比相对投影；无DOM、I/O、求解或作者写入。；请求端点直接来自requestedMotion，实际端点来自已验证displacement；接触点相对before独立投影，不把travel/remainder拼成轨迹，不读取当前作者几何推测墙体或形状。；两轴统一二进制尺度，安全处理极大相减与subnormal；非零坐标因极端比例下溢时明确degraded且保留原始数值，不把图上重合称为精确零位移。；独立SVG端口只消费DTO，十字/方框/圆环及虚实线区分位置，最多4编号接触点与固定20绘图单位的法线方向箭头；无运动箭头夸大微量位移，原数值可读。；观察控制器负责样本、组装及会话归属；同一样本轮询与换语言保留DOM和焦点，换组装/任务/选择或关闭撤销旧图。来源按钮沿原有独立导航与草稿保护。；真实Chrome经保存态工程、检查/构建/有限回放/验收核对SVG几何和原始精度；三语窄屏、原文范围、重开/新任务及作者字节分别验收，首轮与最终范围见独立专题。；仅展示当前有限角色扫掠样本，不是持续接触、触发区、完整运动轨迹或实时模拟；后端能力、0.41描述符、作者格式及运行/观察协议保持。。
 
 下一步：继续以真实玩法补足逐角色回放和问题回源，完整轨迹、持续接触和其他后端分别定义观察合同。
+
+<a id="runtime.physics2d_instance_replay"></a>
+### 按稳定角色实例独立物理输入回放、作者保存与验收
+
+`runtime.physics2d_instance_replay` · 场景与执行 · 源码交付
+
+入口：冻结物理角色目录→明确转换/目标时间轴→稀疏五动作与独立跳跃边沿→唯一原生求解→按实例验收/精确样本→作者资源包迁移重跑
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **逐实例物理输入纯合同、编辑和冻结目标资格**；同一严格纯合同与不可变编辑在Node宿主和浏览器复用，目标资格来自冻结plan；无DOM、I/O、求解或作者写入。 | 4 / 4 / 4 / 3 | [docs/test-results/physics-instance-replay/pure-host-evidence\.json](../docs/test-results/physics-instance-replay/pure-host-evidence.json)、[docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser\.json](../docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser.json)、[docs/test-results/physics-instance-replay/README\.md](../docs/test-results/physics-instance-replay/README.md) |
+| 执行后端 | **Godot会话私有输入继承投影与逐实例跳跃驱动**；执行专用派生层只替换已识别输入表达式，旧库存、原生成器与唯一native solver各自认证；该投影仍有明确Godot/GDScript边界。 | 4 / 4 / 3 / 3 | [docs/test-results/physics-instance-replay/backend-native/summary\.json](../docs/test-results/physics-instance-replay/backend-native/summary.json)、[docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser\.json](../docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser.json)、[docs/test-results/physics-instance-replay/README\.md](../docs/test-results/physics-instance-replay/README.md) |
+| 本机服务与适配 | **物理回放宿主前置准入、作者成员与资源依赖复核**；HTTP/Node先复核冻结物理资格，作者保存/迁移仅核对保存态成员，复用已有事务/包与完成记录；未将界面目录或可改作者文件当执行授权。 | 4 / 4 / 3 / 3 | [docs/test-results/physics-instance-replay/pure-host-evidence\.json](../docs/test-results/physics-instance-replay/pure-host-evidence.json)、[docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser\.json](../docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser.json)、[docs/test-results/physics-instance-replay/README\.md](../docs/test-results/physics-instance-replay/README.md) |
+| 交互与渲染 | **独立角色目标视图与原时间轴显式转换接线**；目标组件只消费目录和已验证program并持有临时选择，通过getProgram/onConvert/onSelect端口协作；原时间轴、作者保存和运行owner独立，UI不读取或求解native场景。 | 4 / 4 / 3 / 3 | [docs/test-results/physics-instance-replay/ui-final\.log](../docs/test-results/physics-instance-replay/ui-final.log)、[docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser\.json](../docs/test-results/physics-instance-replay/browser-final-2026-11-11/browser.json)、[docs/test-results/physics-instance-replay/README\.md](../docs/test-results/physics-instance-replay/README.md) |
+
+平台：Linux本地HTTP/真实Chrome中英日390px；Godot4.7.2实际回放、验收与离线迁移重建、0.2.10源码收录（开发实测为0.2.9工作树）；执行描述符0.42.0，未更新本机0.2.0安装或验证Android/Windows/macOS/Bevy物理。边界：输入v1全局五动作与旧驱动原字节保持；v2固定30步、1/60秒，每步稀疏实例行显式五布尔动作，跨步最多8个唯一UUID，末步释放，遗漏实例每步释放而不继承旧帧。；纯合同严格捕获自有数据、拒绝getter/隐藏字段/重复/预算越界，深拷贝冻结；范围编辑只改所选实例，明确转换才把完整v1动作复制到指定合格目录，已有v2仅克隆不重映射或丢弃其他目标。；角色资格来自已验证冻结plan的physical character且controls:arrows，按actor序返回instanceId/objectId/bodyId；同OC共用objectId仍有独立输入。未知、静态、传感器、无物理体和controls:none均在HTTP/Node任务与会话分配前拒绝，验收内嵌program同样复核。；0.42执行适配器显式声明physics.input-replay-instances2d；本次运行先认证旧永久生成库存，再在会话随机私有目录派生已识别继承链，32层/1MiB/单脚本64KiB限制，未知输入点和继承拒绝。新fingerprint要求明确重建，不自动改旧构建。；仅替换输入读取并由driver逐实例维护jump held与边沿，缺行清除held；停止/滑动、重力、着地和平台仍走唯一原native solver，不设置物理节点位置或增加求解。成功/失败/取消/回调异常后清除临时脚本及UID，作者与冻结产物不改。；独立目标组件只保存临时选择；同名目标显示稳定目录序号和完整UUID，切换目标/轮询/三语保留JSON、时间轴DOM和焦点。保存/运行/导航仍由原有owner和草稿守卫负责；非法目标本地阻止但不能替代宿主资格认证。；作者回放/验收沿原登记、内容双修订、资源依赖闭包与追加导入，仅按保存态Scene2D核对输入实例成员；运行物理资格另由冻结plan核对。包中字节、UUID、共享OC与素材保留，checksum正确也不能放过缺失目标；不自动保存运行结果。；真实浏览器与Godot验证v2/v1/离线迁移各120完整原始样本、错峰起跳和碰撞、通过/失败验收精确定位；39旧作者文件及52冻结文件摘要不变，32源码前后守卫一致。受控host、纯25/25、后端24/24及UI43/43按各自证据范围解释，完整应用以本专题最终记录为准，不合并这些检查计算覆盖率。；仍限单入口、无作者行为/声音/动画的Godot工程及原256观察预算；无新作者包络、运行/物理观察线协议或永久生成器升版。shell CLI尚无物理回放flag；真实设备键盘、持续输入、跨场景、媒体组合、其他后端和安装不在范围。。
+
+下一步：以真实玩法设计多场景切换、作者行为调度与声音/动画组合的输入时钟和验收合同；其他后端物理、持续输入及目标安装分别声明能力并独立验收。
+
+<a id="scene.world_workspace"></a>
+### 作者世界工作平面、全部取景与逻辑选择聚焦
+
+`scene.world_workspace` · 场景与执行 · 源码交付
+
+入口：已保存/源码草稿场景→世界平面显示与框外选择→全部/选择取景→现有布局历史与审阅保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **世界边界取景、选择聚焦与预算网格纯模型**；有限几何DTO、冻结view/网格在Node与browser同源复用，无DOM/宿主/作者权限；仅是可替换的编辑视图数学，不新增Rust ABI或Provider平台。 | 4 / 4 / 4 / 3 | [docs/test-results/scene2d-world-workspace/pure-final\.log](../docs/test-results/scene2d-world-workspace/pure-final.log)、[docs/test-results/scene2d-world-workspace/browser-final-2026-11-11/browser\.json](../docs/test-results/scene2d-world-workspace/browser-final-2026-11-11/browser.json)、[docs/test-results/scene2d-world-workspace/summary\.json](../docs/test-results/scene2d-world-workspace/summary.json) |
+| 交互与渲染 | **Canvas世界平面绘制、命中与局部取景模式**；纯几何负责取景/网格，Canvas负责物理表面绘制、命中和私有view状态；手势提交仍走既有移动端口与Rust历史，不由取景操作改写作者数据。 | 4 / 4 / 3 / 3 | [docs/test-results/scene2d-world-workspace/canvas-final\.log](../docs/test-results/scene2d-world-workspace/canvas-final.log)、[docs/test-results/scene2d-world-workspace/browser-final-2026-11-11/browser\.json](../docs/test-results/scene2d-world-workspace/browser-final-2026-11-11/browser.json)、[docs/test-results/scene2d-world-workspace/summary\.json](../docs/test-results/scene2d-world-workspace/summary.json) |
+| 交互与渲染 | **预览和布局owner的只读取景入口与三语接线**；两个既有owner只调用fitAll/focusSelection，保留独立草稿、审批、选择及移动权限；取景与保存/网络/构建解耦，不扩全局状态框架。 | 4 / 4 / 3 / 3 | [docs/test-results/scene2d-world-workspace/ui-final\.log](../docs/test-results/scene2d-world-workspace/ui-final.log)、[docs/test-results/scene2d-world-workspace/browser-final-2026-11-11/browser\.json](../docs/test-results/scene2d-world-workspace/browser-final-2026-11-11/browser.json)、[docs/test-results/scene2d-world-workspace/summary\.json](../docs/test-results/scene2d-world-workspace/summary.json) |
+
+平台：Node及浏览器同源纯几何；Canvas与预览/布局DOM定向集成回归、0.2.10源码收录（开发实测为0.2.9工作树）；Linux HTTP编辑器/真实Chrome画布、Godot无头和作者依赖包恢复通过，不外推安装、其他平台或运行相机。边界：作者世界工作平面与保存的viewport分开：viewport只作为初始运行取景参考框，不再裁切框外对象绘制或几何命中；运行viewport、相机、作者坐标与后端生成语义未改变。；独立纯几何模块仅收有限viewport、position/size几何与像素尺寸；严格自有数据捕获、拒绝getter/隐藏/稀疏字段，最多128对象、坐标±100000、尺寸1–2048，不读文件、不触发Rust ABI/事务或模拟。；全部取景并入viewport与全部对象几何；选择聚焦仅消费owner筛选后的逻辑对象，不把动画视觉偏移或未提交拖动当作者基线。24px留白、1e-6至16缩放支持跨合法极值世界的窄屏取景，返回冻结脱离view DTO。；自适应网格只覆盖可见world矩形，最细32世界单位，低缩放/预算时按2倍稀疏，每轴最多256线；负坐标锚定世界零点，稀疏显示不改变独立32吸附。逆投影溢出/无法表示像素跨度的极端offset明确拒绝。；Canvas持有私有可变取景状态，复制纯函数冻结回执；fitAll/focusSelection先取消手势再取逻辑几何，0/Home仍回原viewport，显式取景按窗口尺寸重算、轮询不自动重置用户视图。；绘制/命中保持反向绘制序和稳定实例身份；选择与取景不授予移动权限。原movable grants、Rust位移限幅/吸附、局部历史与保存审阅继续由既有owner负责，取景不提交拖动、不制造dirty/undo或作者写入。；预览与布局独立新增全部/当前选择取景入口、三语语义说明及小于1%的可读缩放；仅调用视图端口，不新增网络/保存/构建/资源权限或通用JS工作流框架。；纯12/12、Canvas48/48、预览/布局UI83/83分别留证；真实Chrome覆盖框外像素/命中、逻辑聚焦、多选拖动/撤销/重做/取消/普通保存和三语390px，4文档依赖包恢复、Godot宿主运行与独立ready坐标探针通过，25源码前后不变。全部取景截图仅作局部留证，完整范围由像素/变换检查证明；完整应用9118项8452通过666条件跳过，零失败/取消；独立观察脚本修正与生产/单测来源不变按专题分开说明，不将各组相加为覆盖率。；此模块是当前实验宿主的视图数学，实现可在未来native GUI替换；保留语言无关的取景/坐标/状态边界，不把JS或Tauri作为长期目标。未新增作者格式、运行协议、后端能力、运行相机或独立发行。。
+
+下一步：在同一作者世界模型上另行定义运行相机与输出视口的显式声明；保持作者坐标、临时编辑取景与运行状态分离，再以真实创作/运行/交付流程验证。
+
+<a id="scene.camera2d"></a>
+### 二维运行主相机、固定中心与稳定实例跟随
+
+`scene.camera2d` · 场景与执行 · 源码交付
+
+入口：场景→独立camera文档/双向引用→表单审阅/显式保存→冻结准入→Godot原生取景→作者包与工程ZIP迁移
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **相机文档、冻结计划与执行能力严格准入**；相机文档、冻结计划与执行能力严格准入，通过独立DTO/宿主端口接入原作者/运行/交付流程。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser\.json](../docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels.json) |
+| 存储与事务 | **相机三文件创建、来源保存与故障恢复**；相机三文件创建、来源保存与故障恢复，通过独立DTO/宿主端口接入原作者/运行/交付流程。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser\.json](../docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels.json) |
+| 交互与渲染 | **相机表单、保真原文编辑及三语工作台接线**；相机表单、保真原文编辑及三语工作台接线，通过独立DTO/宿主端口接入原作者/运行/交付流程。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser\.json](../docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels.json) |
+| 执行后端 | **Godot原生相机可选生成层、严格库存与生命周期**；Godot原生相机可选生成层、严格库存与生命周期，通过独立DTO/宿主端口接入原作者/运行/交付流程。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser\.json](../docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels.json) |
+| 本机服务与适配 | **相机作者包依赖闭包与最终导入目标复核**；相机作者包依赖闭包与最终导入目标复核，通过独立DTO/宿主端口接入原作者/运行/交付流程。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser\.json](../docs/test-results/scene-camera2d/browser-final-source-2026-11-11/browser.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/summary.json)、[docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels\.json](../docs/test-results/scene-camera2d/native-frozen-final-2026-11-11/window-pixels.json) |
+
+平台：Linux本地HTTP/真实Chrome中英日390px；Godot4.7.2真实窗口、无头与离线ZIP、0.2.10源码收录（开发实测为0.2.9工作树）；执行描述符0.43.0，不外推当前0.2.0安装、其他OS或Bevy相机。边界：独立16KiB作者文档v1，fixed中心或follow稳定instanceId+offset，统一zoom0.125–8、坐标±100000；只接受Scene2D2/3，最多一个明确camera2d slot，严格双向引用与成员准入，不从文档类型或编辑取景推导运行相机。；无相机时不增字段/cap并保持旧生成字节；可选scene.camera2d贯穿冻结子plan/assembly/后端和实际producer，漏cap、未知目标和不支持的后端在执行前拒绝。；创建经明确授权接入camera2d.create三文件事务和journal13；preview/并发/SIGKILL/恢复/伪造/外部替换分别验证，不迁移旧作品；更新复用原来源版本和发布前重读。；独立表单保留取消/返回/完整原文审阅，稳定UUID区分共用OC的实例；camera值替换保留周围BOM/CRLF和数字写法，无语义变化保留完整原文。确定业务拒绝重读保留表单但撤销票据，未知传输结果只读核对不自动重试。；Godot最后叠加独立相机入口与原生Camera2D，跟随最终逻辑根而非动画视觉子节点；不复制或改写物理solver，场景访问退出/重入释放并重建。原永久GD/.txt和运行观察线协议不变。；真实Chrome117断言含HTTP409→重审→200、未知目标、创建3文件/更新1文件、no-op无写、三语390px与20源码守卫；真实Godot5/5、33观察样本/5PNG、同OC第二实例、物理及真实作者动画轨道、4次访问和离线工程ZIP分别留证。；资源包catalog/reader/import最终目标均独立复核相机来源与跟随成员；checksum正确也不放过坏target或错误反向引用；稳定UUID、原文和完整依赖可迁移。；本轮仅Godot组装，输出viewport沿入口；无HUD/平滑/死区/limits/旋转/震屏/多相机/时间线，专用逻辑回放不验证镜头图像；当前JS/Tauri是实验承载，未来原生接替保留语义与测试向量。。
+
+下一步：继续以实际2D玩法接通屏幕空间、场景交互与可交付体验；镜头高级能力、其他后端及原生实现分别依据实际需求定义和验收。
+
+<a id="scene.camera2d_composer"></a>
+### 二维相机逻辑构图、临时拖动候选与视口参照
+
+`scene.camera2d_composer` · 场景与执行 · 源码交付
+
+入口：已保存Scene2D→同快照逻辑几何/视口参照→临时取景手势→数字表单→重新审阅/显式保存→Godot实际窗口
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **相机构图纯几何与严格来源上下文**；相机构图纯几何与严格来源上下文；消费中立数据、独立于作者保存与具体引擎。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-composer/README\.md](../docs/test-results/scene-camera2d-composer/README.md)、[docs/test-results/scene-camera2d-composer/targeted/final-source\.json](../docs/test-results/scene-camera2d-composer/targeted/final-source.json)、[docs/test-results/scene-camera2d-composer/browser-recovery-fixed-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-composer/browser-recovery-fixed-2026-11-11/browser.json) |
+| 本机服务与适配 | **同快照逻辑几何与组装入口视口只读目录**；同快照逻辑几何与组装入口视口只读目录；消费中立数据、独立于作者保存与具体引擎。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-composer/README\.md](../docs/test-results/scene-camera2d-composer/README.md)、[docs/test-results/scene-camera2d-composer/targeted/final-source\.json](../docs/test-results/scene-camera2d-composer/targeted/final-source.json)、[docs/test-results/scene-camera2d-composer/browser-recovery-fixed-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-composer/browser-recovery-fixed-2026-11-11/browser.json) |
+| 交互与渲染 | **独立构图手势、三语界面与父表单审阅交接**；独立构图手势、三语界面与父表单审阅交接；消费中立数据、独立于作者保存与具体引擎。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-composer/README\.md](../docs/test-results/scene-camera2d-composer/README.md)、[docs/test-results/scene-camera2d-composer/targeted/final-source\.json](../docs/test-results/scene-camera2d-composer/targeted/final-source.json)、[docs/test-results/scene-camera2d-composer/browser-recovery-fixed-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-composer/browser-recovery-fixed-2026-11-11/browser.json) |
+
+平台：Node纯模型/严格DTO/只读宿主、真实Canvas工厂及父表单回归、Linux HTTP编辑器/Chrome156中英日390px；Godot4.7.2 Xvfb/Mesa llvmpipe实际窗口；0.2.10源码收录（开发实测为0.2.9工作树）。边界：独立纯函数计算fixed中心或follow逻辑实例位置加offset，frame世界尺寸为所选viewport除以zoom；严格自有数据捕获、稳定UUID与有限几何，无文件/DOM/引擎/保存依赖。；只读上下文从原camera-inspect同一次World快照解析投影继承后的size/color/position；最多128实例、32组装参照及64局部诊断，不读取素材字节或触发构建任务。；当前场景设计viewport与组装入口viewport分别携带来源/修订；合法已保存JSON组装仅提供入口尺寸参考，不声称通过完整构建或运行检查。切换参考、fit/pan/示意zoom不改表单或作者数据。；Canvas持有临时手势，pointerup才给父表单候选center/offset；Esc、当前pointercancel、失效owner、resize与destroy取消未完成手势。最终up坐标、其他pointer干扰及迟到调用分别回归，绘制backing每轴最多4096像素。；父表单复核初始camera、当前owner与合法数值后回填，撤销旧票据，仍要求重新审阅/显式保存；silent字段变化或另一来源不能被迟到候选覆盖。无保存端口授予绘制组件。；无效参数/几何清除旧框，仅关闭示意；可选来源短暂失效后相同上下文能恢复。数字表单保持旧权限与保存校验，局部降级不放宽作者或运行准入。；新增55项定向回归全部通过；最终Chrome132断言/33来源前后不变，中英日390px及标准Godot构建实际进入第二场景的fixed/follow像素与纯模型一致。初轮失败和修复前实测保留原指纹，不外推安装、硬GPU、Bevy或实时模拟。；本轮不改变作者格式、事务日志、运行协议或执行适配器版本，旧永久后端脚本字节保持；当前JS/Canvas可由未来ns-nova原生GUI替换，不新增通用JS工作流框架。。
+
+下一步：按实际玩法独立定义屏幕空间或相机运动约束，再分别接入语义与后端；维持逻辑构图、临时编辑视图、运行状态和保存权限的边界。
+
+<a id="scene.camera2d_limits"></a>
+### 二维相机世界边界与期望／实际取景
+
+`scene.camera2d_limits` · 场景与执行 · 源码交付
+
+入口：相机v2显式边界→逻辑构图／完整审阅保存→双能力冻结准入→Godot实际视口夹持→作者包／工程ZIP迁移
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **相机v2边界、实际取景与保真显式升降版**；相机v2边界、实际取景与保真显式升降版，保持作者意图、编辑状态、宿主副作用与具体引擎边界。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-limits/README\.md](../docs/test-results/scene-camera2d-limits/README.md)、[docs/test-results/scene-camera2d-limits/targeted/final-source\.json](../docs/test-results/scene-camera2d-limits/targeted/final-source.json)、[docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser.json) |
+| 本机服务与适配 | **边界能力推导、组装准入与真实producer校验**；边界能力推导、组装准入与真实producer校验，保持作者意图、编辑状态、宿主副作用与具体引擎边界。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-limits/README\.md](../docs/test-results/scene-camera2d-limits/README.md)、[docs/test-results/scene-camera2d-limits/targeted/final-source\.json](../docs/test-results/scene-camera2d-limits/targeted/final-source.json)、[docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser.json) |
+| 交互与渲染 | **四边表单、期望／实际构图与原审阅交接**；四边表单、期望／实际构图与原审阅交接，保持作者意图、编辑状态、宿主副作用与具体引擎边界。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-limits/README\.md](../docs/test-results/scene-camera2d-limits/README.md)、[docs/test-results/scene-camera2d-limits/targeted/final-source\.json](../docs/test-results/scene-camera2d-limits/targeted/final-source.json)、[docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser.json) |
+| 执行后端 | **Godot限界helper、派生声明配对与严格库存**；Godot限界helper、派生声明配对与严格库存，保持作者意图、编辑状态、宿主副作用与具体引擎边界。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-camera2d-limits/README\.md](../docs/test-results/scene-camera2d-limits/README.md)、[docs/test-results/scene-camera2d-limits/targeted/final-source\.json](../docs/test-results/scene-camera2d-limits/targeted/final-source.json)、[docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser\.json](../docs/test-results/scene-camera2d-limits/browser-final-2026-11-11/browser.json) |
+
+平台：Node／浏览器纯语义，Linux HTTP编辑器Chrome156中英日390px、Godot4.7.2独立音频清理修订版，Xvfb/Mesa llvmpipe软件图形与离线ZIP；0.2.10源码收录（开发实测为0.2.9工作树）。边界：仅显式启用时保存相机作者v2，必须有limits:{left,top,right,bottom}；四边有限±100000且正跨度。原v1严格禁止limits，关闭并保存明确降v1，不静默迁移旧作品。；fixed中心或逻辑目标位置+offset先形成期望中心，按viewport/zoom可见半尺寸夹实际中心；某轴世界范围小于可见范围时居中，不裁剪像素或约束角色坐标/物理求解，不将运行夹持反写作者值。；纯frame保留旧v1精确输出；bounded附加desiredCenter和limits，center/bounds为实际框。fit all包括世界边界、实际框、对象和越界意图点；move只改声明中心/偏移并保留limits。；四边、开关与目标都由父表单持审阅权；绘制组件仅生成候选，silent编辑、源冲突、取消和失效会话不能越过保存。精确patch只更改camera与必要schemaVersion，周围BOM/CRLF保留。；单场景、组装并集、registered provider与actual producer分别从doc反推scene.camera2d及scene.camera2d.limits2d；删cap或只声称基础相机不能静默忽略边界。；Godot独立限界helper在原Camera2D层外使用逻辑目标、世界偏移与真实Viewport/zoom重算center，native offset清零，避免偏移逃逸；v2完整旁文件与derivedv1声明成对校验，孤儿/缺失/漂移/符号链接拒绝。；全局descriptor0.44.0，有边界工程生成0.44.0，纯v1仍0.43.0。v1基线30files/sourceMap/cap/version一致，源码fingerprint按真实身份改变；所有既有82GD/text及78tracked HEAD文件不变，Scene2D/运行协议和journal13保持。；新定向47项42通过5原生条件跳过，独立真实Godot5/5、33相机观察/3PNG/ZIP离线，Chrome107断言38源码与三语390px；作者包恢复与checksum正确伪造拒绝另验。记录保留首轮夹具错误，完整应用另有来源守卫；不外推安装、硬GPU、Bevy、HUD或持续模拟。。
+
+下一步：按真实玩法独立定义屏幕空间HUD或相机运动时序；保持世界边界、临时编辑取景、运行中心和作者保存权限分离。
+
+<a id="scene.hud2d"></a>
+### 二维屏幕 HUD 文本与状态条
+
+`scene.hud2d` · 场景与执行 · 源码交付
+
+入口：保存场景→有序文本／状态条与九点锚→临时样本→审阅／保存→共享状态只读显示→作者包恢复／工程ZIP
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **HUD严格文档、依赖与纯屏幕显示**；HUD严格文档、依赖与纯屏幕显示；保持作者语义、界面、宿主副作用与引擎实现可替换。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-hud2d/README\.md](../docs/test-results/scene-hud2d/README.md)、[docs/test-results/scene-hud2d/targeted/final-source\.json](../docs/test-results/scene-hud2d/targeted/final-source.json)、[docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence\.json](../docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence.json) |
+| 存储与事务 | **HUD三文件创建规划与v14中断恢复**；HUD三文件创建规划与v14中断恢复；保持作者语义、界面、宿主副作用与引擎实现可替换。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-hud2d/README\.md](../docs/test-results/scene-hud2d/README.md)、[docs/test-results/scene-hud2d/targeted/final-source\.json](../docs/test-results/scene-hud2d/targeted/final-source.json)、[docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence\.json](../docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence.json) |
+| 本机服务与适配 | **HUD作者服务、冻结准入与包依赖复验**；HUD作者服务、冻结准入与包依赖复验；保持作者语义、界面、宿主副作用与引擎实现可替换。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-hud2d/README\.md](../docs/test-results/scene-hud2d/README.md)、[docs/test-results/scene-hud2d/targeted/final-source\.json](../docs/test-results/scene-hud2d/targeted/final-source.json)、[docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence\.json](../docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence.json) |
+| 交互与渲染 | **HUD内置字段、有序列表、临时样本与审阅保存**；HUD内置字段、有序列表、临时样本与审阅保存；保持作者语义、界面、宿主副作用与引擎实现可替换。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-hud2d/README\.md](../docs/test-results/scene-hud2d/README.md)、[docs/test-results/scene-hud2d/targeted/final-source\.json](../docs/test-results/scene-hud2d/targeted/final-source.json)、[docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence\.json](../docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence.json) |
+| 执行后端 | **Godot独立HUD屏幕层、只读状态与双层库存**；Godot独立HUD屏幕层、只读状态与双层库存；保持作者语义、界面、宿主副作用与引擎实现可替换。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-hud2d/README\.md](../docs/test-results/scene-hud2d/README.md)、[docs/test-results/scene-hud2d/targeted/final-source\.json](../docs/test-results/scene-hud2d/targeted/final-source.json)、[docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence\.json](../docs/test-results/scene-hud2d/pure-host/viento-hud2d-pure-host-evidence.json) |
+
+平台：Node与浏览器纯语义，Linux HTTP编辑器Chrome156中英日390px、Godot4.7.2独立音频清理修订，Xvfb/Mesa llvmpipe软件OpenGL；0.2.10源码收录（开发实测为0.2.9工作树）。边界：独立64KiB作者v1，Scene2D1/2/3双向引用，0–32有序唯一UUID的label/bar、九点锚、整数像素几何与显式状态键；不自动升级场景或迁移旧作品。；纯view输入文档、viewport及最多64状态键值；缺失/0/false/空串分别处理，数值确定量化3位、最终256码点截断，数值条夹取显示；共享状态C0/DEL仅显示替换，不写状态或终止运行。；内置列表/字段及临时样本预览与作者持久化分离；完整候选审阅后显式保存，冲突保留草稿/重新读取重审，不确定结果只核对不重试创建。多行按CR/LF显示，字体/行距仅示意。；首次hud2d.create以日志v14发布HUD正文/登记/场景引用3份映像，冻结Scene与OC证据复核恢复；旧日志继续读取，Scene正文原字节不变；既有HUD只版本保护更新正文。；build从文档反推scene.hud2d，单场景/member/assembly并集、registered provider与actual producer分别校验，删flag不能降级忽略HUD；包从正文派生scene依赖，最终目标源和双向登记重新验证。；Godot项目专属CanvasLayer层与相机分离，每访问创建/离场释放，revision或viewport变化刷新，忽略鼠标/焦点；同步处理禁用process边界，保证旧smoke冻结同帧像素正确。无HUD文件/sourceMap/cap/version保持，源码fingerprint真实更新。；执行descriptor及HUD生成层0.45.0，运行协议不升级；相机v1/v2仍生成0.43/0.44内部层，HUD外层认证后才信任相机内层，拒绝篡改/孤儿/缺失/链接。；新增76项72通过4原生条件跳过，独立Godot4/4含15观察/4PNG/九锚/标准ZIP离线，Chrome105断言33源码/9三语截图；全app有2634来源守卫，旧5专题292文件/13020历史证据/83GD文本保留。未证明安装、硬GPU、Bevy、菜单输入/字体资源、持续运行、存档或独立发行。。
+
+下一步：按0.5.0两款参考小游戏补菜单输入、失败重开/暂停、跨启动存档、持续运行及干净环境独立发行；领域与渲染/宿主/后端独立替换为ns-nova。
+
+<a id="authoring.scene_navigation"></a>
+### 按动作／事件导航场景的内置作者链
+
+`authoring.scene_navigation` · 创作与工程 · 源码交付
+
+入口：普通TXT模板→行为参数→组装成员预检→三场景HUD/键盘→事件结果→作者包迁移／离线工程
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **官方导航参数与组装成员的有界预检**；官方导航参数与组装成员的有界预检；复用已有端口与作者来源，UI/语义/运行实现分离。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-navigation/README\.md](../docs/test-results/scene-navigation/README.md)、[docs/test-results/scene-navigation/pure-host/evidence\.json](../docs/test-results/scene-navigation/pure-host/evidence.json)、[docs/test-results/scene-navigation/browser-action-final-2026-11-13/browser\.json](../docs/test-results/scene-navigation/browser-action-final-2026-11-13/browser.json) |
+| 执行后端 | **普通作者动作／事件切换脚本与旧访问端口**；普通作者动作／事件切换脚本与旧访问端口；复用已有端口与作者来源，UI/语义/运行实现分离。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-navigation/README\.md](../docs/test-results/scene-navigation/README.md)、[docs/test-results/scene-navigation/pure-host/evidence\.json](../docs/test-results/scene-navigation/pure-host/evidence.json)、[docs/test-results/scene-navigation/browser-action-final-2026-11-13/browser\.json](../docs/test-results/scene-navigation/browser-action-final-2026-11-13/browser.json) |
+| 交互与渲染 | **两模板的普通草稿、参数与三语诊断入口**；两模板的普通草稿、参数与三语诊断入口；复用已有端口与作者来源，UI/语义/运行实现分离。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-navigation/README\.md](../docs/test-results/scene-navigation/README.md)、[docs/test-results/scene-navigation/pure-host/evidence\.json](../docs/test-results/scene-navigation/pure-host/evidence.json)、[docs/test-results/scene-navigation/browser-action-final-2026-11-13/browser\.json](../docs/test-results/scene-navigation/browser-action-final-2026-11-13/browser.json) |
+
+平台：Linux Node本地作者/构建服务与Chrome156中英日390px、Godot4.7.2音频清理修订，隔离Xvfb/Mesa软件GL与XTest合成窗口按键；0.2.10源码收录（开发实测为0.2.9工作树）。边界：两个普通可编辑GDScript起始内容，不修改HUD v1或建立新作者／事务／运行协议。实际场景请求仍来自已绑定行为的visit-bound端口，不把HUD元素伪装为行为。；动作模板进入时held不触发，_input只观察候选边沿，_unhandled_input才请求；GUI已处理/echo/失焦候选不生效，重聚焦需观察释放。受理后本访问不重复，false仅新按下明确重试，不轮询重放。；事件模板只订阅，默认game.complete，payload_filter为空接受全部，否则只匹配相同字符串；不匹配/竞争false/accepted后同批回调正常return true，退出取消订阅，旧端口由协调器撤销。；组装规划仅识别两份精确官方源码，目标必须其他真实成员小写UUID；参数/成员错误带manifest/绑定/修订/原文范围阻止构建，最多256诊断及准确省略数；已有场景/资源错误先返回，不在部分成员计划上制造导航误报。改写脚本和旧ready模板不推断、不改写。；action_name未映射复用非阻断输入建议，不根据参数名推断任意脚本，不生成输入映射；UI复用新脚本草稿与普通保存、行为参数补齐/审阅/普通保存，原文/登记仍权威。；资源包仍v1且闭包来自组装真实成员与脚本/HUD/input引用，不从字符串目标偷偷补外部成员；新根目录恢复后原工程离线重建，正文BOM/CRLF、UUID和素材字节保持。；Godot执行描述符0.45.0保持，源码fingerprint真实变化，新模板和诊断加入指纹；已有85GD/文本与旧6专题360文件/13020历史证据保持。真实窗口合成键盘、受控端口探针和浏览器作者操作分别记录。；仅提供开始/结果导航及事件条件入口，不证明鼠标按钮、全局暂停/重开、跨启动存档、30分钟持续游戏或无需引擎的独立发行。。
+
+下一步：用俯视收集关卡补真正得分/通关、失败重开与暂停，再定义持久进度和持续运行；原生接替保留语义来源合同而非当前JS组织。
+
+<a id="authoring.scene_retry"></a>
+### 失败页重试关卡与显式状态初始化
+
+`authoring.scene_retry` · 创作与工程 · 源码交付
+
+入口：普通动作重试TXT→JSON初始值→行为保存→组装预检→失败页重进关卡→作者包与离线工程
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **严格初始值解析与组装目标预检**；严格初始值解析与组装目标预检；原文、运行候选与界面保存分别负责。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-retry/README\.md](../docs/test-results/scene-retry/README.md)、[docs/test-results/scene-retry/author-preflight-2026-11-13/final-result\.json](../docs/test-results/scene-retry/author-preflight-2026-11-13/final-result.json)、[docs/test-results/scene-retry/targeted/new-tests\.json](../docs/test-results/scene-retry/targeted/new-tests.json) |
+| 执行后端 | **独立重试端口、原子覆盖与认证生成层**；独立重试端口、原子覆盖与认证生成层；原文、运行候选与界面保存分别负责。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-retry/README\.md](../docs/test-results/scene-retry/README.md)、[docs/test-results/scene-retry/author-preflight-2026-11-13/final-result\.json](../docs/test-results/scene-retry/author-preflight-2026-11-13/final-result.json)、[docs/test-results/scene-retry/targeted/new-tests\.json](../docs/test-results/scene-retry/targeted/new-tests.json) |
+| 交互与渲染 | **普通动作草稿、三语诊断与现有参数审阅**；普通动作草稿、三语诊断与现有参数审阅；原文、运行候选与界面保存分别负责。 | 4 / 4 / 3 / 3 | [docs/test-results/scene-retry/README\.md](../docs/test-results/scene-retry/README.md)、[docs/test-results/scene-retry/author-preflight-2026-11-13/final-result\.json](../docs/test-results/scene-retry/author-preflight-2026-11-13/final-result.json)、[docs/test-results/scene-retry/targeted/new-tests\.json](../docs/test-results/scene-retry/targeted/new-tests.json) |
+
+平台：Linux Node作者/构建服务与Chrome156，中英日390px、Godot4.7.2音频清理修订，Xvfb/Mesa软件GL和XTest合成窗口输入。边界：仅另一个真实组装成员，普通TXT参数action_name/target_scene_id/state_values_json；不把当前场景切换伪装为重启，不改旧导航源码或语义。；严格JSON0–16个标量键、原文4096UTF8字节，解码重复键/BOM/尾逗号/无效Unicode/null/容器拒绝；JS预检与实际Godot17例逐项比较。；独立viento_project_retry访问端口与原项目/动画端口身份并存；复制声明初始值，目标/竞争/容量/预算检查后共用pending_scene槽，接受时不改状态。；按声明键预留最坏变更额度，原访问后续写入还须保证覆盖后的64键/容量；队列按旧规则排空后，离场前一次合并到最新状态。目标行为/HUD看到完整覆盖，未列键保持。；实际变化的键按请求者冻结来源发连续state事件；结束/中止不执行覆盖，已预留额度不退；同值预留仍计入预算，业务修订与累计额度分别维护。；原访问的输入/事件/状态/媒体/重试接口随离场失效；目标节点/行为/HUD重新建立。场景局部计时归零，累计时间/访问/修订/事件/预算继续，不是全新会话或存档。；所有新Godot组装使用0.46.0最终重试层与project.scene-retry能力；原入口/设置/时钟设置分别保留认证，旧业务协议4/7/10/11和原85GD/text字节保持，仅新增一份GD。；真实Chrome保存/三语17来源、原生3/3与6合同场景/2窗口8访问8PNG、作者包恢复和标准ZIP离线各有独立证据；原窗口键盘为XTest合成事件。；不包含同场景即时重启、完整伤害/胜负规则、暂停/鼠标菜单、跨启动存档、30分钟运行、无引擎工具独立发行、Bevy重试或新安装验收。。
+
+下一步：用参考小游戏补实际收集/伤害/胜负规则，再接暂停/输入工作流与存档、持续运行和独立发行；原生实现传承请求、来源、完整候选和失效合同。
+
+<a id="workflow.topdown_collect"></a>
+### 俯视收集参考游戏初稿与真实玩法交付
+
+`workflow.topdown_collect` · 创作与工程 · 源码交付
+
+入口：复制普通作者工程→真实碰撞拾取／伤害→开门与胜负→不同成员重试→作者／资源／生成工程迁移
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 工程定义与格式 | **晶石庭院普通作者数据与独立Godot行为**；原设定／用途投影／场景／依赖声明作为可编辑作者工程交付。 | 3 / 3 / 3 / 3 | [docs/test-results/topdown-collect/README\.md](../docs/test-results/topdown-collect/README.md)、[docs/test-results/topdown-collect/final-verification\.json](../docs/test-results/topdown-collect/final-verification.json)、[docs/test-results/topdown-collect/native-final/keyboard/protocol\.json](../docs/test-results/topdown-collect/native-final/keyboard/protocol.json) |
+| 执行后端 | **晶石庭院普通作者数据与独立Godot行为**；普通Godot行为消费既有项目端口与原生传感器，不扩展或修改生成器。 | 3 / 3 / 3 / 3 | [docs/test-results/topdown-collect/README\.md](../docs/test-results/topdown-collect/README.md)、[docs/test-results/topdown-collect/final-verification\.json](../docs/test-results/topdown-collect/final-verification.json)、[docs/test-results/topdown-collect/native-final/keyboard/protocol\.json](../docs/test-results/topdown-collect/native-final/keyboard/protocol.json) |
+| 验证与维护 | **参考游戏原窗口、作者编辑、迁移与源码分发回归**；实际键盘驱动物理玩法，浏览器和三种包各以独立入口验收。 | 3 / 3 / 3 / 3 | [docs/test-results/topdown-collect/README\.md](../docs/test-results/topdown-collect/README.md)、[docs/test-results/topdown-collect/final-verification\.json](../docs/test-results/topdown-collect/final-verification.json)、[docs/test-results/topdown-collect/native-final/keyboard/protocol\.json](../docs/test-results/topdown-collect/native-final/keyboard/protocol.json) |
+
+平台：Linux Node服务与Chrome156，中英日390px作者检查、Godot4.7.2音频清理修订；Xvfb/Mesa软件图形及XTest合成键盘。边界：一份独立合成作者工程，原设定与游戏投影分开；四个Scene2D与11个关卡实例，三个晶体复用定义并保留独立实例。；普通GDScript通过现有项目端口与原生触发区完成计分、伤害、门和胜负；不增加后端协议或运行时模板，不修补生成工程，不使用得分／通关测试键。；拾取隐藏并关闭触发监测，门隐藏并关闭碰撞，直到场景退出前保留实例；没有通用动态增删对象能力声明。；每次进入危险区扣一点生命，停留不重复；不同成员重试只复位score／health／door_open，局部去重状态随重建清空，其他会话与预算继续。；原窗口与标准生成工程ZIP离线均通过实际方向键路径；已存在作者工程的编辑取消／保存／重开和三语检查另行验收，不声称从空白逐步界面复建。；两种作者包的独立库存／正常资源导入与换根重建保留原文、身份和素材；完整作者ZIP隔离解包验证不冒充所有宿主导入窗口。；有限会话，英文HUD；没有暂停／鼠标菜单、同场景即时重启、跨启动存档、30分钟交互、字体交付、无引擎工具独立发行、Bevy游戏对等或新安装验收。。
+
+下一步：用样例复建实际作者任务，减少成员／实例／动作UUID查找与重复接线，再定义同场景重启、暂停与菜单；持续运行、存档和独立发行按路线分别推进。
+
+<a id="behavior.parameter_references"></a>
+### 按名称连接成员、实例与输入动作参数
+
+`behavior.parameter_references` · 创作与工程 · 源码交付
+
+入口：打开已有行为→只读目录→显式组装与参考项→选择目标String→重核来源→填入→原文审阅→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **参数参考中立目录、来源品牌与保存态组装读取**；精确有限目录与普通标量选择，来源品牌私有，不授予写入／执行。 | 3 / 3 / 3 / 3 | [docs/test-results/scene-behavior-reference-picker/README\.md](../docs/test-results/scene-behavior-reference-picker/README.md)、[docs/test-results/scene-behavior-reference-picker/final-verification\.json](../docs/test-results/scene-behavior-reference-picker/final-verification.json)、[docs/test-results/scene-behavior-reference-picker/browser-final/browser\.json](../docs/test-results/scene-behavior-reference-picker/browser-final/browser.json) |
+| 本机服务与适配 | **参数参考中立目录、来源品牌与保存态组装读取**；保存态World的一致读取、组装范围和显式所选依赖验证。 | 3 / 3 / 3 / 3 | [docs/test-results/scene-behavior-reference-picker/README\.md](../docs/test-results/scene-behavior-reference-picker/README.md)、[docs/test-results/scene-behavior-reference-picker/final-verification\.json](../docs/test-results/scene-behavior-reference-picker/final-verification.json)、[docs/test-results/scene-behavior-reference-picker/browser-final/browser\.json](../docs/test-results/scene-behavior-reference-picker/browser-final/browser.json) |
+| 交互与渲染 | **独立参数选择面板、原文宿主与传输／界面验证**；单面板选择、逐次来源重核与已有审阅保存交接；可选能力独立撤销。 | 3 / 3 / 3 / 3 | [docs/test-results/scene-behavior-reference-picker/README\.md](../docs/test-results/scene-behavior-reference-picker/README.md)、[docs/test-results/scene-behavior-reference-picker/final-verification\.json](../docs/test-results/scene-behavior-reference-picker/final-verification.json)、[docs/test-results/scene-behavior-reference-picker/browser-final/browser\.json](../docs/test-results/scene-behavior-reference-picker/browser-final/browser.json) |
+
+平台：Linux Node编辑服务和Chrome156，中英日390px、纯JavaScript数据合同与保存态服务；0.2.10源码交付，安装仍0.2.0。边界：独立严格v1目录、私有五字段来源品牌；只读一份保存态World，不读素材字节或执行工具，不扩展原行为审阅v1。；实例限当前行为场景；复用同定义的演员保留独立实例UUID，并展示实例／定义／来源。；始终显式选择组装；成员取其sceneIds，动作取其保存态inputMap。多个组装不代选、无输入映射不制造默认动作，ui_*可继续手输。；单面板选择参考类型、参考项与当前String参数；不按参数名推断用途，数字／布尔及未完成的手输保持。读取和选择不改值或原有审阅。；显式填入前重读相同组装目录并核对完整DTO／World修订、原文、会话、绑定／脚本／绑定实例、目标行及值；无await穿过最后核对与单值填入。；可选能力与声音／动画目录及普通行为审阅独立；迟到响应、pending往返、关闭、来源／行变动和目录失效不写值。保存后仍普通字符串，没有持续隐藏引用。；477项专项及相邻回归471通过6条件跳过；Chrome11PNG／9三语窄屏／0错误，临时副本两份正文经正常审阅保存重开，正式98文件保持。完整应用结果另见最终回执。；不代表从空白界面复建、批量接线、LSP、运行后端新增能力、原生迁移、Android或当前安装验收。。
+
+下一步：继续用真实从空白复建任务验证交接效率；同场景即时重启、暂停菜单和更长会话按路线独立推进。
+
+<a id="behavior.retry_parameter_defaults"></a>
+### 官方重试参数默认项与空白两场景接线
+
+`behavior.retry_parameter_defaults` · 创作与工程 · 源码交付
+
+入口：零正文空白结构→界面创建场景/TXT/空参数绑定→补齐默认项→名称选动作与成员→普通保存→原生HUD初始化
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **官方固定重试源码的纯参数提供器和独立核心调度**；纯固定正文身份和有界默认String，不执行源码或解析任意语言。 | 3 / 3 / 3 / 3 | [docs/test-results/scene-retry-parameters/README\.md](../docs/test-results/scene-retry-parameters/README.md)、[docs/test-results/scene-retry-parameters/final-verification\.json](../docs/test-results/scene-retry-parameters/final-verification.json)、[docs/test-results/scene-retry-parameters/focused\.log](../docs/test-results/scene-retry-parameters/focused.log) |
+| 本机服务与适配 | **官方固定重试源码的纯参数提供器和独立核心调度**；保存态接口发现和动画核心调度分开，复用原作者目录及修订。 | 3 / 3 / 3 / 3 | [docs/test-results/scene-retry-parameters/README\.md](../docs/test-results/scene-retry-parameters/README.md)、[docs/test-results/scene-retry-parameters/final-verification\.json](../docs/test-results/scene-retry-parameters/final-verification.json)、[docs/test-results/scene-retry-parameters/focused\.log](../docs/test-results/scene-retry-parameters/focused.log) |
+| 交互与渲染 | **通用参数提示、可选辅助所有权和空白作者到原生验证**；显式补齐与可选合同刷新，原值/节点/普通审阅保留，真实空白两场景纵切另验。 | 3 / 3 / 3 / 3 | [docs/test-results/scene-retry-parameters/README\.md](../docs/test-results/scene-retry-parameters/README.md)、[docs/test-results/scene-retry-parameters/final-verification\.json](../docs/test-results/scene-retry-parameters/final-verification.json)、[docs/test-results/scene-retry-parameters/focused\.log](../docs/test-results/scene-retry-parameters/focused.log) |
+
+平台：Linux Node编辑服务与Chrome156，中英日390px、Godot4.7.2音频清理修订；Xvfb/Mesa软件OpenGL和XTest键盘。边界：只匹配当前官方完整重试正文：LF／统一CRLF，各允许一个开头BOM；无标记／任意导出解析，其他或改写正文返回无接口，普通编辑保持。；既有v1参数合同，三项String原始默认值ui_accept／空目标／score0health100，referenceKind为空；不改模板源码、参数名或运行语义，不以示范health3代替默认。；明确点击补齐后只加缺少的行，同名项无论类型均保持，未知参数、不完整输入、其他绑定和普通Save继续；不推断参数用途或持久引用。；固定提供器不需要WASM；只有既有动画标记调度核心。动画原状态和完整源码核验保持，缺失核心不能阻断重试起始项。；检查得到可选合同变化时只替换改变的脚本辅助描述，撤销旧按钮；保留表单节点／文本／未改变脚本的辅助与普通审阅，实际来源修订仍按原依赖拒绝。；空白工程由测试初始化零正文/素材/登记，真实界面创建8文档/18文件；13PNG、9三语版式、0浏览器错误，明确补齐/取消/名称填入/JSON手调/普通保存重开通过。；标准生成项目实际Enter进入Level，HUD Score0/Health3、Escape结束；2访问/2PNG/10事件，38生成文件和18作者文件保持，观察器仅在idle回调转发一次后只读。；BOM/CRLF仅扩大辅助识别，原重试专用构建预检继续原始字节完全匹配；无后端、运行协议、持久格式或作者文件自动迁移。；不是桌面作品库/目录选择器创建验收、完整四场景游戏复建、暂停/同场景重启、存档、独立发行、Bevy或新安装；完整应用退出另见最终回执。。
+
+下一步：继续整款参考游戏复建，单独评估复制一个绑定到明确实例及脚本保存后的场景返回；重启和暂停按生命周期另行推进。
 
 ## 旧功能链路映射
 

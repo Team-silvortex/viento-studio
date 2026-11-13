@@ -1,0 +1,31 @@
+✔ native HUD mirrors pure state text/bar semantics without changing revision or world geometry (7734.966294ms)
+✔ native HUD stays screen-anchored through camera movement, real viewport resize and scene re-entry (8187.454391ms)
+✖ native Xvfb HUD pixels survive camera transforms and resize and display authored state at the frozen render boundary (11152.788108ms)
+✔ HUD project ZIP retains authored label/bar and runs offline after original author and build paths disappear (18625.02352ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 45928.060148
+
+✖ failing tests:
+
+test at scripts/tests/godot4-hud2d-native.test.mjs:174:1
+✖ native Xvfb HUD pixels survive camera transforms and resize and display authored state at the frozen render boundary (11152.788108ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 6
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/godot4-hud2d-native.test.mjs:205:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 6,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

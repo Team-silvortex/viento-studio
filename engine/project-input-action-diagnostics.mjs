@@ -1,3 +1,5 @@
+import { GODOT_ACTION_SCENE_RETRY_SCRIPT } from './godot-scene-retry-script.mjs';
+import { GODOT_ACTION_SCENE_SWITCH_SCRIPT } from './godot-scene-navigation-scripts.mjs';
 // Fresh author-plan suggestions only. User scripts remain arbitrary executable
 // source: never infer their behavior from parameter names or rewrite them.
 import { GODOT_PLANAR_INTENT_SCRIPT } from './godot-planar-intent-script.mjs';
@@ -6,6 +8,8 @@ import { GODOT_CHARACTER_DROP_THROUGH_SCRIPT } from './godot-character-drop-thro
 import { parseJsonSource, locateJsonSource } from './json-source.mjs';
 
 const starterActions = new Map([
+  [GODOT_ACTION_SCENE_RETRY_SCRIPT, Object.freeze({ action_name: 'ui_accept' })],
+  [GODOT_ACTION_SCENE_SWITCH_SCRIPT, Object.freeze({ action_name: 'ui_accept' })],
   [GODOT_CHARACTER_INTENT_SCRIPT, Object.freeze({ left_action: 'ui_left', right_action: 'ui_right', jump_action: 'ui_accept' })],
   [GODOT_CHARACTER_DROP_THROUGH_SCRIPT, Object.freeze({ drop_action: 'ui_down' })],
   [GODOT_PLANAR_INTENT_SCRIPT, Object.freeze({ left_action: 'ui_left', right_action: 'ui_right', up_action: 'ui_up', down_action: 'ui_down' })],

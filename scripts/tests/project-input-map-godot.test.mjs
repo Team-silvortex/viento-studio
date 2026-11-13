@@ -66,10 +66,14 @@ async function stage(f, generated, label) {
 test('Godot input mapping is opt-in, preserves old project bytes and rejects unsupported mappings', async t => {
   const f = await setup(t), before = await sourceHashes(f.author);
   const old = await adapter.generate(f.captured.plan), historical = await generateGodotPhysicsCharacterIntentProject(f.captured.plan);
-  assert.deepEqual(old.files, historical.files); assert.deepEqual(old.backend, historical.backend);
+  for (const [name, bytes] of historical.files) {
+    const retained = name === 'project.godot' ? 'retry-original.godot' : name === 'execution-clock-original.godot' ? 'retry-original-clock.godot' : name;
+    assert.deepEqual(old.files.get(retained), bytes, name);
+  }
+  assert.equal(old.backend.protocolVersion, historical.backend.protocolVersion); assert.equal(old.backend.version, '0.46.0');
   const first = await adapter.generate(f.plan), second = await adapter.generate(f.plan);
   assert.deepEqual(first.files, second.files); assert.deepEqual(first.backend, second.backend);
-  for (const [name, bytes] of old.files) if (!['project.godot', 'execution-clock-original.godot'].includes(name)) assert.deepEqual(first.files.get(name), bytes, name);
+  for (const [name, bytes] of old.files) if (!name.startsWith('retry-') && !['project.godot', 'execution-clock-original.godot'].includes(name)) assert.deepEqual(first.files.get(name), bytes, name);
   assert.match(first.files.get('project.godot').toString(), /p1_right=\{[\s\S]*?"physical_keycode":68/);
   assert.match(first.files.get('project.godot').toString(), /p2_right=\{[\s\S]*?"physical_keycode":74/);
   assert.ok(first.backend.capabilities.includes('project.input-map'));

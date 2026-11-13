@@ -1,0 +1,21 @@
+.scene-hud2d { box-sizing:border-box; width:min(860px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); margin:auto; padding:0; border:1px solid #33536a; border-radius:14px; color:#d8e9f8; background:#101c2b; overflow:hidden; }
+.scene-hud2d[open] { display:flex; flex-direction:column; }
+.scene-hud2d::backdrop { background:rgba(2,8,18,.76); }
+.scene-hud2d [hidden] { display:none!important; }
+.scene-hud2d header,.scene-hud2d footer { flex:none; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; padding:14px 18px; }
+.scene-hud2d h2 { margin:0; font-size:1.2rem; }
+.scene-hud2d main { min-height:0; overflow:auto; padding:0 18px; }
+.scene-hud2d #sceneHUD2DStatus { flex:none; max-height:12dvh; overflow:auto; padding:0 18px; }
+.scene-hud2d p { overflow-wrap:anywhere; color:#a1bbcf; }
+.scene-hud2d fieldset { min-width:0; padding:12px; border:1px solid #33536a; }
+.scene-hud2d label { display:grid; gap:5px; margin:8px 0; min-width:0; }
+.scene-hud2d input,.scene-hud2d textarea,.scene-hud2d select { box-sizing:border-box; width:100%; min-width:0; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
+.scene-hud2d .hud-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 12px; }
+.scene-hud2d .hud-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.scene-hud2d .hud-elements ol { max-height:180px; overflow:auto; padding-left:2rem; }
+.scene-hud2d .hud-elements li button { max-width:100%; overflow-wrap:anywhere; text-align:left; color:inherit; background:transparent; border:0; padding:4px; }
+.scene-hud2d .hud-elements li button[aria-pressed="true"] { color:#8ee0bf; text-decoration:underline; }
+.scene-hud2d .hud-preview canvas { display:block; width:100%; height:280px; border:1px solid #45657b; border-radius:6px; }
+.scene-hud2d pre { white-space:pre-wrap; overflow-wrap:anywhere; padding:12px; background:#0a1422; font-size:.8rem; }
+.scene-hud2d .doc-btn { white-space:normal; }
+@media(max-width:480px) { .scene-hud2d header,.scene-hud2d footer { padding:10px; } .scene-hud2d main { padding:0 10px; } .scene-hud2d footer .doc-btn { flex:1 1 100px; } .scene-hud2d .hud-preview canvas { height:220px; } }

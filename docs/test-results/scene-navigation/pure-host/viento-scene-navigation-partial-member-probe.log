@@ -1,0 +1,85 @@
+{
+  "scope": "Read-only production probe using isolated temporary author; no formal source/test mutation.",
+  "baseline": {
+    "ok": true,
+    "diagnostics": []
+  },
+  "malformed": {
+    "ok": false,
+    "diagnostics": [
+      {
+        "severity": "error",
+        "code": "build_scene_value",
+        "message": "Viewport dimensions must be integers from 64 to 4096.",
+        "objectId": "12345678-1234-4234-8234-123456789abd",
+        "sourcePath": "documents/scenes/audio.json",
+        "propertyPath": "/viewport",
+        "sourceRevision": "sha256:e6bb6f027871d5eb9853208fb87037a2f0f9fce7038557df2565c6701336877c",
+        "sourceRange": {
+          "start": 124,
+          "end": 144,
+          "encoding": "utf-16",
+          "propertyPath": "/viewport",
+          "exact": true
+        }
+      },
+      {
+        "severity": "error",
+        "code": "build_scene_navigation_target_invalid",
+        "message": "The target scene is not a member of this project assembly.",
+        "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        "sourcePath": "documents/behaviors/demo.json",
+        "sourceRevision": "sha256:a5182cbe062eac5fc3894ca34c0ab21f6ebf6587c92885d21850cd569c2c001c",
+        "propertyPath": "/bindings/0/parameters/target_scene_id",
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "bindingId": "99999999-9999-4999-8999-999999999991",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "parameter": "target_scene_id",
+        "reason": "member",
+        "sourceRange": {
+          "start": 485,
+          "end": 523,
+          "encoding": "utf-16",
+          "propertyPath": "/bindings/0/parameters/target_scene_id",
+          "exact": true
+        }
+      },
+      {
+        "severity": "error",
+        "code": "build_scene_navigation_target_invalid",
+        "message": "The target scene is not a member of this project assembly.",
+        "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        "sourcePath": "documents/behaviors/demo.json",
+        "sourceRevision": "sha256:a5182cbe062eac5fc3894ca34c0ab21f6ebf6587c92885d21850cd569c2c001c",
+        "propertyPath": "/bindings/1/parameters/target_scene_id",
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "bindingId": "99999999-9999-4999-8999-999999999992",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+        "parameter": "target_scene_id",
+        "reason": "member",
+        "sourceRange": {
+          "start": 907,
+          "end": 945,
+          "encoding": "utf-16",
+          "propertyPath": "/bindings/1/parameters/target_scene_id",
+          "exact": true
+        }
+      }
+    ]
+  },
+  "assemblyMembers": [
+    "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "12345678-1234-4234-8234-123456789abd"
+  ],
+  "targetSceneId": "12345678-1234-4234-8234-123456789abd",
+  "targetRemainsAssemblyMember": true,
+  "mutation": "Only target Scene2D viewport width changed from 800 to 0.",
+  "sourceHashesBefore": {
+    "engine/project-assembly-plan.mjs": "1e51eb756a7a155d081e06b9bc4808836fac79e3b091a5c7c07b7310dc6ce22d",
+    "engine/project-scene-navigation-diagnostics.mjs": "4b7d74dec4ba3248c9f56618f6ef24db043b5f5b23a1e2a2379643307819ea08"
+  },
+  "sourceHashesAfter": {
+    "engine/project-assembly-plan.mjs": "1e51eb756a7a155d081e06b9bc4808836fac79e3b091a5c7c07b7310dc6ce22d",
+    "engine/project-scene-navigation-diagnostics.mjs": "4b7d74dec4ba3248c9f56618f6ef24db043b5f5b23a1e2a2379643307819ea08"
+  }
+}

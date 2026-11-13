@@ -28,15 +28,24 @@ import { createProjectAnimationStateCatalog } from '../../engine/project-animati
 import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
 import { createProjectPhysics2DTraceReader } from '../../engine/project-physics2d-trace.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
+import { PHYSICS_INSTANCE_INPUT_REPLAY_CAPABILITY } from './godot4-physics-instance-input-replay-projection.mjs';
 import { executeGodotPhysicsInputReplay } from './godot4-physics-input-replay.mjs';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
 import { generateGodotPhysicsPlanarIntentProject, godotPhysicsPlanarIntentAssemblyScripts, PLANAR_INTENT_CAPABILITY } from './godot4-physics-planar-intent.mjs';
 import { applyGodotInputMap } from './godot4-input-map.mjs';
+import { stripSceneCamera2DPlan } from '../../engine/scene-camera2d.mjs';
+import { applyGodotCamera2DProject, CAMERA2D_CAPABILITY, CAMERA2D_LIMITS_CAPABILITY } from './godot4-camera2d.mjs';
+import { validateGodotCamera2DInventory } from './godot4-camera2d-inventory.mjs';
+import { stripSceneHUD2DPlan } from '../../engine/scene-hud2d.mjs';
+import { applyGodotHUD2DProject, HUD2D_CAPABILITY } from './godot4-hud2d.mjs';
+import { validateGodotHUD2DInventory } from './godot4-hud2d-inventory.mjs';
+import { applyGodotSceneRetryProject, SCENE_RETRY_CAPABILITY } from './godot4-scene-retry.mjs';
+import { validateGodotSceneRetryInventory } from './godot4-scene-retry-inventory.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.41.0',
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.46.0',
   platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }, { kind: 'project', schemaVersion: 2, runtimeProtocolVersion: 11 }],
-  capabilities: [PLANAR_INTENT_CAPABILITY, 'physics.platform-control2d', 'physics.platform-vertical2d', 'project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
+  capabilities: [SCENE_RETRY_CAPABILITY, HUD2D_CAPABILITY, CAMERA2D_CAPABILITY, CAMERA2D_LIMITS_CAPABILITY, PHYSICS_INSTANCE_INPUT_REPLAY_CAPABILITY, PLANAR_INTENT_CAPABILITY, 'physics.platform-control2d', 'physics.platform-vertical2d', 'project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -63,6 +72,20 @@ async function generate(plan) {
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
   const detached = structuredClone(plan);
+  if (detached.kind === 'scene2d' && Object.hasOwn(detached, 'hud2d')) throw buildError('build_hud2d_requires_project', 'HUD2D currently requires a project assembly.');
+  let hudPlan = null;
+  if (detached.kind === 'project' && detached.scenes?.some(scene => Object.hasOwn(scene, 'hud2d'))) {
+    hudPlan = validateProjectAssemblyPlan(detached);
+    detached.scenes = detached.scenes.map(scene => Object.hasOwn(scene, 'hud2d') ? stripSceneHUD2DPlan(scene) : scene);
+    detached.requiredCapabilities = detached.requiredCapabilities.filter(value => value !== HUD2D_CAPABILITY);
+  }
+  if (detached.kind === 'scene2d' && Object.hasOwn(detached, 'camera2d')) throw buildError('build_camera2d_requires_project', 'Runtime camera2d currently requires a project assembly.');
+  let cameraPlan = null;
+  if (detached.kind === 'project' && detached.scenes?.some(scene => Object.hasOwn(scene, 'camera2d'))) {
+    cameraPlan = validateProjectAssemblyPlan(detached);
+    detached.scenes = detached.scenes.map(scene => Object.hasOwn(scene, 'camera2d') ? stripSceneCamera2DPlan(scene) : scene);
+    detached.requiredCapabilities = detached.requiredCapabilities.filter(value => ![CAMERA2D_CAPABILITY, CAMERA2D_LIMITS_CAPABILITY].includes(value));
+  }
   // Existing generators continue consuming the v1 projection and retain their
   // output and fingerprints. The map belongs solely to the outer adapter.
   const inputMap = detached.kind === 'project' && detached.schemaVersion === 2 ? validateProjectAssemblyPlan(detached).inputMap : null;
@@ -75,6 +98,9 @@ async function generate(plan) {
     else if (generated.backend.capabilities.includes('physics.platform-control2d')) generated.backend.version = '0.40.0';
     else if (generated.backend.capabilities.includes('physics.platform-vertical2d')) generated.backend.version = '0.39.0';
   }
+  if (cameraPlan) await applyGodotCamera2DProject(generated, cameraPlan);
+  if (hudPlan) await applyGodotHUD2DProject(generated, hudPlan);
+  if (detached.kind === 'project') await applyGodotSceneRetryProject(generated);
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -83,6 +109,9 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-scene-retry${suffix}.mjs`, new URL(`./godot4-scene-retry${suffix}.mjs`, import.meta.url)]),
+    ['scripts/backends/godot4/retry-project-runtime.gd', new URL('./godot4/retry-project-runtime.gd', import.meta.url)],
+    ...['godot-scene-retry-script', 'project-scene-retry-diagnostics'].map(name => [`engine/${name}.mjs`, new URL(`../../engine/${name}.mjs`, import.meta.url)]),
     ...['godot4-physics-planar-intent.mjs', 'godot4-physics-planar-intent-projection.mjs', 'godot4-physics-planar-intent-inventory.mjs',
       'godot4-project-v0.20.mjs.txt', 'godot4-physics-platform-control-v0.40.mjs.txt', 'godot4-physics-platform-control-inventory-v0.40.mjs.txt'].map(name => [`scripts/backends/${name}`, new URL(`./${name}`, import.meta.url)]),
     ...['helper', 'port', 'scene'].map(name => [`scripts/backends/godot4/physics-planar-intent-${name}.gd`, new URL(`./godot4/physics-planar-intent-${name}.gd`, import.meta.url)]),
@@ -91,8 +120,16 @@ async function fingerprint() {
     ...['helper', 'port', 'scene'].map(name => [`scripts/backends/godot4/physics-platform-control-${name}.gd`, new URL(`./godot4/physics-platform-control-${name}.gd`, import.meta.url)]),
     ...['godot4-physics-platform-vertical.mjs', 'godot4-physics-platform-vertical-inventory.mjs', 'godot4-physics-platform-events-v0.31.mjs.txt'].map(name => [`scripts/backends/${name}`, new URL(`./${name}`, import.meta.url)]),
     ...['motion-helper', 'events-helper', 'drop-helper', 'scene'].map(name => [`scripts/backends/godot4/physics-platform-vertical-${name}.gd`, new URL(`./godot4/physics-platform-vertical-${name}.gd`, import.meta.url)]),
+    ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-hud2d${suffix}.mjs`, new URL(`./godot4-hud2d${suffix}.mjs`, import.meta.url)]),
+    ...['scene', 'project'].map(name => [`scripts/backends/godot4/hud2d-${name}.gd`, new URL(`./godot4/hud2d-${name}.gd`, import.meta.url)]),
+    ...['', '-view'].map(suffix => [`engine/scene-hud2d${suffix}.mjs`, new URL(`../../engine/scene-hud2d${suffix}.mjs`, import.meta.url)]),
+    ...['', '-projection', '-inventory'].map(suffix => [`scripts/backends/godot4-camera2d${suffix}.mjs`, new URL(`./godot4-camera2d${suffix}.mjs`, import.meta.url)]),
+    ...['scene', 'project', 'limits-scene'].map(name => [`scripts/backends/godot4/camera2d-${name}.gd`, new URL(`./godot4/camera2d-${name}.gd`, import.meta.url)]),
+    ['engine/scene-camera2d.mjs', new URL('../../engine/scene-camera2d.mjs', import.meta.url)],
     ['scripts/backends/godot4-input-map.mjs', new URL('./godot4-input-map.mjs', import.meta.url)],
     ['engine/project-input-map.mjs', new URL('../../engine/project-input-map.mjs', import.meta.url)],
+    ['scripts/backends/godot4-physics-instance-input-replay-projection.mjs', new URL('./godot4-physics-instance-input-replay-projection.mjs', import.meta.url)],
+    ...['scene', 'driver'].map(name => [`scripts/backends/godot4/physics-instance-input-replay-${name}.gd`, new URL(`./godot4/physics-instance-input-replay-${name}.gd`, import.meta.url)]),
     ['scripts/backends/godot4-physics-input-replay.mjs', new URL('./godot4-physics-input-replay.mjs', import.meta.url)],
     ['scripts/backends/godot4/physics-input-replay-driver.gd', new URL('./godot4/physics-input-replay-driver.gd', import.meta.url)],
     ['engine/project-physics2d-input-replay.mjs', new URL('../../engine/project-physics2d-input-replay.mjs', import.meta.url)],
@@ -213,6 +250,8 @@ async function fingerprint() {
     ['scripts/backends/godot4-project.mjs', new URL('./godot4-project.mjs', import.meta.url)],
     ['engine/project-assembly-plan.mjs', new URL('../../engine/project-assembly-plan.mjs', import.meta.url)],
     ['engine/project-input-action-diagnostics.mjs', new URL('../../engine/project-input-action-diagnostics.mjs', import.meta.url)],
+    ['engine/godot-scene-navigation-scripts.mjs', new URL('../../engine/godot-scene-navigation-scripts.mjs', import.meta.url)],
+    ['engine/project-scene-navigation-diagnostics.mjs', new URL('../../engine/project-scene-navigation-diagnostics.mjs', import.meta.url)],
     ['engine/godot-character-intent-script.mjs', new URL('../../engine/godot-character-intent-script.mjs', import.meta.url)],
     ['engine/godot-character-drop-through-script.mjs', new URL('../../engine/godot-character-drop-through-script.mjs', import.meta.url)],
     ['engine/project-assembly-plan-contract.mjs', new URL('../../engine/project-assembly-plan-contract.mjs', import.meta.url)],
@@ -266,6 +305,9 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
+    const retry = await validateGodotSceneRetryInventory(directory, signal);
+    const huds = await validateGodotHUD2DInventory(directory, signal);
+    const cameras = await validateGodotCamera2DInventory(directory, signal);
     const assemblyScripts = await godotPhysicsPlanarIntentAssemblyScripts(directory, signal);
     const scripts = assemblyScripts || ['runtime.gd'];
     if (!assemblyScripts) {
@@ -296,6 +338,9 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       scripts.push('audio-runtime.gd');
     }
     }
+    if (cameras) scripts.push(...cameras.scripts);
+    if (huds) scripts.push(...huds.scripts);
+    if (retry) for (const name of retry.scripts) if (!scripts.includes(name)) scripts.push(name);
     const started = Date.now(); let stdout = '', stderr = '', result;
     for (const script of scripts) {
       const remaining = timeoutMs - (Date.now() - started), budget = 1024 * 1024 - Buffer.byteLength(stdout + stderr);

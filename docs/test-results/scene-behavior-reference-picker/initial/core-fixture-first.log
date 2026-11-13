@@ -1,0 +1,61 @@
+✔ saved references are read only, source-labelled and preserve separate repeated instances without reading resource bytes (133.452866ms)
+✔ explicit selected assembly uses declared membership and its linked input map, with names and original sources (96.103191ms)
+✔ multiple containing projects stay ambiguous until chosen and each exposes only its own map (232.355419ms)
+✔ schema one assembly has no authored input actions and unrelated maps never fill it (77.917147ms)
+✖ reference browsing is independent of rendering, tool availability and external asset bytes (68.21837ms)
+✖ selected missing or malformed members and maps cannot silently become empty (31.985347ms)
+✔ selected assembly registration, declaration, membership and byte limits are checked explicitly (468.612024ms)
+✔ current instance UUIDs and readable linked definition registrations are required without collapsing repeats (425.804244ms)
+✔ full World revision invalidates references for saved definition, member, input-map and metadata changes (279.802667ms)
+✔ request fields are captured before awaiting a snapshot and accessors never run (61.872392ms)
+✔ source changes during a real snapshot return conflict instead of mixed member/input revisions (38.847676ms)
+✔ snapshot fences and source limits preserve explicit service error classes (0.430941ms)
+✔ reference directory keeps detached frozen names and source identities, including repeated definitions (2.87491ms)
+✔ explicit assembly offers only member scene IDs and authored action names beside local instance IDs (2.31887ms)
+✔ one or several containing assemblies never select themselves and local instances stay available (1.254562ms)
+✔ catalog brand cannot be forged and exact five source fields remain private and pinned (2.562264ms)
+✔ all directory levels reject accessors, serializers, holes, symbols and inherited data without invoking getters (3.025217ms)
+✔ wire limits, identity consistency and declared map semantics are enforced independently (7.610637ms)
+✔ behavior source and expected saved scene must match exact ownership and bounded plain source data (2.558998ms)
+✔ reference selection accepts only exact data and never coerces author values (0.475065ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 18
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2012.980349
+
+✖ failing tests:
+
+test at scripts/tests/scene-behavior-reference-directory-service.test.mjs:85:1
+✖ reference browsing is independent of rendering, tool availability and external asset bytes (68.21837ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  11 !== 10
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-reference-directory-service.test.mjs:89:53)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 10,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-behavior-reference-directory-service.test.mjs:91:1
+✖ selected missing or malformed members and maps cannot silently become empty (31.985347ms)
+  Error: A selected scene behavior reference source is unavailable.
+      at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-behavior-reference-directory-service.mjs:15:30)
+      at Object.inspect (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-behavior-reference-directory-service.mjs:57:7)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-reference-directory-service.test.mjs:98:19)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    statusCode: 422,
+    payload: {},
+    errorCode: 'scene_behavior_reference_directory_unavailable'
+  }

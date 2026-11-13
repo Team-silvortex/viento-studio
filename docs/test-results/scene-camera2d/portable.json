@@ -1,0 +1,25 @@
+{
+  "recordedAtUtc": "2026-11-11T09:14:44.597086+00:00",
+  "scope": "full-check-discovered default optional-feature compatibility regression and real same-realm portable build dependencies",
+  "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/project-build.test.mjs scripts/tests/world-scene-create.test.mjs scripts/tests/world-scene-update.test.mjs scripts/tests/scene-camera2d.test.mjs scripts/tests/scene-camera2d-admission.test.mjs scripts/tests/scene-camera2d-packages.test.mjs",
+  "results": {
+    "tests": 83,
+    "pass": 82,
+    "skip": 1,
+    "fail": 0
+  },
+  "logs": [
+    "/tmp/viento-camera2d-portable-initial.log",
+    "/tmp/viento-camera2d-portable-final.log"
+  ],
+  "rootFullInitialLog": "docs/test-results/scene-camera2d/full-check-initial.log",
+  "productionFix": "Own descriptor-only negative camera discovery before strict source admission; no camera means legacy foreign-realm/minimal observation records remain accepted. Explicit camera declarations still invoke strict validators, including zero-invocation rejection of accessors.",
+  "testHarnessFix": "project-build VM loads actual camera/json-source/source-path dependency source in the same realm; original inputs and assertions are preserved, no stub or cross-realm validator injection.",
+  "newTestFirstFailure": "Added malicious-opt-in test tried structuredClone on a fixture containing functions; corrected the test to clone only author source. Production guard unchanged.",
+  "hashTiming": "After final targeted run; not represented as start/end hashes.",
+  "sources": {
+    "engine/scene-camera2d.mjs": "a8446877a436fb56373c2294e398d1a083c45c81a2ef5859ba3054e8c2a743a8",
+    "scripts/tests/scene-camera2d.test.mjs": "f52eb67f31b0d8a8a7ea4442f67984dd649a1d4771dbc0935efc87ab0ca472e9",
+    "scripts/tests/project-build.test.mjs": "2361f35b160440aeb613aa24a29913599d9e27576aba026d9293aaa3ad16b4ab"
+  }
+}

@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.2.9**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.2.9.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.2.10**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.2.10.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -462,6 +462,20 @@ Node将快照保存到会话与任务接口，原业务协议保持。含音轨G
 
 原有getter、events／diagnostics和可选snapshot继续转发；匹配位置或原账本失败时增加runtime_event_position_invalid，原业务诊断保持。Godot仅在项目协议≥3且已有runtime.execution-frames时组合此reader，旧reader和其他后端保持原字段范围。没有新backend能力、版本或GDScript；执行适配器指纹变化仍要求旧冻结构建重建。171项定向和真实Godot六案已通过，最终完整检查及兼容范围见[本轮专题](../docs/test-results/runtime-event-positions/README.md)。
 
+### 二维作者工作平面的取景模型
+
+`scene-workspace-view.mjs` 只处理临时视图几何：`fitSceneWorldView(viewport, actors, width, height)` 适配运行视口与全部实例逻辑矩形；`focusSceneWorkspaceView(actors, width, height)` 适配调用方已经选择的几何，无选择返回 `null`；`sceneWorldGrid(view, width, height)` 返回冻结的可见世界 `bounds`、二倍 `step` 和最多各256条的 `xs/ys`。
+
+几何输入为1–2048尺寸、±100000中心位置的最多128个 `{position,size}` 纯数据；实例选择与身份仍由调用方持有，不把对象定义ID当实例ID。视图为 `{scale,offsetX,offsetY}`，比例1e-6～16，适配留24画布像素边距。网格最细32世界单位，只在远景或预算需要时稀疏；不改变作者吸附规则。纯模型不依赖DOM、存储、Godot或相机，不赋予保存权；原生实现可复用同样几何与边界样例，而无需保留当前JS实现。操作见[世界工作平面](../docs/PROJECT_BUILD.md#世界工作平面与运行视口)。
+
+### 逐实例物理输入的纯合同
+
+0.2.9 后续工作树的 `project-physics2d-input-replay.mjs` 严格解析全局版本 1 和逐实例版本 2。版本 2 每步为 `inputs` 行集合，30 步／固定 `1/60`，单步唯一 UUID 且全程序最多八个目标，所有动作显式布尔、末步释放。自有数据属性、原型、稀疏数组、符号及序列化钩子等检查保持严格；返回脱离输入的冻结纯数据。
+
+`project-physics2d-replay-contract.mjs` 的 `getProjectPhysics2DReplayTargets(plan)` 只从冻结计划提取方向键物理角色的 `{instanceId, objectId, bodyId}`，`validateProjectPhysics2DReplayTargets(plan, program)` 核对输入资格；`validateProjectPhysics2DReplayPlan(plan, {backendId, capabilities, program})` 在提供版本 2 输入时额外要求 `physics.input-replay-instances2d`。宿主必须在分配运行任务前调用，不把界面目录当成权限依据。作者文档的 `physics-replay-target-dependencies.mjs` 只验证场景成员，运行资格不混入保存／迁移。
+
+`project-physics2d-input-replay-edit.mjs` 提供 `convertProjectPhysics2DInputReplayToInstances(program, instanceIds)`，将版本 1 的全部动作复制给指定实例；已是版本 2 时仅验证并脱离副本，不重映射身份。`setProjectPhysics2DInputReplayRange(program, action, start, end, pressed, instanceId?)` 使用从 0 开始、包含首尾的步骤范围，版本 2 仅改指定实例；`clearProjectPhysics2DInputReplay(program, instanceId?)` 可清除全部或单实例输入。纯函数不运行引擎、选择界面或保存文件；指定实例的编辑保留其他实例输入。Godot 临时投影与 UI 目标视图分别消费此合同。操作见[逐角色物理回放](../docs/SCENE_PHYSICS2D.md#逐角色输入)。
+
 ### 物理验收结果的只读样本定位
 
 0.2.9 收录的 `resolveProjectPhysics2DObservationSelection(observation, request, owner)` 核对完整运行身份与访问／场景／实例／步骤／序号，返回冻结的 `{instanceId, stepKey, sequence}`，不匹配返回 `null`。请求和所有者使用限定字段的自有标量记录，不序列化调用方对象或求值 getter；观察仍经独立验证器准入。此选择是会话内临时状态，不进入作者格式或运行协议。
@@ -473,3 +487,29 @@ Node将快照保存到会话与任务接口，原业务协议保持。含音轨G
 0.2.9 收录的 `createProjectPhysics2DSampleDiagram(observation, sequence)` 复用完整物理观察验证器，只返回指定序号的深冻结 DTO；非法观察、缺失或无效序号返回 `null`，不回退到其他样本。`sample` 保留完整原始精度，`points.before` 为相对原点，`requested` 与 `actual` 分别来自请求向量和已验证位移；接触位置独立减去移动前位置，法线独立单位化，不把 travel／remainder 拼成路径。
 
 投影使用统一的 `relative-uniform` 尺度：相对坐标除以 `2^scaleExponent`。指数只作为整数元数据保存，渲染器直接消费有限的 `points`；极大相减及 subnormal 位移不构造无穷比例。极端动态范围下丢失非零投影时设置 `projection.degraded`，原始样本保持。模型没有 DOM、I/O 或求解器；Web SVG 端口负责绘图、固定显示长度的法线和三语说明，观察控制器负责样本归属与焦点。见[操作与范围](../docs/SCENE_PHYSICS2D.md#查看位移与碰撞示意)。
+
+### 二维运行主相机
+
+`scene-camera2d.mjs` 严格检查独立16KiB作者格式、场景双向引用和跟随实例成员，并提供冻结计划准入和旧生成层剥离；基础能力为 `scene.camera2d`；作者 v1 不含边界，显式启用边界的 v2 必须包含 `camera.limits` 并追加 `scene.camera2d.limits2d`。四边有限且在±100000内，左右、上下严格递增；冻结子计划包装仍为 v1，准入要求完整能力并集，剥离时移除两项相机能力。`scene-camera2d-edit.mjs` 精确替换原文 `/camera` 值，并仅在启用／禁用边界时同时替换 `/schemaVersion`；禁用显式降回 v1，语义无变化保留完整原文，其余周围字节保留。`world-camera2d-create.mjs` 规划三文件原子创建，恢复日志由宿主负责。纯合同无DOM、存储和Godot依赖；当前JS承载可在原生接替时替换。作者、运行与迁移规则见[运行相机](../docs/SCENE_CAMERA2D.md)。
+
+`scene-camera2d-frame.mjs` 负责相机设置内的逻辑构图：`resolveSceneCamera2DFrame({camera,actors,viewport})` 接收已有相机子声明及最多128个精确 `{instanceId,position,size}`，返回冻结的 `{mode,center,size,bounds}`；跟随结果另含 `targetInstanceId` 与 `targetPosition`。世界取景尺寸为 `viewport / zoom`，固定中心或目标逻辑位置加偏移构成期望中心。无边界时返回形状保持原样；有边界时额外返回冻结 `desiredCenter` 和 `limits`，`center/bounds` 表示根据可见半尺寸夹取后的实际取景。某轴可见范围大于边界跨度时该轴居中；这不裁剪或移动角色。不读取材质、素材、动画或物理状态。`fitSceneCamera2DFrame(frame,actors,width,height,{scope:'camera'|'all'})` 只生成临时 `{scale,offsetX,offsetY}`，留24画布像素边距，沿用1e-6～16的视图比例；`camera` 范围只适配实际框，`all` 另包含全部逻辑对象、世界边界及期望中心点。`moveSceneCamera2DFrame(camera,[dx,dy])` 仅返回调整中心或偏移的冻结副本，按作者坐标上限夹取，世界边界、目标UUID与运行缩放保持；不把运行夹取结果回写为作者中心或偏移。
+
+`scene-camera2d-framing-context.mjs` 的 `captureSceneCamera2DFramingContext(framing,catalog)` 是浏览器可用的严格数据捕获入口。它拒绝可执行访问器、未知字段、重复实例和无效几何，核对 World／场景修订、实例目录及首个设计视口参照，返回脱离输入的冻结数据。DTO含 `scene` 来源、逻辑 `actors`、`viewports` 和局部 `diagnostics`；显示用的名称、颜色和定义ID由调用方剥离后再传给纯构图函数。每条视口来源均带 `objectId/objectRevision/sourcePath/sourceRevision`，组装参照另有 `entryScene` 来源。
+
+Node宿主 `scripts/lib/scene-camera2d-framing.mjs` 复用 `camera2d-inspect` 已取得的同一个 World 快照，通过 `resolveScene2DModel` 提取投影继承后的逻辑几何，生成上述只读DTO；没有第二次实时读取、素材字节读取或工具调用。`viewports[0]` 必须是当前场景设计viewport，随后最多32条合法已保存组装的入口viewport参照；参照不是整组装可执行性证明。局部诊断最多64条，32条参照的截断提示即使诊断预算已满仍保留。几何不可用时 `actors:null`；整个可选上下文不可用时宿主返回 `framing:null` 与局部提示，原数字表单不受这条可选链路阻断。
+
+`app-scene-camera2d-composer.js` 只持有临时取景手势和示意视图，结束手势时输出相机候选；父 `app-scene-camera2d.js` 复核起始值、身份和会话，再回填数字字段并撤销旧审阅。审阅票据、来源冲突、创建事务与最终保存仍由父表单和文档宿主负责。构图不扩展主画布，不增加HTTP动作参数；青色世界边界、粉色期望中心和橙色实际框共同说明显式 v2 声明。纯视图本身不拥有作者版本或生成层升级权，事务版本和运行协议保持。
+
+相机边界自 Godot 0.44.0 执行描述符接入（当前含HUD描述符为0.45.0）：仅带 v2 相机的新生成工程选择 0.44.0 外层，只有 v1 相机时仍生成 0.43.0。混合成员分别选择基础／边界适配，v2 保留历史 v1 相机投影并以完整 v2 旁文件成对验证，实际运行按当前 Viewport 尺寸重新夹取，跟随偏移先纳入期望中心再清零原生 offset。旧 v1 生成文件与 sourceMap 保持，角色／物理／动画源不改；实现与准入源码加入 fingerprint，因此不承诺旧构建 SHA 不变。创建恢复日志仍为 v13，项目运行协议保持。
+
+### 二维屏幕 HUD
+
+`scene-hud2d.mjs` 接受独立64KiB作者文档、0–32文本／数值条和九点锚，验证一场景一HUD的双向引用，并冻结 `hud2d` 子计划。`scene-hud2d-view.mjs` 输入 `{document,viewport,state:[{key,value}]}`，返回只读有序矩形、显示文本或比例；缺失／0／false／空串分别处理，数字确定量化至三位小数，不修改状态。`world-hud2d-create.mjs` 只规划正文、登记、场景引用三份映像与冻结恢复证据，Node宿主单独发布v14事务。能力从成员、组装、provider和producer独立推导；Godot专属CanvasLayer外层0.45.0不进入纯模块，无HUD文件及旧协议保持。原生接替时替换实现并复用合同，见[HUD规则](../docs/SCENE_HUD2D.md)与[0.5.0出口](../docs/MILESTONE_0.5.0.md)。
+
+### 官方导航行为的静态建议
+
+`godot-scene-navigation-scripts.mjs` 保存两个普通GDScript作者起始内容，不引入新运行端口；`project-scene-navigation-diagnostics.mjs` 只在源码完全相等时检查本次组装成员目标及参数，给出带修订／绑定／参数范围的有界错误。输入动作检查复用独立 `project-input-action-diagnostics.mjs`，自定义动作未映射仍是非阻断提示。编辑后的任意脚本不推断语义；包依赖仍来自组装成员与已登记脚本，不从字符串目标自动补成员。旧作者／事务／协议及具体生成器保持，见[场景导航](../docs/SCENE_NAVIGATION.md)。
+
+### 关卡重试的显式初始值
+
+`project-scene-retry-diagnostics.mjs` 对精确官方重试源码进行有界预检，独立解析严格JSON标量初始值并提供带修订／绑定／参数范围的诊断。普通动作模板复用输入边沿与焦点状态机，界面仍只创建和审阅普通TXT／行为草稿；Godot适配层通过独立访问接口把覆盖和不同成员切换一起准入，保持原项目／动画端口及单调会话计数。没有新增作者或运行线协议；具体预算、故障与交付边界见[关卡重试](../docs/SCENE_RETRY.md)。

@@ -10,11 +10,11 @@ import { resolveContainedPath } from './contained-path.mjs';
 const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
 const version = value => typeof value === 'string' && /^sha256:[a-f0-9]{64}$/.test(value);
 const fail = (code, message, status = 400) => createError(status, message, {}, code);
-const checkedScene = (source, id, prefix) => {
+const checkedScene = (source, id, prefix, sceneVersions = [2, 3]) => {
   const scene = source.documents.find(item => item.record?.id === id);
   let value; try { value = JSON.parse(scene?.content?.replace(/^\uFEFF/, '')); } catch { /* Diagnosed below. */ }
   if (!scene?.sourceRevision || !scene.sourcePath.toLowerCase().endsWith('.json') || value?.format !== 'viento-scene2d'
-    || ![2, 3].includes(value.schemaVersion)) throw fail(`${prefix}_scene_missing`, 'Select an available registered Scene2D with stable instance identities.', 422);
+    || !sceneVersions.includes(value.schemaVersion)) throw fail(`${prefix}_scene_missing`, 'Select an available registered Scene2D with stable instance identities.', 422);
   return scene;
 };
 
@@ -41,7 +41,7 @@ export function createRuntimeAuthorDocumentService(root, descriptor, { onWrite =
   const { prefix } = descriptor;
   async function list(sceneId) {
     if (!uuid(sceneId)) throw fail(`${prefix}_document_request`, 'Invalid scene identity.');
-    const { source } = await readWorldSnapshot(root), scene = checkedScene(source, sceneId, prefix);
+    const { source } = await readWorldSnapshot(root), scene = checkedScene(source, sceneId, prefix, descriptor.sceneVersions);
     const documents = source.documents.filter(item => item.record && descriptor.inspect(item.content).recognized)
       .map(item => documentView(source, item, descriptor)).filter(item => item.sceneId === sceneId);
     return { sceneId, sceneVersion: scene.sourceRevision, documents,
@@ -70,7 +70,7 @@ export function createRuntimeAuthorDocumentService(root, descriptor, { onWrite =
       : typeof input.sourcePath !== 'string' || typeof input.documentType !== 'string' || !input.documentType || input.expectedVersion !== undefined) {
       throw fail(`${prefix}_document_request`, 'Choose either an existing document with its source revision or a new document location and type.');
     }
-    const observed = await readWorldSnapshot(root), source = observed.source, scene = checkedScene(source, input.sceneId, prefix);
+    const observed = await readWorldSnapshot(root), source = observed.source, scene = checkedScene(source, input.sceneId, prefix, descriptor.sceneVersions);
     if (scene.sourceRevision !== input.sceneVersion) throw fail(`${prefix}_scene_conflict`, 'The author scene changed; refresh before saving.', 409);
     const existing = updating && source.documents.find(item => item.record?.id === input.documentId);
     if (updating && (!existing || !descriptor.inspect(existing.content).recognized)) throw fail(`${prefix}_document_missing`, 'This registered runtime author document is unavailable.', 404);
@@ -93,7 +93,7 @@ export function createRuntimeAuthorDocumentService(root, descriptor, { onWrite =
             await beforePublish();
             // Registry commands share the storage lock. Re-observe source bytes
             // as well: an external editor need not honour that process lock.
-            const fresh = (await readWorldSnapshot(root)).source, currentScene = checkedScene(fresh, input.sceneId, prefix);
+            const fresh = (await readWorldSnapshot(root)).source, currentScene = checkedScene(fresh, input.sceneId, prefix, descriptor.sceneVersions);
             if (currentScene.sourceRevision !== input.sceneVersion || canonicalJson(currentScene.record) !== canonicalJson(scene.record)) {
               throw fail(`${prefix}_scene_conflict`, 'The author scene changed before publication.', 409);
             }

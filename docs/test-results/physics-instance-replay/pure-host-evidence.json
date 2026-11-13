@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-11-11T07:46:32.202768+00:00",
+  "scope": "Pure data contracts plus controlled HTTP/Node-host admission and authored-document/resource-package regressions; no native engine execution.",
+  "workingDirectory": "/home/chiharukiryu/cdev/viento-studio",
+  "runs": [
+    {
+      "name": "pure-final",
+      "command": "env PATH=\"/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH\" node --test scripts/tests/project-physics2d-input-replay.test.mjs scripts/tests/project-physics2d-input-replay-edit.test.mjs scripts/tests/project-physics2d-replay-contract.test.mjs",
+      "redirectedTo": "/tmp/viento-physics-input-instances-pure-final.log",
+      "tests": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "log": {
+        "path": "pure-final.log",
+        "sha256": "adf68bd2b925163fc827a18cf5ca59a3b50f295144472a2b6b6c657614e52579",
+        "size": 2679
+      }
+    },
+    {
+      "name": "host-initial",
+      "command": "env PATH=\"/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH\" node --test scripts/tests/physics-replay-document.test.mjs scripts/tests/physics-replay-case-document.test.mjs scripts/tests/project-physics2d-input-instances-host.test.mjs",
+      "redirectedTo": "/tmp/viento-physics-instance-host-initial.log",
+      "tests": 16,
+      "passed": 13,
+      "failed": 3,
+      "skipped": 0,
+      "log": {
+        "path": "host-initial.log",
+        "sha256": "1509a7e20a57b7013a09cd9975681c6643ff51a148cf758552ab454a9440e388",
+        "size": 9580
+      },
+      "failureExplanation": "The new author fixture added unsupported Scene2D actor.name fields. Existing build_feature_unsupported admission correctly rejected these fields before build or runtime. Removed only invalid fixture fields; production guards were not weakened."
+    },
+    {
+      "name": "author-host-second",
+      "command": "env PATH=\"/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH\" node --test scripts/tests/physics-replay-document.test.mjs scripts/tests/physics-replay-case-document.test.mjs scripts/tests/project-physics2d-input-instances-host.test.mjs scripts/tests/physics-replay-input-instances-documents-e2e.test.mjs",
+      "redirectedTo": "/tmp/viento-physics-instance-author-host-second.log",
+      "tests": 19,
+      "passed": 18,
+      "failed": 1,
+      "skipped": 0,
+      "log": {
+        "path": "author-host-second.log",
+        "sha256": "7a487a60ccf8de7028524a24f29ecbfbe7ea2160b41548bbeec38dfe00b3d6ad",
+        "size": 3134
+      },
+      "failureExplanation": "A new assertion incorrectly treated resource catalog problems:string[] as structured diagnostic objects. Service load already emitted the exact expected instance-missing diagnostic. The test now checks the existing generic catalog parse-problem string and separately requires export rejection; no production guard changed."
+    },
+    {
+      "name": "author-host-final",
+      "command": "env -u VIENTO_GODOT_BIN PATH=\"/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH\" node --test scripts/tests/physics-replay-document.test.mjs scripts/tests/physics-replay-case-document.test.mjs scripts/tests/project-physics2d-input-instances-host.test.mjs scripts/tests/physics-replay-input-instances-documents-e2e.test.mjs scripts/tests/project-physics2d-input-replay-host.test.mjs scripts/tests/project-physics2d-replay-case-host.test.mjs scripts/tests/project-physics2d-replay-documents-e2e.test.mjs scripts/tests/physics-replay-case-document-e2e.test.mjs",
+      "redirectedTo": "/tmp/viento-physics-instance-author-host-final.log",
+      "tests": 31,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 6,
+      "log": {
+        "path": "author-host-final.log",
+        "sha256": "9c8b4cdc20af96e321b2a5772316e5e8f68754295768cd7c9715d79ee5109638",
+        "size": 3980
+      },
+      "skipExplanation": "VIENTO_GODOT_BIN was explicitly removed for this run. Six pre-existing native Godot tests were intentionally skipped; they are not native evidence."
+    }
+  ],
+  "sourceSnapshot": {
+    "capturedAtUtc": "2026-11-11T07:46:32.202861+00:00",
+    "timing": "Captured while archiving these logs, after all listed runs. This is not a recorded start/end fingerprint of the runs. The six pure model/test sources and the five newly owned author/host fixture/test sources were frozen following their final run; production integration was owned concurrently by other agents and may have changed after the run. Treat later native/browser/full-check evidence separately.",
+    "files": {
+      "engine/project-physics2d-input-replay.mjs": {
+        "sha256": "7ba19edb11d702171d7e8c5ef8cc682066ada22dfaec68681ae8c35dd01d07d1",
+        "size": 3983,
+        "mtimeUtc": "2026-11-11T07:27:00.433147+00:00"
+      },
+      "engine/project-physics2d-input-replay-edit.mjs": {
+        "sha256": "b568410ebbc23f604aa238ea9086ecc4cbc72d568b4a52a48b7696b3f50ef5a9",
+        "size": 4127,
+        "mtimeUtc": "2026-11-11T07:28:08.498779+00:00"
+      },
+      "engine/project-physics2d-replay-contract.mjs": {
+        "sha256": "73489b09570236014aea98d082ddf0f58630753f938a200e76ccfa1f0c23ed37",
+        "size": 5600,
+        "mtimeUtc": "2026-11-11T07:22:46.432942+00:00"
+      },
+      "scripts/tests/project-physics2d-input-replay.test.mjs": {
+        "sha256": "0a185b97d936f54a2f26ceec04b3db9352e44053f0468a73519d66442fbdc096",
+        "size": 7577,
+        "mtimeUtc": "2026-11-11T07:27:00.433270+00:00"
+      },
+      "scripts/tests/project-physics2d-input-replay-edit.test.mjs": {
+        "sha256": "152cc07199c9ebd88bb1755e13df0616ddf97b4d02cd15fd974d3e78c91e1a12",
+        "size": 9574,
+        "mtimeUtc": "2026-11-11T07:28:08.498909+00:00"
+      },
+      "scripts/tests/project-physics2d-replay-contract.test.mjs": {
+        "sha256": "09b7c56018b000646d28317f2de501166ac90c4408704361732e318b8228a149",
+        "size": 9036,
+        "mtimeUtc": "2026-11-11T07:25:27.908913+00:00"
+      },
+      "engine/physics-replay-target-dependencies.mjs": {
+        "sha256": "62eceadd8c30035883c6a95fa77e90e695e29703f4f856025ff8cb656b5cbc8a",
+        "size": 911,
+        "mtimeUtc": "2026-11-11T07:26:57.823165+00:00"
+      },
+      "engine/physics-replay-document.mjs": {
+        "sha256": "be71c00342effda3ce72db1a724e88faac506fc1fd63f066e136bbd4a569b342",
+        "size": 7225,
+        "mtimeUtc": "2026-11-11T07:26:57.823531+00:00"
+      },
+      "engine/physics-replay-case-document.mjs": {
+        "sha256": "f4ec61e23183d078b14ee30c74eb01dc6e5fde3323ea5a62b720c96c7b81ad61",
+        "size": 7858,
+        "mtimeUtc": "2026-11-11T07:26:57.823816+00:00"
+      },
+      "engine/project-physics2d-replay-case.mjs": {
+        "sha256": "48a532cd8548253ff80129ae9c0f6051fe14662bd3b6807e56ebfe55b8947531",
+        "size": 6501,
+        "mtimeUtc": "2026-11-11T07:26:57.823077+00:00"
+      },
+      "scripts/lib/project-build-service.mjs": {
+        "sha256": "5a893c94e1595bb785eaef3f40c990dc899d52c8096ab8558ce513a62372fec1",
+        "size": 70190,
+        "mtimeUtc": "2026-11-11T07:26:57.822658+00:00"
+      },
+      "scripts/adapters/node-project-build.mjs": {
+        "sha256": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+        "size": 44318,
+        "mtimeUtc": "2026-11-11T07:26:57.820920+00:00"
+      },
+      "scripts/lib/runtime-author-package.mjs": {
+        "sha256": "41ab8916f5be7a8d83148aa5e4086b74c27278c007b2bcff17263ff9f8d802c2",
+        "size": 1212,
+        "mtimeUtc": "2026-10-28T11:45:57.328448+00:00"
+      },
+      "scripts/lib/resource-package-reader.mjs": {
+        "sha256": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+        "size": 15681,
+        "mtimeUtc": "2026-10-28T11:47:07.716823+00:00"
+      },
+      "scripts/lib/resource-package-catalog.mjs": {
+        "sha256": "4162eafd8f2a144ee1f62e62555fd5cabb421e705cc4bb72dd1a0b247288fca0",
+        "size": 19701,
+        "mtimeUtc": "2026-10-28T11:45:57.328648+00:00"
+      },
+      "scripts/backends/godot4-adapter.mjs": {
+        "sha256": "b9ccda6429118a1be70a1160964d9c9234bbce7b49ee7c93641cf2463a077961",
+        "size": 40572,
+        "mtimeUtc": "2026-11-11T07:32:24.755240+00:00"
+      },
+      "scripts/backends/godot4-physics-input-replay.mjs": {
+        "sha256": "9aff36ddfd0472aa073554e14822e10838bb0e61964ad132f957a0100c5bba25",
+        "size": 6662,
+        "mtimeUtc": "2026-11-11T07:32:24.755206+00:00"
+      },
+      "scripts/backends/godot4-physics-instance-input-replay-projection.mjs": {
+        "sha256": "9d5ea8562cbbd79c57203d939bd80fa6eb87f2e2dcc76eba85824f40c1c49c15",
+        "size": 6065,
+        "mtimeUtc": "2026-11-11T07:28:06.270003+00:00"
+      },
+      "scripts/backends/godot4/physics-instance-input-replay-driver.gd": {
+        "sha256": "631a02db174cb98fdb5b4c2262dfab342840abaab70efa0528171dd3b21e64ee",
+        "size": 1408,
+        "mtimeUtc": "2026-11-11T07:25:40.809111+00:00"
+      },
+      "scripts/backends/godot4/physics-instance-input-replay-scene.gd": {
+        "sha256": "1b5c039af875ff89791298e0be30a3028ff6e350f5d9fd162aae0264e01e8342",
+        "size": 244,
+        "mtimeUtc": "2026-11-11T07:25:40.809067+00:00"
+      },
+      "scripts/tests/physics-replay-document.test.mjs": {
+        "sha256": "661746a3481f8e899535206f62a4cb5b3f4efda513d56195a76e90db55600c9e",
+        "size": 6920,
+        "mtimeUtc": "2026-11-11T07:38:17.166579+00:00"
+      },
+      "scripts/tests/physics-replay-case-document.test.mjs": {
+        "sha256": "33c70f215c59021ce4d9e3e81065f3fc651dd1711e4e6eaf1ba9f3c6f88f2ff5",
+        "size": 7039,
+        "mtimeUtc": "2026-11-11T07:38:17.166700+00:00"
+      },
+      "scripts/tests/helpers/scene-physics2d-input-instances-author-fixture.mjs": {
+        "sha256": "427bb070510ea491b436af50e02e010d862f2a06140254c1203c735bd7c5f9d8",
+        "size": 2742,
+        "mtimeUtc": "2026-11-11T07:40:36.649933+00:00"
+      },
+      "scripts/tests/project-physics2d-input-instances-host.test.mjs": {
+        "sha256": "72addabd2c27cd4a0304c2dc76e377eb17cfed729f68b0ad990420f61d2203ea",
+        "size": 9731,
+        "mtimeUtc": "2026-11-11T07:39:41.862631+00:00"
+      },
+      "scripts/tests/physics-replay-input-instances-documents-e2e.test.mjs": {
+        "sha256": "6422f53a59da0a338bfdf0cb4b49eacfc363dd3c332ce842aa9613ba284cbf88",
+        "size": 10823,
+        "mtimeUtc": "2026-11-11T07:43:43.137892+00:00"
+      },
+      "scripts/tests/project-physics2d-input-replay-host.test.mjs": {
+        "sha256": "b9f74550a3ca394a39b38b4d4a46938ae488fe05ee4ab9cf9d1b1c7946df782b",
+        "size": 9743,
+        "mtimeUtc": "2026-10-28T11:29:20.237487+00:00"
+      },
+      "scripts/tests/project-physics2d-replay-case-host.test.mjs": {
+        "sha256": "c135a64abed933b26fb9d8e2bfef4456e20ba0650451f5f0cf941f85f40aa704",
+        "size": 14703,
+        "mtimeUtc": "2026-10-28T11:51:54.914168+00:00"
+      },
+      "scripts/tests/project-physics2d-replay-documents-e2e.test.mjs": {
+        "sha256": "88532894c51db80467b0406725ef6b11a11b09e3d682962aee423cb8d13a19b4",
+        "size": 12686,
+        "mtimeUtc": "2026-10-28T11:29:46.627367+00:00"
+      },
+      "scripts/tests/physics-replay-case-document-e2e.test.mjs": {
+        "sha256": "935df5dc920bcbebcbe02a1522da6bda48d9f2e0ebfd52c7ed6b7f6b79739dba",
+        "size": 14174,
+        "mtimeUtc": "2026-10-28T11:48:11.297114+00:00"
+      }
+    }
+  },
+  "coverage": [
+    "Strict v1/v2 plain own-data validation, per-step and cross-step eight-target budget, duplicate rejection, final release, deep detachment and freezing.",
+    "Immutable range editing, whole/instance clearing and explicit lossless v1-to-v2 conversion; existing v2 clones retain all original targets.",
+    "Frozen controlled physical target identity and actor order, including two instances with one OC objectId.",
+    "Actual HTTP route plus createProjectBuildService and direct runProjectBuild: unknown/static/sensor/nonphysical/controls=none targets are refused for plain replay and embedded case.program before task ID change, native phases, session directories or author/frozen-build writes.",
+    "Missing instance capability is refused for both HTTP and direct Node-host entry while legacy discovery stays available.",
+    "Frozen target directory remains authoritative after the live author scene changes. A deliberately failed injected run phase demonstrates admission only, not physical execution or gameplay correctness.",
+    "Same-OC two-instance replay and acceptance save/update/reload with exact BOM/CRLF input bytes; unknown author-scene targets reject create/update before writes.",
+    "Selective resource export includes scene, physics, shared OC definitions and referenced images; migrated definitions reload while the original workspace is offline.",
+    "Stale input targets block author export independently of valid acceptance checks. Both ordinary replay and embedded acceptance payloads forged into checksum-correct ZIP archives are rejected by the package reader.",
+    "Existing v1 author-save, source-version conflict and resource-migration regressions remain enabled."
+  ],
+  "limits": [
+    "The controlled host registry uses real capture/generation and frozen-record admission but injects identify/executePhase; no Godot process or host-side physics simulation occurs in these tests.",
+    "HTTP uses a real loopback server and the production handleApiRequest router wired to the actual project build service, not a complete packaged application server.",
+    "Direct Node-host API runProjectBuild is covered. The shell CLI currently has no physics replay/case flags and is not claimed supported.",
+    "Pure-model first exploratory failure was an invalid reordered source-map test fixture; its console output was not saved as an original log. This archive contains the available original final pure log and all saved host iteration logs without reconstructing missing raw output.",
+    "Native movement, jump edges, solver behavior, browser interaction and full application checks require their separately scoped evidence."
+  ]
+}

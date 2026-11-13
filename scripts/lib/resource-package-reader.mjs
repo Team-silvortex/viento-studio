@@ -10,12 +10,14 @@ import { validateProjectTypes, workspacePaths } from './project-layout.mjs';
 import { validateDocumentModels } from './document-model.mjs';
 import { PACKAGE_LIMITS, RESOURCE_PACKAGE_FORMAT, RESOURCE_PACKAGE_VERSION, packageError } from '../../engine/resource-package.mjs';
 import { readPackageBytes, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeAuthorDocument,
-  inspectPackageRuntimeCaseSuite, packageDocumentClassification } from './resource-package-catalog.mjs';
+  inspectPackageRuntimeCaseSuite, inspectPackageSceneCamera2D, inspectPackageSceneHUD2D, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { inspectObjectProjection } from '../../engine/object-projection.mjs';
 import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
 import { runtimeAuthorDocumentIds, validateRuntimeAuthorDocumentDependencies } from './runtime-author-package.mjs';
 import { runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies } from '../../engine/runtime-case-suite.mjs';
+import { sceneCamera2DDocumentIds, validateSceneCamera2DDependencies } from '../../engine/scene-camera2d.mjs';
+import { sceneHUD2DDocumentIds, validateSceneHUD2DDependencies } from '../../engine/scene-hud2d.mjs';
 
 export const PACKAGE_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const hashValue = value => Number.isSafeInteger(value?.size) && value.size >= 0 && value.size <= PACKAGE_LIMITS.fileBytes && /^[a-f0-9]{64}$/.test(value.sha256);
@@ -137,7 +139,7 @@ export async function unpackResourcePackage(file, directory, signal) {
     // Recipe references are authored in the source, not mirrored into metadata.
     // A checksum-correct archive cannot erase a dependency from its manifest.
     const documentIds = new Set([...manifest.documents.map(doc => doc.id), ...manifest.requirements.filter(item => item.category === 'document').map(item => item.id)]);
-    const compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], documentSources = [];
+    const compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], cameraChecks = [], hudChecks = [], documentSources = [];
     for (const item of manifest.documents) {
       const bytes = await readPackageBytes(content, item.sourcePath, signal), record = records.get(item.id).record;
       const checked = inspectPackageComposition(bytes, item.sourcePath);
@@ -145,6 +147,16 @@ export async function unpackResourcePackage(file, directory, signal) {
       const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
       const runtimeCase = inspectPackageRuntimeAuthorDocument(bytes, item.sourcePath);
       const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
+      const camera = inspectPackageSceneCamera2D(bytes, item.sourcePath);
+      const hud = inspectPackageSceneHUD2D(bytes, item.sourcePath);
+      if (camera.recognized) {
+        if (!camera.ok || sceneCamera2DDocumentIds(camera.value).some(id => !documentIds.has(id))) invalid();
+        cameraChecks.push({ record, checked: camera });
+      }
+      if (hud.recognized) {
+        if (!hud.ok || sceneHUD2DDocumentIds(hud.value).some(id => !documentIds.has(id))) invalid();
+        hudChecks.push({ record, checked: hud });
+      }
       if (suite.recognized) {
         if (!suite.ok || runtimeCaseSuiteDocumentIds(suite.value).some(id => !documentIds.has(id))) invalid();
         suiteChecks.push({ record, checked: suite });
@@ -173,7 +185,9 @@ export async function unpackResourcePackage(file, directory, signal) {
     for (const { record, checked } of compositionChecks) if (validateSceneCompositionDependencies(checked, record, compositionSource).length) invalid();
     const bodyDependencyIds = new Set([...behaviorChecks.flatMap(item => sceneBehaviorDocumentIds(item.checked.value)),
       ...caseChecks.flatMap(item => runtimeAuthorDocumentIds(item.checked.value)),
-      ...suiteChecks.flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value))]);
+      ...suiteChecks.flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value)),
+      ...cameraChecks.flatMap(item => sceneCamera2DDocumentIds(item.checked.value)),
+      ...hudChecks.flatMap(item => sceneHUD2DDocumentIds(item.checked.value))]);
     for (const id of bodyDependencyIds) {
       const document = documentSources.find(item => item.record.id === id);
       if (!document) continue;
@@ -195,6 +209,14 @@ export async function unpackResourcePackage(file, directory, signal) {
     for (const { record, checked } of caseChecks) {
       if (validateRuntimeAuthorDocumentDependencies(checked.value, record, behaviorSource).some(diagnostic =>
         !['runtime_case_dependency_unavailable', 'runtime_physics_replay_dependency_unavailable', 'runtime_physics_case_dependency_unavailable'].includes(diagnostic.code) || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
+    }
+    for (const { record, checked } of cameraChecks) {
+      if (validateSceneCamera2DDependencies(checked.value, record, behaviorSource).some(diagnostic =>
+        diagnostic.code !== 'build_camera2d_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
+    }
+    for (const { record, checked } of hudChecks) {
+      if (validateSceneHUD2DDependencies(checked.value, record, behaviorSource).some(diagnostic =>
+        diagnostic.code !== 'build_hud2d_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
     }
     for (const { record, checked } of suiteChecks) {
       if (validateRuntimeCaseSuiteDependencies(checked.value, record, behaviorSource).some(diagnostic =>

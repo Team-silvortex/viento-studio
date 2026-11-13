@@ -1,0 +1,1548 @@
+{
+  "scope": "Disposable HUD project, real native node and screen-space observations",
+  "tool": {
+    "executable": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+    "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "descriptor": "0.46.0",
+  "backend": {
+    "id": "org.viento.godot4",
+    "version": "0.46.0",
+    "protocolVersion": 4,
+    "capabilities": [
+      "audio.nonspatial",
+      "audio.timeline",
+      "behavior.bindings",
+      "behavior.gdscript",
+      "image",
+      "input.arrows",
+      "project.scenes",
+      "scene2d",
+      "state.movement",
+      "project.scene-switching",
+      "project.shared-state",
+      "project.events",
+      "project.audio-control",
+      "runtime.execution-clock",
+      "runtime.execution-frames",
+      "runtime.audio-requests",
+      "scene.hud2d",
+      "project.scene-retry"
+    ],
+    "artifactKind": "godot-project",
+    "platforms": [
+      "linux"
+    ],
+    "execution": {
+      "headlessLogic": true,
+      "windowPreview": true,
+      "embeddedViewport": false,
+      "gpuCompute": false
+    },
+    "sha256": "9b93c3e8d5f05a17caa38611b42683033f01b9d02ca2975326463355562759dd"
+  },
+  "sources": {
+    "engine/scene-hud2d.mjs": "c67420bfd331481b5d1b757ac020c26677ab3f0e8fc0085991cc9edd7e868d4d",
+    "engine/scene-hud2d-view.mjs": "6e907486227128b94be3958b110bf7698282ba021482696284b1f857aceaff10",
+    "scripts/backends/godot4-adapter.mjs": "704bccacea88710acbf98a8588dfe77e776889d2075d677fbaa91f3725b70707",
+    "scripts/backends/godot4-camera2d-inventory.mjs": "3be91f22bc3c13830ce512dada5e552b8954dbb34f8fd7d617256b6db63171d9",
+    "scripts/backends/godot4-hud2d.mjs": "6bb4c42cfb2f1b578a6e5524b4c09c2db3154d2704c09ba9c1c172832e221a0d",
+    "scripts/backends/godot4-hud2d-projection.mjs": "1122c08a7371072c7bc69790d080983bdee3ac33c437d65c1f4deec130c5c061",
+    "scripts/backends/godot4-hud2d-inventory.mjs": "8b8c2f6a76b183c0038b77aa3d5662e2a544f1d4bf6d6273c93c5fb7506495df",
+    "scripts/backends/godot4/hud2d-scene.gd": "a78e99138359f25ff2f43f5da1c125a5e807352f7490c5564b5e525fa4a28a7d",
+    "scripts/backends/godot4/hud2d-project.gd": "f8812e34cc4ed759a5b106312c3d2903d374d61fe76a819ef07ec10c9f21dd04",
+    "scripts/tests/godot4-hud2d-native.test.mjs": "bc74b518ad0ac3024d06a0f4628fa7227b7bbeb4e33bacc990228c56b2558083",
+    "scripts/tests/helpers/godot-hud2d-fixture.mjs": "62e76adb416ac24118d908bc1b1ac689664bdbc1a1f6c515341742cc34f7cb4c"
+  },
+  "files": {
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/main.tscn": {
+      "expected": "f5258379c02dc2352d4832ae38cfc22cb198fd5be729a8023d406fe8d2a2b3c2",
+      "actual": "f5258379c02dc2352d4832ae38cfc22cb198fd5be729a8023d406fe8d2a2b3c2"
+    },
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/runtime.gd": {
+      "expected": "53fbef9f1908f8b9c8f80fbb19174e3af56df7ea25addbc7954ee338b3db7dd7",
+      "actual": "53fbef9f1908f8b9c8f80fbb19174e3af56df7ea25addbc7954ee338b3db7dd7"
+    },
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/scene.json": {
+      "expected": "3ada845227ef26e840fff3dc2d6e247d01869e0448c049f11354c2856e4870bd",
+      "actual": "3ada845227ef26e840fff3dc2d6e247d01869e0448c049f11354c2856e4870bd"
+    },
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/behavior-runtime.gd": {
+      "expected": "cf52b9aa521e7f8349e3ed3de10d76497265065adb0158638a2723f629cddc96",
+      "actual": "cf52b9aa521e7f8349e3ed3de10d76497265065adb0158638a2723f629cddc96"
+    },
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/behaviors.json": {
+      "expected": "f03c5819b27da34ee207febecbc7c24ae9f79d1cc1609abc20c94e60972bea48",
+      "actual": "f03c5819b27da34ee207febecbc7c24ae9f79d1cc1609abc20c94e60972bea48"
+    },
+    "behaviors/ffffffff-ffff-4fff-8fff-ffffffffffff.gd": {
+      "expected": "57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860",
+      "actual": "57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860"
+    },
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/project-scene.gd": {
+      "expected": "90c3294251857d113ddce6231eae40b13bbc93225e841d091a4aefcc44dd7b1a",
+      "actual": "90c3294251857d113ddce6231eae40b13bbc93225e841d091a4aefcc44dd7b1a"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/main.tscn": {
+      "expected": "9f70085ce2e91440d3092297edc23a7daeacd7e4c9e3c55841870991b85c8741",
+      "actual": "9f70085ce2e91440d3092297edc23a7daeacd7e4c9e3c55841870991b85c8741"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/runtime.gd": {
+      "expected": "f0e3949c1583edee6985755c9c42a10680a23aa0d2c6a5041803d34b63e2f25d",
+      "actual": "f0e3949c1583edee6985755c9c42a10680a23aa0d2c6a5041803d34b63e2f25d"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/scene.json": {
+      "expected": "014420749d98873aedf096e1d3807295290f55f76db1d73ff6a9e34229833eb9",
+      "actual": "014420749d98873aedf096e1d3807295290f55f76db1d73ff6a9e34229833eb9"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/behavior-runtime.gd": {
+      "expected": "858f344c4094b49ddac524aae045ce1542f284741eae8b8cb4a64db1c51dafb8",
+      "actual": "858f344c4094b49ddac524aae045ce1542f284741eae8b8cb4a64db1c51dafb8"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/behaviors.json": {
+      "expected": "ac0acda7acfcc67a191d5c8705895b27a5b73136be87a4299da62ba3c69469ff",
+      "actual": "ac0acda7acfcc67a191d5c8705895b27a5b73136be87a4299da62ba3c69469ff"
+    },
+    "behaviors/12345678-1234-4234-8234-123456789ac2.gd": {
+      "expected": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "actual": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/audio-runtime.gd": {
+      "expected": "772c01c0e43409352f66a22dca0e5849ce3b7eb03b004fe027f6e837ba36c268",
+      "actual": "772c01c0e43409352f66a22dca0e5849ce3b7eb03b004fe027f6e837ba36c268"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/audio.json": {
+      "expected": "2160820f058eca197af27be838068547b1e2cff42847a70253b0de0d9ff2dbc4",
+      "actual": "2160820f058eca197af27be838068547b1e2cff42847a70253b0de0d9ff2dbc4"
+    },
+    "scenes/12345678-1234-4234-8234-123456789abd/project-scene.gd": {
+      "expected": "4f9f37d9f75b7c89668c6a2e15694bc0d0f2c52bb1d71d48d349c5cd03ff6711",
+      "actual": "4f9f37d9f75b7c89668c6a2e15694bc0d0f2c52bb1d71d48d349c5cd03ff6711"
+    },
+    "project.godot": {
+      "expected": "6aa644ccc6b4603fd7365d769a7488b5d0318ac0d582e97963dac297adcbaac9",
+      "actual": "6aa644ccc6b4603fd7365d769a7488b5d0318ac0d582e97963dac297adcbaac9"
+    },
+    "project-runtime.gd": {
+      "expected": "9cf9d5d8270afbb23bab469a9a8f64de6b7d6f1265d85b02c89397552b7e940d",
+      "actual": "9cf9d5d8270afbb23bab469a9a8f64de6b7d6f1265d85b02c89397552b7e940d"
+    },
+    "project-events.gd": {
+      "expected": "37e76a6088a5bacba7df074dfac8312356577c649d4232d6188e47611997b3b9",
+      "actual": "37e76a6088a5bacba7df074dfac8312356577c649d4232d6188e47611997b3b9"
+    },
+    "project-audio.gd": {
+      "expected": "23ecdbd79345c76da19e09e4e61a5bff913eae9235910e7eb6020cc382e50509",
+      "actual": "23ecdbd79345c76da19e09e4e61a5bff913eae9235910e7eb6020cc382e50509"
+    },
+    "project.tscn": {
+      "expected": "1e499fff878b733b73177288df203c903f2a064d75da2543bebd8e1d780624c0",
+      "actual": "1e499fff878b733b73177288df203c903f2a064d75da2543bebd8e1d780624c0"
+    },
+    "assembly.json": {
+      "expected": "ecc9c2bc58bbe92b9f94fd026003a536d6d928b8cf69650751cc3ab6845324ca",
+      "actual": "ecc9c2bc58bbe92b9f94fd026003a536d6d928b8cf69650751cc3ab6845324ca"
+    },
+    "project-execution-budget.gd": {
+      "expected": "69985e28c2f2a8cf2d4d011974fb5c1af5c0eaa215c24f9264a940ce080ac413",
+      "actual": "69985e28c2f2a8cf2d4d011974fb5c1af5c0eaa215c24f9264a940ce080ac413"
+    },
+    "execution-budget.json": {
+      "expected": "3ecc5bef0b101ee67eccf976bca4ca4a7a90cf0d7f0f196bcdd91d8518d3ec47",
+      "actual": "3ecc5bef0b101ee67eccf976bca4ca4a7a90cf0d7f0f196bcdd91d8518d3ec47"
+    },
+    "execution-clock-original.godot": {
+      "expected": "9d1130ff429dfe08641cf9f90606ce517aee91107920661778f4f8b4bb22fed6",
+      "actual": "9d1130ff429dfe08641cf9f90606ce517aee91107920661778f4f8b4bb22fed6"
+    },
+    "execution-clock.json": {
+      "expected": "9b40bae2b48c01321792425ad435b6106233bceb749443b0460ca6e4b4730911",
+      "actual": "9b40bae2b48c01321792425ad435b6106233bceb749443b0460ca6e4b4730911"
+    },
+    "execution-clock-host.gd": {
+      "expected": "56725127932907999eb410e8c55eae856863e3e0abef127e97d971e828016031",
+      "actual": "56725127932907999eb410e8c55eae856863e3e0abef127e97d971e828016031"
+    },
+    "execution-clock-budget.gd": {
+      "expected": "000a6ac20cc4c2255f25e608c2e18222d3d6b414c08d0a6d92312d356f76c341",
+      "actual": "000a6ac20cc4c2255f25e608c2e18222d3d6b414c08d0a6d92312d356f76c341"
+    },
+    "execution-frames-original-project-runtime.gd.txt": {
+      "expected": "74ba65fda2c3274b9d315dc92b3251daa26167b27ffb1ef79bfef0f0bd30e317",
+      "actual": "74ba65fda2c3274b9d315dc92b3251daa26167b27ffb1ef79bfef0f0bd30e317"
+    },
+    "execution-frame-emitter.gd": {
+      "expected": "5d4c10c41b28e3481f539ba0263a6a13180a8e1a0f2bd8f32b45a85b45ab3cb0",
+      "actual": "5d4c10c41b28e3481f539ba0263a6a13180a8e1a0f2bd8f32b45a85b45ab3cb0"
+    },
+    "execution-frames.json": {
+      "expected": "5e5daebc4325f4d2c8029b5bf22312e829e98a43885d7a4955935f8c20ed374d",
+      "actual": "5e5daebc4325f4d2c8029b5bf22312e829e98a43885d7a4955935f8c20ed374d"
+    },
+    "audio-requests-original-project-audio.gd.txt": {
+      "expected": "76a6b15bb20bb4510bfb3b6631776eaf6e9f640df15cd23dbe03eaf751583c51",
+      "actual": "76a6b15bb20bb4510bfb3b6631776eaf6e9f640df15cd23dbe03eaf751583c51"
+    },
+    "audio-request-emitter.gd": {
+      "expected": "2a7b18e59b20f3f5d5de6c62372f1e4255c992189fb0e6464339018cdc3fe490",
+      "actual": "2a7b18e59b20f3f5d5de6c62372f1e4255c992189fb0e6464339018cdc3fe490"
+    },
+    "audio-requests.json": {
+      "expected": "7b1b9b78c9986fd68f8ec048cd3c07f7ba3d9df1889562984201e6f735169fab",
+      "actual": "7b1b9b78c9986fd68f8ec048cd3c07f7ba3d9df1889562984201e6f735169fab"
+    },
+    "hud2d-project.json": {
+      "expected": "74b313d13476de113c6fa275878aa47d20be318c3d0362a698c8851970dce904",
+      "actual": "74b313d13476de113c6fa275878aa47d20be318c3d0362a698c8851970dce904"
+    },
+    "hud2d-original.godot": {
+      "expected": "92b58dcafe91cf05fdfd38194609b71f0d49933ffe4beeb341f2974b61b912dd",
+      "actual": "92b58dcafe91cf05fdfd38194609b71f0d49933ffe4beeb341f2974b61b912dd"
+    },
+    "hud2d-original-clock.godot": {
+      "expected": "4318bfb857f30b6b441bca054cb53c3dc2e70c65edf8ab2d4de7e0fe0551efd4",
+      "actual": "4318bfb857f30b6b441bca054cb53c3dc2e70c65edf8ab2d4de7e0fe0551efd4"
+    },
+    "hud2d-scene.gd": {
+      "expected": "a78e99138359f25ff2f43f5da1c125a5e807352f7490c5564b5e525fa4a28a7d",
+      "actual": "a78e99138359f25ff2f43f5da1c125a5e807352f7490c5564b5e525fa4a28a7d"
+    },
+    "hud2d-project-runtime.gd": {
+      "expected": "8a1b76069b078cd8b850a100588228cc5899aa115d2691f5d8c76af4b20f2435",
+      "actual": "8a1b76069b078cd8b850a100588228cc5899aa115d2691f5d8c76af4b20f2435"
+    },
+    "hud2d-project.tscn": {
+      "expected": "7e24cb10dde818fb418be516af19d5b2ed807eccc5e11d9d58d4556ecaad5ab2",
+      "actual": "7e24cb10dde818fb418be516af19d5b2ed807eccc5e11d9d58d4556ecaad5ab2"
+    },
+    "scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/hud2d.json": {
+      "expected": "119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9",
+      "actual": "119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9"
+    },
+    "retry-project.json": {
+      "expected": "8fb4884be29fa0f81b09c396e2a0bd2646c7f094539d86c4d20272a96fca6385",
+      "actual": "8fb4884be29fa0f81b09c396e2a0bd2646c7f094539d86c4d20272a96fca6385"
+    },
+    "retry-original.godot": {
+      "expected": "8b8ea50f5056239518bb6b47f6103269cca34dbcdd70d0d989e47bc0742572b6",
+      "actual": "8b8ea50f5056239518bb6b47f6103269cca34dbcdd70d0d989e47bc0742572b6"
+    },
+    "retry-original-clock.godot": {
+      "expected": "6612c1d345b57abf31f2a825392a3149188d8d3315609bb74a9a2f00e3151952",
+      "actual": "6612c1d345b57abf31f2a825392a3149188d8d3315609bb74a9a2f00e3151952"
+    },
+    "retry-project-runtime.gd": {
+      "expected": "dee499b382f675dc0ac4da6ecfcdbe0184ba9fe3102274f28c7bf857a21677c9",
+      "actual": "dee499b382f675dc0ac4da6ecfcdbe0184ba9fe3102274f28c7bf857a21677c9"
+    },
+    "retry-project.tscn": {
+      "expected": "e9db2995fd7f643f54a3b123fb9d5e2b80b59ca49560e5933731e71e96ac4811",
+      "actual": "e9db2995fd7f643f54a3b123fb9d5e2b80b59ca49560e5933731e71e96ac4811"
+    }
+  },
+  "sourcePlan": {
+    "format": "viento-build-plan",
+    "schemaVersion": 1,
+    "kind": "project",
+    "projectId": "11111111-1111-4111-8111-111111111115",
+    "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+    "worldRevision": "sha256:63d35eb19bd1e8694dd6c94d1d175aa938b6fb5edb89497bceb2e690dba1c331",
+    "assembly": {
+      "objectId": "12345678-1234-4234-8234-123456789abc",
+      "sourcePath": "documents/projects/demo.json",
+      "sourceRevision": "sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "title": "Two-scene project"
+    },
+    "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "scenes": [
+      {
+        "format": "viento-build-plan",
+        "schemaVersion": 3,
+        "kind": "scene2d",
+        "projectId": "11111111-1111-4111-8111-111111111115",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "worldRevision": "sha256:63d35eb19bd1e8694dd6c94d1d175aa938b6fb5edb89497bceb2e690dba1c331",
+        "scene": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+          "title": "Independent GDScript Behaviors",
+          "viewport": [
+            800,
+            480
+          ],
+          "background": "#0d1829"
+        },
+        "requiredCapabilities": [
+          "scene2d",
+          "input.arrows",
+          "state.movement",
+          "image",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "scene.hud2d"
+        ],
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              200,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              500,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "size": 231,
+            "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+            "extension": "svg"
+          }
+        ],
+        "behaviors": {
+          "format": "viento-behavior-plan",
+          "schemaVersion": 1,
+          "backendId": "org.viento.godot4",
+          "language": "gdscript",
+          "manifest": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354"
+          },
+          "sources": [
+            {
+              "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+              "sourcePath": "documents/scripts/checkpoint.txt",
+              "sourceRevision": "sha256:57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860",
+              "language": "gdscript",
+              "content": "extends Node\nvar project\nfunc _ready() -> void:\n\tproject = get_meta(\"viento_project\")\n\tproject.write_state(\"score\", 0)\n\tproject.write_state(\"truth\", false)\n\tproject.write_state(\"health\", 50)\nfunc update_values() -> void:\n\tproject.write_state(\"score\", 1.2345)\n\tproject.write_state(\"truth\", true)\n\tproject.write_state(\"health\", 75)\n"
+            }
+          ],
+          "bindings": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "implementation": {
+                "backendId": "org.viento.godot4",
+                "language": "gdscript",
+                "sourceObjectId": "ffffffff-ffff-4fff-8fff-ffffffffffff"
+              },
+              "parameters": {},
+              "events": [],
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "declaration": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+                "propertyPath": "/bindings/0"
+              }
+            }
+          ]
+        },
+        "hud2d": {
+          "format": "viento-hud2d-plan",
+          "schemaVersion": 1,
+          "manifest": {
+            "objectId": "000000be-1111-4111-8111-111111111111",
+            "sourcePath": "documents/projects/hud.json",
+            "sourceRevision": "sha256:119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9"
+          },
+          "document": {
+            "format": "viento-scene-hud2d",
+            "schemaVersion": 1,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "elements": [
+              {
+                "id": "000000aa-1111-4111-8111-111111111111",
+                "kind": "label",
+                "anchor": "top-left",
+                "offset": [
+                  16,
+                  16
+                ],
+                "size": [
+                  240,
+                  32
+                ],
+                "fontSize": 20,
+                "color": "#ffffffff",
+                "content": {
+                  "kind": "state",
+                  "key": "score",
+                  "prefix": "Score: ",
+                  "suffix": "",
+                  "missing": "?"
+                }
+              },
+              {
+                "id": "000000ab-1111-4111-8111-111111111111",
+                "kind": "bar",
+                "anchor": "bottom-right",
+                "offset": [
+                  -16,
+                  -16
+                ],
+                "size": [
+                  200,
+                  24
+                ],
+                "key": "health",
+                "min": 0,
+                "max": 100,
+                "fallback": 25,
+                "fillColor": "#20d080",
+                "backgroundColor": "#202040"
+              },
+              {
+                "id": "000000ac-1111-4111-8111-111111111111",
+                "kind": "label",
+                "anchor": "top-right",
+                "offset": [
+                  -16,
+                  16
+                ],
+                "size": [
+                  240,
+                  32
+                ],
+                "fontSize": 20,
+                "color": "#ffffffff",
+                "content": {
+                  "kind": "state",
+                  "key": "truth",
+                  "prefix": "[",
+                  "suffix": "]",
+                  "missing": "?"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "format": "viento-build-plan",
+        "schemaVersion": 3,
+        "kind": "scene2d",
+        "projectId": "11111111-1111-4111-8111-111111111115",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "worldRevision": "sha256:63d35eb19bd1e8694dd6c94d1d175aa938b6fb5edb89497bceb2e690dba1c331",
+        "scene": {
+          "objectId": "12345678-1234-4234-8234-123456789abd",
+          "sourcePath": "documents/scenes/audio.json",
+          "sourceRevision": "sha256:038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+          "title": "Second scene with shared actors and audio",
+          "viewport": [
+            800,
+            480
+          ],
+          "background": "#0d1829"
+        },
+        "requiredCapabilities": [
+          "scene2d",
+          "input.arrows",
+          "state.movement",
+          "image",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "audio.nonspatial",
+          "audio.timeline"
+        ],
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              200,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              500,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "99999999-9999-4999-8999-999999999999",
+            "kind": "audio",
+            "extension": "wav",
+            "size": 44144,
+            "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+          },
+          {
+            "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "size": 231,
+            "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+            "extension": "svg"
+          }
+        ],
+        "behaviors": {
+          "format": "viento-behavior-plan",
+          "schemaVersion": 1,
+          "backendId": "org.viento.godot4",
+          "language": "gdscript",
+          "manifest": {
+            "objectId": "12345678-1234-4234-8234-123456789ac1",
+            "sourcePath": "documents/behaviors/second.json",
+            "sourceRevision": "sha256:a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76"
+          },
+          "sources": [
+            {
+              "objectId": "12345678-1234-4234-8234-123456789ac2",
+              "sourcePath": "documents/scripts/second.txt",
+              "sourceRevision": "sha256:006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+              "language": "gdscript",
+              "content": "extends Node\n"
+            }
+          ],
+          "bindings": [
+            {
+              "bindingId": "12345678-1234-4234-8234-123456789ac3",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "implementation": {
+                "backendId": "org.viento.godot4",
+                "language": "gdscript",
+                "sourceObjectId": "12345678-1234-4234-8234-123456789ac2"
+              },
+              "parameters": {},
+              "events": [],
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "declaration": {
+                "objectId": "12345678-1234-4234-8234-123456789ac1",
+                "sourcePath": "documents/behaviors/second.json",
+                "sourceRevision": "sha256:a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+                "propertyPath": "/bindings/0"
+              }
+            }
+          ]
+        },
+        "audio": {
+          "format": "viento-audio-plan",
+          "schemaVersion": 1,
+          "manifest": {
+            "objectId": "88888888-8888-4888-8888-888888888888",
+            "sourcePath": "documents/audio/demo.json",
+            "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729"
+          },
+          "document": {
+            "cues": [
+              {
+                "action": "play",
+                "atSeconds": 0,
+                "id": "66666666-6666-4666-8666-000000000001",
+                "trackId": "77777777-7777-4777-8777-000000000001"
+              },
+              {
+                "action": "play",
+                "atSeconds": 0.25,
+                "id": "66666666-6666-4666-8666-000000000002",
+                "trackId": "77777777-7777-4777-8777-000000000002"
+              },
+              {
+                "action": "stop",
+                "atSeconds": 0.5,
+                "id": "66666666-6666-4666-8666-000000000003",
+                "trackId": "77777777-7777-4777-8777-000000000001"
+              }
+            ],
+            "format": "viento-scene-audio",
+            "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+            "schemaVersion": 1,
+            "tracks": [
+              {
+                "id": "77777777-7777-4777-8777-000000000001",
+                "loop": true,
+                "resourceId": "99999999-9999-4999-8999-999999999999",
+                "role": "music",
+                "volume": 0.12
+              },
+              {
+                "id": "77777777-7777-4777-8777-000000000002",
+                "loop": false,
+                "resourceId": "99999999-9999-4999-8999-999999999999",
+                "role": "effect",
+                "volume": 0.3
+              }
+            ]
+          },
+          "locations": {
+            "tracks": [
+              {
+                "id": "77777777-7777-4777-8777-000000000001",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/tracks/0",
+                  "sourceRange": {
+                    "start": 135,
+                    "end": 318,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "77777777-7777-4777-8777-000000000002",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/tracks/1",
+                  "sourceRange": {
+                    "start": 324,
+                    "end": 508,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/1",
+                    "exact": true
+                  }
+                }
+              }
+            ],
+            "cues": [
+              {
+                "id": "66666666-6666-4666-8666-000000000001",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/cues/0",
+                  "sourceRange": {
+                    "start": 530,
+                    "end": 691,
+                    "encoding": "utf-16",
+                    "propertyPath": "/cues/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "66666666-6666-4666-8666-000000000002",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/cues/1",
+                  "sourceRange": {
+                    "start": 697,
+                    "end": 861,
+                    "encoding": "utf-16",
+                    "propertyPath": "/cues/1",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "66666666-6666-4666-8666-000000000003",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/cues/2",
+                  "sourceRange": {
+                    "start": 867,
+                    "end": 1030,
+                    "encoding": "utf-16",
+                    "propertyPath": "/cues/2",
+                    "exact": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "99999999-9999-4999-8999-999999999999",
+        "kind": "audio",
+        "extension": "wav",
+        "size": 44144,
+        "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+      },
+      {
+        "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "size": 231,
+        "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+        "extension": "svg"
+      }
+    ],
+    "requiredCapabilities": [
+      "audio.nonspatial",
+      "audio.timeline",
+      "behavior.bindings",
+      "behavior.gdscript",
+      "image",
+      "input.arrows",
+      "project.scenes",
+      "scene.hud2d",
+      "scene2d",
+      "state.movement"
+    ]
+  },
+  "authorHashes": {
+    ".viento/workspace.json": "1bce15b707707d32150e437dc542c405c2c9364e0e7dfab505fb6c4ac13e6808",
+    "README.md": "c5ea6070ac320eb9341b9365636aa7559fbb620549102fa31be157a891610bcd",
+    "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+    "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+    "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+    "documents/behaviors/demo.json": "0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+    "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+    "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+    "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+    "documents/projects/hud.json": "119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9",
+    "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+    "documents/scenes/demo.json": "f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+    "documents/scripts/checkpoint.txt": "57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860",
+    "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+    "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+    "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+    "metadata/documents/000000be-1111-4111-8111-111111111111.json": "6f6534fc7988bb1afee56d3d665abf49c12bead3d7ec1aad07c1630bf7d960c1",
+    "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+    "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "e20d82a661541276f4d042cbc02b37d531b996bda66590a5b21d8d2ed3ab5051",
+    "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+    "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+    "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+    "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+    "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "47915b9a92be637b31c6271868ed882220df29c42f71f9c3809ad90ac703673c",
+    "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "4f6192e84dde6c393ec7215432aae60e5aae70e40aa0e1bb5dd14d21ec183962",
+    "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+    "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+    "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+    "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+    "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+    "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+    "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+    "workspace.json": "85ea3eab9ae4ab76d0ae198633ce9c50541ebe4ed2ea467c6001e2ab00c73646"
+  },
+  "authorAfter": {
+    ".viento/workspace.json": "1bce15b707707d32150e437dc542c405c2c9364e0e7dfab505fb6c4ac13e6808",
+    "README.md": "c5ea6070ac320eb9341b9365636aa7559fbb620549102fa31be157a891610bcd",
+    "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+    "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+    "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+    "documents/behaviors/demo.json": "0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+    "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+    "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+    "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+    "documents/projects/hud.json": "119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9",
+    "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+    "documents/scenes/demo.json": "f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+    "documents/scripts/checkpoint.txt": "57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860",
+    "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+    "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+    "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+    "metadata/documents/000000be-1111-4111-8111-111111111111.json": "6f6534fc7988bb1afee56d3d665abf49c12bead3d7ec1aad07c1630bf7d960c1",
+    "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+    "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "e20d82a661541276f4d042cbc02b37d531b996bda66590a5b21d8d2ed3ab5051",
+    "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+    "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+    "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+    "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+    "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "47915b9a92be637b31c6271868ed882220df29c42f71f9c3809ad90ac703673c",
+    "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "4f6192e84dde6c393ec7215432aae60e5aae70e40aa0e1bb5dd14d21ec183962",
+    "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+    "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+    "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+    "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+    "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+    "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+    "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+    "workspace.json": "85ea3eab9ae4ab76d0ae198633ce9c50541ebe4ed2ea467c6001e2ab00c73646"
+  },
+  "originalPathsUnavailable": true,
+  "zip": {
+    "bytes": 142784,
+    "sha256": "70347270c9c9f169a8a17802b2306237c9fabb90f91ec1b62e548ed8ba190d9e",
+    "verification": {
+      "delivery": {
+        "format": "viento-build-delivery-review",
+        "schemaVersion": 1,
+        "manifestSha256": "ae396d5ff605bb0263a15feb54e06407fac503d000e39fcb0c4dea4ab6f4ac31",
+        "fileName": "viento-263fd27b-4bf4-4d20-9814-f5cef1e0caf3.viento-build.zip",
+        "project": {
+          "format": "viento-backend-project",
+          "schemaVersion": 2,
+          "buildId": "263fd27b-4bf4-4d20-9814-f5cef1e0caf3",
+          "snapshotId": "sha256:b9962b810784174d1464614f0313decce1c3795d4bdbbb3e5df88104421c2a97",
+          "source": {
+            "workspaceId": "11111111-1111-4111-8111-111111111115",
+            "assemblyId": "12345678-1234-4234-8234-123456789abc",
+            "sourcePath": "documents/projects/demo.json",
+            "sourceRevision": "sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+            "planKind": "project",
+            "planSchemaVersion": 1,
+            "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "scenes": [
+              {
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sourcePath": "documents/scenes/demo.json",
+                "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd"
+              },
+              {
+                "sceneId": "12345678-1234-4234-8234-123456789abd",
+                "sourcePath": "documents/scenes/audio.json",
+                "sourceRevision": "sha256:038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265"
+              }
+            ]
+          },
+          "backend": {
+            "id": "org.viento.godot4",
+            "version": "0.46.0",
+            "protocolVersion": 4,
+            "sha256": "9b93c3e8d5f05a17caa38611b42683033f01b9d02ca2975326463355562759dd"
+          },
+          "executionAdapter": {
+            "id": "org.viento.godot4",
+            "contractVersion": 1,
+            "sha256": "553b7b273763323515256d959900b378e9e43cd00ea416deacd8222049ea532c"
+          },
+          "tool": {
+            "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+            "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+            "platform": "linux",
+            "arch": "x64"
+          },
+          "project": {
+            "kind": "godot-project",
+            "root": "project",
+            "entry": "project/project.godot",
+            "requiresTool": true
+          },
+          "files": [
+            {
+              "path": "project/assembly.json",
+              "size": 1543,
+              "sha256": "ecc9c2bc58bbe92b9f94fd026003a536d6d928b8cf69650751cc3ab6845324ca",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/audio-request-emitter.gd",
+              "size": 1399,
+              "sha256": "2a7b18e59b20f3f5d5de6c62372f1e4255c992189fb0e6464339018cdc3fe490",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/audio-requests-original-project-audio.gd.txt",
+              "size": 2346,
+              "sha256": "76a6b15bb20bb4510bfb3b6631776eaf6e9f640df15cd23dbe03eaf751583c51",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/audio-requests.json",
+              "size": 595,
+              "sha256": "7b1b9b78c9986fd68f8ec048cd3c07f7ba3d9df1889562984201e6f735169fab",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/audio/99999999-9999-4999-8999-999999999999.wav",
+              "size": 44144,
+              "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+              "role": "resource-copy",
+              "resourceId": "99999999-9999-4999-8999-999999999999",
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/behaviors/12345678-1234-4234-8234-123456789ac2.gd",
+              "size": 13,
+              "sha256": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+              "role": "author-source-copy",
+              "resourceId": null,
+              "sourceObjectId": "12345678-1234-4234-8234-123456789ac2"
+            },
+            {
+              "path": "project/behaviors/ffffffff-ffff-4fff-8fff-ffffffffffff.gd",
+              "size": 330,
+              "sha256": "57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860",
+              "role": "author-source-copy",
+              "resourceId": null,
+              "sourceObjectId": "ffffffff-ffff-4fff-8fff-ffffffffffff"
+            },
+            {
+              "path": "project/execution-budget.json",
+              "size": 424,
+              "sha256": "3ecc5bef0b101ee67eccf976bca4ca4a7a90cf0d7f0f196bcdd91d8518d3ec47",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-clock-budget.gd",
+              "size": 1996,
+              "sha256": "000a6ac20cc4c2255f25e608c2e18222d3d6b414c08d0a6d92312d356f76c341",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-clock-host.gd",
+              "size": 955,
+              "sha256": "56725127932907999eb410e8c55eae856863e3e0abef127e97d971e828016031",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-clock-original.godot",
+              "size": 238,
+              "sha256": "9d1130ff429dfe08641cf9f90606ce517aee91107920661778f4f8b4bb22fed6",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-clock.json",
+              "size": 281,
+              "sha256": "9b40bae2b48c01321792425ad435b6106233bceb749443b0460ca6e4b4730911",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-frame-emitter.gd",
+              "size": 499,
+              "sha256": "5d4c10c41b28e3481f539ba0263a6a13180a8e1a0f2bd8f32b45a85b45ab3cb0",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-frames-original-project-runtime.gd.txt",
+              "size": 13108,
+              "sha256": "74ba65fda2c3274b9d315dc92b3251daa26167b27ffb1ef79bfef0f0bd30e317",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/execution-frames.json",
+              "size": 605,
+              "sha256": "5e5daebc4325f4d2c8029b5bf22312e829e98a43885d7a4955935f8c20ed374d",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/hud2d-original-clock.godot",
+              "size": 232,
+              "sha256": "4318bfb857f30b6b441bca054cb53c3dc2e70c65edf8ab2d4de7e0fe0551efd4",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/hud2d-original.godot",
+              "size": 299,
+              "sha256": "92b58dcafe91cf05fdfd38194609b71f0d49933ffe4beeb341f2974b61b912dd",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/hud2d-project-runtime.gd",
+              "size": 595,
+              "sha256": "8a1b76069b078cd8b850a100588228cc5899aa115d2691f5d8c76af4b20f2435",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/hud2d-project.json",
+              "size": 131,
+              "sha256": "74b313d13476de113c6fa275878aa47d20be318c3d0362a698c8851970dce904",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/hud2d-project.tscn",
+              "size": 177,
+              "sha256": "7e24cb10dde818fb418be516af19d5b2ed807eccc5e11d9d58d4556ecaad5ab2",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/hud2d-scene.gd",
+              "size": 6603,
+              "sha256": "a78e99138359f25ff2f43f5da1c125a5e807352f7490c5564b5e525fa4a28a7d",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg",
+              "size": 231,
+              "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+              "role": "resource-copy",
+              "resourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/project-audio.gd",
+              "size": 2625,
+              "sha256": "23ecdbd79345c76da19e09e4e61a5bff913eae9235910e7eb6020cc382e50509",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/project-events.gd",
+              "size": 7340,
+              "sha256": "37e76a6088a5bacba7df074dfac8312356577c649d4232d6188e47611997b3b9",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/project-execution-budget.gd",
+              "size": 1939,
+              "sha256": "69985e28c2f2a8cf2d4d011974fb5c1af5c0eaa215c24f9264a940ce080ac413",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/project-runtime.gd",
+              "size": 13105,
+              "sha256": "9cf9d5d8270afbb23bab469a9a8f64de6b7d6f1265d85b02c89397552b7e940d",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/project.godot",
+              "size": 305,
+              "sha256": "6aa644ccc6b4603fd7365d769a7488b5d0318ac0d582e97963dac297adcbaac9",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/project.tscn",
+              "size": 171,
+              "sha256": "1e499fff878b733b73177288df203c903f2a064d75da2543bebd8e1d780624c0",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/retry-original-clock.godot",
+              "size": 238,
+              "sha256": "6612c1d345b57abf31f2a825392a3149188d8d3315609bb74a9a2f00e3151952",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/retry-original.godot",
+              "size": 305,
+              "sha256": "8b8ea50f5056239518bb6b47f6103269cca34dbcdd70d0d989e47bc0742572b6",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/retry-project-runtime.gd",
+              "size": 4476,
+              "sha256": "dee499b382f675dc0ac4da6ecfcdbe0184ba9fe3102274f28c7bf857a21677c9",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/retry-project.json",
+              "size": 380,
+              "sha256": "8fb4884be29fa0f81b09c396e2a0bd2646c7f094539d86c4d20272a96fca6385",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/retry-project.tscn",
+              "size": 177,
+              "sha256": "e9db2995fd7f643f54a3b123fb9d5e2b80b59ca49560e5933731e71e96ac4811",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/audio-runtime.gd",
+              "size": 3852,
+              "sha256": "772c01c0e43409352f66a22dca0e5849ce3b7eb03b004fe027f6e837ba36c268",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/audio.json",
+              "size": 1537,
+              "sha256": "2160820f058eca197af27be838068547b1e2cff42847a70253b0de0d9ff2dbc4",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/behavior-runtime.gd",
+              "size": 6339,
+              "sha256": "858f344c4094b49ddac524aae045ce1542f284741eae8b8cb4a64db1c51dafb8",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/behaviors.json",
+              "size": 646,
+              "sha256": "ac0acda7acfcc67a191d5c8705895b27a5b73136be87a4299da62ba3c69469ff",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/main.tscn",
+              "size": 211,
+              "sha256": "9f70085ce2e91440d3092297edc23a7daeacd7e4c9e3c55841870991b85c8741",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/project-scene.gd",
+              "size": 2184,
+              "sha256": "4f9f37d9f75b7c89668c6a2e15694bc0d0f2c52bb1d71d48d349c5cd03ff6711",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/runtime.gd",
+              "size": 4448,
+              "sha256": "f0e3949c1583edee6985755c9c42a10680a23aa0d2c6a5041803d34b63e2f25d",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/12345678-1234-4234-8234-123456789abd/scene.json",
+              "size": 1994,
+              "sha256": "014420749d98873aedf096e1d3807295290f55f76db1d73ff6a9e34229833eb9",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/behavior-runtime.gd",
+              "size": 6339,
+              "sha256": "cf52b9aa521e7f8349e3ed3de10d76497265065adb0158638a2723f629cddc96",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/behaviors.json",
+              "size": 646,
+              "sha256": "f03c5819b27da34ee207febecbc7c24ae9f79d1cc1609abc20c94e60972bea48",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/hud2d.json",
+              "size": 1328,
+              "sha256": "119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/main.tscn",
+              "size": 211,
+              "sha256": "f5258379c02dc2352d4832ae38cfc22cb198fd5be729a8023d406fe8d2a2b3c2",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/project-scene.gd",
+              "size": 1639,
+              "sha256": "90c3294251857d113ddce6231eae40b13bbc93225e841d091a4aefcc44dd7b1a",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/runtime.gd",
+              "size": 4448,
+              "sha256": "53fbef9f1908f8b9c8f80fbb19174e3af56df7ea25addbc7954ee338b3db7dd7",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            },
+            {
+              "path": "project/scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/scene.json",
+              "size": 1980,
+              "sha256": "3ada845227ef26e840fff3dc2d6e247d01869e0448c049f11354c2856e4870bd",
+              "role": "generated",
+              "resourceId": null,
+              "sourceObjectId": null
+            }
+          ],
+          "resources": [
+            {
+              "resourceId": "99999999-9999-4999-8999-999999999999",
+              "sourcePath": "tone.wav",
+              "generatedPath": "project/audio/99999999-9999-4999-8999-999999999999.wav",
+              "size": 44144,
+              "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+            },
+            {
+              "resourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+              "sourcePath": "traveler.svg",
+              "generatedPath": "project/images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg",
+              "size": 231,
+              "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+            }
+          ],
+          "dependencies": [
+            {
+              "objectId": "88888888-8888-4888-8888-888888888888",
+              "sourcePath": "documents/audio/demo.json",
+              "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+              "role": "author-document"
+            },
+            {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+              "role": "author-document"
+            },
+            {
+              "objectId": "12345678-1234-4234-8234-123456789ac1",
+              "sourcePath": "documents/behaviors/second.json",
+              "sourceRevision": "sha256:a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+              "role": "author-document"
+            },
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "sourcePath": "documents/characters/traveler.md",
+              "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+              "role": "author-document"
+            },
+            {
+              "objectId": "12345678-1234-4234-8234-123456789abc",
+              "sourcePath": "documents/projects/demo.json",
+              "sourceRevision": "sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+              "role": "assembly"
+            },
+            {
+              "objectId": "000000be-1111-4111-8111-111111111111",
+              "sourcePath": "documents/projects/hud.json",
+              "sourceRevision": "sha256:119c858bf539223e8b8cb148760dcd4ddadd6dc0ad66bd6fac2b80b75b511be9",
+              "role": "author-document"
+            },
+            {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "sourceRevision": "sha256:038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+              "role": "scene"
+            },
+            {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+              "role": "scene"
+            },
+            {
+              "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+              "sourcePath": "documents/scripts/checkpoint.txt",
+              "sourceRevision": "sha256:57a044cad6f38e001950d3a62a43a509c30608bf106bc15ed0eac4d5cd62a860",
+              "role": "behavior-source"
+            },
+            {
+              "objectId": "12345678-1234-4234-8234-123456789ac2",
+              "sourcePath": "documents/scripts/second.txt",
+              "sourceRevision": "sha256:006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+              "role": "behavior-source"
+            }
+          ],
+          "evidence": [
+            {
+              "path": "build.json",
+              "size": 17035,
+              "sha256": "2846880db51ce4412fc584f37f10d1288719e89fe57ae2e02a90ac93932e86ed"
+            },
+            {
+              "path": "snapshot.json",
+              "size": 46096,
+              "sha256": "aac6dbd1fa67cbc0ffc0189a8f18c62a547fa0c3744592866cfc5c16460eace9"
+            },
+            {
+              "path": "source-map.json",
+              "size": 12975,
+              "sha256": "2a1e73fac6139ee9b7f5a4676f9b898230c130c300fb166633c8282ed0aa7f7a"
+            }
+          ],
+          "lifecycle": {
+            "authority": "author-workspace",
+            "generatedProject": "derived-read-only",
+            "resources": "copies",
+            "rebuild": "saved-author-inputs",
+            "runtimeCopies": "temporary",
+            "persistence": "until-owner-cleanup"
+          }
+        }
+      },
+      "fileCount": 49,
+      "assetCount": 2,
+      "bytes": 142784
+    }
+  },
+  "phases": [
+    {
+      "phase": "import",
+      "status": "succeeded",
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdout": "Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registering global classes... (20 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   4% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   9% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  14% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  19% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  23% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  28% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  38% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  42% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  47% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  52% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  57% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  61% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  71% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  76% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  80% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  85% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  90% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | Started Scanning actions... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing pre-reimport operations...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizing Asset Import...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing post-reimport operations...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+      "stderr": "",
+      "durationMs": 3114
+    },
+    {
+      "phase": "script-check",
+      "status": "succeeded",
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdout": "Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\n",
+      "stderr": "",
+      "durationMs": 5344
+    },
+    {
+      "phase": "run",
+      "status": "succeeded",
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdout": "Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"entrySceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"event\":\"ready\",\"eventSequence\":0,\"protocol\":4,\"stateRevision\":0},\"index\":1,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-enter\",\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"index\":2,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-event\",\"frame\":{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":3,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"},\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"stream\":\"runtime\",\"visitIndex\":1},\"index\":3,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"score\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":4,\"revision\":1,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":0,\"visitIndex\":1},\"index\":4,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"truth\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":4,\"revision\":2,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":false,\"visitIndex\":1},\"index\":5,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"health\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":4,\"revision\":3,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":50,\"visitIndex\":1},\"index\":6,\"protocol\":1}\nVIENTO_EXECUTION_CLOCK:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"event\":\"sample\",\"index\":1,\"protocol\":1,\"reason\":\"sample\",\"total\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3},\"used\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3}}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"frame\":{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"elapsedSeconds\":0.5,\"event\":\"scene-exit\",\"protocol\":4,\"reason\":\"finished\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"index\":7,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"frame\":{\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"event\":\"finished\",\"eventSequence\":0,\"protocol\":4,\"stateRevision\":3,\"totalSeconds\":0.5,\"visitCount\":1},\"index\":8,\"protocol\":1}\nVIENTO_EXECUTION_CLOCK:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"event\":\"sample\",\"index\":1,\"protocol\":1,\"reason\":\"finished\",\"total\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3},\"used\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3}}\n",
+      "stderr": "",
+      "durationMs": 359
+    }
+  ],
+  "samples": [
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "position": [
+            200,
+            220
+          ]
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "position": [
+            500,
+            220
+          ]
+        }
+      ],
+      "elements": [
+        {
+          "basisX": [
+            1,
+            0
+          ],
+          "basisY": [
+            0,
+            1
+          ],
+          "focusMode": 0,
+          "id": "000000aa-1111-4111-8111-111111111111",
+          "kind": "label",
+          "mouseFilter": 2,
+          "origin": [
+            16,
+            16
+          ],
+          "position": [
+            16,
+            16
+          ],
+          "size": [
+            240,
+            32
+          ],
+          "text": "Score: 0"
+        },
+        {
+          "basisX": [
+            1,
+            0
+          ],
+          "basisY": [
+            0,
+            1
+          ],
+          "fillSize": [
+            100,
+            24
+          ],
+          "focusMode": 0,
+          "id": "000000ab-1111-4111-8111-111111111111",
+          "kind": "bar",
+          "mouseFilter": 2,
+          "origin": [
+            -152,
+            24
+          ],
+          "position": [
+            -152,
+            24
+          ],
+          "size": [
+            200,
+            24
+          ]
+        },
+        {
+          "basisX": [
+            1,
+            0
+          ],
+          "basisY": [
+            0,
+            1
+          ],
+          "focusMode": 0,
+          "id": "000000ac-1111-4111-8111-111111111111",
+          "kind": "label",
+          "mouseFilter": 2,
+          "origin": [
+            -192,
+            16
+          ],
+          "position": [
+            -192,
+            16
+          ],
+          "size": [
+            240,
+            32
+          ],
+          "text": "[false]"
+        }
+      ],
+      "followsWorld": false,
+      "hudId": 32380028390,
+      "label": "offline-HUD",
+      "lastRevision": 3,
+      "layer": 1,
+      "revision": 3,
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "state": {
+        "health": 50,
+        "score": 0,
+        "truth": false
+      },
+      "viewport": [
+        64,
+        64
+      ],
+      "visit": 1,
+      "worldOrigin": [
+        0,
+        0
+      ]
+    }
+  ],
+  "nativeStdout": "Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"entrySceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"event\":\"ready\",\"eventSequence\":0,\"protocol\":4,\"stateRevision\":0},\"index\":1,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-enter\",\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"index\":2,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-event\",\"frame\":{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":3,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"},\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"stream\":\"runtime\",\"visitIndex\":1},\"index\":3,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"score\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":4,\"revision\":1,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":0,\"visitIndex\":1},\"index\":4,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"truth\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":4,\"revision\":2,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":false,\"visitIndex\":1},\"index\":5,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"health\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":4,\"revision\":3,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":50,\"visitIndex\":1},\"index\":6,\"protocol\":1}\nVIENTO_EXECUTION_CLOCK:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"event\":\"sample\",\"index\":1,\"protocol\":1,\"reason\":\"sample\",\"total\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3},\"used\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3}}\nVIENTO_HUD_TEST:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"position\":[200.0,220.0]},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"position\":[500.0,220.0]}],\"elements\":[{\"basisX\":[1.0,0.0],\"basisY\":[0.0,1.0],\"focusMode\":0,\"id\":\"000000aa-1111-4111-8111-111111111111\",\"kind\":\"label\",\"mouseFilter\":2,\"origin\":[16.0,16.0],\"position\":[16.0,16.0],\"size\":[240.0,32.0],\"text\":\"Score: 0\"},{\"basisX\":[1.0,0.0],\"basisY\":[0.0,1.0],\"fillSize\":[100.0,24.0],\"focusMode\":0,\"id\":\"000000ab-1111-4111-8111-111111111111\",\"kind\":\"bar\",\"mouseFilter\":2,\"origin\":[-152.0,24.0],\"position\":[-152.0,24.0],\"size\":[200.0,24.0]},{\"basisX\":[1.0,0.0],\"basisY\":[0.0,1.0],\"focusMode\":0,\"id\":\"000000ac-1111-4111-8111-111111111111\",\"kind\":\"label\",\"mouseFilter\":2,\"origin\":[-192.0,16.0],\"position\":[-192.0,16.0],\"size\":[240.0,32.0],\"text\":\"[false]\"}],\"followsWorld\":false,\"hudId\":32380028390,\"label\":\"offline-HUD\",\"lastRevision\":3,\"layer\":1,\"revision\":3,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"health\":50,\"score\":0,\"truth\":false},\"viewport\":[64.0,64.0],\"visit\":1,\"worldOrigin\":[0.0,0.0]}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":1,\"physicsFrame\":5},\"frame\":{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"elapsedSeconds\":0.0,\"event\":\"scene-exit\",\"protocol\":4,\"reason\":\"finished\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"index\":7,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":1,\"physicsFrame\":5},\"frame\":{\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"event\":\"finished\",\"eventSequence\":0,\"protocol\":4,\"stateRevision\":3,\"totalSeconds\":0.0,\"visitCount\":1},\"index\":8,\"protocol\":1}\nVIENTO_EXECUTION_CLOCK:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"event\":\"sample\",\"index\":1,\"protocol\":1,\"reason\":\"finished\",\"total\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3},\"used\":{\"animationRequests\":0,\"audioRequests\":0,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":3}}\n",
+  "nativeStderr": ""
+}

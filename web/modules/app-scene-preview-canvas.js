@@ -4,8 +4,9 @@ import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import './app-studio-core.js';
 // Engine-neutral Scene2D layout. Gestures never mutate the supplied scene.
 import { moveSceneSelection } from '../../engine/scene-layout.mjs';
+import { SCENE_WORKSPACE_MIN_SCALE, SCENE_WORKSPACE_MAX_SCALE, fitSceneWorldView, focusSceneWorkspaceView, sceneWorldGrid } from '../../engine/scene-workspace-view.mjs';
 
-const MIN_SCALE = 0.02, MAX_SCALE = 16;
+const MIN_SCALE = SCENE_WORKSPACE_MIN_SCALE, MAX_SCALE = SCENE_WORKSPACE_MAX_SCALE;
 const clampScale = value => Math.max(MIN_SCALE, Math.min(MAX_SCALE, value));
 // Compatibility entry point; all authored position rules live in Rust.
 export function moveScenePosition(position, delta, snap = 0) {
@@ -22,7 +23,6 @@ export function zoomSceneView(view, factor, x, y) {
   return { scale, offsetX: x - point[0] * scale, offsetY: y - point[1] * scale };
 }
 export function hitTestScene(scene, actors, x, y) {
-  if (x < 0 || y < 0 || x > scene.viewport[0] || y > scene.viewport[1]) return null;
   for (let index = actors.length - 1; index >= 0; index--) {
     const actor = actors[index];
     if (Math.abs(x - actor.position[0]) <= actor.size[0] / 2 && Math.abs(y - actor.position[1]) <= actor.size[1] / 2) return sceneActorIdentity(actor);
@@ -40,7 +40,7 @@ export function tintPixels(pixels, color) {
 export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewChange = () => {}, onMove = () => {}, onMoveMany = () => {} }) {
   const context = canvas.getContext?.('2d');
   let model = null, images = new Map(), selected = null, visible = false, grid = false, view = { scale: 1, offsetX: 0, offsetY: 0 };
-  let width = 0, height = 0, fitted = true, drag = null, disposed = false, lastSceneKey = '';
+  let width = 0, height = 0, fitMode = 'viewport', drag = null, disposed = false, lastSceneKey = '';
   let editing = false, snap = 0, space = false, multiSelect = false, selectedIds = [], movableIds = null;
   const movable = id => movableIds === null || movableIds.has(id);
   const tiles = new Map(), listeners = [];
@@ -108,14 +108,21 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     if (!model) return;
     const { scene, actors } = model, [sceneWidth, sceneHeight] = scene.viewport;
     context.translate(view.offsetX, view.offsetY); context.scale(view.scale, view.scale);
-    context.save(); context.beginPath(); context.rect(0, 0, sceneWidth, sceneHeight); context.clip();
+    // The output viewport is a reference frame inside the author world.
+    // Canvas itself provides the drawing clip; actor geometry is not clipped
+    // to the initial runtime view.
+    context.save();
     context.clearRect(0, 0, sceneWidth, sceneHeight);
     context.fillStyle = scene.background; context.fillRect(0, 0, sceneWidth, sceneHeight);
     if (grid) {
-      context.beginPath();
-      for (let x = 0; x <= sceneWidth; x += 32) { context.moveTo(x, 0); context.lineTo(x, sceneHeight); }
-      for (let y = 0; y <= sceneHeight; y += 32) { context.moveTo(0, y); context.lineTo(sceneWidth, y); }
-      context.strokeStyle = '#8ca49966'; context.lineWidth = 1 / view.scale; context.stroke();
+      const lattice = sceneWorldGrid(view, width, height);
+      if (lattice) {
+        const { left, top, right, bottom } = lattice.bounds;
+        context.beginPath();
+        for (const x of lattice.xs) { context.moveTo(x, top); context.lineTo(x, bottom); }
+        for (const y of lattice.ys) { context.moveTo(left, y); context.lineTo(right, y); }
+        context.strokeStyle = '#8ca49966'; context.lineWidth = 1 / view.scale; context.stroke();
+      }
     }
     for (const actor of actors) {
       const [logicalX, logicalY] = positionOf(actor), [w, h] = actor.size;
@@ -164,12 +171,31 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     const bounds = canvas.getBoundingClientRect?.(); if (!bounds || !bounds.width || !bounds.height) return;
     if (width && height && (width !== bounds.width || height !== bounds.height)) cancelDrag();
     const oldWidth = width, oldHeight = height; width = bounds.width; height = bounds.height;
-    if (model && fitted) view = fitSceneView(model.scene.viewport, width, height);
-    else if (oldWidth && oldHeight) view = { ...view, offsetX: view.offsetX + (width - oldWidth) / 2, offsetY: view.offsetY + (height - oldHeight) / 2 };
+    const dimensionsChanged = oldWidth !== width || oldHeight !== height;
+    if (model && fitMode === 'viewport') view = fitSceneView(model.scene.viewport, width, height);
+    else {
+      let reframed = null;
+      if (model && dimensionsChanged && fitMode === 'all') reframed = fitSceneWorldView(model.scene.viewport, geometry(), width, height);
+      if (model && dimensionsChanged && fitMode === 'selection') reframed = focusSceneWorkspaceView(geometry(true), width, height);
+      if (reframed) view = { ...reframed };
+      else if (oldWidth && oldHeight) view = { ...view, offsetX: view.offsetX + (width - oldWidth) / 2, offsetY: view.offsetY + (height - oldHeight) / 2 };
+    }
     notify(); draw();
   }
-  function fit() { cancelDrag(); fitted = true; resize(); }
-  function zoom(factor, x = width / 2, y = height / 2) { if (!model) return; cancelDrag(); fitted = false; view = zoomSceneView(view, factor, x, y); notify(); draw(); }
+  const geometry = (onlySelected = false) => model.actors.filter(actor => !onlySelected || selectedIds.includes(sceneActorIdentity(actor)))
+    .map(actor => ({ position: actor.position, size: actor.size }));
+  function frame(mode) {
+    if (!model || !visible || disposed || !width || !height || !context || mode === 'selection' && !selectedIds.length) return false;
+    // Framing cancels a pending layout gesture before taking geometry. It must
+    // never use or commit a transient drag position as the author baseline.
+    cancelDrag();
+    const next = mode === 'all' ? fitSceneWorldView(model.scene.viewport, geometry(), width, height)
+      : focusSceneWorkspaceView(geometry(true), width, height);
+    if (!next) return false;
+    fitMode = mode; view = { ...next }; notify(); draw(); return true;
+  }
+  function fit() { cancelDrag(); fitMode = 'viewport'; resize(); }
+  function zoom(factor, x = width / 2, y = height / 2) { if (!model) return; cancelDrag(); fitMode = null; view = zoomSceneView(view, factor, x, y); notify(); draw(); }
   const point = event => { const bounds = canvas.getBoundingClientRect(); return [event.clientX - bounds.left, event.clientY - bounds.top]; };
   const listen = (name, callback, options) => { canvas.addEventListener(name, callback, options); listeners.push([name, callback, options]); };
   listen('wheel', event => { if (!model || !visible) return; event.preventDefault(); zoom(Math.exp(-Math.max(-100, Math.min(100, event.deltaY)) * 0.01), ...point(event)); }, { passive: false });
@@ -198,7 +224,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
         const changes = moveSceneSelection(model.actors, drag.ids, [(x - drag.x) / view.scale, (y - drag.y) / view.scale], snap);
         drag.positions = new Map(changes.map(change => [change.objectId, change.position]));
       } else if (drag.kind === 'pan') {
-        fitted = false; view.offsetX += x - (wasMoved ? drag.lastX : drag.x); view.offsetY += y - (wasMoved ? drag.lastY : drag.y); notify();
+        fitMode = null; view.offsetX += x - (wasMoved ? drag.lastX : drag.x); view.offsetY += y - (wasMoved ? drag.lastY : drag.y); notify();
       }
       draw();
     }
@@ -240,7 +266,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
         commit(changes, ids);
         draw(); return;
       }
-      fitted = false; view.offsetX += event.key === 'ArrowLeft' ? 32 : event.key === 'ArrowRight' ? -32 : 0;
+      fitMode = null; view.offsetX += event.key === 'ArrowLeft' ? 32 : event.key === 'ArrowRight' ? -32 : 0;
       view.offsetY += event.key === 'ArrowUp' ? 32 : event.key === 'ArrowDown' ? -32 : 0; notify(); draw();
     }
   });
@@ -251,7 +277,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       if (model === value) { draw(); return; }
       cancelDrag();
       const key = value ? JSON.stringify([value.scene.objectId, value.scene.viewport]) : lastSceneKey;
-      if (key !== lastSceneKey) fitted = true;
+      if (key !== lastSceneKey) fitMode = 'viewport';
       lastSceneKey = key; model = value; visualFrames = null;
       selection(selectedIds);
       clearTiles(); resize(); draw();
@@ -285,6 +311,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     setSnap(value) { const next = Number.isSafeInteger(value) && value > 0 && value <= 100000 ? value : 0; if (snap !== next) cancelDrag(); snap = next; },
     setGrid(value) { grid = value; draw(); }, select(id) { selection(id ? [id] : []); draw(); },
     selectMany(ids) { selection(Array.isArray(ids) ? ids : []); draw(); }, fit, zoom,
+    fitAll() { return frame('all'); }, focusSelection() { return frame('selection'); },
     getView() { return { ...view }; },
     destroy() { disposed = true; cancelDrag(); observer?.disconnect(); listeners.forEach(args => canvas.removeEventListener(...args)); clearTiles(); visualFrames = null; images = new Map(); model = null; canvas.width = 0; canvas.height = 0; },
   };

@@ -1,3 +1,5 @@
+import { GODOT_ACTION_SCENE_RETRY_SCRIPT } from './godot-scene-retry-script.mjs';
+import { GODOT_ACTION_SCENE_SWITCH_SCRIPT, GODOT_EVENT_SCENE_SWITCH_SCRIPT } from './godot-scene-navigation-scripts.mjs';
 import { GODOT_PLANAR_INTENT_SCRIPT } from './godot-planar-intent-script.mjs';
 import { GODOT_CHARACTER_INTENT_SCRIPT } from './godot-character-intent-script.mjs';
 import { GODOT_PLATFORM_CONTROL_SCRIPT } from './godot-platform-control-script.mjs';
@@ -49,6 +51,12 @@ const starters = freeze([
   { id: 'godot-scene-switch', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 场景切换',
     description: '在组装运行中请求切换到 target_scene_id 指定的成员场景；请在行为参数中填写目标场景标识。单场景运行时不切换。',
     content: "extends Node\n\n@export var target_scene_id: String = \"\"\n\nfunc _ready() -> void:\n\tif target_scene_id.is_empty() or not has_meta(\"viento_project\"):\n\t\treturn\n\tget_meta(\"viento_project\").request_scene(target_scene_id)\n" },
+  { id: 'godot-action-scene-switch', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 按动作切换场景',
+    description: '等待 action_name（默认 ui_accept）的新按下，再请求进入 target_scene_id 指定的其他组装成员。进入时按住不会触发，需释放后重按；已被界面处理的输入不触发，受理后本次场景访问不重复。只创建普通脚本，不创建输入映射。', content: GODOT_ACTION_SCENE_SWITCH_SCRIPT },
+  { id: 'godot-event-scene-switch', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 按事件切换场景',
+    description: '订阅 event_name（默认 game.complete），收到后请求进入 target_scene_id 指定的其他组装成员。payload_filter 留空接受全部载荷，填写时只响应相同字符串；就绪时不切换，受理后本次访问不重复，离场取消订阅。', content: GODOT_EVENT_SCENE_SWITCH_SCRIPT },
+  { id: 'godot-action-scene-retry', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 按动作重试关卡',
+    description: '等待 action_name 的新按下，重新进入 target_scene_id 指定的其他组装成员；state_values_json 为显式初始值 JSON 对象，最多16个标量键、4096 UTF-8字节。只复位列出的键，保留其他进度；请求受理后在切换前一次应用，拒绝不改状态。需释放重按，不支持原地重启。', content: GODOT_ACTION_SCENE_RETRY_SCRIPT },
   { id: 'godot-project-state', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 共享状态',
     description: '在当前项目运行中累加 visit_count；状态跨场景保留，重新运行后清空。单场景运行时不写入。',
     content: "extends Node\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tvar previous = project.read_state(\"visit_count\")\n\tvar count := 0.0\n\tif previous is int or previous is float:\n\t\tcount = float(previous)\n\tproject.write_state(\"visit_count\", count + 1)\n" },

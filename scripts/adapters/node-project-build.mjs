@@ -279,7 +279,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     if (physicsReplaySceneId !== undefined && (plan.kind !== 'project' || plan.entrySceneId !== physicsReplaySceneId)) {
       throw buildError('runtime_physics_replay_scene_mismatch', 'The physics replay belongs to a different frozen entry scene.');
     }
-    if (physicsControlProgram) validateProjectPhysics2DReplayPlan(plan, { backendId: adapter.descriptor.id, capabilities: adapter.descriptor.capabilities });
+    if (physicsControlProgram) validateProjectPhysics2DReplayPlan(plan, { backendId: adapter.descriptor.id, capabilities: adapter.descriptor.capabilities, program: physicsControlProgram });
     if (physicsReplayCase) physicsReplayCase = validateProjectPhysics2DReplayCase(physicsReplayCase, plan);
     if (controlProgram && (!adapter.descriptor.capabilities.includes('runtime.control-replay')
       || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances'))) {

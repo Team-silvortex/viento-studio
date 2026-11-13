@@ -8,6 +8,7 @@ import { buildError, readBuildFile } from '../adapters/node-build-snapshot.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { runBuildProcess } from '../lib/build-process.mjs';
 import { godotPhysicsPlanarIntentAssemblyScripts } from './godot4-physics-planar-intent.mjs';
+import { validateGodotPhysicsReplayTargets, projectGodotPhysicsInstanceReplay } from './godot4-physics-instance-input-replay-projection.mjs';
 
 const unsupported = () => { throw buildError('runtime_physics2d_input_unsupported', 'Physics input replay requires a single physics scene with no behaviors, animation, or audio.'); };
 const optional = async file => fs.access(file).then(() => true, error => { if (error.code === 'ENOENT') return false; throw error; });
@@ -35,6 +36,39 @@ export async function executeGodotPhysicsInputReplay({ directory, tool, signal, 
   const entry = (await read('project.tscn', 8192)).toString();
   const matches = [...entry.matchAll(/path="res:\/\/(project-physics(?:-observation)?-runtime\.gd)"/g)];
   if (matches.length !== 1 || !scripts.includes(matches[0][1])) unsupported();
+  if (program.schemaVersion === 2) {
+    const [scene, declaration] = await Promise.all([read(`${prefix}/scene.json`), read(`${prefix}/physics.json`, 131072)]);
+    try { validateGodotPhysicsReplayTargets(JSON.parse(scene), JSON.parse(declaration), program); }
+    catch (error) { throw buildError(error.errorCode || 'runtime_physics2d_input_projection_invalid', error.message); }
+    const basename = `viento-physics-replay-${randomUUID()}`;
+    let projection;
+    try { projection = await projectGodotPhysicsInstanceReplay({ sceneId: row.sceneId,
+      main: (await read(`${prefix}/main.tscn`, 65536)).toString(), scripts, read, prefix: basename }); }
+    catch (error) {
+      if (signal?.aborted || error.name === 'AbortError') throw error;
+      throw buildError(error.errorCode || 'runtime_physics2d_input_projection_invalid', 'Unsupported generated physics input inheritance.');
+    }
+    const [sceneSource, driverSource] = await Promise.all(['scene', 'driver'].map(name => fs.readFile(new URL(`./godot4/physics-instance-input-replay-${name}.gd`, import.meta.url), 'utf8')));
+    const sceneScript = `${basename}/scene.gd`, sceneFile = `${basename}/scene.tscn`, driverScript = `${basename}/driver.gd`, driverFile = `${basename}/driver.tscn`;
+    const tscn = (name, script) => `[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://${script}" id="1"]\n\n[node name="${name}" type="Node2D"]\nscript = ExtResource("1")\n`;
+    const files = [...projection.files, [sceneScript, sceneSource.replace('__SCENE_SCRIPT__', projection.entry)],
+      [sceneFile, tscn('VientoScene', sceneScript)],
+      [driverScript, driverSource.replace('__HOST_SCRIPT__', matches[0][1]).replace('__PROGRAM_JSON__', JSON.stringify(program)).replace('__REPLAY_SCENE__', sceneFile)],
+      [driverFile, tscn('VientoProject', driverScript)]];
+    const owned = path.join(directory, basename);
+    signal?.throwIfAborted();
+    await fs.mkdir(owned, { mode: 0o700 });
+    try {
+      for (const [name, contents] of files) {
+        signal?.throwIfAborted();
+        await fs.writeFile(path.join(directory, name), contents, { flag: 'wx', mode: 0o600 });
+      }
+      return await runBuildProcess(tool.executable, ['--path', directory, '--headless', `res://${driverFile}`, '--', '--viento-smoke'], options);
+    } finally {
+      // Includes Godot-created .gd.uid companions; no original file is removed.
+      await fs.rm(owned, { recursive: true, force: true });
+    }
+  }
   const driver = (await fs.readFile(new URL('./godot4/physics-input-replay-driver.gd', import.meta.url), 'utf8'))
     .replace('__HOST_SCRIPT__', matches[0][1]).replace('__PROGRAM_JSON__', JSON.stringify(program));
   const basename = `viento-physics-replay-${randomUUID()}`, script = `${basename}.gd`, scene = `${basename}.tscn`;

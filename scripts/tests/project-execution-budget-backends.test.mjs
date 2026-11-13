@@ -67,7 +67,7 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
     const manifest = JSON.parse(viaAdapter.files.get('platform-control-project.json'));
     assert.deepEqual(manifest, { format: 'viento-godot-platform-control-project', schemaVersion: 1,
       sceneIds: movingScenes.map(scene => scene.scene.objectId) });
-    assert.equal(viaAdapter.backend.version, '0.40.0');
+    assert.equal(viaAdapter.backend.version, '0.46.0');
   }
   // Current scheduling observation keeps the frozen finite-budget artifacts.
   for (const [name, bytes] of f.generated.files) {
@@ -98,7 +98,7 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
       continue;
     }
     const original = `execution-frames-original-${name}.txt`, requestOriginal = `animation-requests-original-${name}.txt`, audioOriginal = `audio-requests-original-${name}.txt`;
-    const preserved = name === 'project.godot' ? 'execution-clock-original.godot' : viaAdapter.files.has(original) ? original : viaAdapter.files.has(requestOriginal) ? requestOriginal : viaAdapter.files.has(audioOriginal) ? audioOriginal : name;
+    const preserved = name === 'project.godot' ? 'retry-original-clock.godot' : viaAdapter.files.has(original) ? original : viaAdapter.files.has(requestOriginal) ? requestOriginal : viaAdapter.files.has(audioOriginal) ? audioOriginal : name;
     assert.deepEqual(viaAdapter.files.get(preserved), bytes, name);
   }
   const directory = await stage(f), inventory = await godotExecutionBudgetAssemblyScripts(directory);

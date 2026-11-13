@@ -1,0 +1,49 @@
+✔ Godot descriptor and host contract are immutable, precise and independent of legacy build metadata (2.395516ms)
+✔ adapter preserves frozen v1/v2 file hashes, source owner maps and generator fingerprints (8.994642ms)
+✔ generation owns an admitted plan before asynchronous reads and never shares source objects with its caller (0.945785ms)
+✔ generation rejects unsupported plan headers and required capabilities without rewriting author inputs (1.407618ms)
+✔ availability remains a non-executing stat/access check and identification retains Godot version pinning (137.696288ms)
+✔ real spawned processes receive legacy Godot flags, literal arguments and isolated host paths (225.257991ms)
+✔ unsupported modes and invalid capture combinations are rejected before any process starts (2.2718ms)
+✔ phase execution delegates cancellation, deadlines and observer failures to the shared process owner (169.335967ms)
+✔ diagnostics and event readers retain v1/v2 source ownership and reject redirected runtime locations (1.787017ms)
+✔ cleanup removes only known generated caches and never follows their links into source data (2.7226ms)
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (45.875303ms)
+✔ instance input hook preserves the complete native movement body and replaces only exact input expressions (6.110008ms)
+✔ instance hooks reject duplicate, partially changed and newly generated input sites (1.07646ms)
+✔ backend eligibility uses stable physical instances, independent of shared object identities (0.883356ms)
+✔ bounded inheritance projection follows only admitted scripts and keeps all original resources in place (1.423789ms)
+✔ inheritance projection rejects script count, byte budget, cross-scene and unrecognized root changes (3.142179ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 727.466796
+
+✖ failing tests:
+
+test at scripts/tests/godot4-adapter.test.mjs:188:1
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (45.875303ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      contractVersion: 1,
+      id: 'org.viento.godot4',
+  +   sha256: 'b58e7716756b7b726cbdfda75bb8d9d123b233bcc53fa9353fff65eb2155a6f3'
+  -   sha256: '570fce42bc5bb7094c04c1395335c0ec776b52097cbfdada1b77518ad0668868'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/godot4-adapter.test.mjs:198:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { id: 'org.viento.godot4', contractVersion: 1, sha256: 'b58e7716756b7b726cbdfda75bb8d9d123b233bcc53fa9353fff65eb2155a6f3' },
+    expected: { id: 'org.viento.godot4', contractVersion: 1, sha256: '570fce42bc5bb7094c04c1395335c0ec776b52097cbfdada1b77518ad0668868' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

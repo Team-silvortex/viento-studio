@@ -34,10 +34,11 @@
 
 ## 发布记录
 
-当前源码版本为 `0.2.9`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
+当前源码版本为 `0.2.10`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
 
 | 原报告 | 主题 |
 | --- | --- |
+| [RELEASE_0.2.10.md](../RELEASE_0.2.10.md) | 二维世界工作平面、运行相机与边界、HUD、导航与重试、逐实例物理回放、参数选择辅助及俯视收集参考游戏；[发布检查](../test-results/release-0.2.10/README.md) |
 | [RELEASE_0.2.9.md](../RELEASE_0.2.9.md) | 多对象压力板、自由平面行为意图、物理验收样本定位与碰撞示意、ZIP 导入安全修复；[发布检查](../test-results/release-0.2.9/README.md) |
 | [RELEASE_0.2.8.md](../RELEASE_0.2.8.md) | Bevy 项目入口用例／有序验收组、Godot 垂直往返平台与事件控制启停；[发布检查](../test-results/release-0.2.8/README.md) |
 | [RELEASE_0.2.7.md](../RELEASE_0.2.7.md) | 逐角色运动意图、项目键盘映射、物理回放验收与 Bevy 项目入口回放；[发布检查](../test-results/release-0.2.7/README.md) |

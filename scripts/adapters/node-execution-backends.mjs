@@ -6,6 +6,9 @@ import { BEVY_EXECUTION_ADAPTER } from '../backends/bevy-adapter.mjs';
 import { BEVY_RUST_EXECUTION_ADAPTER } from '../backends/bevy-rust-adapter.mjs';
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { SCENE_PHYSICS2D_CAPABILITIES, scenePhysics2DCapabilities } from '../../engine/scene-physics2d.mjs';
+import { validateSceneHUD2DPlan, sceneHUD2DCapabilities } from '../../engine/scene-hud2d.mjs';
+import { validateSceneCamera2DPlan, sceneCamera2DCapabilities } from '../../engine/scene-camera2d.mjs';
+import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan-contract.mjs';
 import { buildTargetIdentity } from '../../engine/build-target.mjs';
 import { buildError } from './node-build-snapshot.mjs';
 import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
@@ -101,6 +104,31 @@ function relativePath(value) {
 // Validate and detach every output before creating a destination or trusting a
 // stored artifact inventory. Resource bindings are neutral UUID → file paths.
 export function validateGeneratedExecutionProject(adapter, plan, generated) {
+  const cameraScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene => Object.hasOwn(scene, 'camera2d'));
+  if (plan.kind === 'project' && Object.hasOwn(plan, 'camera2d')) invalid('Camera declarations belong to scene members.');
+  if (cameraScenes.length) {
+    try {
+      if (plan.kind === 'project') plan = validateProjectAssemblyPlan(plan);
+      for (const scene of cameraScenes) validateSceneCamera2DPlan(scene);
+    } catch { invalid('Invalid frozen camera declaration or capability union.'); }
+    const required = new Set(cameraScenes.flatMap(scene => sceneCamera2DCapabilities(scene.camera2d.document)));
+    for (const capability of required) if (!Array.isArray(adapter.descriptor.capabilities) || !adapter.descriptor.capabilities.includes(capability)
+      || !Array.isArray(generated?.backend?.capabilities) || !generated.backend.capabilities.includes(capability)
+      || !plan.requiredCapabilities.includes(capability)) invalid('Generated backend lacks a declared camera capability.');
+  }
+  const hudScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene => Object.hasOwn(scene, 'hud2d'));
+  if (plan.kind === 'project' && Object.hasOwn(plan, 'hud2d')) invalid('HUD declarations belong to scene members.');
+  if (hudScenes.length) {
+    try {
+      if (plan.kind === 'project') plan = validateProjectAssemblyPlan(plan);
+      for (const scene of hudScenes) validateSceneHUD2DPlan(scene);
+    } catch { invalid('Invalid frozen HUD declaration or capability union.'); }
+    const required = new Set(hudScenes.flatMap(scene => sceneHUD2DCapabilities(scene.hud2d.document)));
+    for (const capability of required) if (!Array.isArray(adapter.descriptor.capabilities) || !adapter.descriptor.capabilities.includes(capability)
+      || !Array.isArray(generated?.backend?.capabilities) || !generated.backend.capabilities.includes(capability)
+      || !plan.requiredCapabilities.includes(capability)) invalid('Generated backend lacks a declared HUD capability.');
+  }
+
   const selectedPlan = adapter.descriptor.plans.find(item => item.kind === plan.kind && item.schemaVersion === plan.schemaVersion);
   const physicsScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene => Object.hasOwn(scene, 'physics'));
   if (physicsScenes.length && (!Array.isArray(generated?.backend?.capabilities)

@@ -1,0 +1,86 @@
+✔ acceptance document clones and freezes complete input and checks (4.232312ms)
+✔ strict inspection rejects invalid, duplicate, oversized and accessor data without executing it (4.185641ms)
+✔ requires a valid registered scene dependency without mutating source (3.869527ms)
+✔ package classification keeps acceptance, legacy replay and runtime case independent (3.516451ms)
+✔ v2 acceptance retains independent input and checks for two instances of the same OC (1.716664ms)
+✔ v2 acceptance separately validates input targets even when its expected-check targets remain valid (1.201638ms)
+✔ physics replay document detaches, freezes and retains source identity without run results (3.199447ms)
+✔ physics replay document rejects extra state, invalid input, accessors and polluted identity (0.792762ms)
+✔ source inspection detects partial, escaped and duplicate keys without accepting examples (3.639905ms)
+✔ scene and definition dependencies must exist and be registered without mutating author data (2.405181ms)
+✔ resource inspectors preserve distinct case and physics replay format recognition (69.401219ms)
+✔ v2 replay documents preserve two independent instances of one OC and deep-freeze every input row (1.480649ms)
+✔ v2 replay dependency diagnostics name missing input instance paths without imposing runtime physics eligibility (1.224694ms)
+✖ HTTP and direct Node host reject v2 targets outside the frozen controlled physical directory before jobs or session directories (125.977759ms)
+✖ missing per-instance capability rejects v2 in HTTP and direct host while retaining legacy replay discovery (79.909643ms)
+✖ v2 host eligibility remains bound to the frozen instance directory after the author scene changes (75.898717ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 13
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 509.257104
+
+✖ failing tests:
+
+test at scripts/tests/project-physics2d-input-instances-host.test.mjs:78:1
+✖ HTTP and direct Node host reject v2 targets outside the frozen controlled physical directory before jobs or session directories (125.977759ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/0/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":557,"end":584,"encoding":"utf-16","propertyPath":"/actors/0/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/3/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":1708,"end":1736,"encoding":"utf-16","propertyPath":"/actors/3/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/4/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":2123,"end":2136,"encoding":"utf-16","propertyPath":"/actors/4/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/5/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":2521,"end":2542,"encoding":"utf-16","propertyPath":"/actors/5/name","exact":true}}]
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-input-instances-host.test.mjs:54:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-input-instances-host.test.mjs:79:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-physics2d-input-instances-host.test.mjs:106:1
+✖ missing per-instance capability rejects v2 in HTTP and direct host while retaining legacy replay discovery (79.909643ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/0/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":557,"end":584,"encoding":"utf-16","propertyPath":"/actors/0/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/3/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":1708,"end":1736,"encoding":"utf-16","propertyPath":"/actors/3/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/4/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":2123,"end":2136,"encoding":"utf-16","propertyPath":"/actors/4/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/5/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":2521,"end":2542,"encoding":"utf-16","propertyPath":"/actors/5/name","exact":true}}]
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-input-instances-host.test.mjs:54:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-input-instances-host.test.mjs:107:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-physics2d-input-instances-host.test.mjs:124:1
+✖ v2 host eligibility remains bound to the frozen instance directory after the author scene changes (75.898717ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/0/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":557,"end":584,"encoding":"utf-16","propertyPath":"/actors/0/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/3/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":1708,"end":1736,"encoding":"utf-16","propertyPath":"/actors/3/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/4/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":2123,"end":2136,"encoding":"utf-16","propertyPath":"/actors/4/name","exact":true}},{"severity":"error","code":"build_feature_unsupported","message":"Unsupported scene field: name","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/5/name","sourceRevision":"sha256:002342c462916800bac145b28a3f69abce2c04642d33f7305ea195e3ab36a86a","sourceRange":{"start":2521,"end":2542,"encoding":"utf-16","propertyPath":"/actors/5/name","exact":true}}]
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-input-instances-host.test.mjs:54:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-physics2d-input-instances-host.test.mjs:125:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

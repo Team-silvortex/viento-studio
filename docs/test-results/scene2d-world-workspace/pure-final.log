@@ -1,0 +1,20 @@
+✔ fit world includes negative and off-viewport actor geometry as well as the default viewport frame (2.21273ms)
+✔ selection focus frames only supplied actor bounds, including negative positions, without expanding to the viewport (0.219876ms)
+✔ empty world geometry retains the default viewport frame and small selections respect the maximum zoom (0.193776ms)
+✔ all legal extreme actor coordinates fit a narrow author workspace far below the former 2-percent zoom floor (0.390016ms)
+✔ view calculations neither mutate source geometry nor retain caller-owned containers (0.34069ms)
+✔ world and selection geometry admit only finite bounded explicit data and at most 128 actors (5.574728ms)
+✔ workspace data capture refuses getters, hidden fields, sparse arrays, symbols and foreign prototypes without executing code (0.724315ms)
+✔ visible-world grid covers negative coordinates and anchors exact zero without clipping to a runtime viewport (0.363825ms)
+✔ grid coarsens as zoom decreases but never becomes finer than the independent 32-unit snap base (0.488036ms)
+✔ grid maintains a bounded budget at minimum zoom, maximum pixel sizes and far negative or positive pans (4.677659ms)
+✔ invalid, overflowing or precision-collapsed grid transforms are rejected rather than producing unbounded or invented lines (0.396359ms)
+✔ same source runs in a browser-style realm without Node imports or prototype coercion (6.026875ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64.132215

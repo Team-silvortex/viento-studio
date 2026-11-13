@@ -1,0 +1,149 @@
+{
+  "startedAt": "2026-11-13T00:46:01.583Z",
+  "steps": [
+    "An unsaved edit blocks opening script creation; restoring the exact editor contents restores the entry without writing author files.",
+    "The action retry starter option shows exact ordinary GDScript source in Chinese, English and Japanese at 390px. Mode, path, focus, source and reachable Create/Cancel controls persist; cancelling writes nothing.",
+    "Create opens an ordinary unsaved TXT draft; Save adds exactly its source and registration while preserving all existing author files.",
+    "Manage existing behavior explicitly registers one script reference. The ordinary behavior editor adds one instance binding and all explicit String parameters, retains every existing binding, and preserves focus/review in three languages. Cancel discards the first binding review. Apply changes only a draft; Save changes only the behavior JSON.",
+    "Reopening the saved behavior restores the same instance UUID, script identity and all parameter values. An unchanged review grants no Apply ticket and closing writes nothing.",
+    "Reopening restores the instance UUID and all literal String parameters. Unchanged review cannot apply. No other author script, scene, HUD or input-map declaration changes."
+  ],
+  "screenshots": [
+    "navigation-starter-desktop.png",
+    "navigation-starter-zh-CN-390.png",
+    "navigation-starter-en-390.png",
+    "navigation-starter-ja-390.png",
+    "navigation-binding-zh-CN-390.png",
+    "navigation-binding-en-390.png",
+    "navigation-binding-ja-390.png"
+  ],
+  "jobs": [],
+  "errors": [],
+  "dialogs": [
+    "今回のスクリプト作成設定を破棄しますか？エディターの内容は変更されません。",
+    "丢弃本次脚本选择与审阅？已保存的引用会保留。",
+    "丢弃本次行为表单修改？原文草稿不会改变。"
+  ],
+  "layout": {
+    "script-zh-CN": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / 按动作重试关卡",
+      "description": "等待 action_name 的新按下，重新进入 target_scene_id 指定的其他组装成员；state_values_json 为显式初始值 JSON 对象，最多16个标量键、4096 UTF-8字节。只复位列出的键，保留其他进度；请求受理后在切换前一次应用，拒绝不改状态。需释放重按，不支持原地重启。"
+    },
+    "script-en": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / Retry level on action",
+      "description": "Waits for a new press of action_name, then re-enters another assembly member named by target_scene_id. state_values_json is an explicit JSON object with at most 16 scalar keys and 4096 UTF-8 bytes. Resets only the listed keys and preserves other progress. Accepted defaults apply together before switching; refusal changes no state. Release and press again to retry. Does not restart the current scene."
+    },
+    "script-ja": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / アクションでレベルを再試行",
+      "description": "action_name の新しい押下で、target_scene_id が示す別の組み立てメンバーへ再入場します。state_values_json は初期値の JSON オブジェクトで、スカラー値のキー16個、UTF-8で4096バイトまでです。指定したキーのみ初期化し、他の進捗は保持します。受理後に切り替え前の値を一括適用し、拒否時は変更しません。再試行には離してから押し直してください。同じシーンの直接再起動には対応しません。"
+    },
+    "binding-zh-CN": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-en": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-ja": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    }
+  },
+  "limitations": [
+    "Real Chrome with HTTP editor and disposable author files. This smoke verifies authoring only; it does not execute the retry script or simulate actual input.",
+    "No installed Tauri, Android, Bevy, native game execution, or generated project delivery is claimed. The three-scene project, HUDs and saved input map are pre-populated fixture data; authoring and saving the added scripts and behavior parameters are the tested scope."
+  ],
+  "sources": {
+    "engine/godot-scene-navigation-scripts.mjs": "285a48cc1f27744ea4a58be378397ccde11610e1b02ce8273284d99aa120b511",
+    "engine/script-authoring.mjs": "1cdf2d3ce1fc18db86a9c3918e512a4c9fe9f0d7c98736a9ef3bd8849372e7e7",
+    "engine/project-scene-retry-diagnostics.mjs": "1dcf119b22abccc6a2fe73375c7071c99feca9e3f1fcfea7d3a2c7b0805868d7",
+    "engine/godot-scene-retry-script.mjs": "58a7c101915f646e6ea1a3c9d81ffbc68d9f2beccfc150b209b4cc1ebbbd79c4",
+    "engine/project-assembly-plan.mjs": "aa53a3df11642a51ef07913c475c33f02984d4de777fdaa3890cd5c61db53fee",
+    "scripts/adapters/node-project-build.mjs": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+    "scripts/lib/project-build-service.mjs": "40cfad236257a1bff515d2bbca3caf481206ff7201e1cce5692f33ea35075efa",
+    "web/modules/app-project-build.js": "44e737985347201ac4a9dfee62fa8aba19bb78c944e9d4e5fde3164385e6a082",
+    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+    "web/modules/app-scene-behaviors.js": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+    "web/scene-behaviors.css": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+    "web/i18n/en.js": "d355dfd64d3deb2a8cbe6f9c134f39340cc0bc26f02e6dcf9a5fb6e857549ddd",
+    "web/i18n/ja.js": "97f4bed2345c6766b2c8410e86c85f85402a7849da624db3634995cf0c689d37",
+    "scripts/tests/scene-retry-authoring-smoke.mjs": "4886023c276434ba2e077ecf4fafab7215d2a4c361b6e09e2c3db26b0728b7df",
+    "scripts/tests/helpers/godot-scene-navigation-author-fixture.mjs": "e364e8cb3b69453c1ebd4d30a1c71b29cb719c213798094b679d39232a972e01"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "sceneIds": [
+      "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "12345678-1234-4234-8234-123456789abd",
+      "00000385-1111-4111-8111-111111111111"
+    ],
+    "hudIds": [
+      "00000398-1111-4111-8111-111111111111",
+      "00000399-1111-4111-8111-111111111111",
+      "0000039a-1111-4111-8111-111111111111"
+    ],
+    "inputMapId": "0000038b-1111-4111-8111-111111111111",
+    "manifestPath": "documents/behaviors/demo.json",
+    "parameters": {
+      "action_name": "menu_start",
+      "target_scene_id": "12345678-1234-4234-8234-123456789abd",
+      "state_values_json": "{\"level\":1,\"score\":0,\"health\":100,\"key_found\":false}"
+    },
+    "prepopulated": true,
+    "targetScene": "12345678-1234-4234-8234-123456789abd"
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "scenario": "retry",
+  "script": {
+    "objectId": "41f1b611-88b2-4a0c-bd53-033ce4c8ece0",
+    "starterId": "godot-action-scene-retry",
+    "sha256": "dc386e9486dc2d9d7d9eca79c4f83202e881cb8421e8ccee3392d2c9c6a5bf7b"
+  },
+  "binding": {
+    "bindingId": "08863d5a-8353-451b-b743-120dc2bdd150",
+    "sourceId": "41f1b611-88b2-4a0c-bd53-033ce4c8ece0",
+    "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+    "parameters": {
+      "action_name": "menu_start",
+      "target_scene_id": "12345678-1234-4234-8234-123456789abd",
+      "state_values_json": "{\"level\":1,\"score\":0,\"health\":100,\"key_found\":false}"
+    }
+  },
+  "authorSnapshot": {
+    "beforeCount": 45,
+    "afterCount": 47,
+    "unchangedExisting": 43,
+    "changedExisting": 2,
+    "addedCount": 2
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-13T00:46:08.267Z"
+}

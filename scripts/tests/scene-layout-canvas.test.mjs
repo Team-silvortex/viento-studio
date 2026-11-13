@@ -166,11 +166,11 @@ test('arrow nudges do not emit no-op history at the coordinate boundary', () => 
   h.dispatch('keydown', { key: 'ArrowLeft', shiftKey: true }); assert.deepEqual(h.moves[0].position, [99990, -100000]);
 });
 
-test('editing uses reverse draw order and refuses to grab actor pixels outside the scene viewport', () => {
+test('editing uses reverse draw order and grabs actor pixels outside the runtime viewport', () => {
   const original = fixture({ position: [5, 10] }), overlapping = { ...original, actors: [...original.actors, { ...original.actors[0], objectId: 'top' }] };
   const h = harness(overlapping); h.controller.setEditing(true); h.dispatch('pointerdown'); h.dispatch('pointerup'); assert.deepEqual(h.selected, ['top']);
   const [x, y] = h.screen([-1, 10]); h.dispatch('pointerdown', { clientX: x, clientY: y }); h.dispatch('pointermove', { clientX: x + 12, clientY: y }); h.dispatch('pointerup');
-  assert.equal(h.moves.length, 0); assert.deepEqual(h.selected, ['top']);
+  assert.equal(h.moves.length, 1); assert.deepEqual(h.moves[0], { id: 'top', position: [17, 10], options: { commit: true } }); assert.deepEqual(h.selected, ['top', 'top']);
 });
 
 test('missing textures retain their placeholder while the actor is dragged', () => {

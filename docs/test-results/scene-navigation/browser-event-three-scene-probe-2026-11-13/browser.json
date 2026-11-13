@@ -1,0 +1,147 @@
+{
+  "startedAt": "2026-11-13T00:01:15.122Z",
+  "steps": [
+    "An unsaved edit blocks opening script creation; restoring the exact editor contents restores the entry without writing author files.",
+    "The action and event navigation starter options show exact ordinary GDScript source in Chinese, English and Japanese at 390px. Mode, path, focus, source and reachable Create/Cancel controls persist; cancelling writes nothing.",
+    "Create opens an ordinary unsaved TXT draft; Save adds exactly its source and registration while preserving all existing author files.",
+    "Manage existing behavior explicitly registers one script reference. The ordinary behavior editor adds one instance binding and all explicit String parameters, retains every existing binding, and preserves focus/review in three languages. Cancel discards the first binding review. Apply changes only a draft; Save changes only the behavior JSON.",
+    "Reopening the saved behavior restores the same instance UUID, script identity and all parameter values. An unchanged review grants no Apply ticket and closing writes nothing.",
+    "Reopening restores the instance UUID and all literal String parameters. Unchanged review cannot apply. No other author script, scene, HUD or input-map declaration changes."
+  ],
+  "screenshots": [
+    "navigation-starter-desktop.png",
+    "navigation-starter-zh-CN-390.png",
+    "navigation-starter-en-390.png",
+    "navigation-starter-ja-390.png",
+    "navigation-binding-zh-CN-390.png",
+    "navigation-binding-en-390.png",
+    "navigation-binding-ja-390.png"
+  ],
+  "jobs": [],
+  "errors": [],
+  "dialogs": [
+    "今回のスクリプト作成設定を破棄しますか？エディターの内容は変更されません。",
+    "丢弃本次脚本选择与审阅？已保存的引用会保留。",
+    "丢弃本次行为表单修改？原文草稿不会改变。"
+  ],
+  "layout": {
+    "script-zh-CN": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / 按事件切换场景",
+      "description": "订阅 event_name（默认 game.complete），收到后请求进入 target_scene_id 指定的其他组装成员。payload_filter 留空接受全部载荷，填写时只响应相同字符串；就绪时不切换，受理后本次访问不重复，离场取消订阅。"
+    },
+    "script-en": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / Switch scene on event",
+      "description": "Subscribes to event_name (game.complete by default) and requests another assembly member named by target_scene_id. An empty payload_filter accepts all payloads; otherwise only an identical string matches. Does not switch on ready, repeats no accepted request during this visit, and unsubscribes on exit."
+    },
+    "script-ja": {
+      "noOverflow": true,
+      "close": true,
+      "create": true,
+      "cancel": true,
+      "label": "Godot / イベントでシーン切り替え",
+      "description": "event_name（既定は game.complete）を購読し、受信時に target_scene_id で指定した構成内の別シーンへの移動を要求します。payload_filter が空なら全ペイロードを受け付け、指定時は同じ文字列だけが対象です。準備完了時には移動せず、受理後は同じ訪問で繰り返さず、退出時に購読を解除します。"
+    },
+    "binding-zh-CN": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-en": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    },
+    "binding-ja": {
+      "noOverflow": true,
+      "parameter": true,
+      "apply": true,
+      "cancel": true
+    }
+  },
+  "limitations": [
+    "Real Chrome with HTTP editor and disposable author files. This smoke verifies authoring only; it does not execute the navigation script or simulate actual input.",
+    "No installed Tauri, Android, Bevy, native game execution, or generated project delivery is claimed. The three-scene project, HUDs and saved input map are pre-populated fixture data; authoring and saving the added scripts and behavior parameters are the tested scope."
+  ],
+  "sources": {
+    "engine/godot-scene-navigation-scripts.mjs": "285a48cc1f27744ea4a58be378397ccde11610e1b02ce8273284d99aa120b511",
+    "engine/script-authoring.mjs": "48f40ad30a2187ca9e5aaf717d651824bbe69bc71260f34f83b07f8732af7fdc",
+    "engine/project-scene-navigation-diagnostics.mjs": "4b7d74dec4ba3248c9f56618f6ef24db043b5f5b23a1e2a2379643307819ea08",
+    "scripts/adapters/node-project-build.mjs": "4e214058ab7ae977d5ceab651595c429897a337c25284a2cc65c356164c20fb4",
+    "scripts/lib/project-build-service.mjs": "40cfad236257a1bff515d2bbca3caf481206ff7201e1cce5692f33ea35075efa",
+    "web/modules/app-project-build.js": "746c1e82ef3b8e5a7dfbd4c7aa011f56ecfa03453a311e2f508261b8bf9a762e",
+    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+    "web/modules/app-scene-behaviors.js": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+    "web/scene-behaviors.css": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+    "web/i18n/en.js": "86c5c51a3ee882b54516fbf6ffd58664c048bc0cf9696da4b5d3aa6a85c37ef0",
+    "web/i18n/ja.js": "2bda1bf0cf5acf118f9374ff49ebe1106999bf4ddedf00fff0d8bdf4f6f88be6",
+    "scripts/tests/scene-navigation-authoring-smoke.mjs": "f69950b589c5dffb731039c9e410773f42532e4eb4acd1c90be04b89182ef0af",
+    "scripts/tests/helpers/godot-scene-navigation-author-fixture.mjs": "e364e8cb3b69453c1ebd4d30a1c71b29cb719c213798094b679d39232a972e01"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "sceneIds": [
+      "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "12345678-1234-4234-8234-123456789abd",
+      "00000385-1111-4111-8111-111111111111"
+    ],
+    "hudIds": [
+      "00000398-1111-4111-8111-111111111111",
+      "00000399-1111-4111-8111-111111111111",
+      "0000039a-1111-4111-8111-111111111111"
+    ],
+    "inputMapId": "0000038b-1111-4111-8111-111111111111",
+    "manifestPath": "documents/behaviors/demo.json",
+    "parameters": {
+      "event_name": "game.complete",
+      "target_scene_id": "00000385-1111-4111-8111-111111111111",
+      "payload_filter": "victory"
+    },
+    "prepopulated": true,
+    "targetScene": "00000385-1111-4111-8111-111111111111"
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "scenario": "event",
+  "script": {
+    "objectId": "28c7c136-e000-42d8-bc14-59c96edbc689",
+    "starterId": "godot-event-scene-switch",
+    "sha256": "82d23dd96321025c52f0934245fc689944fd84417dce16923e50007cf5a637be"
+  },
+  "binding": {
+    "bindingId": "cfad6e93-cc32-4061-a5ae-29433411a292",
+    "sourceId": "28c7c136-e000-42d8-bc14-59c96edbc689",
+    "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+    "parameters": {
+      "event_name": "game.complete",
+      "target_scene_id": "00000385-1111-4111-8111-111111111111",
+      "payload_filter": "victory"
+    }
+  },
+  "authorSnapshot": {
+    "beforeCount": 45,
+    "afterCount": 47,
+    "unchangedExisting": 43,
+    "changedExisting": 2,
+    "addedCount": 2
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-13T00:01:21.790Z"
+}

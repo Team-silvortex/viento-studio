@@ -1,9 +1,12 @@
+import { setupPhysicsReplayTargets } from './app-physics-replay-targets.js';
 import { setupProjectPhysicsObservation } from './app-project-physics-observation.js';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
 import { validateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
-import { PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS, setProjectPhysics2DInputReplayRange } from '../../engine/project-physics2d-input-replay-edit.mjs';
+import { PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS, setProjectPhysics2DInputReplayRange, convertProjectPhysics2DInputReplayToInstances } from '../../engine/project-physics2d-input-replay-edit.mjs';
 import { setupScenePhysics2DCreate } from './app-scene-physics2d-create.js';
+import { setupSceneHUD2D } from './app-scene-hud2d.js';
+import { setupSceneCamera2D } from './app-scene-camera2d.js';
 import { setupProjectAnimationTargetReview } from './app-project-animation-target-review.js';
 import { setupProjectAnimationStateEntryObservation } from './app-project-animation-state-entry-observation.js';
 import { setupProjectAnimationStateObservation } from './app-project-animation-state-observation.js';
@@ -47,15 +50,36 @@ import { setupRuntimeCaseReport } from './app-runtime-case-report.js';
 import { setupBackendProjectDelivery } from './app-backend-project-delivery.js';
 import { setupBackendProject } from './app-backend-project.js';
 const errorLabels = {
+  build_scene_retry_target_invalid: '关卡重试目标无效。请选择组装中的其他成员场景，并填写完整的小写 UUID。',
+  build_scene_retry_parameter_invalid: '关卡重试动作无效。请填写已注册的非空动作名称。',
+  build_scene_retry_values_invalid: '关卡重试初始值无效。请输入最多16个标量键、4096 UTF-8字节的严格 JSON 对象。',
+  build_scene_retry_limit: '关卡重试诊断过多，部分问题已省略。请先修复已列出的行为绑定。',
+  build_scene_retry_invalid: '关卡重试声明不可用，请重新读取并检查行为原文。',
+  build_scene_retry_inventory_invalid: '冻结工程的关卡重试文件已变化，请重新构建。',
+  build_scene_navigation_target_invalid: '场景导航目标无效。请选择组装中的其他成员场景，并填写完整的小写 UUID。',
+  build_scene_navigation_parameter_invalid: '场景导航参数无效。请检查动作名称、事件名称和载荷筛选。',
+  build_scene_navigation_limit: '场景导航诊断过多，部分问题已省略。请先修复已列出的行为绑定。',
+  build_scene_navigation_invalid: '场景导航声明不可用，请重新读取并检查行为原文。',
+  build_hud2d_invalid: 'HUD 配置无效，请检查元素、状态键和场景引用。',
+  build_hud2d_dependency_unavailable: 'HUD 引用的场景不可用，请重新读取工程。',
+  build_hud2d_requires_project: '二维 HUD 需要项目组装。请用当前场景创建组装后再构建。',
+  build_hud2d_inventory_invalid: '冻结工程的 HUD 文件已变化，请重新构建。',
+  runtime_hud2d_invalid: 'HUD 运行声明或状态不可用，请检查场景后重新构建。',
+  build_camera2d_invalid: '运行相机配置无效，请检查取景方式、数值、场景引用和目标实例。',
+  build_camera2d_requires_project: '二维运行相机需要项目组装。请用当前场景创建组装后再构建。',
+  build_camera2d_inventory_invalid: '冻结工程的相机文件已变化，请重新构建。',
+  runtime_camera2d_invalid: '运行相机目标或声明不可用，请检查场景后重新构建。',
   build_physics_invalid: '场景物理配置无效，请检查物理体、实例编号、形状和碰撞层。',
   build_physics_requires_project: '二维物理需要项目组装。请用当前场景创建组装后再构建。',
   build_physics_control_replay_unsupported: '物理工程暂不支持有限控制回放，请使用无头测试或窗口预览。',
+  runtime_physics2d_input_projection_invalid: '冻结工程的物理输入继承链不受支持，请重新构建并检查后端能力。',
+  runtime_physics2d_input_target_invalid: '逐角色输入含当前冻结工程不可用的目标，请修正 JSON 后再运行。',
   runtime_physics2d_input_invalid: '物理输入回放格式有误：需要 30 个完整布尔输入步骤，末步全部释放。',
   runtime_physics2d_case_invalid: '物理验收无效或引用了当前构建以外的实例、碰撞体，请核对后重新运行。',
   runtime_physics2d_input_unsupported: '物理输入回放仅支持单场景、含二维物理且无行为、声音和动画的 Godot 项目。',
-  build_input_action_unconfigured: '项目没有配置输入映射。请检查角色动作参数；脚本也可能在运行时注册该动作。',
-  build_input_action_unmapped: '角色动作未在项目输入映射中找到。请检查行为参数和映射；脚本也可能在运行时注册该动作。',
-  build_input_action_unmapped_limit: '角色输入动作提示过多，部分提示已省略。请检查已列出的行为参数。',
+  build_input_action_unconfigured: '项目没有配置输入映射。请检查行为动作参数；脚本也可能在运行时注册该动作。',
+  build_input_action_unmapped: '行为动作未在项目输入映射中找到。请检查行为参数和映射；脚本也可能在运行时注册该动作。',
+  build_input_action_unmapped_limit: '行为输入动作提示过多，部分提示已省略。请检查已列出的行为参数。',
   build_animation_state_clip_missing: '动画状态引用的片段不在当前场景中。请重新选择片段，或清空该状态的片段参数。',
   build_animation_state_animation_missing: '动画状态控制器所在的场景没有动画。请添加场景动画，或移除该控制器绑定。',
   build_animation_state_target_missing: '动画状态控制器绑定的实例没有动画轨道。请为该实例添加轨道，或修改控制器绑定。',
@@ -183,6 +207,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <button id="projectBuildSceneAudio" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景声音设置" hidden></button>
     <button id="projectBuildSceneAnimation" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景动画" hidden></button>
     <button id="projectBuildScenePhysics2D" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景物理" hidden></button>
+    <button id="projectBuildSceneCamera2D" type="button" class="doc-btn doc-btn-ghost" data-i18n="运行主相机" hidden></button>
+    <button id="projectBuildSceneHUD2D" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景 HUD" hidden></button>
     <p id="projectBuildEmpty" hidden data-i18n="暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。"></p>
     <div id="projectBuildTabs" class="build-tabs" role="tablist" data-i18n-aria-label="场景与构建选项卡" hidden>
       <button id="projectBuildTabPreview" type="button" role="tab" aria-controls="projectBuildPreviewPanel" aria-selected="false" tabindex="-1" data-i18n="场景预览"></button>
@@ -208,8 +234,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <label for="projectBuildControlProgram" data-i18n="控制步骤（JSON）"></label><textarea id="projectBuildControlProgram" spellcheck="false" maxlength="262144" rows="9" aria-describedby="projectBuildControlBudget projectBuildControlError"></textarea>
     <p id="projectBuildControlBudget" class="build-hint"></p><p id="projectBuildControlError" role="alert" hidden></p></details>
     <details id="projectBuildPhysicsReplayEditor" class="build-control-editor" hidden><summary data-i18n="编辑物理输入回放"></summary>
-    <p class="build-hint" data-i18n="只支持单场景、含二维物理且无行为、声音和动画的 Godot 项目。输入作用于全部方向键角色；controls 为 none 的角色不消费内建动作。固定 30 步、每步 1/60 秒；最后一步须全部释放。运行不写入作品；可显式保存回放文档。完成只表示输入流程与采样结束，不表示玩法验收通过。"></p>
+    <p class="build-hint" data-i18n="仅支持单场景的有限物理回放；全局输入共享动作，逐角色输入按实例独立。固定 30 步、每步 1/60 秒，末步释放。作者行为、声音和动画不参与此回放；运行不写入作品，可显式保存文档。完成只表示输入与采样结束，不表示玩法验收通过。"></p>
     <div id="projectBuildPhysicsDocuments"></div>
+    <div id="projectBuildPhysicsReplayTargets"></div>
     <button id="projectBuildPhysicsReplayExample" type="button" class="doc-btn doc-btn-ghost" data-i18n="生成物理输入示例"></button>
     <p id="projectBuildPhysicsTimelineHint" class="build-hint" data-i18n="点击或按空格切换输入；方向键在时间轴中移动。第 30 步固定释放。JSON 不合法时保留原文并停用时间轴。"></p>
     <div class="build-physics-range" role="group" data-i18n-aria-label="批量编辑输入范围">
@@ -295,6 +322,16 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   el('projectBuildPhysicsReplayProgram').value = JSON.stringify(defaultPhysicsReplay(), null, 2);
   let physicsReplayError = '', physicsDocuments = null;
   let physicsCaseError = '', physicsCaseDocuments = null, physicsCaseSelectionRevision = 0;
+  const physicsTargets = setupPhysicsReplayTargets({ container: el('projectBuildPhysicsReplayTargets'), getProgram: readPhysicsReplay,
+    onSelect: () => renderPhysicsReplay(),
+    onConvert: ids => {
+      if (!mayStart('run', 'headless') || !hasPhysicsReplayCapability() || !physicsReplayBuildSupported()) return;
+      if (physicsDocuments && !physicsDocuments.confirmReplace()) return;
+      let program; try { program = convertProjectPhysics2DInputReplayToInstances(readPhysicsReplay(), ids); } catch { return; }
+      el('projectBuildPhysicsReplayProgram').value = JSON.stringify(program, null, 2);
+      physicsCaseSelectionRevision++; physicsDocuments?.changed(); physicsReplayError = ''; renderPhysicsReplay(); renderPhysicsCase();
+    },
+  });
   // Construct once: polling and language changes must not replace the focused cell.
   const physicsTimeline = el('projectBuildPhysicsTimeline');
   const physicsActionLabels = { left: '向左', right: '向右', up: '向上', down: '向下', jump: '跳跃' };
@@ -310,7 +347,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       cell.addEventListener('click', () => {
         if (step === 29) return;
         let program; try { program = readPhysicsReplay(); } catch { return; }
-        const updated = setProjectPhysics2DInputReplayRange(program, action, step, step, !program.steps[step][action]);
+        if (!physicsTargets.canEdit(program)) return;
+        const updated = setProjectPhysics2DInputReplayRange(program, action, step, step, !physicsTargets.stepInput(program, step)[action], physicsTargets.selectedInstance(program));
         el('projectBuildPhysicsReplayProgram').value = JSON.stringify(updated, null, 2);
         physicsReplayError = ''; physicsCaseSelectionRevision++; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase();
       });
@@ -339,12 +377,12 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     let program = null; try { program = readPhysicsReplay(); } catch { /* Retain invalid JSON verbatim. */ }
     el('projectBuildPhysicsTimelineInvalid').hidden = Boolean(program);
     if (!el('projectBuildPhysicsRangeError').hidden) el('projectBuildPhysicsRangeError').textContent = t('请输入有效的 1–30 步范围；按下范围不能包含第 30 步。');
-    el('projectBuildPhysicsRangePress').disabled = !program; el('projectBuildPhysicsRangeRelease').disabled = !program;
+    el('projectBuildPhysicsRangePress').disabled = !physicsTargets.canEdit(program); el('projectBuildPhysicsRangeRelease').disabled = !physicsTargets.canEdit(program);
     physicsTimelineCells.forEach(({ label, cells, action }, row) => {
       label.textContent = t(physicsActionLabels[action]);
       cells.forEach((cell, step) => {
-        const pressed = Boolean(program?.steps[step]?.[action]);
-        cell.disabled = !program;
+        const pressed = Boolean(physicsTargets.stepInput(program, step)[action]);
+        cell.disabled = !physicsTargets.canEdit(program);
         cell.tabIndex = row * 30 + step === physicsTimelineFocus ? 0 : -1;
         cell.setAttribute('aria-pressed', String(pressed));
         cell.setAttribute('aria-disabled', String(step === 29));
@@ -368,6 +406,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildPhysicsReplayEditor').hidden = !supported;
     el('projectBuildPhysicsReplay').disabled = !supported || !physicsReplayBuildSupported() || !mayStart('run', 'headless') || Boolean(physicsDocuments && !physicsDocuments.runAllowed());
     el('projectBuildPhysicsReplayExample').disabled = !supported || !physicsReplayBuildSupported() || !mayStart('run', 'headless');
+    const ownedBuild = matchedBuild();
+    physicsTargets.setState({ visible: supported, supported: supported && ownedBuild?.physicsReplayInstancesAvailable === true
+      && data?.backend?.capabilities?.includes('physics.input-replay-instances2d'), targets: ownedBuild?.physicsReplayTargets,
+      editable: supported && available && dialog.open && activeTab === 'build', owner: `${data?.backend?.id}:${ownedBuild?.id}:${ownedBuild?.snapshotId}` });
     renderPhysicsTimeline();
     physicsDocuments?.render();
     el('projectBuildPhysicsReplayError').hidden = !physicsReplayError;
@@ -737,6 +779,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
   let animationCreationSupported = false, animationCreationBusy = false;
   let physics2DCreationSupported = false, physics2DCreationBusy = false;
+  let camera2DSupported = false, camera2DBusy = false;
+  let hud2DSupported = false, hud2DBusy = false;
   let audioCreationSupported = false, audioCreationBusy = false, assemblyBusy = false;
   let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, behaviorDirectorySupported = false, behaviorLinksBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
   let toolCheckBusy = false, materializationBusy = false;
@@ -856,6 +900,36 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (errorMessage || !data?.scenes.some(scene => scene.id === sceneId)) throw new Error(t('物理声明已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
     },
     openSource: (sourcePath, options = {}) => navigateOwnedSource([sourcePath, options], typeof options.isCurrent === 'function' ? options.isCurrent : () => true, openAuthorSource, true),
+  }) : { open() {}, setAvailable() {} };
+
+  const camera2DEditor = typeof setupSceneCamera2D === 'function' ? setupSceneCamera2D({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (camera2DBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
+      session: String(dialogSession), sceneId: selected, visible: dialog.open && !projectTarget() && liveScene(), sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { camera2DBusy = value === true; setBusy(value); render(); },
+    inspect: sceneId => requestProjectBuildDocument({ action: 'camera2d-inspect', sceneId }),
+    request: payload => requestProjectBuildDocument(payload), command: payload => requestWorldCommand(payload),
+    applied: async result => {
+      let failure; try { await applied(result || { status: 'observed', changes: [] }); } catch (error) { failure = error; }
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || data?.job?.plan?.snapshotId || ''; plan = null; planScene = '';
+      scenePreview.invalidate(); await refresh(true); if (failure) throw failure;
+    },
+  }) : { open() {}, setAvailable() {} };
+
+  const hud2DEditor = typeof setupSceneHUD2D === 'function' ? setupSceneHUD2D({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (hud2DBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
+      session: String(dialogSession), sceneId: selected, visible: dialog.open && !projectTarget() && liveScene(), sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { hud2DBusy = value === true; setBusy(value); render(); },
+    inspect: sceneId => requestProjectBuildDocument({ action: 'hud2d-inspect', sceneId }),
+    request: payload => requestProjectBuildDocument(payload), command: payload => requestWorldCommand(payload),
+    applied: async result => {
+      let failure; try { await applied(result || { status: 'observed', changes: [] }); } catch (error) { failure = error; }
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || data?.job?.plan?.snapshotId || ''; plan = null; planScene = '';
+      scenePreview.invalidate(); await refresh(true); if (failure) throw failure;
+    },
   }) : { open() {}, setAvailable() {} };
 
   const behaviorCreator = typeof setupSceneBehaviorCreate === 'function' ? setupSceneBehaviorCreate({
@@ -1475,6 +1549,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildSceneAudio').hidden = projectTarget() || activeTab === 'preview' || !audioCreationSupported;
     el('projectBuildSceneAnimation').hidden = projectTarget() || activeTab === 'preview' || !animationCreationSupported;
     el('projectBuildScenePhysics2D').hidden = projectTarget() || activeTab === 'preview' || !physics2DCreationSupported;
+    el('projectBuildSceneCamera2D').hidden = projectTarget() || !camera2DSupported;
+    el('projectBuildSceneHUD2D').hidden = projectTarget() || !hud2DSupported;
+    el('projectBuildSceneCamera2D').disabled = !camera2DSupported || !liveScene() || !ready() || requestBusy || running() || checkingTool();
+    el('projectBuildSceneHUD2D').disabled = !hud2DSupported || !liveScene() || !ready() || requestBusy || running() || checkingTool();
     el('projectBuildSceneAudio').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
     el('projectBuildSceneAnimation').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
     el('projectBuildScenePhysics2D').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
@@ -1591,6 +1669,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       try {
         physicsReplayCase = physicsCaseRead();
         if (canonicalJson(physicsReplayCase.program) !== canonicalJson(readPhysicsReplay())) throw new Error('input mismatch');
+        if (!physicsTargets.accepts(physicsReplayCase.program)) throw Object.assign(new Error('target'), { errorCode: 'runtime_physics2d_input_target_invalid' });
         physicsCaseError = '';
       } catch {
         physicsCaseError = '物理验收格式或输入不匹配，请检查定义并明确复制当前输入。';
@@ -1599,9 +1678,13 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     }
     if (physicsReplay) {
       if (!hasPhysicsReplayCapability() || !physicsReplayBuildSupported() || physicsDocuments && !physicsDocuments.runAllowed()) { render(); return; }
-      try { physicsControlProgram = readPhysicsReplay(); physicsReplayError = ''; }
+      try {
+        physicsControlProgram = readPhysicsReplay();
+        if (!physicsTargets.accepts(physicsControlProgram)) throw Object.assign(new Error('target'), { errorCode: 'runtime_physics2d_input_target_invalid' });
+        physicsReplayError = '';
+      }
       catch (error) {
-        physicsReplayError = error.errorCode === 'runtime_physics2d_input_json' ? '物理输入步骤不是有效的 JSON，请检查后重试。'
+        physicsReplayError = error.errorCode === 'runtime_physics2d_input_target_invalid' ? '逐角色输入含当前冻结工程不可用的目标，请修正 JSON 后再运行。' : error.errorCode === 'runtime_physics2d_input_json' ? '物理输入步骤不是有效的 JSON，请检查后重试。'
           : errorLabels[error.errorCode] || errorLabels.runtime_physics2d_input_invalid;
         el('projectBuildPhysicsReplayEditor').open = true; renderPhysicsReplay(); el('projectBuildPhysicsReplayProgram').focus(); return;
       }
@@ -1782,6 +1865,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   el('projectBuildSceneAudio').addEventListener('click', () => { if (!projectTarget() && audioCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void audioCreator.open(selected); });
   el('projectBuildSceneAnimation').addEventListener('click', () => { if (!projectTarget() && animationCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void animationCreator.open(selected); });
   el('projectBuildScenePhysics2D').addEventListener('click', () => { if (!projectTarget() && physics2DCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void physics2DCreator.open(selected); });
+  el('projectBuildSceneCamera2D').addEventListener('click', () => { if (!projectTarget() && camera2DSupported && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void camera2DEditor.open(selected); });
+  el('projectBuildSceneHUD2D').addEventListener('click', () => { if (!projectTarget() && hud2DSupported && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void hud2DEditor.open(selected); });
   el('projectBuildManageBehavior').addEventListener('click', () => { if (!projectTarget() && behaviorDirectorySupported && activeTab === 'build' && !requestBusy && !running() && ready() && liveScene()) void behaviorLinks.open(selected); });
   el('projectBuildCreateBehavior').addEventListener('click', () => { if (!projectTarget() && behaviorCreationSupported && !requestBusy && !running() && ready() && liveScene()) void behaviorCreator.open(selected); });
   el('projectBuildCreateScene').addEventListener('click', () => { if (!projectTarget() && creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
@@ -1891,6 +1976,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   });
   function editPhysicsRange(pressed) {
     let program; try { program = readPhysicsReplay(); } catch { renderPhysicsReplay(); return; }
+    if (!physicsTargets.canEdit(program)) return;
     const action = el('projectBuildPhysicsRangeAction').value;
     const startText = el('projectBuildPhysicsRangeStart').value, endText = el('projectBuildPhysicsRangeEnd').value;
     const start = Number(startText), end = Number(endText), error = el('projectBuildPhysicsRangeError');
@@ -1898,8 +1984,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       || !Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 1 || end > 30 || start > end || (pressed && end === 30)) {
       error.hidden = false; error.textContent = t('请输入有效的 1–30 步范围；按下范围不能包含第 30 步。'); return;
     }
-    const updated = setProjectPhysics2DInputReplayRange(program, action, start - 1, end - 1, pressed);
-    if (program.steps.slice(start - 1, end).some(step => step[action] !== pressed)) {
+    const updated = setProjectPhysics2DInputReplayRange(program, action, start - 1, end - 1, pressed, physicsTargets.selectedInstance(program));
+    if (JSON.stringify(program) !== JSON.stringify(updated)) {
       el('projectBuildPhysicsReplayProgram').value = JSON.stringify(updated, null, 2);
       physicsCaseSelectionRevision++; physicsDocuments?.changed();
     }
@@ -1943,6 +2029,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     audioCreationSupported = value === true && commands.includes('audio.create'); audioCreator.setAvailable(audioCreationSupported, commands);
     animationCreationSupported = value === true && commands.includes('animation.create'); animationCreator.setAvailable(animationCreationSupported, commands);
     physics2DCreationSupported = value === true && commands.includes('physics2d.create'); physics2DCreator.setAvailable(physics2DCreationSupported, commands);
+    camera2DSupported = value === true && commands.includes('camera2d.create'); camera2DEditor.setAvailable(camera2DSupported, commands);
+    hud2DSupported = value === true && commands.includes('hud2d.create'); hud2DEditor.setAvailable(hud2DSupported, commands);
     behaviorCreationSupported = commands.includes('behavior.create'); behaviorCreator.setAvailable(value === true && behaviorCreationSupported, commands);
     behaviorDirectorySupported = value === true && capabilities.sceneBehaviorDirectory === true;
     behaviorLinks.setAvailable(behaviorDirectorySupported, commands);

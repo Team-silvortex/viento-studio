@@ -1,0 +1,110 @@
+✔ native preferences and the shared browser/API registry accept the same language IDs (3.525889ms)
+✔ translation catalogues have identical keys, no duplicate entries and intact parameters (64.816749ms)
+✔ marked interface messages are covered in English and Japanese (739.800231ms)
+✔ nested interface diagnostics switch language while paths, punctuation and UI-like authored names stay literal (1.676552ms)
+✔ message tracking does not confuse fullwidth or whitespace-distinct authored filenames (0.94891ms)
+✔ invalid or unknown diagnostic descriptors fall back to literal diagnostics without interpreting parameters (0.355549ms)
+✔ HTTP template, field and export failures provide translated reasons without changing project data (595.800344ms)
+✔ language changes update retained UI references while preserving authored labels and interpolation values (2.414955ms)
+✔ English and Japanese catalogues preserve all message parameters (22.983914ms)
+✔ unknown messages cannot resolve inherited object properties in either catalogue (0.471594ms)
+✔ desktop language preferences require the local session and stay outside the project (577.957513ms)
+✔ layout moves remain a draft; review and save submit fixed source versions without expanding inheritance (75.499241ms)
+✔ one move is one undo step and changing a reviewed draft disables its old approval (51.667332ms)
+✔ invalid numeric input stays unsaved and cannot silently submit the previous coordinates (35.245989ms)
+✔ close, escape, and reload honor unsaved layout confirmation and busy protection (17.286331ms)
+✔ source conflicts retain coordinates and do not silently rebase or overwrite (22.390462ms)
+✔ unknown apply is verified through read-only source comparison, never submitted twice (41.807477ms)
+✔ unknown apply with different saved content preserves the draft and requires explicit reload (28.933284ms)
+✔ capability and document draft changes lock layout writes while preserving its draft (17.094028ms)
+✔ malformed or mismatched successful preview responses never approve a different layout or enable saving (231.772926ms)
+✔ malformed or foreign apply success remains uncertain and requires verification without another mutation (186.874834ms)
+✔ unknown apply cannot be acknowledged by matching bytes at a removed or relocated scene path (92.731056ms)
+✔ unknown apply rechecks identity after reading source and preserves the draft when registration changes mid-read (89.4234ms)
+✔ failed verification reads retain the uncertain draft and allow a read-only retry (28.520303ms)
+✔ layout response validation accepts the real scene.update preview and commit including losslessly preserved source formatting (129.835079ms)
+✔ layout messages have English and Japanese translations (0.799762ms)
+✔ multi-selection remains view state; checkboxes, select all, and clear do not change the draft (17.502911ms)
+✔ one group gesture and one alignment each use one undo step and one reviewed scene update (36.198797ms)
+✔ an invalid batch cannot partially move actors or silently discard an unfinished coordinate (18.279738ms)
+✔ conflicts freeze batch commands while keeping all selected positions and history (17.096483ms)
+✔ missing Rust core blocks layout edits with a translated message while retaining the saved model (9.023022ms)
+✔ close, cancel and reload release Rust drafts while declined discard retains the same history (366.931279ms)
+✔ a failed dialog open disposes its Rust session and a legacy core error becomes a translated failure (143.264369ms)
+✔ history and coordinate core failures preserve the last Rust snapshot and unsaved close protection (20.685946ms)
+✔ nested verification error codes enter Rust conflict state and cannot be retried as uncertain saves (68.345123ms)
+✔ refresh failure after an accepted apply stays saved, warns, and cannot submit the write again (20.482952ms)
+✔ late preview responses and old close events cannot approve, unlock or replace another session (20.298224ms)
+✔ late apply success after a programmatic close cannot acknowledge another session or trigger its refresh (24.265129ms)
+✔ late verification reads stop before further reads or refresh when their session was closed (29.608814ms)
+✔ a core failure after begin retains the last Rust phase but releases host busy state and allows confirmed close (22.231804ms)
+✔ layout repeated-definition instances select, move, undo, align and serialize separately (29.0967ms)
+✔ nested group selection includes every descendant and one group alignment is one reversible layout command (34.275256ms)
+✖ world framing keeps layout history, author positions and an existing save review intact (7.663154ms)
+✔ saved scene preview does not require a build or runtime and never submits a write (39.651284ms)
+✔ source links resolve inherited fields, scene fields, actor and original OC (23.985376ms)
+✔ unsaved drafts remain visible as saved-state previews and edit guards are checked at click time (22.347629ms)
+✔ late replies from replaced scenes are released without overwriting the latest scene (25.266411ms)
+✔ hide and destruction cancel pending work, release previews, and re-opening reads fresh saved state (32.053156ms)
+✔ invalid saved scenes show source diagnostics and remove stale canvas content (25.524331ms)
+✔ image requests cannot use foreign hosts or arbitrary local endpoints (29.313952ms)
+✔ changing scenes during asset reads never decodes or paints the abandoned image (24.806829ms)
+✔ capability loss and an empty scene stop preview requests (21.535313ms)
+✔ view controls affect only the canvas and navigation failures keep the saved preview (22.627792ms)
+✔ scene preview user messages have English and Japanese translations (1.493748ms)
+✔ fit, point conversion and focal zoom preserve scene coordinates (0.460363ms)
+✔ canvas hit testing uses actor centers and reverse draw order throughout the scene world (0.185691ms)
+✔ texture tint multiplies all RGBA channels and preserves transparent pixels (0.267819ms)
+✔ canvas draws center-based layout and gestures change only the view (1.704567ms)
+✔ repeated parent refreshes retain object and inspector keyboard focus (35.273723ms)
+✔ refreshing a scene preserves manual view zoom while a changed viewport fits again (0.519889ms)
+✔ source-aware preview links carry scene and definition revisions without mixing their files or aggregate dimensions (17.426213ms)
+✔ source sidecars also locate ordinary actors and a refreshed range replaces old inspector link closures (27.211595ms)
+✔ v2 repeated definitions select and locate each instance independently after row reorder (35.980915ms)
+✔ preview rejects unsupported versions and repeated or missing instance identities before rendering (62.89915ms)
+✔ grouped saved previews use the editor sidecar and open the exact group name source (22.61637ms)
+✔ invalid scene structure sidecars never paint or expose a misleading group tree (48.945052ms)
+✔ invalid Unicode title in saved scene has a specific preview diagnostic and source link (15.668053ms)
+✔ world framing and selected framing stay read-only and unavailable owners cannot invoke them (24.676476ms)
+✔ source layout reviews complete text and applies only to editor memory with no saved-scene capability (67.605229ms)
+✔ source group selection, shared history and numeric input invalidate review without calling saved workflow (95.265293ms)
+✔ source Ctrl+S checks then applies to the draft, never writes the saved scene (34.753243ms)
+✔ cancel and Escape preserve original text, and source mode cannot invoke saved reload (30.738044ms)
+✔ changed source tokens, paths and preview owners reject application and retain coordinates (91.083531ms)
+✔ pending local apply locks controls and a late host conflict never discards layout changes (28.597473ms)
+✔ ambiguous host result is never treated as applied and does not refresh or close (204.378617ms)
+✔ late apply after a forced dialog close does not refresh or revive the disposed layout (33.396051ms)
+✔ async source preparation discards stale instances and a later open wins without leaking images (14.69197ms)
+✔ closing local layout releases cloned images while leaving preview-owned images intact (11.470349ms)
+✔ draft layout entry requires a fresh valid draft and preserves saved edit locks (29.81815ms)
+✔ invalid draft leaves its last valid picture read-only until public refreshDraft succeeds (28.202737ms)
+✔ pending layout open is single flight and stale completion cannot change a new preview (31.329652ms)
+✔ source apply exposes a live owner guard to reject late host preparation before changing memory (18.219031ms)
+✔ returning a source draft to its saved baseline refreshes saved provenance instead of retaining stale draft geometry (17.828904ms)
+ℹ tests 83
+ℹ suites 0
+ℹ pass 82
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2123.083762
+
+✖ failing tests:
+
+test at scripts/tests/scene-layout-ui.test.mjs:470:1
+✖ world framing keeps layout history, author positions and an existing save review intact (7.663154ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file://<APP_ROOT>/scripts/tests/scene-layout-ui.test.mjs:472:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

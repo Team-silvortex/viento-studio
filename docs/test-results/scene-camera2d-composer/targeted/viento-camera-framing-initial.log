@@ -1,0 +1,33 @@
+✔ camera documents inspect and save through the host without a tool or runtime job (374.529215ms)
+✔ camera opt-in and same-OC target dependency survive selective resource export (261.584308ms)
+✔ framing context owns bounded logical geometry and scene/assembly source versions from one snapshot (17.251788ms)
+✖ projection inheritance is resolved by the shared scene model rather than raw geometry defaults (3.619481ms)
+✔ assembly viewport reference uses the saved entry scene, independently of executable behavior readiness (12.045124ms)
+✔ bad optional assembly references remain local while the selected scene still frames (5.277687ms)
+✔ invalid geometry and duplicate instance identities never fall back to fabricated actor rectangles (11.002094ms)
+✔ assembly reference directory is capped at 32 with an explicit local truncation notice (13.010799ms)
+✔ browser capture binds scene/world versions, exact actor identity/order and design viewport (4.162572ms)
+✔ browser capture rejects accessors, serializers, sparse/named arrays and coercion hooks without executing them (2.108322ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 816.703889
+
+✖ failing tests:
+
+test at scripts/tests/scene-camera2d-framing-context.test.mjs:35:1
+✖ projection inheritance is resolved by the shared scene model rather than raw geometry defaults (3.619481ms)
+  TypeError: Camera composition evidence unavailable.
+      at failure (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-camera2d-framing.mjs:10:45)
+      at ref (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-camera2d-framing.mjs:17:175)
+      at createSceneCamera2DFramingContext (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-camera2d-framing.mjs:24:47)
+      at capture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-framing-context.test.mjs:22:22)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-framing-context.test.mjs:39:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'scene_camera2d_framing_unavailable'
+  }

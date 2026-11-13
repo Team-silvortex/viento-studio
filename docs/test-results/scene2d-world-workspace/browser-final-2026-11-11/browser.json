@@ -1,0 +1,1820 @@
+{
+  "startedAt": "2026-11-11T08:30:08.354Z",
+  "browser": "Chrome/156.0.8078.73",
+  "steps": [
+    "Actual preview/layout canvases show and hit authored instances outside the runtime viewport; fit and focus only change the view. Multi-selection pointer movement, undo/redo and cancellation preserve the source until applying and normal Save.",
+    "A resource package restores the exact saved scene and projection/OC dependencies; its independent build snapshot has the same viewport and world positions."
+  ],
+  "errors": [],
+  "svgRequests": [],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "This verifies authoring world coordinates, not a runtime camera, embedded engine viewport, packaged Tauri IPC or device acceptance."
+  ],
+  "sources": {
+    "engine/scene-workspace-view.mjs": "6bdb24f69845f177c191968c64db8eabd18d1ca156e6ce6627bd1718beb40286",
+    "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
+    "engine/scene-source-layout.mjs": "94ef1c1d1130c1d751fdb909df570cc2f125a3119bc0f1a790f2012c2611738d",
+    "engine/scene-draft-preview.mjs": "fa99b49e02927f7bd7c41082aa11a62605a14a660b01f50245b518d14e98b53c",
+    "engine/scene-preview-contract.mjs": "c500754da05884cc73f99c597d8367fad2a1515235e2d2c0c57377de1f34506b",
+    "engine/studio-core.mjs": "da06d763f7887f2a9013ae347788120c4e24f7c87f2694eae996f100247645b8",
+    "engine/studio-core.wasm": "46c7db77458f98623b9478df0f992fe8244802283581d40d28281e8a8ae031c1",
+    "web/modules/app-scene-preview-canvas.js": "a0f6b8336e5ad5a7bb4b1192eac7b34fa965545b82a5a50ed538d779dd123442",
+    "web/modules/app-scene-preview.js": "ece421114ee18ae88e138a0072afe2b5f47154173e9f2f371a1ab85bdb11e5a8",
+    "web/modules/app-scene-layout.js": "cef18064993f45d655a17ee01bd9bf77beef8a791841c4a70818f9f57348a42e",
+    "web/modules/app-scene-outline.js": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
+    "web/scene-preview.css": "e6e322dca16ec01d0436679296a5f45acf2e000116377d5349521acd35677c11",
+    "web/project-build.css": "78a60347f3fe436d880d6b812ce0c1729bf143c499893251901862a0fb462660",
+    "web/i18n/en.js": "d54feb9b84cbf589cc9cde90dfcb9455004b41c114ed06ab2f5c290fee7f16cd",
+    "web/i18n/ja.js": "92e911b63ef88854357f0d99e9340bf862e6ca04ccbfbf2a6b8a8bdd283918f5",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430",
+    "scripts/lib/resource-package-catalog.mjs": "4162eafd8f2a144ee1f62e62555fd5cabb421e705cc4bb72dd1a0b247288fca0",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
+    "scripts/lib/resource-package-import.mjs": "cfef0473224b16e89f86d3503baec41bbc5f4f4856cc51e93e3638bf78520bc4",
+    "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+    "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+    "scripts/tests/scene-world-workspace-smoke.mjs": "d23966cfdf5ca69c9643d579c24b3ae9b1257fd9352b2955d3acc105cc638648"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "previewFitAll": {
+    "rect": {
+      "x": 257,
+      "y": 697.5625,
+      "width": 649.03125,
+      "height": 478.5
+    },
+    "view": {
+      "scale": 0.353564805385638,
+      "offsetX": 122.99930756962722,
+      "offsetY": 127.88860395693081
+    },
+    "matrix": {
+      "a": 0.3535477817058563,
+      "b": 0,
+      "c": 0,
+      "d": 0.3535477817058563,
+      "e": 122.9933853149414,
+      "f": 127.8824462890625
+    },
+    "ratio": 0.9999518513168665
+  },
+  "grid": {
+    "xLines": 14,
+    "yLines": 10,
+    "bounds": {
+      "left": -347.88334612510477,
+      "top": -361.7119181798679,
+      "right": 1487.7949796406417,
+      "bottom": 991.6467665967276
+    },
+    "step": 128
+  },
+  "screenshots": [
+    {
+      "path": "preview-fit-all.png",
+      "bytes": 246000,
+      "sha256": "fc29e5180f1c752781084eefe1c523e29d58514bebdf11e60b71bd2d85d67bc4"
+    },
+    {
+      "path": "preview-focus-0.png",
+      "bytes": 208211,
+      "sha256": "3edc9615d34e5ff3e4af2dc751587ddfdecb757dd03dc0a407b1e7d4cbe50e36"
+    },
+    {
+      "path": "preview-focus-1.png",
+      "bytes": 217289,
+      "sha256": "a9c228fea6116391a478018b85ed4294b5d81992e9d5b4d3e57b83d946ec8760"
+    },
+    {
+      "path": "layout-zh-CN-390.png",
+      "bytes": 99346,
+      "sha256": "73c32b651c22202c66feccd974574b7735bcd1f67f775bba68391213bac244ce"
+    },
+    {
+      "path": "layout-en-390.png",
+      "bytes": 79181,
+      "sha256": "80d05b1e7ac5a0f445d66e51a5e0afb4c223398aa8bf29858bb49df16f331baf"
+    },
+    {
+      "path": "layout-ja-390.png",
+      "bytes": 103077,
+      "sha256": "62bcb910d1be7ca75bb4d49833757a749ab77fc1756680268e868ecaac79827e"
+    }
+  ],
+  "previewFocus": [
+    {
+      "view": {
+        "rect": {
+          "x": 257,
+          "y": 697.5625,
+          "width": 649.03125,
+          "height": 478.5
+        },
+        "view": {
+          "scale": 5.381509017205018,
+          "offsetX": 1616.0934377708493,
+          "offsetY": 885.0426136363636
+        },
+        "matrix": {
+          "a": 5.381249904632568,
+          "b": 0,
+          "c": 0,
+          "d": 5.381249904632568,
+          "e": 1616.015625,
+          "f": 885
+        },
+        "ratio": 0.9999518513168665
+      },
+      "pixels": {
+        "canvas": {
+          "width": 649.03125,
+          "height": 478.5,
+          "pixelWidth": 649,
+          "pixelHeight": 479
+        },
+        "bounds": {
+          "left": 109.2709129534444,
+          "right": 539.7916343298458,
+          "top": 23.974963050794486,
+          "bottom": 454.02558173416554
+        },
+        "inside": {
+          "css": [
+            410.6354179169254,
+            239.00027239248
+          ],
+          "pixel": [
+            410,
+            239
+          ],
+          "rgba": [
+            68,
+            170,
+            238,
+            255
+          ]
+        },
+        "outside": {
+          "css": [
+            545.7916343298458,
+            239.00027239248
+          ],
+          "pixel": [
+            545,
+            239
+          ],
+          "rgba": [
+            219,
+            228,
+            223,
+            255
+          ]
+        }
+      }
+    },
+    {
+      "view": {
+        "rect": {
+          "x": 257,
+          "y": 259.5625,
+          "width": 649.03125,
+          "height": 478.5
+        },
+        "view": {
+          "scale": 5.008834728061326,
+          "offsetX": -6487.484238822949,
+          "offsetY": -3567.453018164965
+        },
+        "matrix": {
+          "a": 5.008593559265137,
+          "b": 0,
+          "c": 0,
+          "d": 5.008593559265137,
+          "e": -6487.171875,
+          "f": -3567.28125
+        },
+        "ratio": 0.9999518513168665
+      },
+      "pixels": {
+        "canvas": {
+          "width": 649.03125,
+          "height": 478.5,
+          "pixelWidth": 649,
+          "pixelHeight": 479
+        },
+        "bounds": {
+          "left": 24.000907656775382,
+          "right": 625.0610750241347,
+          "top": 88.89915468498663,
+          "bottom": 389.1010776213166
+        },
+        "inside": {
+          "css": [
+            444.7430248139268,
+            239.00011615315162
+          ],
+          "pixel": [
+            444,
+            239
+          ],
+          "rgba": [
+            238,
+            102,
+            68,
+            255
+          ]
+        },
+        "outside": {
+          "css": [
+            631.0610750241347,
+            239.00011615315162
+          ],
+          "pixel": [
+            631,
+            239
+          ],
+          "rgba": [
+            219,
+            228,
+            223,
+            255
+          ]
+        }
+      }
+    }
+  ],
+  "layoutFitAll": {
+    "rect": {
+      "x": 197,
+      "y": 423.46875,
+      "width": 736.640625,
+      "height": 497.625
+    },
+    "view": {
+      "scale": 0.40488520651370835,
+      "offsetX": 137.35614663386767,
+      "offsetY": 121.15233607175718
+    },
+    "matrix": {
+      "a": 0.40508273243904114,
+      "b": 0,
+      "c": 0,
+      "d": 0.40508273243904114,
+      "e": 137.42315673828125,
+      "f": 121.21144104003906
+    },
+    "ratio": 1.000487856612578
+  },
+  "reviewMetrics": [
+    {
+      "rect": {
+        "top": 601.46875,
+        "left": 197,
+        "width": 1031,
+        "height": 220
+      },
+      "clientHeight": 220,
+      "scrollHeight": 1098,
+      "overflowY": "auto",
+      "display": "block",
+      "visibility": "visible",
+      "open": true
+    },
+    {
+      "rect": {
+        "top": 601.46875,
+        "left": 197,
+        "width": 1031,
+        "height": 220
+      },
+      "clientHeight": 220,
+      "scrollHeight": 1098,
+      "overflowY": "auto",
+      "display": "block",
+      "visibility": "visible",
+      "open": true
+    },
+    {
+      "rect": {
+        "top": 601.46875,
+        "left": 197,
+        "width": 1031,
+        "height": 220
+      },
+      "clientHeight": 220,
+      "scrollHeight": 1098,
+      "overflowY": "auto",
+      "display": "block",
+      "visibility": "visible",
+      "open": true
+    }
+  ],
+  "confirmations": [
+    "有尚未应用的布局修改，确定丢弃这些布局修改？文本草稿不会改变。"
+  ],
+  "layout": {
+    "zh-CN": {
+      "noOverflow": true,
+      "inside": true,
+      "fit": "聚焦全部对象",
+      "focus": "聚焦当前选择"
+    },
+    "en": {
+      "noOverflow": true,
+      "inside": true,
+      "fit": "Frame all objects",
+      "focus": "Frame selection"
+    },
+    "ja": {
+      "noOverflow": true,
+      "inside": true,
+      "fit": "すべてのオブジェクトを表示",
+      "focus": "選択範囲を表示"
+    }
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "godot": {
+    "buildId": "a812d006-864c-48d2-b487-0b93a3726b3b",
+    "hostedRun": "succeeded",
+    "probe": "separate direct Godot import and headless runtime",
+    "ready": {
+      "actors": [
+        {
+          "instanceId": "e0b1439d-57cf-45e1-86ca-add524f8e403",
+          "objectId": "448b402c-078e-4787-a663-d859ed467425",
+          "position": [
+            -236,
+            -117
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "4e77afbf-5917-4c0a-a281-8f2cdcc859fa",
+          "objectId": "448b402c-078e-4787-a663-d859ed467425",
+          "position": [
+            1364,
+            763
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "9c9713e3-6cf9-4278-a06c-1e34a66e9bea",
+          "objectId": "8f498730-718c-4560-8528-acc16299a224",
+          "position": [
+            300,
+            240
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "ready",
+      "protocol": 2,
+      "sceneObjectId": "c87d54d4-d42b-4f27-ab04-b4f74de99122"
+    },
+    "finished": {
+      "actors": [
+        {
+          "instanceId": "e0b1439d-57cf-45e1-86ca-add524f8e403",
+          "objectId": "448b402c-078e-4787-a663-d859ed467425",
+          "position": [
+            -191,
+            -117
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "4e77afbf-5917-4c0a-a281-8f2cdcc859fa",
+          "objectId": "448b402c-078e-4787-a663-d859ed467425",
+          "position": [
+            1409,
+            763
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "9c9713e3-6cf9-4278-a06c-1e34a66e9bea",
+          "objectId": "8f498730-718c-4560-8528-acc16299a224",
+          "position": [
+            300,
+            240
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "finished",
+      "fixedDelta": 0.25,
+      "protocol": 2
+    }
+  },
+  "saved": {
+    "source": "documents/scenes/a.json",
+    "sha256": "302654b582f76b3a3f639ca5885858b12416c7fd02cc93a76a45fddf68a46b12",
+    "positions": [
+      [
+        -236,
+        -117
+      ],
+      [
+        1364,
+        763
+      ],
+      [
+        300,
+        240
+      ]
+    ],
+    "viewport": [
+      640,
+      480
+    ]
+  },
+  "migration": {
+    "documents": 4,
+    "packageSha256": "f5a837f10562ec1d3b03b7ce5b360b416263a968f2dfe3ed4315b75af69c0e75",
+    "sceneBytesEqual": true,
+    "planPositions": [
+      {
+        "instanceId": "e0b1439d-57cf-45e1-86ca-add524f8e403",
+        "position": [
+          -236,
+          -117
+        ]
+      },
+      {
+        "instanceId": "4e77afbf-5917-4c0a-a281-8f2cdcc859fa",
+        "position": [
+          1364,
+          763
+        ]
+      },
+      {
+        "instanceId": "9c9713e3-6cf9-4278-a06c-1e34a66e9bea",
+        "position": [
+          300,
+          240
+        ]
+      }
+    ]
+  },
+  "authorFiles": {
+    "before": 14,
+    "after": 14,
+    "onlySceneChanged": true
+  },
+  "viewportFrames": [
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        0.8968750238418579,
+        0,
+        0,
+        0.8968750238418579,
+        37.515625,
+        24
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        0.8968750238418579,
+        0,
+        0,
+        0.8968750238418579,
+        37.515625,
+        24
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        0.3535477817058563,
+        0,
+        0,
+        0.3535477817058563,
+        122.9933853149414,
+        127.8824462890625
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        0.3535477817058563,
+        0,
+        0,
+        0.3535477817058563,
+        122.9933853149414,
+        127.8824462890625
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        0.3535477817058563,
+        0,
+        0,
+        0.3535477817058563,
+        122.9933853149414,
+        127.8824462890625
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.381249904632568,
+        0,
+        0,
+        5.381249904632568,
+        1616.015625,
+        885
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.381249904632568,
+        0,
+        0,
+        5.381249904632568,
+        1616.015625,
+        885
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.381249904632568,
+        0,
+        0,
+        5.381249904632568,
+        1616.015625,
+        885
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.936718761920929,
+        0,
+        0,
+        0.936718761920929,
+        68.5703125,
+        24
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.936718761920929,
+        0,
+        0,
+        0.936718761920929,
+        68.5703125,
+        24
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.936718761920929,
+        0,
+        0,
+        0.936718761920929,
+        68.5703125,
+        24
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.40508273243904114,
+        0,
+        0,
+        0.40508273243904114,
+        137.42315673828125,
+        121.21144104003906
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.40508273243904114,
+        0,
+        0,
+        0.40508273243904114,
+        137.42315673828125,
+        121.21144104003906
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.936718761920929,
+        0,
+        0,
+        0.936718761920929,
+        68.5703125,
+        24
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.936718761920929,
+        0,
+        0,
+        0.936718761920929,
+        68.5703125,
+        24
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.40508273243904114,
+        0,
+        0,
+        0.40508273243904114,
+        137.42315673828125,
+        121.21144104003906
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.40508273243904114,
+        0,
+        0,
+        0.40508273243904114,
+        137.42315673828125,
+        121.21144104003906
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.738671779632568,
+        0,
+        0,
+        5.738671779632568,
+        -7436.2734375,
+        -4112.578125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        5.620312690734863,
+        0,
+        0,
+        5.620312690734863,
+        1717.1953125,
+        923.25
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6660.1875,
+        -3656.53125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.15000000596046448,
+        0,
+        0,
+        0.15000000596046448,
+        65.4000015258789,
+        102.30000305175781
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "sceneLayoutCanvas",
+      "matrix": [
+        0.40508273243904114,
+        0,
+        0,
+        0.40508273243904114,
+        135.80282592773438,
+        119.9961929321289
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    },
+    {
+      "id": "scenePreviewCanvas",
+      "matrix": [
+        5.008593559265137,
+        0,
+        0,
+        5.008593559265137,
+        -6487.171875,
+        -3567.28125
+      ]
+    }
+  ],
+  "created": {
+    "sceneId": "c87d54d4-d42b-4f27-ab04-b4f74de99122",
+    "instanceIds": [
+      "e0b1439d-57cf-45e1-86ca-add524f8e403",
+      "4e77afbf-5917-4c0a-a281-8f2cdcc859fa",
+      "9c9713e3-6cf9-4278-a06c-1e34a66e9bea"
+    ],
+    "groupIds": [
+      "4ef3c717-c6cd-4051-832b-b0d8daebc986",
+      "f0563719-fb9e-4ef2-8169-d1d82c36e965"
+    ]
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-11T08:30:26.377Z"
+}

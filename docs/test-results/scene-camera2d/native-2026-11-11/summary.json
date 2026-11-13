@@ -1,0 +1,153 @@
+{
+  "format": "viento-camera2d-native-evidence",
+  "schemaVersion": 1,
+  "date": "2026-11-11",
+  "backendDescriptor": "0.43.0",
+  "runtimeProtocolsUnchanged": true,
+  "nativeTests": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0,
+    "skip": 0,
+    "log": "native-final.log"
+  },
+  "backendTests": {
+    "tests": 18,
+    "pass": 16,
+    "fail": 0,
+    "skip": 2,
+    "log": "backend-final.log"
+  },
+  "cameraSamples": {
+    "mixed-visits": 5,
+    "fixed-boundaries": 1,
+    "physical-follow": 21,
+    "window-pixels": 3,
+    "offline-delivery": 1
+  },
+  "totalCameraSamples": 31,
+  "legacySourceCount": 78,
+  "legacySourcesEqualHeadAndUnchanged": true,
+  "scopedSourcesUnchangedDuringFinalNativeRun": true,
+  "mixedVisits": 4,
+  "windowScreenshots": 5,
+  "renderer": "OpenGL llvmpipe software in Xvfb; not hardware GPU",
+  "boundaries": [
+    "project assembly only",
+    "no-camera generation stays byte-exact",
+    "runtime viewport remains assembly entry scene size",
+    "no rotation/smoothing/limits/HUD feature",
+    "dedicated logical/control replay uses its historical entry and does not validate camera rendering"
+  ],
+  "firstAttempt": {
+    "tests": 3,
+    "pass": 1,
+    "fail": 2,
+    "reason": [
+      "Test asserted raw UUID node name; existing generator normalizes hyphens to underscores.",
+      "Test fixture staged generated scripts but omitted image resource; runtime refused missing image."
+    ],
+    "sourceFixRequired": false,
+    "log": "first-native-attempt.log"
+  },
+  "files": {
+    "animation-after.png": {
+      "bytes": 17464,
+      "sha256": "0f1d5254f0c0f95f0f1fd60b941873460a40abe9f1b0f8bfa9d3d2416e14c759"
+    },
+    "animation-before.png": {
+      "bytes": 17460,
+      "sha256": "5962ed33fa332fdc738f66f382711980aabe2c5a4926bd147f9a2b8bbbcba935"
+    },
+    "animation-clock-first-attempt.log": {
+      "bytes": 505,
+      "sha256": "f68d1e3974af10ae9fd69e6f38e9a559ad665c2293f9f69831d02d9b4c70668d"
+    },
+    "animation-track-follow.json": {
+      "bytes": 20973,
+      "sha256": "dd1b3d403c3553c40c9f8e500be10be0e8101429d5bc262b802df2aa8f342231"
+    },
+    "animation-track-follow.log": {
+      "bytes": 630,
+      "sha256": "220ffabb1241b7553b0bd53af44f519352f4354b67b57de4fec6f5525b9420fa"
+    },
+    "animation-track-smoke.mjs": {
+      "bytes": 5576,
+      "sha256": "4d559c345d71922ab5ef2279c1817b2d83d0ddbf70026cde039549220f8a391c"
+    },
+    "backend-final.log": {
+      "bytes": 2216,
+      "sha256": "41d75376011d8de8cd2acaa9925bea6b43e519375c447d9288cf6f7c408f5b23"
+    },
+    "camera-project.zip": {
+      "bytes": 124963,
+      "sha256": "911ad9e132bd7ce99b06918410b1ec6458e9d1f91accdcd74edb078905e1ab61"
+    },
+    "delivery-first-pass.log": {
+      "bytes": 235,
+      "sha256": "518e992589fc3057319d488d7f7d16f3b5be0f2bea7299aa143893b931de7a07"
+    },
+    "first-native-attempt.log": {
+      "bytes": 6092,
+      "sha256": "aaedfdb5824d7a72dd2d0fbbdd3306eff89cc99ca6eb524f390a77f0aa1c3a62"
+    },
+    "fixed-boundaries.json": {
+      "bytes": 11365,
+      "sha256": "817f6214f0a8db805f398d5ee5e917470575c2291f9d3776dd99614611149b57"
+    },
+    "fixed.png": {
+      "bytes": 4979,
+      "sha256": "1969101d40286179e72088745e55920a0f524b76404bb92e9c3a279452cd5e5b"
+    },
+    "follow.png": {
+      "bytes": 9453,
+      "sha256": "6afb9bcbafb356a37790eb663ddeca6bdc85ca67dfb17e8cce7ab6d85eb0652d"
+    },
+    "mixed-visits.json": {
+      "bytes": 23409,
+      "sha256": "8cb7904d9b59e580593bde806b8b1d64c1f8dc07605c905dd1be26561f3d49da"
+    },
+    "native-final.log": {
+      "bytes": 691,
+      "sha256": "25b06d5dbb8ea0fb215aae4a22bda2cb08cac30fbc0caad430cb82a0618b9e98"
+    },
+    "native-window-first-pass.log": {
+      "bytes": 575,
+      "sha256": "bf2ea94779280e1ec7cc08c04f5c98fd1d9c12f8eb2f961d5536c7bc9f3d0271"
+    },
+    "offline-delivery.json": {
+      "bytes": 69850,
+      "sha256": "f5d974a80ed435f44e811c3659262a86e882ecd5c69f97c2abc5421fe0ccbb20"
+    },
+    "physical-follow.json": {
+      "bytes": 69738,
+      "sha256": "bf088902100b65ecf87d3e0c176ab64a0261da3ac2d3b9e16822003b1859e717"
+    },
+    "source-guard.json": {
+      "bytes": 35213,
+      "sha256": "06a49fa6b7949441e7932df3c8aef4d63d2588d409eb5deeae9512a5fee15194"
+    },
+    "visual-offset.png": {
+      "bytes": 9453,
+      "sha256": "70671d6e4498d41146be2f43600165ae10d13556a8e434ff74a7415362d8ac5e"
+    },
+    "window-pixels.json": {
+      "bytes": 18292,
+      "sha256": "eefb5c0fcc1fdcee7c675e961a64c3d698820a8de1c0fcbfb7d7138d15f4a3d2"
+    }
+  },
+  "supplementalAnimationTrackSmoke": {
+    "passed": true,
+    "observations": 2,
+    "source": "animation-track-smoke.mjs",
+    "report": "animation-track-follow.json",
+    "nativeLog": "animation-track-follow.log",
+    "assertions": [
+      "Real saved offset2d track samples VientoVisual from x=0 to x=50 at authoritative time 0.5.",
+      "Logical actor and Camera2D center remain [1400,900].",
+      "Exact rendered actor bounds move +100 pixels horizontally at zoom2.",
+      "All frozen production/test bytes remain unchanged."
+    ]
+  },
+  "totalIncludingSupplementalCameraSamples": 33
+}

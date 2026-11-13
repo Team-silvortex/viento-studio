@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-11-11T08:37:54.159349+00:00",
+  "applicationVersion": "0.2.9",
+  "executionDescriptorVersion": "0.42.0",
+  "delivery": "working-tree",
+  "authorOrRuntimeSchemaChanged": false,
+  "fullApplication": {
+    "command": "npm run check -- --app-only",
+    "node": "v24.21.0",
+    "log": "app-final.log",
+    "tests": 9118,
+    "pass": 8452,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 666,
+    "todo": 0,
+    "duration_ms": 487431.825625,
+    "syntaxFiles": 1554,
+    "sourceReview": "full-check-sources-after.json"
+  },
+  "targeted": {
+    "pure": {
+      "tests": 12,
+      "pass": 12,
+      "log": "pure-final.log",
+      "command": "node --test scripts/tests/scene-workspace-view.test.mjs"
+    },
+    "canvas": {
+      "tests": 48,
+      "pass": 48,
+      "log": "canvas-final.log",
+      "command": "node --test scripts/tests/scene-layout-canvas.test.mjs scripts/tests/scene-animation-preview-canvas.test.mjs scripts/tests/scene-world-plane-canvas.test.mjs"
+    },
+    "ui": {
+      "tests": 83,
+      "pass": 83,
+      "log": "ui-final.log",
+      "command": "node --test scripts/tests/scene-preview-ui.test.mjs scripts/tests/scene-layout-ui.test.mjs scripts/tests/scene-source-layout-ui.test.mjs scripts/tests/i18n.test.mjs scripts/tests/i18n-coverage.test.mjs scripts/tests/i18n-diagnostics.test.mjs"
+    }
+  },
+  "realBrowser": {
+    "report": "browser-final-2026-11-11/browser.json",
+    "ok": true,
+    "sources": 25,
+    "godotHostedRun": "succeeded",
+    "nativeProbe": "separate direct Godot import and headless runtime",
+    "migrationDocuments": 4,
+    "sceneBytesEqual": true,
+    "authorFiles": {
+      "before": 14,
+      "after": 14,
+      "onlySceneChanged": true
+    },
+    "savedPositions": [
+      [
+        -236,
+        -117
+      ],
+      [
+        1364,
+        763
+      ],
+      [
+        300,
+        240
+      ]
+    ],
+    "viewport": [
+      640,
+      480
+    ]
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 189,
+    "implementations": 571,
+    "bindings": 783,
+    "cells": 3132,
+    "evidence": 3489,
+    "dependencies": 577,
+    "workflows": 154
+  },
+  "preservation": "preservation.json",
+  "scope": [
+    "Author workplane and runtime viewport are separate; no runtime follow camera, backend or permanent generated scripts were added.",
+    "Source, controlled DOM/Canvas, real Chrome pixel/pointer workflow, Godot standard run and independent native coordinate probe have distinct scopes.",
+    "Targeted tests overlap with the complete application; 666 environment-dependent skips do not count as native passes.",
+    "Standalone evidence script changed during the full run; all production and .test sources stayed unchanged, final observer separately syntax-checked and actually executed.",
+    "No installed Tauri, Android, Windows/macOS, embedded viewport, physical keyboard, GPU or ns-nova implementation acceptance."
+  ]
+}

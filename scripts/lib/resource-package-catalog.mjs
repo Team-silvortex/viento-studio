@@ -18,6 +18,8 @@ import { inspectRuntimeCaseDocument, RUNTIME_CASE_DOCUMENT_FILE_MAX_BYTES } from
 import { inspectPhysicsReplayDocument, PHYSICS_REPLAY_DOCUMENT_FILE_MAX_BYTES } from '../../engine/physics-replay-document.mjs';
 import { inspectPhysicsReplayCaseDocument, PHYSICS_REPLAY_CASE_DOCUMENT_FILE_MAX_BYTES } from '../../engine/physics-replay-case-document.mjs';
 import { runtimeAuthorDocumentIds, validateRuntimeAuthorDocumentDependencies } from './runtime-author-package.mjs';
+import { inspectSceneCamera2DDocument, sceneCamera2DDocumentIds, validateSceneCamera2DDependencies, SCENE_CAMERA2D_FILE_MAX_BYTES } from '../../engine/scene-camera2d.mjs';
+import { inspectSceneHUD2DDocument, sceneHUD2DDocumentIds, validateSceneHUD2DDependencies, SCENE_HUD2D_FILE_MAX_BYTES } from '../../engine/scene-hud2d.mjs';
 import { inspectRuntimeCaseSuite, runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies,
   RUNTIME_CASE_SUITE_FILE_MAX_BYTES } from '../../engine/runtime-case-suite.mjs';
 
@@ -63,6 +65,16 @@ function inspectPackageAuthorDocument(bytes, sourcePath, inspect, maxBytes, code
   catch { valid = false; }
   return valid ? checked : { recognized: true, ok: false, value: null, diagnostics: [{ severity: 'error',
     code, message: `${label} requires bounded UTF-8 JSON in a registered .json document.`, propertyPath: '' }] };
+}
+
+export function inspectPackageSceneCamera2D(bytes, sourcePath) {
+  return inspectPackageAuthorDocument(bytes, sourcePath, inspectSceneCamera2DDocument,
+    SCENE_CAMERA2D_FILE_MAX_BYTES, 'build_camera2d_invalid', 'A runtime camera2d declaration');
+}
+
+export function inspectPackageSceneHUD2D(bytes, sourcePath) {
+  return inspectPackageAuthorDocument(bytes, sourcePath, inspectSceneHUD2DDocument,
+    SCENE_HUD2D_FILE_MAX_BYTES, 'build_hud2d_invalid', 'A runtime hud2d declaration');
 }
 
 export function inspectPackageRuntimeCase(bytes, sourcePath) {
@@ -129,7 +141,7 @@ export async function readPackageCatalog(root, signal) {
   const registry = await readRegistry(root, { signal }), assetRoot = resolveAssetRoot(root);
   if (registry.documents.length + registry.assets.length > PACKAGE_LIMITS.files) throw packageError('导出文件过多');
   const entries = [], records = new Map(), sources = new Map(), templates = new Map(), revisions = [workspace, assetRoot];
-  const projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], assemblyChecks = [], documentSources = [];
+  const projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], assemblyChecks = [], cameraChecks = [], hudChecks = [], documentSources = [];
   let sourceBytes = 0;
   const countSource = bytes => {
     sourceBytes += bytes.length;
@@ -169,6 +181,8 @@ export async function readPackageCatalog(root, signal) {
         const runtimeCase = inspectPackageRuntimeAuthorDocument(source, relative);
         const suite = inspectPackageRuntimeCaseSuite(source, relative);
         const assembly = inspectPackageProjectAssembly(source, relative);
+        const camera = inspectPackageSceneCamera2D(source, relative);
+        const hud = inspectPackageSceneHUD2D(source, relative);
         // Dependency validation only needs availability and the projection or
         // composition classification. Do not retain every source body.
         documentSources.push({ record, sourcePath: relative,
@@ -179,6 +193,8 @@ export async function readPackageCatalog(root, signal) {
         if (runtimeCase.recognized) caseChecks.push({ item, record, checked: runtimeCase });
         if (suite.recognized) suiteChecks.push({ item, record, checked: suite });
         if (assembly.recognized) assemblyChecks.push({ item, record, checked: assembly });
+        if (camera.recognized) cameraChecks.push({ item, record, checked: camera });
+        if (hud.recognized) hudChecks.push({ item, record, checked: hud });
         const fingerprint = { size: source.length, sha256: packageDigest(source) };
         sources.set(record.id, fingerprint); revisions.push([record.id, fingerprint.sha256]);
         const parsed = parseSourceContent(source.toString('utf8'), relative, resolveDocumentDefinition(workspace, relative, record));
@@ -209,6 +225,8 @@ export async function readPackageCatalog(root, signal) {
         if (runtimeCase.ok && runtimeCase.recognized) for (const id of runtimeAuthorDocumentIds(runtimeCase.value)) deps.add(id);
         if (suite.ok && suite.recognized) for (const id of runtimeCaseSuiteDocumentIds(suite.value)) deps.add(id);
         if (assembly.ok && assembly.recognized) for (const id of projectAssemblyDocumentIds(assembly.value)) deps.add(id);
+        if (camera.ok && camera.recognized) for (const id of sceneCamera2DDocumentIds(camera.value)) deps.add(id);
+        if (hud.ok && hud.recognized) for (const id of sceneHUD2DDocumentIds(hud.value)) deps.add(id);
         for (const url of urls) {
           const id = byUrl.get(mediaUrl(url));
           if (id) deps.add(id); else item.problems.push(url);
@@ -232,7 +250,9 @@ export async function readPackageCatalog(root, signal) {
   const bodyDependencyIds = new Set([...behaviorChecks.filter(item => item.behavior.ok).flatMap(item => sceneBehaviorDocumentIds(item.behavior.value)),
     ...caseChecks.filter(item => item.checked.ok).flatMap(item => runtimeAuthorDocumentIds(item.checked.value)),
     ...suiteChecks.filter(item => item.checked.ok).flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value)),
-    ...assemblyChecks.filter(item => item.checked.ok).flatMap(item => projectAssemblyDocumentIds(item.checked.value))]);
+    ...assemblyChecks.filter(item => item.checked.ok).flatMap(item => projectAssemblyDocumentIds(item.checked.value)),
+    ...cameraChecks.filter(item => item.checked.ok).flatMap(item => sceneCamera2DDocumentIds(item.checked.value)),
+    ...hudChecks.filter(item => item.checked.ok).flatMap(item => sceneHUD2DDocumentIds(item.checked.value))]);
   for (const id of bodyDependencyIds) {
     const document = documentSources.find(item => item.record.id === id);
     if (!document) continue;
@@ -257,6 +277,12 @@ export async function readPackageCatalog(root, signal) {
   }
   for (const { item, record, checked } of suiteChecks) {
     if (!checked.ok || validateRuntimeCaseSuiteDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
+  }
+  for (const { item, record, checked } of cameraChecks) {
+    if (!checked.ok || validateSceneCamera2DDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
+  }
+  for (const { item, record, checked } of hudChecks) {
+    if (!checked.ok || validateSceneHUD2DDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
   }
   for (const { item, record, checked } of assemblyChecks) {
     if (!checked.ok || validateProjectAssemblyDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');

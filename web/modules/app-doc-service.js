@@ -9,6 +9,7 @@ import { SCENE_ANIMATION_TARGETS_API_PATH } from '../../engine/scene-animation-t
 import { SCENE_AUDIO_USAGE_API_PATH } from '../../engine/scene-audio-usage.mjs';
 import { SCENE_AUDIO_DIRECTORY_API_PATH } from '../../engine/scene-audio-directory.mjs';
 import { SCENE_AUDIO_CREATION_API_PATH } from '../../engine/scene-audio-creation-contract.mjs';
+import { SCENE_BEHAVIOR_REFERENCE_DIRECTORY_API_PATH } from '../../engine/scene-behavior-reference-directory.mjs';
 import { SCENE_BEHAVIOR_DIRECTORY_API_PATH } from '../../engine/scene-behavior-directory.mjs';
 import { SCENE_BEHAVIOR_CREATION_API_PATH } from '../../engine/scene-behavior-creation-contract.mjs';
 import { SCENE_BEHAVIOR_AUTHORING_API_PATH } from '../../engine/scene-behavior-authoring-contract.mjs';
@@ -61,6 +62,12 @@ export async function inspectSceneAudioDirectory(payload) {
   return (await fetchJsonApiRequest(SCENE_AUDIO_DIRECTORY_API_PATH, withAuthHeaders({
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
   }), 45000, t('读取场景音轨'))).payload;
+}
+
+export async function inspectSceneBehaviorReferenceDirectory(payload) {
+  return (await fetchJsonApiRequest(SCENE_BEHAVIOR_REFERENCE_DIRECTORY_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取行为参数参考'))).payload;
 }
 
 export async function inspectSceneBehaviorDirectory(payload) {

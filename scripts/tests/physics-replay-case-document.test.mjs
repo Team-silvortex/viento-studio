@@ -52,3 +52,34 @@ test('package classification keeps acceptance, legacy replay and runtime case in
   assert.equal(inspect(old.toString()).recognized, false);
   assert.equal(inspectPackageRuntimeAuthorDocument(old, 'documents/replay.json').value.format, 'viento-physics2d-replay-document');
 });
+
+
+const instanceProgram = () => ({ format: 'viento-physics2d-input-replay', schemaVersion: 2, fixedDelta: 1 / 60,
+  steps: Array.from({ length: 30 }, (_, step) => ({ inputs: step < 3
+    ? [{ instanceId, left: false, right: true, up: false, down: false, jump: false },
+      { instanceId: id(5), left: true, right: false, up: false, down: false, jump: step === 1 }] : [] })) });
+
+test('v2 acceptance retains independent input and checks for two instances of the same OC', () => {
+  const value = envelope(), f = fixture(), authored = scene();
+  authored.actors.push({ ...structuredClone(authored.actors[0]), instanceId: id(5), position: [90, 0] });
+  f.source.documents[0].content = JSON.stringify(authored);
+  value.case.program = instanceProgram();
+  value.case.checks.push({ instanceId: id(5), stepIndex: 30, contact: { exists: false } });
+  const before = JSON.stringify(f), checked = validate(value);
+  assert.ok(Object.isFrozen(checked.case.program.steps[0].inputs[1]));
+  assert.notEqual(checked.case.program.steps[0].inputs[1], value.case.program.steps[0].inputs[1]);
+  assert.deepEqual(dependencies(value, f.registration, f.source), []);
+  assert.equal(JSON.stringify(f), before);
+  assert.deepEqual(inspect(JSON.stringify(value)).value, value);
+});
+
+test('v2 acceptance separately validates input targets even when its expected-check targets remain valid', () => {
+  const value = envelope(), f = fixture(); value.case.program = instanceProgram();
+  value.case.program.steps.forEach(step => { step.inputs = step.inputs.slice(0, 1); });
+  assert.deepEqual(dependencies(value, f.registration, f.source), []);
+  value.case.program.steps[1].inputs[0].instanceId = id(999);
+  assert.deepEqual(dependencies(value, f.registration, f.source).map(({ code, propertyPath }) => ({ code, propertyPath })), [{
+    code: 'runtime_physics_case_instance_missing', propertyPath: '/case/program/steps/1/inputs/0/instanceId',
+  }]);
+  assert.equal(value.case.checks[0].instanceId, instanceId);
+});

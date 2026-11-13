@@ -28,9 +28,12 @@ export function setupSceneLayout({ getContext = () => ({}), setBusy = () => {}, 
       <label class="scene-preview-grid"><input id="sceneLayoutGrid" type="checkbox" checked><span data-i18n="显示网格"></span></label>
       <button id="sceneLayoutUndo" type="button" class="doc-btn doc-btn-ghost" data-i18n="撤销布局修改"></button>
       <button id="sceneLayoutRedo" type="button" class="doc-btn doc-btn-ghost" data-i18n="重做布局修改"></button></div>
-    <div class="scene-preview-toolbar"><button id="sceneLayoutFit" type="button" class="doc-btn doc-btn-ghost" data-i18n="适应画布"></button>
+    <div class="scene-preview-toolbar"><button id="sceneLayoutFit" type="button" class="doc-btn doc-btn-ghost" data-i18n="适应运行视口"></button>
+      <button id="sceneLayoutFitAll" type="button" class="doc-btn doc-btn-ghost" data-i18n="聚焦全部对象"></button>
+      <button id="sceneLayoutFocusSelection" type="button" class="doc-btn doc-btn-ghost" data-i18n="聚焦当前选择"></button>
       <button id="sceneLayoutZoomOut" type="button" class="doc-btn doc-btn-ghost" data-i18n="缩小"></button><output id="sceneLayoutZoom"></output>
       <button id="sceneLayoutZoomIn" type="button" class="doc-btn doc-btn-ghost" data-i18n="放大"></button></div>
+    <p class="build-hint" data-i18n="边框表示初始运行视口，框外仍是场景世界。取景只改变编辑视图，不改变场景坐标。"></p>
     <p id="sceneLayoutHelp" class="build-hint" data-i18n="拖动空白处或按住空格平移。选中对象后，方向键微调 1 像素，Shift + 方向键微调 10 像素。Esc 取消当前拖动。"></p>
     <p class="build-hint" data-i18n="按住 Shift 或 Ctrl / ⌘ 点击对象可多选，也可以勾选列表。拖动已选对象可整体移动；吸附以拖动的对象为基准，保持间距。"></p>
     <div class="scene-preview-layout"><canvas id="sceneLayoutCanvas" tabindex="0" aria-describedby="sceneLayoutHelp" data-i18n-aria-label="场景布局编辑画布"></canvas>
@@ -91,7 +94,7 @@ export function setupSceneLayout({ getContext = () => ({}), setBusy = () => {}, 
   }, onMoveMany(changes) {
     if (!draft || locked() || inputPending) return;
     applyPositions(changes);
-  }, onViewChange(value) { el('sceneLayoutZoom').textContent = `${Math.round(value.scale * 100)}%`; } });
+  }, onViewChange(value) { el('sceneLayoutZoom').textContent = `${value.scale < 0.01 ? Number((value.scale * 100).toPrecision(3)) : Math.round(value.scale * 100)}%`; } });
   view.setMultiSelect(true);
   const outline = createSceneOutline({ root: el('sceneLayoutObjects'), search: el('sceneLayoutSearch'), multi: true,
     onActorSelect(id, event) {
@@ -169,6 +172,8 @@ export function setupSceneLayout({ getContext = () => ({}), setBusy = () => {}, 
     for (const name of alignments) el(`sceneLayoutAlign${name}`).disabled = isLocked || inputPending || selection.length < 2;
     el('sceneLayoutSelectAll').disabled = isBusy || inputPending || !draft;
     el('sceneLayoutClearSelection').disabled = isBusy || inputPending || !selection.length;
+    el('sceneLayoutFitAll').disabled = !draft;
+    el('sceneLayoutFocusSelection').disabled = !draft || !selection.length;
     outline.setSelection(selection, { disabled: isBusy || inputPending });
     el('sceneLayoutReview').hidden = !approved;
     el('sceneLayoutSource').textContent = approved?.proposal?.afterContent || approved?.result?.changes?.[0]?.afterText || approved?.request?.content || '';
@@ -382,6 +387,8 @@ export function setupSceneLayout({ getContext = () => ({}), setBusy = () => {}, 
   el('sceneLayoutSnap').addEventListener('change', () => view.setSnap(el('sceneLayoutSnap').checked ? 32 : 0));
   el('sceneLayoutGrid').addEventListener('change', () => view.setGrid(el('sceneLayoutGrid').checked));
   el('sceneLayoutUndo').addEventListener('click', () => history('undo')); el('sceneLayoutRedo').addEventListener('click', () => history('redo'));
+  el('sceneLayoutFitAll').addEventListener('click', () => { if (dialog.open && draft) view.fitAll(); });
+  el('sceneLayoutFocusSelection').addEventListener('click', () => { if (dialog.open && draft && selection.length) view.focusSelection(); });
   el('sceneLayoutFit').addEventListener('click', () => view.fit()); el('sceneLayoutZoomIn').addEventListener('click', () => view.zoom(1.25)); el('sceneLayoutZoomOut').addEventListener('click', () => view.zoom(.8));
   el('sceneLayoutCheck').addEventListener('click', () => void run('preview')); el('sceneLayoutSave').addEventListener('click', () => void run('apply'));
   el('sceneLayoutVerify').addEventListener('click', () => void verify());

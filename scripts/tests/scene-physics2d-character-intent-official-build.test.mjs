@@ -7,6 +7,7 @@ import { scenePhysics2DPlatformMotionAuthor } from './helpers/scene-physics2d-pl
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
 import { godotPhysicsCharacterIntentAssemblyScripts } from '../backends/godot4-physics-character-intent.mjs';
+import { godotPhysicsPlatformControlAssemblyScripts } from '../backends/godot4-physics-platform-control.mjs';
 
 const executable = process.env.VIENTO_GODOT_BIN;
 const real = { skip: !executable ? 'Set VIENTO_GODOT_BIN for native Godot build verification' : false, timeout: 240000 };
@@ -20,7 +21,7 @@ test('official Godot import and script-check cover intent, one-way platforms and
   const captured = await captureBuildSnapshot(author.author, author.assemblyId);
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
   const generated = await adapter.generate(captured.plan);
-  assert.equal(generated.backend.version, '0.37.0');
+  assert.equal(generated.backend.version, '0.46.0');
   assert.ok(generated.backend.capabilities.includes('physics.character-intent2d'));
   assert.ok(generated.backend.capabilities.includes('physics.character-drop-through2d'));
   assert.ok(generated.backend.capabilities.includes('physics.platform-motion2d'));
@@ -31,11 +32,13 @@ test('official Godot import and script-check cover intent, one-way platforms and
     await fs.writeFile(path.join(directory, name), bytes);
   }
   // Validation checks the .gd.txt historical copies byte-for-byte; they are
-  // retained as data, not executable scripts. All 47 generated .gd files,
+  // retained as data, not executable scripts. All 51 generated .gd files,
   // including the original contact bridge, must be compiled by script-check.
-  const scripts = await godotPhysicsCharacterIntentAssemblyScripts(directory);
+  const intentScripts = await godotPhysicsCharacterIntentAssemblyScripts(directory);
+  const scripts = await godotPhysicsPlatformControlAssemblyScripts(directory);
+  assert.ok(intentScripts.every(name => scripts.includes(name)));
   const allScripts = [...generated.files.keys()].filter(name => name.endsWith('.gd'));
-  assert.equal(allScripts.length, 47);
+  assert.equal(allScripts.length, 51);
   assert.equal(new Set(scripts).size, scripts.length);
   assert.deepEqual(allScripts.filter(name => !scripts.includes(name)), []);
   for (const name of ['movement-contacts-helper.gd', 'character-intent-original-contacts.gd',

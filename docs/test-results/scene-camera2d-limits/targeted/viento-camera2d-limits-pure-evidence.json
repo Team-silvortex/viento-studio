@@ -1,0 +1,82 @@
+{
+  "topic": "scene-camera2d-world-limits-pure",
+  "capturedAtUtc": "2026-11-11T10:17:31.247399+00:00",
+  "repository": "/home/chiharukiryu/cdev/viento-studio",
+  "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/scene-camera2d-limits.test.mjs scripts/tests/scene-camera2d.test.mjs scripts/tests/scene-camera2d-frame.test.mjs scripts/tests/scene-camera2d-edit.test.mjs > /tmp/viento-camera2d-limits-pure-final.log 2>&1",
+  "result": {
+    "limits": {
+      "tests": 20,
+      "pass": 20
+    },
+    "existingDocument": {
+      "tests": 14,
+      "pass": 14
+    },
+    "existingFrame": {
+      "tests": 15,
+      "pass": 15
+    },
+    "existingEdit": {
+      "tests": 3,
+      "pass": 3
+    },
+    "combined": {
+      "tests": 52,
+      "pass": 52,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "logs": [
+    {
+      "path": "/tmp/viento-camera2d-limits-pure-initial.log",
+      "sha256": "0f2a6eb2b32d88780df010b371821e8b5151e6606d5e1cd7e2686de9a45c17a5",
+      "counts": {
+        "tests": 52,
+        "pass": 52,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "/tmp/viento-camera2d-limits-pure-final.log",
+      "sha256": "4a226eb4753f1859779102739c892c6c64536e524bec62b3e2cd86fa57594c8d",
+      "counts": {
+        "tests": 52,
+        "pass": 52,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "sourceHashesAfterFinalTargetedRun": {
+    "engine/scene-camera2d.mjs": "476f6cdf769beb1efa748dac2a117686b549e2f3155fe1bf47ff0226a571bbfd",
+    "engine/scene-camera2d-frame.mjs": "8bf2ce935fbe4deca4129ee4ef152253f247d98945e6065ab67a746ca3d70066",
+    "engine/scene-camera2d-edit.mjs": "cdc3079553647e1c52924ea22a5f796b4d871f95d5edf33757f59c476a90581e",
+    "scripts/tests/scene-camera2d-limits.test.mjs": "8df2d329bb4caf92e7263b6887eefbd3d90ce1fdd13eee4794c65539ad2a15b6"
+  },
+  "contract": {
+    "authorVersion1": "Original exact keys; limits forbidden.",
+    "authorVersion2": "Limits required, four finite values within ±100000 and both axes strictly increasing.",
+    "capabilities": [
+      "scene.camera2d",
+      "scene.camera2d.limits2d"
+    ],
+    "planWrapperVersion": 1,
+    "frame": "Legacy output keys remain exact. Bounded frame adds desiredCenter and limits; center/bounds are final visible framing. Clamp accounts for viewport/zoom half extents. An undersized world axis centers the frame.",
+    "fitAll": "Includes actual visible frame, actor geometry, limits rectangle and desiredCenter point.",
+    "edit": "Explicit presence/removal of own limits enables author v2/disables to v1. Only camera and schemaVersion tokens change; semantic no-op keeps source byte-for-byte.",
+    "move": "Changes only author center/offset; preserves limits/zoom/identity and never replaces intent with clamped center."
+  },
+  "boundaries": [
+    "No first failure: initial and final runs passed. Between them fit-all intentionally gained desiredCenter visibility after parent/product decision.",
+    "All legacy test files preserved by this agent; only one independent limits test file added.",
+    "Strict getter/prototype/hidden/symbol rejection remains; no serializer/getter invoked by edit.",
+    "Browser-style VM evidence covers same geometry source in realm with no DOM/Node host; it is not a real browser or Godot runtime result.",
+    "Hashes captured after targeted tests, not a claim of full-run source-preservation proof.",
+    "Godot adapter, resource package host, capability service/UI and native/runtime evidence are separately owned."
+  ],
+  "frozen": true
+}

@@ -1,0 +1,28 @@
+✖ a broken target scene reports its real model error without misdiagnosing a legal navigation member (138.519283ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 316.822098
+
+✖ failing tests:
+
+test at ../../../../tmp/viento-scene-navigation-partial-member-fix/project-scene-navigation-host-unpatched.test.mjs:120:1
+✖ a broken target scene reports its real model error without misdiagnosing a legal navigation member (138.519283ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_scene_value","message":"Viewport dimensions must be integers from 64 to 4096.","objectId":"12345678-1234-4234-8234-123456789abd","sourcePath":"documents/scenes/audio.json","propertyPath":"/viewport","sourceRevision":"sha256:e6bb6f027871d5eb9853208fb87037a2f0f9fce7038557df2565c6701336877c","sourceRange":{"start":124,"end":144,"encoding":"utf-16","propertyPath":"/viewport","exact":true}},{"severity":"error","code":"build_scene_navigation_target_invalid","message":"The target scene is not a member of this project assembly.","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:476957ee15e440281e2d95629d3d415ec1930870ceb5f64694f900ba83078d8b","propertyPath":"/bindings/0/parameters/target_scene_id","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","bindingId":"99999999-9999-4999-8999-999999999991","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","parameter":"target_scene_id","reason":"member","sourceRange":{"start":485,"end":523,"encoding":"utf-16","propertyPath":"/bindings/0/parameters/target_scene_id","exact":true}},{"severity":"error","code":"build_scene_navigation_target_invalid","message":"The target scene is not a member of this project assembly.","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:476957ee15e440281e2d95629d3d415ec1930870ceb5f64694f900ba83078d8b","propertyPath":"/bindings/1/parameters/target_scene_id","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","bindingId":"99999999-9999-4999-8999-999999999992","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2","parameter":"target_scene_id","reason":"member","sourceRange":{"start":944,"end":982,"encoding":"utf-16","propertyPath":"/bindings/1/parameters/target_scene_id","exact":true}}]
+  
+  3 !== 1
+  
+      at TestContext.<anonymous> (file:///tmp/viento-scene-navigation-partial-member-fix/project-scene-navigation-host-unpatched.test.mjs:128:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

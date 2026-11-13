@@ -58,3 +58,38 @@ test('resource inspectors preserve distinct case and physics replay format recog
   assert.equal(inspectPackageRuntimeAuthorDocument(bytes, 'documents/replay.json').ok, true);
   assert.equal(inspectPackageRuntimeAuthorDocument(bytes, 'documents/replay.txt').diagnostics[0].code, 'runtime_physics_replay_document_invalid');
 });
+
+
+const instanceReplay = () => ({ format: 'viento-physics2d-input-replay', schemaVersion: 2, fixedDelta: 1 / 60,
+  steps: Array.from({ length: 30 }, (_, step) => ({ inputs: step < 3
+    ? [{ instanceId, left: false, right: true, up: false, down: false, jump: false },
+      { instanceId: id(5), left: true, right: false, up: false, down: false, jump: step === 1 }] : [] })) });
+
+test('v2 replay documents preserve two independent instances of one OC and deep-freeze every input row', () => {
+  const value = { ...envelope(), replay: instanceReplay() }, f = fixture(), authored = scene();
+  authored.actors.push({ ...structuredClone(authored.actors[0]), instanceId: id(5), position: [90, 0] });
+  f.source.documents[0].content = JSON.stringify(authored);
+  const before = JSON.stringify(f), checked = validatePhysicsReplayDocument(value);
+  assert.equal(checked.replay.schemaVersion, 2);
+  assert.notEqual(checked.replay.steps[0].inputs[0], value.replay.steps[0].inputs[0]);
+  assert.ok(Object.isFrozen(checked.replay.steps[0].inputs[0]));
+  assert.deepEqual(validatePhysicsReplayDocumentDependencies(value, f.registration, f.source), []);
+  assert.deepEqual(physicsReplayDocumentIds(value), [sceneId]);
+  assert.equal(JSON.stringify(f), before);
+  value.replay.steps[0].inputs[0].right = false;
+  assert.equal(checked.replay.steps[0].inputs[0].right, true);
+});
+
+test('v2 replay dependency diagnostics name missing input instance paths without imposing runtime physics eligibility', () => {
+  const value = { ...envelope(), replay: instanceReplay() }, f = fixture(), authored = scene();
+  authored.actors[0].controls = 'none';
+  authored.actors.push({ ...structuredClone(authored.actors[0]), instanceId: id(5) });
+  f.source.documents[0].content = JSON.stringify(authored);
+  assert.deepEqual(validatePhysicsReplayDocumentDependencies(value, f.registration, f.source), []);
+  value.replay.steps[0].inputs[1].instanceId = id(999);
+  const before = JSON.stringify(f), diagnostics = validatePhysicsReplayDocumentDependencies(value, f.registration, f.source);
+  assert.deepEqual(diagnostics.map(({ code, propertyPath }) => ({ code, propertyPath })), [{
+    code: 'runtime_physics_replay_instance_missing', propertyPath: '/replay/steps/0/inputs/1/instanceId',
+  }]);
+  assert.equal(JSON.stringify(f), before);
+});

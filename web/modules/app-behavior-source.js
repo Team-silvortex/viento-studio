@@ -1,14 +1,16 @@
 import { captureSceneBehaviorAnimationClips, sceneBehaviorAnimationClipsMatchSource } from '../../engine/scene-animation-directory.mjs';
 import { captureSceneBehaviorAudioTracks, sceneBehaviorAudioTracksMatchSource } from '../../engine/scene-audio-directory.mjs';
+import { captureSceneBehaviorReferences, sceneBehaviorReferencesMatchSource } from '../../engine/scene-behavior-reference-directory.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { isSceneBehaviorProposal, prepareSceneBehaviorApply } from '../../engine/scene-behaviors-edit.mjs';
 
 // The editor host owns source versions, dependency review and a synchronous
 // in-memory write. No UI controller, renderer, ordinary Save or tool is shared.
-export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspectAudioDirectory, inspectAnimationDirectory, writeDraft, focus = () => {} }) {
+export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspectAudioDirectory, inspectAnimationDirectory, inspectReferenceDirectory, writeDraft, focus = () => {} }) {
   let previous, generation = 0, recognitionContent, recognitionPath, recognitionJSON, recognized = false;
   let audioAvailability, audioGeneration = 0;
   let animationAvailability, animationGeneration = 0;
+  let referenceAvailability, referenceGeneration = 0;
   const conflict = () => { throw Object.assign(new Error('Behavior editing no longer owns this source or its dependencies.'), { errorCode: 'scene_behavior_authoring_conflict' }); };
   function capture() {
     const s = getState(), keys = ['document','token','sourcePath','content','baseline','version','editable','creating','busy','available','sourceJSON'];
@@ -17,12 +19,13 @@ export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspe
     // not invalidate an otherwise current ordinary behavior proposal.
     if (audioAvailability !== s.audioTracksAvailable) { audioAvailability = s.audioTracksAvailable; audioGeneration++; }
     if (animationAvailability !== s.animationClipsAvailable) { animationAvailability = s.animationClipsAvailable; animationGeneration++; }
+    if (referenceAvailability !== s.referencesAvailable) { referenceAvailability = s.referencesAvailable; referenceGeneration++; }
     if (recognitionContent !== s.content || recognitionPath !== s.sourcePath || recognitionJSON !== s.sourceJSON) {
       recognitionContent = s.content; recognitionPath = s.sourcePath; recognitionJSON = s.sourceJSON;
       const checked = s.sourceJSON ? inspectSceneBehaviors(s.content) : null;
       recognized = checked?.recognized === true && checked.ok === true;
     }
-    return { ...s, sourceToken: `${String(s.token)}:${generation}`, behaviorSource: recognized, audioGeneration, animationGeneration };
+    return { ...s, sourceToken: `${String(s.token)}:${generation}`, behaviorSource: recognized, audioGeneration, animationGeneration, referenceGeneration };
   }
   const eligible = s => s.editable === true && s.available === true && !s.creating && !s.busy && s.sourceJSON === true && s.behaviorSource && Boolean(s.document);
   const current = (owner, guard = () => true) => {
@@ -38,6 +41,7 @@ export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspe
     return { editable: s.editable, creating: s.creating, busy: s.busy, available: s.available,
       audioTracksAvailable: s.audioTracksAvailable === true && typeof inspect === 'function' && typeof inspectAudioDirectory === 'function',
       animationClipsAvailable: s.animationClipsAvailable === true && typeof inspect === 'function' && typeof inspectAnimationDirectory === 'function',
+      referencesAvailable: s.referencesAvailable === true && typeof inspect === 'function' && typeof inspectReferenceDirectory === 'function',
       sourceJSON: s.sourceJSON, sourcePath: s.sourcePath, sourceToken: s.sourceToken, behaviorSource: s.behaviorSource };
   }
   async function snapshot(owner, guard) {
@@ -109,6 +113,39 @@ export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspe
     if (!sceneBehaviorAnimationClipsMatchSource(clips, requested) || !current(owner, animationCurrent)) conflict();
     return clips;
   }
+  async function getReferences(requestedSource, options) {
+    const keys = ['sourcePath', 'token', 'baseSourceRevision', 'sourceRevision', 'content'];
+    if (!requestedSource || typeof requestedSource !== 'object' || Array.isArray(requestedSource)
+      || ![Object.prototype, null].includes(Object.getPrototypeOf(requestedSource))) conflict();
+    const properties = Object.getOwnPropertyDescriptors(requestedSource);
+    if (Reflect.ownKeys(properties).length !== keys.length
+      || keys.some(key => !properties[key]?.enumerable || !Object.hasOwn(properties[key], 'value') || typeof properties[key].value !== 'string')) conflict();
+    const requested = Object.fromEntries(keys.map(key => [key, properties[key].value]));
+    if (!options || typeof options !== 'object' || Array.isArray(options)
+      || ![Object.prototype, null].includes(Object.getPrototypeOf(options))) conflict();
+    const descriptors = Object.getOwnPropertyDescriptors(options), field = descriptors.assemblyObjectId;
+    if (Reflect.ownKeys(descriptors).length !== 1 || !field?.enumerable || !Object.hasOwn(field, 'value')
+      || field.value !== null && (typeof field.value !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(field.value))) conflict();
+    const assemblyObjectId = field.value, owner = capture();
+    if (owner.referencesAvailable !== true || typeof inspect !== 'function' || typeof inspectReferenceDirectory !== 'function') conflict();
+    const referenceCurrent = () => {
+      const state = capture();
+      return state.referencesAvailable === true && state.referenceGeneration === owner.referenceGeneration;
+    };
+    const source = await snapshot(owner, referenceCurrent);
+    if (!source || keys.some(key => source[key] !== requested[key])) conflict();
+    const review = await inspect({ sourcePath: source.sourcePath, content: source.content });
+    if (!current(owner, referenceCurrent) || review?.format !== 'viento-behavior-authoring-context' || review.schemaVersion !== 1
+      || review.sourcePath !== source.sourcePath || !/^sha256:[a-f0-9]{64}$/.test(review.dependencyRevision)
+      || review.scene?.objectId !== inspectSceneBehaviors(source.content).value.sceneObjectId) conflict();
+    const scene = { objectId: review.scene.objectId, sourcePath: review.scene.sourcePath, sourceRevision: review.scene.sourceRevision };
+    const raw = await inspectReferenceDirectory({ sceneObjectId: scene.objectId, assemblyObjectId });
+    if (!current(owner, referenceCurrent)) conflict();
+    const references = captureSceneBehaviorReferences(source, raw, scene);
+    if ((references.selectedAssembly?.objectId ?? null) !== assemblyObjectId
+      || !sceneBehaviorReferencesMatchSource(references, requested) || !current(owner, referenceCurrent)) conflict();
+    return references;
+  }
   async function applyDraft(proposal, { isCurrent = () => true, dependencyRevision } = {}) {
     if (!isSceneBehaviorProposal(proposal) || typeof dependencyRevision !== 'string' || !/^sha256:[a-f0-9]{64}$/.test(dependencyRevision)) conflict();
     const owner = capture(), source = await snapshot(owner, isCurrent);
@@ -124,5 +161,5 @@ export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspe
     return { applied: true, sourcePath: after.sourcePath, sourceToken: after.sourceToken, content: prepared.afterContent,
       focus() { if (current(after) && after.content === prepared.afterContent) focus(); } };
   }
-  return Object.freeze({ getContext, getSource, getAudioTracks, getAnimationClips, applyDraft });
+  return Object.freeze({ getContext, getSource, getAudioTracks, getAnimationClips, getReferences, applyDraft });
 }

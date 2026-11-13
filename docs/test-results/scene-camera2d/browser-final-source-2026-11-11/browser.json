@@ -1,0 +1,3702 @@
+{
+  "startedAt": "2026-11-11T09:14:24.497Z",
+  "steps": [
+    "A fixed camera is reviewed in three languages at 390px; cancelling preserves all author bytes.",
+    "Explicit Save creates the fixed camera and both references; an invalid target is refused. A real HTTP409 retains the follow draft, requires a new review, and preserves the external edit; explicit retry changes only the camera source. Reopening and reviewing unchanged settings makes no write."
+  ],
+  "screenshots": [
+    "camera-create-zh-CN-390.png",
+    "camera-create-en-390.png",
+    "camera-create-ja-390.png",
+    "camera-created.png",
+    "camera-follow-reopened.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "未保存のカメラ変更を破棄しますか？"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noOverflow": true,
+      "save": {
+        "top": 792,
+        "bottom": 821,
+        "left": 143.453125,
+        "right": 246.546875
+      },
+      "cancel": {
+        "top": 792,
+        "bottom": 821,
+        "left": 256.90625,
+        "right": 360
+      },
+      "title": "运行主相机",
+      "target": {
+        "same": true,
+        "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "original": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "label": "Traveler / 旅人 / 旅人 · 实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+      }
+    },
+    "en": {
+      "noOverflow": true,
+      "save": {
+        "top": 774,
+        "bottom": 814,
+        "left": 142.65625,
+        "right": 247.328125
+      },
+      "cancel": {
+        "top": 781,
+        "bottom": 807,
+        "left": 255.328125,
+        "right": 360
+      },
+      "title": "Runtime main camera",
+      "target": {
+        "same": true,
+        "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "original": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "label": "Traveler / 旅人 / 旅人 · Instance bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+      }
+    },
+    "ja": {
+      "noOverflow": true,
+      "save": {
+        "top": 775,
+        "bottom": 821,
+        "left": 142.65625,
+        "right": 247.328125
+      },
+      "cancel": {
+        "top": 775,
+        "bottom": 821,
+        "left": 255.328125,
+        "right": 360
+      },
+      "title": "実行時メインカメラ",
+      "target": {
+        "same": true,
+        "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "original": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "label": "Traveler / 旅人 / 旅人 · インスタンス bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+      }
+    }
+  },
+  "limitations": [
+    "Actual Chrome HTTP authoring in a disposable workspace; installed Tauri, Android, runtime camera frames and Bevy are not tested.",
+    "Creation persists three related files; editing persists only the camera source."
+  ],
+  "sources": {
+    "engine/scene-camera2d.mjs": "a8446877a436fb56373c2294e398d1a083c45c81a2ef5859ba3054e8c2a743a8",
+    "engine/scene-camera2d-edit.mjs": "352da1cffbac7806f4fe344d8915fef730da3c4da6014649ad6cd411f71a73c7",
+    "engine/world-camera2d-create.mjs": "1959cc5470e1051cdf31a02af30c043572537de2975191942d81d74ff424bc74",
+    "engine/world-command-contract.mjs": "9e73e64fd6cda1a31e7101e3aa62715567a8e9119437c2a8983883f219567b39",
+    "scripts/lib/scene-camera2d-documents.mjs": "555abdac5da62a30a4ef6c853a02ae122c0a1312fd1064b2e1b020d172a2a67c",
+    "scripts/lib/runtime-author-documents.mjs": "7fb68b992f61065448e50bdd67e2f9dcb05b7bdd6b084a2868c057e677cdfb7b",
+    "scripts/lib/world-camera2d-create-transaction.mjs": "6045fb6ccbbc6da888c372ad9294a263fb9f05302cb9a0fa9d45bfe5e2875910",
+    "scripts/lib/world-transactions.mjs": "ec0ff6c42f098f3422b2f7153052b798cec98fe320b8fc6580944cb6456e1709",
+    "scripts/adapters/node-world-commands.mjs": "994c62810086ec8bd45a58a914acaebaa41de8253581e74875af2dd5d27d407f",
+    "scripts/lib/doc-api-service.mjs": "00c1e46b43b86c200ec8bebd0f3693f0a1d143e6d28865d8fc5209faa8f711c9",
+    "scripts/lib/doc-server-routes.mjs": "6bb6e5fa00424761338ac7e628489bb208d831cbc1debcae9b6251399a3fcce3",
+    "scripts/lib/doc-api-contract.mjs": "fb0333e2d1523f7d3c8eaff8858e895feacd74e61bd6924fa6f1a80910896b1c",
+    "web/modules/app-scene-camera2d.js": "fe28c9a904768b295ac766e9a50c9047532fe682f4a979f1ea60a15c8ce22426",
+    "web/scene-camera2d.css": "ac0505abb70d32b4021e59a0514b21a9e6a27b2fcd1a67041d84ff71c3cb0e02",
+    "web/modules/app-project-build.js": "4e77705b7f195049698337e29c179335f361c38cfa3efbc0fed6ddd78e8d9b0e",
+    "web/modules/app-doc-service.js": "19837e57630b1b1355d3100a68557f1b570e26db96ca8266f362a1715a24a3d8",
+    "web/i18n/en.js": "3ddff84e025b15d27794cc4831f46fa942d09a8855e069d942b07e367ecc3992",
+    "web/i18n/ja.js": "388d8d5d05391980ee48b2d6d17d32d0417472dec97efe8f67ef6c0184a34558",
+    "scripts/tests/helpers/scene-physics2d-author-fixture.mjs": "7d1fac77678db579a707a579f3c17f99fd94a0de3cd7f3ee08b082fb7e6a7775",
+    "scripts/tests/scene-camera2d-smoke.mjs": "7789e6fc110febbc9a95740710d2dc9246fc2463d291b620e73e310df1af286f"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04"
+  },
+  "fixture": {
+    "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "assemblyId": "12345678-1234-4234-8234-123456789abc",
+    "instanceIds": [
+      "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "70707070-7070-4070-8070-000000000002"
+    ],
+    "sceneSchemaVersion": 2
+  },
+  "browser": "Chrome/156.0.8078.73",
+  "creation": {
+    "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+    "sourcePath": "documents/cameras/camera-in-studio.json",
+    "changed": [
+      "documents/cameras/camera-in-studio.json",
+      "metadata/documents/1536bece-997f-46e8-89bb-59c17c10f849.json",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json"
+    ],
+    "fixed": {
+      "format": "viento-scene-camera2d",
+      "schemaVersion": 1,
+      "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "camera": {
+        "mode": "fixed",
+        "center": [
+          -120,
+          500
+        ],
+        "zoom": 1.5
+      }
+    }
+  },
+  "conflict": {
+    "status": 409,
+    "retainedForm": true,
+    "requiredFreshReview": true,
+    "externalBytesPreserved": true
+  },
+  "noop": {
+    "preservesBytes": true,
+    "noSaveTicket": true
+  },
+  "updated": {
+    "onlyChanged": "documents/cameras/camera-in-studio.json",
+    "follow": {
+      "format": "viento-scene-camera2d",
+      "schemaVersion": 1,
+      "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "camera": {
+        "mode": "follow",
+        "targetInstanceId": "70707070-7070-4070-8070-000000000002",
+        "offset": [
+          -24,
+          16
+        ],
+        "zoom": 2
+      }
+    },
+    "sha256": "53d76bd2867594eb41ffe09f388be49d74f1c3519a3c8fd6b21093034ae12988"
+  },
+  "authorSnapshot": {
+    "before": {
+      "workspace.json": "8f855072bb50f0a4590de328293a169a80884f74e216954e4ad5e85a55581368",
+      "templates/animation.json": "de58ad72590ed868deb853d151f858ead37ed705ef706a08ff84dbfb1a169cff",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/physics.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "8113f05bcfa68b575ee5e7cfbbf970db1d47f04459cdebad43f182a5a9c34fe9",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/70707070-7070-4070-8070-000000000001.json": "ce50eaebe1bb7474d4d0f3a85aef51449f84dfd86e892a8bbe9c2f259bd90236",
+      "metadata/documents/70707070-7070-4070-8070-000000000004.json": "610efa1560b8525c2701955835b594e9b117f8c8fc02de37c6138c0d3710af89",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "a4e69a7284477a115c5103510acf31a3063abaf86c7987d60e243db762661a29",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "02e8e21900039e9d70c522271bd5a20cb94ee56d830037d01d6b9c485b841408",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "b8ac3963cd37d4dc06f3e15900286fc1664463799aaca5cf2b6bf7e80fed5fda",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/sensor.txt": "7655ec83e62ea45d5264bc7b8aef63a68e15ebf8796528473b6b27fcd40591ac",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/physics/scene-0.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "139b4060666ff8adc6432ec2247aa7fa9f73d27dd3dfc0021e7b3e01a1b781d2",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "a6fbab6e2b2ac2072e26558572edc7bf490b05546a558ad722139117374fe629",
+      "documents/animations/scene-1.json": "c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "created": {
+      "workspace.json": "8f855072bb50f0a4590de328293a169a80884f74e216954e4ad5e85a55581368",
+      "templates/animation.json": "de58ad72590ed868deb853d151f858ead37ed705ef706a08ff84dbfb1a169cff",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/physics.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "8113f05bcfa68b575ee5e7cfbbf970db1d47f04459cdebad43f182a5a9c34fe9",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/1536bece-997f-46e8-89bb-59c17c10f849.json": "63655c95ac9065221bfd57566c64cbf1dfd48d469cfc998905cf0f5fde03e975",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/70707070-7070-4070-8070-000000000001.json": "ce50eaebe1bb7474d4d0f3a85aef51449f84dfd86e892a8bbe9c2f259bd90236",
+      "metadata/documents/70707070-7070-4070-8070-000000000004.json": "610efa1560b8525c2701955835b594e9b117f8c8fc02de37c6138c0d3710af89",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "4b66307cbec0dbcd48b5658d4a3d368b0866b9c709e16c65860fe99a19a3648a",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "02e8e21900039e9d70c522271bd5a20cb94ee56d830037d01d6b9c485b841408",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "b8ac3963cd37d4dc06f3e15900286fc1664463799aaca5cf2b6bf7e80fed5fda",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/sensor.txt": "7655ec83e62ea45d5264bc7b8aef63a68e15ebf8796528473b6b27fcd40591ac",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/physics/scene-0.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/cameras/camera-in-studio.json": "3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2",
+      "documents/behaviors/demo.json": "139b4060666ff8adc6432ec2247aa7fa9f73d27dd3dfc0021e7b3e01a1b781d2",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "a6fbab6e2b2ac2072e26558572edc7bf490b05546a558ad722139117374fe629",
+      "documents/animations/scene-1.json": "c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "after": {
+      "workspace.json": "8f855072bb50f0a4590de328293a169a80884f74e216954e4ad5e85a55581368",
+      "templates/animation.json": "de58ad72590ed868deb853d151f858ead37ed705ef706a08ff84dbfb1a169cff",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/physics.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "8113f05bcfa68b575ee5e7cfbbf970db1d47f04459cdebad43f182a5a9c34fe9",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/1536bece-997f-46e8-89bb-59c17c10f849.json": "63655c95ac9065221bfd57566c64cbf1dfd48d469cfc998905cf0f5fde03e975",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/70707070-7070-4070-8070-000000000001.json": "ce50eaebe1bb7474d4d0f3a85aef51449f84dfd86e892a8bbe9c2f259bd90236",
+      "metadata/documents/70707070-7070-4070-8070-000000000004.json": "610efa1560b8525c2701955835b594e9b117f8c8fc02de37c6138c0d3710af89",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "4b66307cbec0dbcd48b5658d4a3d368b0866b9c709e16c65860fe99a19a3648a",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "02e8e21900039e9d70c522271bd5a20cb94ee56d830037d01d6b9c485b841408",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "b8ac3963cd37d4dc06f3e15900286fc1664463799aaca5cf2b6bf7e80fed5fda",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scripts/sensor.txt": "7655ec83e62ea45d5264bc7b8aef63a68e15ebf8796528473b6b27fcd40591ac",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/physics/scene-0.json": "5e2933bc20226d553ab8aa9115dae003ef874a6a832968fdd516a150c8ddc5a6",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/cameras/camera-in-studio.json": "53d76bd2867594eb41ffe09f388be49d74f1c3519a3c8fd6b21093034ae12988",
+      "documents/behaviors/demo.json": "139b4060666ff8adc6432ec2247aa7fa9f73d27dd3dfc0021e7b3e01a1b781d2",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "a6fbab6e2b2ac2072e26558572edc7bf490b05546a558ad722139117374fe629",
+      "documents/animations/scene-1.json": "c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    }
+  },
+  "requests": [
+    {
+      "request": {
+        "command": "camera2d.create",
+        "mode": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+        "actorRef": {
+          "kind": "user",
+          "id": "studio-camera2d"
+        },
+        "objectId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+        "documentType": "document",
+        "sourcePath": "documents/cameras/camera-in-studio.json",
+        "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sceneObjectRevision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f",
+        "sceneSourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+      },
+      "status": 200,
+      "result": {
+        "status": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+        "revision": "sha256:8c219ee0b69d1359043ae236bf65943977d962159e095438dcebd91c98d7678e",
+        "proposal": {
+          "format": "viento-changeset",
+          "schemaVersion": 1,
+          "id": "proposal:a3373f3a97b9e7f4f16fd8f0f0b3932d1d35d22851ba67f03b0d8685cc305025",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "actorRef": {
+            "kind": "user",
+            "id": "studio-camera2d"
+          },
+          "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+          "commands": [
+            {
+              "id": "camera2d.create",
+              "input": {
+                "command": "camera2d.create",
+                "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+                "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+                "actorRef": {
+                  "kind": "user",
+                  "id": "studio-camera2d"
+                },
+                "objectId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+                "documentType": "document",
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+                "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sceneObjectRevision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f",
+                "sceneSourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+              }
+            }
+          ],
+          "preconditions": [
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "revision": "sha256:15654ad61c809e1302763cd90cf44bb7a3e6482f35b679a8c3e3aad4148c3cad"
+            },
+            {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "revision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f"
+            }
+          ],
+          "affectedObjects": [
+            "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+            "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          ],
+          "state": "proposed"
+        },
+        "changes": [
+          {
+            "kind": "camera2d.create",
+            "objectId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+            "sourcePath": "documents/cameras/camera-in-studio.json",
+            "beforeSourceRevision": null,
+            "afterSourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2",
+            "beforeText": null,
+            "afterText": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+            "recordPath": "metadata/documents/ffefcdf0-c37a-4925-8d2c-5dba4e295470.json",
+            "record": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            }
+          },
+          {
+            "kind": "relation.add",
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/demo.json",
+            "targetObjectId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+            "targetSourcePath": "documents/cameras/camera-in-studio.json",
+            "recordPath": "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json",
+            "relation": {
+              "kind": "references",
+              "targetId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+              "slot": "camera2d"
+            },
+            "beforeRecordRevision": "sha256:a4e69a7284477a115c5103510acf31a3063abaf86c7987d60e243db762661a29",
+            "afterRecordRevision": "sha256:cb590bd63763c7661b583173a67f580891db2ec66b24c1d176a3830ede30968a"
+          }
+        ],
+        "object": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/document",
+          "typeVersion": 1,
+          "revision": "sha256:fcad4589800ae363a1a0c0d148e07a4f78b1b0f8bae4f56e0ee037b17570efd6",
+          "readOnly": true,
+          "name": "camera-in-studio",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene-camera2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "1"
+            },
+            "field-2": {
+              "label": "sceneObjectId",
+              "group": "",
+              "kind": "string",
+              "value": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+            },
+            "field-3": {
+              "label": "mode",
+              "group": "camera",
+              "kind": "string",
+              "value": "fixed"
+            },
+            "field-4": {
+              "label": "center / [1]",
+              "group": "camera",
+              "kind": "number",
+              "value": "-120"
+            },
+            "field-5": {
+              "label": "center / [2]",
+              "group": "camera",
+              "kind": "number",
+              "value": "500"
+            },
+            "field-6": {
+              "label": "zoom",
+              "group": "camera",
+              "kind": "number",
+              "value": "1.5"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 14,
+                  "end": 37,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 58,
+                  "end": 59,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 80,
+                  "end": 118,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 146,
+                  "end": 153,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 177,
+                  "end": 181,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 189,
+                  "end": 192,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 212,
+                  "end": 215,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "document",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "Document / 文档"
+            }
+          }
+        },
+        "scene": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/scene",
+          "typeVersion": 1,
+          "revision": "sha256:c1fa3fac567264bd52d1bd9ed1bffc6b743c4ce7062ecf81a9adae750cd5fe45",
+          "readOnly": true,
+          "name": "demo",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "2"
+            },
+            "field-2": {
+              "label": "title",
+              "group": "",
+              "kind": "string",
+              "value": "Independent GDScript Behaviors"
+            },
+            "field-3": {
+              "label": "[1]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "800"
+            },
+            "field-4": {
+              "label": "[2]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "480"
+            },
+            "field-5": {
+              "label": "background",
+              "group": "",
+              "kind": "string",
+              "value": "#0d1829"
+            },
+            "field-6": {
+              "label": "[1] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-7": {
+              "label": "[1] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-8": {
+              "label": "[1] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-9": {
+              "label": "[1] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-10": {
+              "label": "[1] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-11": {
+              "label": "[1] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#ffffff"
+            },
+            "field-12": {
+              "label": "[1] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "240"
+            },
+            "field-13": {
+              "label": "[1] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "arrows"
+            },
+            "field-14": {
+              "label": "[1] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-15": {
+              "label": "[1] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+            },
+            "field-16": {
+              "label": "[2] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-17": {
+              "label": "[2] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "115"
+            },
+            "field-18": {
+              "label": "[2] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-19": {
+              "label": "[2] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "8"
+            },
+            "field-20": {
+              "label": "[2] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "50"
+            },
+            "field-21": {
+              "label": "[2] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#81d9bc80"
+            },
+            "field-22": {
+              "label": "[2] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-23": {
+              "label": "[2] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-24": {
+              "label": "[2] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-25": {
+              "label": "[2] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "70707070-7070-4070-8070-000000000002"
+            },
+            "field-26": {
+              "label": "[3] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-27": {
+              "label": "[3] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "150"
+            },
+            "field-28": {
+              "label": "[3] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-29": {
+              "label": "[3] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "10"
+            },
+            "field-30": {
+              "label": "[3] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-31": {
+              "label": "[3] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#e9ae76"
+            },
+            "field-32": {
+              "label": "[3] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-33": {
+              "label": "[3] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-34": {
+              "label": "[3] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-35": {
+              "label": "[3] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "70707070-7070-4070-8070-000000000003"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 14,
+                  "end": 30,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 51,
+                  "end": 52,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 65,
+                  "end": 97,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 119,
+                  "end": 122,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 128,
+                  "end": 131,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 153,
+                  "end": 162,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 202,
+                  "end": 240,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 270,
+                  "end": 273,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 283,
+                  "end": 286,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 320,
+                  "end": 322,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 332,
+                  "end": 334,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 359,
+                  "end": 368,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 385,
+                  "end": 388,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 408,
+                  "end": 416,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 443,
+                  "end": 481,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 503,
+                  "end": 541,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 573,
+                  "end": 611,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 641,
+                  "end": 644,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 654,
+                  "end": 657,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 691,
+                  "end": 692,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 702,
+                  "end": 704,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 729,
+                  "end": 740,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 757,
+                  "end": 758,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 778,
+                  "end": 784,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-24",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 811,
+                  "end": 849,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-25",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 871,
+                  "end": 909,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-26",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 941,
+                  "end": 979,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-27",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1009,
+                  "end": 1012,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-28",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1022,
+                  "end": 1025,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-29",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1059,
+                  "end": 1061,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-30",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1071,
+                  "end": 1074,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-31",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1099,
+                  "end": 1108,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-32",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1125,
+                  "end": 1126,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-33",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1146,
+                  "end": 1152,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-34",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1179,
+                  "end": 1217,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-35",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1239,
+                  "end": 1277,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/scenes/demo.json",
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "scene",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "animation",
+                  "targetId": "58585858-5858-4585-8585-000000000100",
+                  "slot": "scene animation"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "70707070-7070-4070-8070-000000000001",
+                  "slot": "physics2d"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+                  "slot": "camera2d"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "animation",
+                  "targetId": "58585858-5858-4585-8585-000000000100",
+                  "slot": "scene animation"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "70707070-7070-4070-8070-000000000001",
+                  "slot": "physics2d"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+                  "slot": "camera2d"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "场景 / Scene"
+            }
+          }
+        },
+        "relation": {
+          "id": "relation:dc734116b0d3df392e2c2bd3f6cb98a2dd1046855e6ae09126ed00f154be1789",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "sourceObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "targetObjectId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+          "typeRef": "io.viento.relation/references",
+          "properties": {
+            "kind": "references",
+            "targetId": "ffefcdf0-c37a-4925-8d2c-5dba4e295470",
+            "slot": "camera2d"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "command": "camera2d.create",
+        "mode": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+        "actorRef": {
+          "kind": "user",
+          "id": "studio-camera2d"
+        },
+        "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+        "documentType": "document",
+        "sourcePath": "documents/cameras/camera-in-studio.json",
+        "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sceneObjectRevision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f",
+        "sceneSourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+      },
+      "status": 200,
+      "result": {
+        "status": "preview",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+        "revision": "sha256:89a634e7938d128e61539b52eb140c5607e326df41bff9b7f4cea795195c459e",
+        "proposal": {
+          "format": "viento-changeset",
+          "schemaVersion": 1,
+          "id": "proposal:89835425ddf03343fdded60a0bb714fde7ae1d20525ed35c57dac41709ec0f2f",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "actorRef": {
+            "kind": "user",
+            "id": "studio-camera2d"
+          },
+          "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+          "commands": [
+            {
+              "id": "camera2d.create",
+              "input": {
+                "command": "camera2d.create",
+                "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+                "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+                "actorRef": {
+                  "kind": "user",
+                  "id": "studio-camera2d"
+                },
+                "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+                "documentType": "document",
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+                "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sceneObjectRevision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f",
+                "sceneSourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+              }
+            }
+          ],
+          "preconditions": [
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "revision": "sha256:15654ad61c809e1302763cd90cf44bb7a3e6482f35b679a8c3e3aad4148c3cad"
+            },
+            {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "revision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f"
+            }
+          ],
+          "affectedObjects": [
+            "1536bece-997f-46e8-89bb-59c17c10f849",
+            "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          ],
+          "state": "proposed"
+        },
+        "changes": [
+          {
+            "kind": "camera2d.create",
+            "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+            "sourcePath": "documents/cameras/camera-in-studio.json",
+            "beforeSourceRevision": null,
+            "afterSourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2",
+            "beforeText": null,
+            "afterText": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+            "recordPath": "metadata/documents/1536bece-997f-46e8-89bb-59c17c10f849.json",
+            "record": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            }
+          },
+          {
+            "kind": "relation.add",
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/demo.json",
+            "targetObjectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+            "targetSourcePath": "documents/cameras/camera-in-studio.json",
+            "recordPath": "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json",
+            "relation": {
+              "kind": "references",
+              "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "slot": "camera2d"
+            },
+            "beforeRecordRevision": "sha256:a4e69a7284477a115c5103510acf31a3063abaf86c7987d60e243db762661a29",
+            "afterRecordRevision": "sha256:4b66307cbec0dbcd48b5658d4a3d368b0866b9c709e16c65860fe99a19a3648a"
+          }
+        ],
+        "object": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/document",
+          "typeVersion": 1,
+          "revision": "sha256:ea3715af20f72b4778c90d5aa35e8afa13383743eaddc3c5fa8efab40c60228f",
+          "readOnly": true,
+          "name": "camera-in-studio",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene-camera2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "1"
+            },
+            "field-2": {
+              "label": "sceneObjectId",
+              "group": "",
+              "kind": "string",
+              "value": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+            },
+            "field-3": {
+              "label": "mode",
+              "group": "camera",
+              "kind": "string",
+              "value": "fixed"
+            },
+            "field-4": {
+              "label": "center / [1]",
+              "group": "camera",
+              "kind": "number",
+              "value": "-120"
+            },
+            "field-5": {
+              "label": "center / [2]",
+              "group": "camera",
+              "kind": "number",
+              "value": "500"
+            },
+            "field-6": {
+              "label": "zoom",
+              "group": "camera",
+              "kind": "number",
+              "value": "1.5"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 14,
+                  "end": 37,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 58,
+                  "end": 59,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 80,
+                  "end": 118,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 146,
+                  "end": 153,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 177,
+                  "end": 181,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 189,
+                  "end": 192,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 212,
+                  "end": 215,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "document",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "Document / 文档"
+            }
+          }
+        },
+        "scene": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/scene",
+          "typeVersion": 1,
+          "revision": "sha256:9ee04ddfbede791965cb055abedbfbda5ffd484a2aecf9e9ffcbe4d10b1e1e09",
+          "readOnly": true,
+          "name": "demo",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "2"
+            },
+            "field-2": {
+              "label": "title",
+              "group": "",
+              "kind": "string",
+              "value": "Independent GDScript Behaviors"
+            },
+            "field-3": {
+              "label": "[1]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "800"
+            },
+            "field-4": {
+              "label": "[2]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "480"
+            },
+            "field-5": {
+              "label": "background",
+              "group": "",
+              "kind": "string",
+              "value": "#0d1829"
+            },
+            "field-6": {
+              "label": "[1] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-7": {
+              "label": "[1] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-8": {
+              "label": "[1] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-9": {
+              "label": "[1] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-10": {
+              "label": "[1] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-11": {
+              "label": "[1] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#ffffff"
+            },
+            "field-12": {
+              "label": "[1] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "240"
+            },
+            "field-13": {
+              "label": "[1] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "arrows"
+            },
+            "field-14": {
+              "label": "[1] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-15": {
+              "label": "[1] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+            },
+            "field-16": {
+              "label": "[2] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-17": {
+              "label": "[2] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "115"
+            },
+            "field-18": {
+              "label": "[2] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-19": {
+              "label": "[2] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "8"
+            },
+            "field-20": {
+              "label": "[2] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "50"
+            },
+            "field-21": {
+              "label": "[2] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#81d9bc80"
+            },
+            "field-22": {
+              "label": "[2] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-23": {
+              "label": "[2] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-24": {
+              "label": "[2] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-25": {
+              "label": "[2] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "70707070-7070-4070-8070-000000000002"
+            },
+            "field-26": {
+              "label": "[3] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-27": {
+              "label": "[3] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "150"
+            },
+            "field-28": {
+              "label": "[3] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-29": {
+              "label": "[3] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "10"
+            },
+            "field-30": {
+              "label": "[3] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-31": {
+              "label": "[3] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#e9ae76"
+            },
+            "field-32": {
+              "label": "[3] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-33": {
+              "label": "[3] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-34": {
+              "label": "[3] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-35": {
+              "label": "[3] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "70707070-7070-4070-8070-000000000003"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 14,
+                  "end": 30,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 51,
+                  "end": 52,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 65,
+                  "end": 97,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 119,
+                  "end": 122,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 128,
+                  "end": 131,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 153,
+                  "end": 162,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 202,
+                  "end": 240,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 270,
+                  "end": 273,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 283,
+                  "end": 286,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 320,
+                  "end": 322,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 332,
+                  "end": 334,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 359,
+                  "end": 368,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 385,
+                  "end": 388,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 408,
+                  "end": 416,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 443,
+                  "end": 481,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 503,
+                  "end": 541,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 573,
+                  "end": 611,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 641,
+                  "end": 644,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 654,
+                  "end": 657,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 691,
+                  "end": 692,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 702,
+                  "end": 704,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 729,
+                  "end": 740,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 757,
+                  "end": 758,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 778,
+                  "end": 784,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-24",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 811,
+                  "end": 849,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-25",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 871,
+                  "end": 909,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-26",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 941,
+                  "end": 979,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-27",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1009,
+                  "end": 1012,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-28",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1022,
+                  "end": 1025,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-29",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1059,
+                  "end": 1061,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-30",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1071,
+                  "end": 1074,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-31",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1099,
+                  "end": 1108,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-32",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1125,
+                  "end": 1126,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-33",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1146,
+                  "end": 1152,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-34",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1179,
+                  "end": 1217,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-35",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1239,
+                  "end": 1277,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/scenes/demo.json",
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "scene",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "animation",
+                  "targetId": "58585858-5858-4585-8585-000000000100",
+                  "slot": "scene animation"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "70707070-7070-4070-8070-000000000001",
+                  "slot": "physics2d"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+                  "slot": "camera2d"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "animation",
+                  "targetId": "58585858-5858-4585-8585-000000000100",
+                  "slot": "scene animation"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "70707070-7070-4070-8070-000000000001",
+                  "slot": "physics2d"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+                  "slot": "camera2d"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "场景 / Scene"
+            }
+          }
+        },
+        "relation": {
+          "id": "relation:ecca7d0e5ac2a3b41ba459c2f899bff8e8e8f6b23431e256e3646dc190c000a9",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "sourceObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "targetObjectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+          "typeRef": "io.viento.relation/references",
+          "properties": {
+            "kind": "references",
+            "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+            "slot": "camera2d"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "command": "camera2d.create",
+        "mode": "apply",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+        "actorRef": {
+          "kind": "user",
+          "id": "studio-camera2d"
+        },
+        "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+        "documentType": "document",
+        "sourcePath": "documents/cameras/camera-in-studio.json",
+        "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sceneObjectRevision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f",
+        "sceneSourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+      },
+      "status": 200,
+      "result": {
+        "status": "applied",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+        "revision": "sha256:89a634e7938d128e61539b52eb140c5607e326df41bff9b7f4cea795195c459e",
+        "proposal": {
+          "format": "viento-changeset",
+          "schemaVersion": 1,
+          "id": "proposal:89835425ddf03343fdded60a0bb714fde7ae1d20525ed35c57dac41709ec0f2f",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "actorRef": {
+            "kind": "user",
+            "id": "studio-camera2d"
+          },
+          "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+          "commands": [
+            {
+              "id": "camera2d.create",
+              "input": {
+                "command": "camera2d.create",
+                "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+                "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+                "actorRef": {
+                  "kind": "user",
+                  "id": "studio-camera2d"
+                },
+                "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+                "documentType": "document",
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+                "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sceneObjectRevision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f",
+                "sceneSourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+              }
+            }
+          ],
+          "preconditions": [
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "revision": "sha256:15654ad61c809e1302763cd90cf44bb7a3e6482f35b679a8c3e3aad4148c3cad"
+            },
+            {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "revision": "sha256:120ed547a5dc6c7c90ea3bc3b87ffdec4610fb9744f16dd763988075769e7f7f"
+            }
+          ],
+          "affectedObjects": [
+            "1536bece-997f-46e8-89bb-59c17c10f849",
+            "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          ],
+          "state": "proposed"
+        },
+        "changes": [
+          {
+            "kind": "camera2d.create",
+            "objectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+            "sourcePath": "documents/cameras/camera-in-studio.json",
+            "beforeSourceRevision": null,
+            "afterSourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2",
+            "beforeText": null,
+            "afterText": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\n    \"mode\": \"fixed\",\n    \"center\": [\n      -120,\n      500\n    ],\n    \"zoom\": 1.5\n  }\n}\n",
+            "recordPath": "metadata/documents/1536bece-997f-46e8-89bb-59c17c10f849.json",
+            "record": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            }
+          },
+          {
+            "kind": "relation.add",
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/demo.json",
+            "targetObjectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+            "targetSourcePath": "documents/cameras/camera-in-studio.json",
+            "recordPath": "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json",
+            "relation": {
+              "kind": "references",
+              "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "slot": "camera2d"
+            },
+            "beforeRecordRevision": "sha256:a4e69a7284477a115c5103510acf31a3063abaf86c7987d60e243db762661a29",
+            "afterRecordRevision": "sha256:4b66307cbec0dbcd48b5658d4a3d368b0866b9c709e16c65860fe99a19a3648a"
+          }
+        ],
+        "object": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/document",
+          "typeVersion": 1,
+          "revision": "sha256:ea3715af20f72b4778c90d5aa35e8afa13383743eaddc3c5fa8efab40c60228f",
+          "readOnly": true,
+          "name": "camera-in-studio",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene-camera2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "1"
+            },
+            "field-2": {
+              "label": "sceneObjectId",
+              "group": "",
+              "kind": "string",
+              "value": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+            },
+            "field-3": {
+              "label": "mode",
+              "group": "camera",
+              "kind": "string",
+              "value": "fixed"
+            },
+            "field-4": {
+              "label": "center / [1]",
+              "group": "camera",
+              "kind": "number",
+              "value": "-120"
+            },
+            "field-5": {
+              "label": "center / [2]",
+              "group": "camera",
+              "kind": "number",
+              "value": "500"
+            },
+            "field-6": {
+              "label": "zoom",
+              "group": "camera",
+              "kind": "number",
+              "value": "1.5"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 14,
+                  "end": 37,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 58,
+                  "end": 59,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 80,
+                  "end": 118,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 146,
+                  "end": 153,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 177,
+                  "end": 181,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 189,
+                  "end": 192,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/cameras/camera-in-studio.json",
+                "range": {
+                  "start": 212,
+                  "end": 215,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "sourceRevision": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "document",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "document",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "references",
+                  "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "slot": "scene"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+              "sourcePath": "documents/cameras/camera-in-studio.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "Document / 文档"
+            }
+          }
+        },
+        "scene": {
+          "format": "viento-object",
+          "schemaVersion": 1,
+          "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "typeRef": "io.viento.document/scene",
+          "typeVersion": 1,
+          "revision": "sha256:9ee04ddfbede791965cb055abedbfbda5ffd484a2aecf9e9ffcbe4d10b1e1e09",
+          "readOnly": true,
+          "name": "demo",
+          "properties": {
+            "field-0": {
+              "label": "format",
+              "group": "",
+              "kind": "string",
+              "value": "viento-scene2d"
+            },
+            "field-1": {
+              "label": "schemaVersion",
+              "group": "",
+              "kind": "number",
+              "value": "2"
+            },
+            "field-2": {
+              "label": "title",
+              "group": "",
+              "kind": "string",
+              "value": "Independent GDScript Behaviors"
+            },
+            "field-3": {
+              "label": "[1]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "800"
+            },
+            "field-4": {
+              "label": "[2]",
+              "group": "viewport",
+              "kind": "number",
+              "value": "480"
+            },
+            "field-5": {
+              "label": "background",
+              "group": "",
+              "kind": "string",
+              "value": "#0d1829"
+            },
+            "field-6": {
+              "label": "[1] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-7": {
+              "label": "[1] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-8": {
+              "label": "[1] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-9": {
+              "label": "[1] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-10": {
+              "label": "[1] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "20"
+            },
+            "field-11": {
+              "label": "[1] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#ffffff"
+            },
+            "field-12": {
+              "label": "[1] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "240"
+            },
+            "field-13": {
+              "label": "[1] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "arrows"
+            },
+            "field-14": {
+              "label": "[1] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-15": {
+              "label": "[1] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"
+            },
+            "field-16": {
+              "label": "[2] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-17": {
+              "label": "[2] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "115"
+            },
+            "field-18": {
+              "label": "[2] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-19": {
+              "label": "[2] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "8"
+            },
+            "field-20": {
+              "label": "[2] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "50"
+            },
+            "field-21": {
+              "label": "[2] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#81d9bc80"
+            },
+            "field-22": {
+              "label": "[2] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-23": {
+              "label": "[2] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-24": {
+              "label": "[2] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-25": {
+              "label": "[2] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "70707070-7070-4070-8070-000000000002"
+            },
+            "field-26": {
+              "label": "[3] / objectId",
+              "group": "actors",
+              "kind": "string",
+              "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            },
+            "field-27": {
+              "label": "[3] / position / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "150"
+            },
+            "field-28": {
+              "label": "[3] / position / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "180"
+            },
+            "field-29": {
+              "label": "[3] / size / [1]",
+              "group": "actors",
+              "kind": "number",
+              "value": "10"
+            },
+            "field-30": {
+              "label": "[3] / size / [2]",
+              "group": "actors",
+              "kind": "number",
+              "value": "100"
+            },
+            "field-31": {
+              "label": "[3] / color",
+              "group": "actors",
+              "kind": "string",
+              "value": "#e9ae76"
+            },
+            "field-32": {
+              "label": "[3] / speed",
+              "group": "actors",
+              "kind": "number",
+              "value": "0"
+            },
+            "field-33": {
+              "label": "[3] / controls",
+              "group": "actors",
+              "kind": "string",
+              "value": "none"
+            },
+            "field-34": {
+              "label": "[3] / imageResourceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+            },
+            "field-35": {
+              "label": "[3] / instanceId",
+              "group": "actors",
+              "kind": "string",
+              "value": "70707070-7070-4070-8070-000000000003"
+            }
+          },
+          "propertyBindings": [
+            {
+              "propertyPath": "/properties/field-0",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 14,
+                  "end": 30,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-1",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 51,
+                  "end": 52,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-2",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 65,
+                  "end": 97,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-3",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 119,
+                  "end": 122,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-4",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 128,
+                  "end": 131,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-5",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 153,
+                  "end": 162,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-6",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 202,
+                  "end": 240,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-7",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 270,
+                  "end": 273,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-8",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 283,
+                  "end": 286,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-9",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 320,
+                  "end": 322,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-10",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 332,
+                  "end": 334,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-11",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 359,
+                  "end": 368,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-12",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 385,
+                  "end": 388,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-13",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 408,
+                  "end": 416,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-14",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 443,
+                  "end": 481,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-15",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 503,
+                  "end": 541,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-16",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 573,
+                  "end": 611,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-17",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 641,
+                  "end": 644,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-18",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 654,
+                  "end": 657,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-19",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 691,
+                  "end": 692,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-20",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 702,
+                  "end": 704,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-21",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 729,
+                  "end": 740,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-22",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 757,
+                  "end": 758,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-23",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 778,
+                  "end": 784,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-24",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 811,
+                  "end": 849,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-25",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 871,
+                  "end": 909,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-26",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 941,
+                  "end": 979,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-27",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1009,
+                  "end": 1012,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-28",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1022,
+                  "end": 1025,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-29",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1059,
+                  "end": 1061,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-30",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1071,
+                  "end": 1074,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-31",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1099,
+                  "end": 1108,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-32",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1125,
+                  "end": 1126,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-33",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1146,
+                  "end": 1152,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-34",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1179,
+                  "end": 1217,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            },
+            {
+              "propertyPath": "/properties/field-35",
+              "authorityKind": "document",
+              "authorityRef": {
+                "sourcePath": "documents/scenes/demo.json",
+                "range": {
+                  "start": 1239,
+                  "end": 1277,
+                  "unit": "utf16"
+                }
+              },
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            }
+          ],
+          "behaviorBindings": [],
+          "documentRefs": [
+            {
+              "sourcePath": "documents/scenes/demo.json",
+              "sourceRevision": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+            }
+          ],
+          "provenance": {
+            "identity": "registered",
+            "workspaceVersion": 3,
+            "documentType": "scene",
+            "descriptor": {
+              "format": "viento-document",
+              "version": 1,
+              "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "animation",
+                  "targetId": "58585858-5858-4585-8585-000000000100",
+                  "slot": "scene animation"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "70707070-7070-4070-8070-000000000001",
+                  "slot": "physics2d"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+                  "slot": "camera2d"
+                }
+              ],
+              "assetBindings": []
+            },
+            "parser": {
+              "documentType": "scene",
+              "parserProfile": "structured",
+              "relations": [
+                {
+                  "kind": "reference",
+                  "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "slot": "actor"
+                },
+                {
+                  "kind": "behavior",
+                  "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "slot": "instance behaviors"
+                },
+                {
+                  "kind": "animation",
+                  "targetId": "58585858-5858-4585-8585-000000000100",
+                  "slot": "scene animation"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "70707070-7070-4070-8070-000000000001",
+                  "slot": "physics2d"
+                },
+                {
+                  "kind": "references",
+                  "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+                  "slot": "camera2d"
+                }
+              ],
+              "format": "viento-document",
+              "version": 1,
+              "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "assetBindings": [],
+              "parserOptions": {},
+              "fieldGroups": [],
+              "typeLabel": "场景 / Scene"
+            }
+          }
+        },
+        "relation": {
+          "id": "relation:ecca7d0e5ac2a3b41ba459c2f899bff8e8e8f6b23431e256e3646dc190c000a9",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "sourceObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "targetObjectId": "1536bece-997f-46e8-89bb-59c17c10f849",
+          "typeRef": "io.viento.relation/references",
+          "properties": {
+            "kind": "references",
+            "targetId": "1536bece-997f-46e8-89bb-59c17c10f849",
+            "slot": "camera2d"
+          }
+        },
+        "receipt": {
+          "format": "viento-transaction-receipt",
+          "schemaVersion": 1,
+          "transactionId": "7a8478bb-f961-4d68-9aae-5eabb26ee0ed",
+          "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+          "proposalId": "proposal:89835425ddf03343fdded60a0bb714fde7ae1d20525ed35c57dac41709ec0f2f",
+          "baseRevision": "sha256:787d9a9de3ecc47c0cf37948fb340b8cbcd522cc535bfe5a94f1186f127bb02e",
+          "revision": "sha256:89a634e7938d128e61539b52eb140c5607e326df41bff9b7f4cea795195c459e",
+          "state": "committed"
+        }
+      }
+    },
+    {
+      "request": {
+        "action": "camera2d-save",
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sceneVersion": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251",
+        "documentId": "1536bece-997f-46e8-89bb-59c17c10f849",
+        "expectedVersion": "sha256:3e560ad31227e5dcbe5e9e11d342381efc56b0571e5efb872f74fb5332005bb2",
+        "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\"mode\":\"follow\",\"targetInstanceId\":\"70707070-7070-4070-8070-000000000002\",\"offset\":[-24,16],\"zoom\":2}\n}\n"
+      },
+      "status": 409,
+      "result": {
+        "ok": false,
+        "error": "The case changed; reload or save a new copy.",
+        "errorCode": "scene_camera2d_document_conflict",
+        "requestId": "1794388469511-14"
+      }
+    },
+    {
+      "request": {
+        "action": "camera2d-save",
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sceneVersion": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251",
+        "documentId": "1536bece-997f-46e8-89bb-59c17c10f849",
+        "expectedVersion": "sha256:154acfdfafc50a496955fee88f53009eacba7a8dd3e1615cbeda68feb11f319d",
+        "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\"mode\":\"follow\",\"targetInstanceId\":\"70707070-7070-4070-8070-000000000002\",\"offset\":[-24,16],\"zoom\":2}\n}\n "
+      },
+      "status": 200,
+      "result": {
+        "id": "1536bece-997f-46e8-89bb-59c17c10f849",
+        "path": "documents/cameras/camera-in-studio.json",
+        "title": "camera-in-studio.json",
+        "version": "sha256:53d76bd2867594eb41ffe09f388be49d74f1c3519a3c8fd6b21093034ae12988",
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "valid": true,
+        "diagnostics": [],
+        "content": "{\n  \"format\": \"viento-scene-camera2d\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"camera\": {\"mode\":\"follow\",\"targetInstanceId\":\"70707070-7070-4070-8070-000000000002\",\"offset\":[-24,16],\"zoom\":2}\n}\n ",
+        "definition": {
+          "mode": "follow",
+          "targetInstanceId": "70707070-7070-4070-8070-000000000002",
+          "offset": [
+            -24,
+            16
+          ],
+          "zoom": 2
+        },
+        "sceneVersion": "sha256:a0c099847ef990f3c601c2af88c459ac5dcaeaab9d54fe1c22db573f0dcd5251"
+      }
+    }
+  ],
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-11-11T09:14:30.676Z",
+  "assertions": 117
+}

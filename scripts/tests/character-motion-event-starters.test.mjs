@@ -39,8 +39,8 @@ const legacy = {
 
 test('new character event and audio starters preserve every existing catalog record and ordinary source byte', () => {
   const all = listScriptStarters();
-  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), ['godot-physics-sensor-occupancy', 'godot-character-motion-events', 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-project-event-audio', 'godot-character-intent', 'godot-planar-intent']);
-  assert.equal(all.length, Object.keys(legacy).length + 9);
+  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), ['godot-action-scene-switch', 'godot-event-scene-switch', 'godot-action-scene-retry', 'godot-physics-sensor-occupancy', 'godot-character-motion-events', 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-control', 'godot-platform-endpoint-events', 'godot-project-event-audio', 'godot-character-intent', 'godot-planar-intent']);
+  assert.equal(all.length, Object.keys(legacy).length + 12);
   assert.equal(new Set(all.map(row => row.id)).size, all.length);
   for (const [id, expected] of Object.entries(legacy)) {
     assert.equal(hash(JSON.stringify(all.find(row => row.id === id))), expected, id);

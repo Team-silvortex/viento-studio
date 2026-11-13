@@ -8,6 +8,8 @@ import { prepareObjectCreate } from '../../engine/world-object-create.mjs';
 import { prepareSceneUpdate } from '../../engine/world-scene-update.mjs';
 import { prepareSceneCreate } from '../../engine/world-scene-create.mjs';
 import { preparePhysics2DCreate, PHYSICS2D_CREATE_RECOVERY_LIMITS } from '../../engine/world-physics2d-create.mjs';
+import { prepareHUD2DCreate, HUD2D_CREATE_RECOVERY_LIMITS } from '../../engine/world-hud2d-create.mjs';
+import { prepareCamera2DCreate, CAMERA2D_CREATE_RECOVERY_LIMITS } from '../../engine/world-camera2d-create.mjs';
 import { prepareAnimationCreate, ANIMATION_CREATE_RECOVERY_LIMITS } from '../../engine/world-animation-create.mjs';
 import { prepareAudioCreate } from '../../engine/world-audio-create.mjs';
 import { verifyAudioCreationResources } from '../lib/scene-audio-creation-resources.mjs';
@@ -45,6 +47,38 @@ async function readRecordContent(root, id) {
 }
 
 async function prepare(snapshot, request, root) {
+  if (request.command === 'hud2d.create') {
+    if (!snapshot.source.documents.some(item => item.record?.id === request.sceneObjectId)) throw createError(404, 'Registered scene not found', {}, 'world_hud2d_scene_missing');
+    const plan = await prepareHUD2DCreate(snapshot.source, snapshot.projection, await readRecordContent(root, request.sceneObjectId), request, { digest });
+    for (const item of plan.plans.slice(0, 2)) {
+      await resolveContainedPath(root, path.join(root, item.sourcePath), { allowMissing: true });
+      await checkFilesystemLocation(root, item.sourcePath);
+    }
+    if (Buffer.byteLength(plan.plans[0].afterContent) > 65536 || plan.plans.slice(1).some(item => Buffer.byteLength(item.afterContent) > 1024 * 1024)
+      || plan.plans.some(item => Buffer.byteLength(item.afterContent) > 8 * 1024 * 1024)
+      || plan.plans.reduce((size, item) => size + Buffer.byteLength(item.beforeContent || '') + Buffer.byteLength(item.afterContent), 0) > 32 * 1024 * 1024
+      || Buffer.byteLength(JSON.stringify(plan.hud2DRecovery)) > HUD2D_CREATE_RECOVERY_LIMITS.bytes
+      || plan.nextSource.documents.reduce((size, item) => size + Buffer.byteLength(item.content || ''), 0) > 64 * 1024 * 1024) {
+      throw createError(413, 'HUD2D creation exceeds the transaction source limit', {}, 'world_source_limit');
+    }
+    return plan;
+  }
+  if (request.command === 'camera2d.create') {
+    if (!snapshot.source.documents.some(item => item.record?.id === request.sceneObjectId)) throw createError(404, 'Registered scene not found', {}, 'world_camera2d_scene_missing');
+    const plan = await prepareCamera2DCreate(snapshot.source, snapshot.projection, await readRecordContent(root, request.sceneObjectId), request, { digest });
+    for (const item of plan.plans.slice(0, 2)) {
+      await resolveContainedPath(root, path.join(root, item.sourcePath), { allowMissing: true });
+      await checkFilesystemLocation(root, item.sourcePath);
+    }
+    if (Buffer.byteLength(plan.plans[0].afterContent) > 16384 || plan.plans.slice(1).some(item => Buffer.byteLength(item.afterContent) > 1024 * 1024)
+      || plan.plans.some(item => Buffer.byteLength(item.afterContent) > 8 * 1024 * 1024)
+      || plan.plans.reduce((size, item) => size + Buffer.byteLength(item.beforeContent || '') + Buffer.byteLength(item.afterContent), 0) > 32 * 1024 * 1024
+      || Buffer.byteLength(JSON.stringify(plan.camera2DRecovery)) > CAMERA2D_CREATE_RECOVERY_LIMITS.bytes
+      || plan.nextSource.documents.reduce((size, item) => size + Buffer.byteLength(item.content || ''), 0) > 64 * 1024 * 1024) {
+      throw createError(413, 'Camera2D creation exceeds the transaction source limit', {}, 'world_source_limit');
+    }
+    return plan;
+  }
   if (request.command === 'physics2d.create') {
     if (!snapshot.source.documents.some(item => item.record?.id === request.sceneObjectId)) {
       throw createError(404, 'Registered scene not found', {}, 'world_physics2d_scene_missing');
@@ -174,7 +208,7 @@ export function createWorldCommandService(root, { checkpoint } = {}) {
       if (request.command === 'world.recover') return await recoverWorldTransaction(physicalRoot, { checkpoint });
       const initial = await prepare(await readWorldSnapshot(physicalRoot), request, physicalRoot);
       if (request.mode === 'preview') return initial.result;
-      if (['changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'physics2d.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) {
+      if (['changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'physics2d.create', 'camera2d.create', 'hud2d.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) {
         // Never acquire a document queue while holding the registry lock. Legacy
         // writers already hold their queue when waiting for this same lock.
         return await withRegistryLock(physicalRoot, async () => {

@@ -1,0 +1,61 @@
+{
+  "scope": "Prepared patches only; formal repository planner and host test unchanged. Isolated module copies rewrite relative import specifiers to absolute production modules and route only snapshot assembly planning to the proposed patched planner. No stubs.",
+  "preparedAtUTC": "2026-11-13T00:15:44.201700+00:00",
+  "formalSourcesBefore": {
+    "engine/project-assembly-plan.mjs": "1e51eb756a7a155d081e06b9bc4808836fac79e3b091a5c7c07b7310dc6ce22d",
+    "scripts/tests/project-scene-navigation-host.test.mjs": "1f4e21e2080c4d1722b543e9f23cd6f3313437bedf9c221ce0368fef68eeab0d"
+  },
+  "patches": {
+    "combined.patch": "89e9d6e95831c13ebe429259808e1004f6ce7c93b2c544e0fc1ae267f5c74e5f",
+    "host-regression.patch": "6f3361370d49aef7b16c322abdc697a120282ab7b097ba18614db627e29a161d",
+    "production.patch": "6557a730f9b2cd622ec9dfbee5c02a1b82578efbac7afba86455659b2290687f"
+  },
+  "completedAtUTC": "2026-11-13T00:16:29.278597+00:00",
+  "formalSourcesAfter": {
+    "engine/project-assembly-plan.mjs": "1e51eb756a7a155d081e06b9bc4808836fac79e3b091a5c7c07b7310dc6ce22d",
+    "scripts/tests/project-scene-navigation-host.test.mjs": "1f4e21e2080c4d1722b543e9f23cd6f3313437bedf9c221ce0368fef68eeab0d"
+  },
+  "patchApplyCheck": {
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "/tmp/viento-scene-navigation-partial-member-fix/combined.patch"
+    ],
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "validation": {
+    "patchedHost": {
+      "command": [
+        "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "/tmp/viento-scene-navigation-partial-member-fix/project-scene-navigation-host-patched.test.mjs"
+      ],
+      "log": "docs/test-results/scene-navigation/pure-host/partial-member-fix-isolated-host-validation.log",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "scope": "Direct snapshot calls use the copied planner through a copied node-build-snapshot; other imported CLI/build/service APIs remain real unpatched production code, whose existing invalid-target checks already pass."
+    },
+    "unpatchedRegression": {
+      "command": [
+        "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+        "--test",
+        "--test-name-pattern",
+        "a broken target scene reports",
+        "/tmp/viento-scene-navigation-partial-member-fix/project-scene-navigation-host-unpatched.test.mjs"
+      ],
+      "log": "docs/test-results/scene-navigation/pure-host/partial-member-fix-unpatched-regression-failure.log",
+      "expectedFailure": true,
+      "exitCode": 1
+    }
+  },
+  "originalProbe": {
+    "report": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-partial-member-probe.json",
+    "log": "docs/test-results/scene-navigation/pure-host/viento-scene-navigation-partial-member-probe.log"
+  },
+  "patchStatus": "Prepared only, not applied to formal source or test.",
+  "formalSourcesUnchanged": true
+}

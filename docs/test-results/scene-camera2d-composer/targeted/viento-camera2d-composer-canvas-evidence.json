@@ -1,0 +1,81 @@
+{
+  "topic": "scene-camera2d-composer-canvas",
+  "capturedAtUtc": "2026-11-11T09:59:17.790156+00:00",
+  "repository": "/home/chiharukiryu/cdev/viento-studio",
+  "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/scene-camera2d-composer-canvas.test.mjs scripts/tests/scene-camera2d-frame.test.mjs > /tmp/viento-camera2d-composer-canvas-final.log 2>&1",
+  "final": {
+    "canvasFactory": {
+      "tests": 17,
+      "pass": 17
+    },
+    "pureModel": {
+      "tests": 15,
+      "pass": 15
+    },
+    "combined": {
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "rawLogs": [
+    {
+      "path": "/tmp/viento-camera2d-composer-canvas-initial.log",
+      "sha256": "1843a5b92ab84f83c609bdb6a93a3ad981adfab3869d0f3ef256f144d5bed6c0",
+      "counts": {
+        "tests": 14,
+        "pass": 12,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "/tmp/viento-camera2d-composer-canvas-second.log",
+      "sha256": "83de72af531fbf631ffdb56c3be19d24907b6aaf1f01d545d59670f190851c84",
+      "counts": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "/tmp/viento-camera2d-composer-canvas-final.log",
+      "sha256": "5cb135b2c88ed2723d6a86254cdfbd0898fb55bf701801ac9e6d28f5c43fcb28",
+      "counts": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "sourceHashesAfterFinalTargetedRun": {
+    "web/modules/app-scene-camera2d-composer.js": "20ab24494f6df2322ee8f9ce071eebaace97f4ba8c28644c01f8c374ad420175",
+    "engine/scene-camera2d-frame.mjs": "d4e211c071fe48122752b73fc61310a470dc915b6afc79e16b614bea0f185f77",
+    "scripts/tests/scene-camera2d-composer-canvas.test.mjs": "f0cc84b8934b7599f81e8d553d3d65218473d39837a163f45aa77d97e8e536b5",
+    "scripts/tests/scene-camera2d-frame.test.mjs": "1aa5913de6d8e4109251382ce7231355f48ee9735a29354eedc8800a3d177ac3"
+  },
+  "initialFailures": {
+    "initial": [
+      "foreign pointercancel/lostpointercapture cancelled another active pointer gesture",
+      "destroyed controller accepted late setModel and resurrected frame"
+    ],
+    "second": [
+      "destroy terminal fix had not yet landed when this run began"
+    ]
+  },
+  "fixtureCorrection": "Fake pointerup defaults retain the most recent real pointerdown/move coordinates. Explicit pointerup tests independently cover changed final coordinate and no delivered final move; production endpoint behavior is not stubbed.",
+  "boundaries": [
+    "Actual Node import of createSceneCamera2DComposerCanvas; no production stubs or VM replacement of the factory.",
+    "Fake Canvas2D context records draw operations and event delivery; this is not a browser pixel or native runtime test.",
+    "DPR budget asserts both axes <=4096 at logical65536 square and DPR8; no actual large backing allocation occurs in the fake.",
+    "Source hashes captured after the final targeted run; this receipt is not a before/after source-preservation assertion.",
+    "Full application, Chrome and Godot evidence belong to parent and are not asserted here."
+  ],
+  "frozen": true
+}

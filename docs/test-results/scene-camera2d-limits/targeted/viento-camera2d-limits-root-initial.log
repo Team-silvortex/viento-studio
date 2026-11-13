@@ -1,0 +1,67 @@
+✔ backend descriptors detach and recursively freeze every admitted field (2.262327ms)
+✔ descriptor schema rejects unknown, missing and host implementation fields (1.668259ms)
+✔ identities, versions and lists remain bounded unique descriptor data (0.959172ms)
+✔ plan schemas and runtime protocol schemas are explicit separate declarations (0.953942ms)
+✔ project plans admit explicit runtime protocols one through eleven without changing author schema (0.590853ms)
+✔ execution operations require seven explicit booleans without support inference (3.013605ms)
+✔ namespaced native extension metadata never implies runtime or GPU support (0.62677ms)
+✔ descriptor admission refuses accessors and inherited authority before getters run (0.327923ms)
+✔ nonserializable, cyclic, sparse, overdeep and oversized DTOs fail closed (0.631691ms)
+✔ support checks admit known plans and platforms with or without optional plan data (0.48967ms)
+✔ unsupported plan format, kind and schema diagnose source without choosing a fallback (0.34247ms)
+✔ missing feature diagnostics retain the scene source and original capability order (0.225819ms)
+✔ all execution, platform, plan and capability rejections remain independently visible (0.205561ms)
+✔ malformed support requests and plan DTOs cannot bypass validation (1.61068ms)
+✔ UI support convenience is explicit, operation-specific and fail closed (0.794951ms)
+✔ portable middleware executes in an isolated JavaScript realm without host globals (11.972075ms)
+✔ scene build: deterministic, movable, frozen bytes; portable planner has no host globals (142.867073ms)
+✔ scene build: rejects unknown features, missing references, invalid values and unbound resources at source fields (69.708455ms)
+✔ scene snapshot rejects links, missing images and unfinished source transactions without writes (52.347642ms)
+✔ scene snapshot detects an author edit during image capture (24.412851ms)
+✔ process lifecycle: missing tool, nonzero exit, bounded logs, timeout, cancellation and descendant cleanup (577.574319ms)
+✔ build request validation and a missing engine never create an output or modify source (24.386389ms)
+﹣ real Godot: build/import, cold run from frozen input, movement states, safeguards and failure cleanup (0.181474ms) # Set VIENTO_GODOT_BIN to run the real Godot integration
+✔ composition stages only coordinates, revokes approval and requires review before an exact save (70.154291ms)
+✔ composition follow adjustment retains the second same-OC instance and updates only its offset (46.73055ms)
+✔ late gesture cannot overwrite a silent numeric edit or another source owner (93.437666ms)
+✔ invalid or unrelated composition candidates never alter the form or its review (26.557625ms)
+✔ creation review keeps the composer locked until the preview completes (25.39685ms)
+✔ closing or disposing a staged composition cancels its renderer without a source write (24.373175ms)
+✔ bounded fixed and follow planning derive both capabilities and preserve independent author revisions (50.024979ms)
+✔ a provider with the base camera but no world-bound capability rejects bounded plans (9.775271ms)
+✔ removing bounded capability from member and assembly cannot silently downgrade the explicit declaration (8.071314ms)
+✔ bounded producer receipts require the actual producer capability independently of the registered adapter (4.934895ms)
+✖ malformed bounded declarations cannot hide behind both capability flags (6.712523ms)
+✔ legacy camera plans still need only the base capability and retain v1 author documents (5.154232ms)
+✔ camera form requires a clean visible owner and its explicit capability (66.577165ms)
+✔ new fixed camera reviews exact source and applies once through the world transaction port (41.003289ms)
+✔ existing follow camera targets stable instance identities and preserves surrounding source bytes (45.473803ms)
+✔ camera review is revoked by silent edits, invalid numbers and stale source ownership (138.323851ms)
+✔ camera cancel writes nothing and an uncertain save never resubmits automatically (63.313395ms)
+✔ late camera catalogs cannot populate another scene or a closed view (12.645374ms)
+✔ a known source conflict preserves the form and requires a fresh explicit review (50.03098ms)
+✔ unchanged camera settings produce no source write or save ticket (15.500408ms)
+✔ a known creation path conflict preserves inputs for an explicit new-location review (49.460637ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 42
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 1055.362674
+
+✖ failing tests:
+
+test at scripts/tests/scene-camera2d-limits-admission.test.mjs:60:1
+✖ malformed bounded declarations cannot hide behind both capability flags (6.712523ms)
+  TypeError: Invalid execution backend descriptor or support request.
+      at invalid (file:///home/chiharukiryu/cdev/viento-studio/engine/backend-capabilities.mjs:17:17)
+      at detachData (file:///home/chiharukiryu/cdev/viento-studio/engine/backend-capabilities.mjs:72:17)
+      at supportRequest (file:///home/chiharukiryu/cdev/viento-studio/engine/backend-capabilities.mjs:138:17)
+      at checkExecutionBackendSupport (file:///home/chiharukiryu/cdev/viento-studio/engine/backend-capabilities.mjs:178:17)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-camera2d-limits-admission.test.mjs:63:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_backend_invalid'
+  }

@@ -1,0 +1,33 @@
+✔ range editing is inclusive, isolated to one action, and leaves the source untouched (2.824868ms)
+✔ editing accepts frozen snapshots, releases subranges, and clears every track (1.691413ms)
+✔ invalid edits fail without mutating the input, including final-frame presses (1.735688ms)
+✔ operations validate the original before edits rather than masking malformed data (0.441839ms)
+✔ v2 range editing isolates the selected instance, adds only pressed rows and leaves other fields untouched (1.130318ms)
+✔ v2 can clear one instance or every instance while preserving row order and detached shape (0.959611ms)
+✔ v2 edit targets, row budget and final-step release are strict and atomic (3.243949ms)
+✔ explicit v1-to-v2 conversion copies every action to each selected instance without changing the source (2.032226ms)
+✔ v2 conversion only clones and never remaps or drops targets from an existing instance program (0.408227ms)
+✔ conversion rejects malformed, oversized, repeated and executable target lists before getters run (2.423506ms)
+✔ thirty 60 Hz action samples are detached and frozen without changing the original (5.709496ms)
+✔ format, version, duration and complete release are strict (1.150722ms)
+✔ each sample requires exactly five explicit booleans (0.509254ms)
+✔ rejects accessors, sparse arrays, hidden properties, symbols and custom prototypes (0.538948ms)
+✔ v2 independently admits at most eight explicit instance rows per step and deep-freezes detached data (1.466049ms)
+✔ v2 rows cannot duplicate an instance, exceed the budget, omit action fields or press the final step (2.658632ms)
+✔ v2 nested descriptors reject executable, hidden, sparse and inherited data before getters execute (0.800269ms)
+✔ v2 omitted targets are explicit empty steps, not retained input from previous frames (0.345372ms)
+✔ only single observable Godot physics projects with bounded character count are admitted (14.026543ms)
+✔ completed observations contain every character on each of thirty fixed steps (4.193629ms)
+✔ partial, mismatched or non-fixed-step observations are not successful replays (27.802218ms)
+✔ frozen replay target catalog uses physical controlled character identity and actor order (1.543205ms)
+✔ v2 frozen targets reject unknown, noncontrolled, nonphysical and foreign scene instances (6.759111ms)
+✔ v1 target validation retains global semantics while v2 requires the declared backend capability (5.377101ms)
+✔ static bodies and sensors never enter the controlled-character target catalog (3.36542ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128.008109

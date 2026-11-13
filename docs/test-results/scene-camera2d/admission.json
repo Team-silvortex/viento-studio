@@ -1,0 +1,27 @@
+{
+  "recordedAtUtc": "2026-11-11T09:00:24.838044+00:00",
+  "scope": "neutral support/generated producer admission and targeted domain/package regression, no real Godot execution",
+  "command": "PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH node --test scripts/tests/scene-camera2d-admission.test.mjs scripts/tests/scene-camera2d.test.mjs scripts/tests/scene-camera2d-packages.test.mjs scripts/tests/scene-physics2d-build-integration.test.mjs scripts/tests/backend-capabilities.test.mjs scripts/tests/backend-middleware.test.mjs",
+  "results": {
+    "tests": 60,
+    "pass": 59,
+    "skip": 1,
+    "fail": 0
+  },
+  "logs": [
+    "/tmp/viento-camera2d-admission-initial.log",
+    "/tmp/viento-camera2d-admission-final.log",
+    "/tmp/viento-camera2d-admission-final-second.log"
+  ],
+  "firstFailures": [
+    "New test attempted to mutate the intentionally frozen camera fixture; changed the test to clone the full plan first.",
+    "Existing portable VM harness assumed backend-capabilities had no imports; updated it to load actual json-source/source-path/camera dependencies in the same isolated realm and added positive/missing-cap/unknown-target checks. Strict admission was not weakened."
+  ],
+  "hashTiming": "Immediately after final targeted regression, not represented as test-start/test-end hashes.",
+  "sources": {
+    "engine/backend-capabilities.mjs": "645c80ae997b99a99bb3661c9bf1c4d1a350e80d8335abd0810bab116fdae427",
+    "scripts/adapters/node-execution-backends.mjs": "eb500e3085a7c79efecaca75c10704cc5151fa465a7727195b569d59ff97a29e",
+    "scripts/tests/scene-camera2d-admission.test.mjs": "10feee56ddb9265b91c39b41eaa1119de20178b3ef8c889bcc557755000e9c8f",
+    "scripts/tests/backend-capabilities.test.mjs": "8e3ed5cea66700524e69c1266991e169fa1466570ec83c3e605128110264d357"
+  }
+}

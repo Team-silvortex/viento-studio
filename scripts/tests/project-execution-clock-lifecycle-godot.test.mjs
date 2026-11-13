@@ -38,7 +38,7 @@ async function run(name, f, options = {}) {
   const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool,
     output: path.join(f.temporary, 'execution-clock-lifecycle-build'), timeoutMs: 60000 });
   assert.equal(built.ok, true, json(built.record?.diagnostics || built));
-  assert.equal(built.record.backend.version, built.record.backend.capabilities.includes('runtime.audio-requests') ? '0.36.0' : '0.34.0');
+  assert.equal(built.record.backend.version, '0.46.0');
   assert.deepEqual(await authorHashes(f.author), before);
   let result, escaped;
   try {
