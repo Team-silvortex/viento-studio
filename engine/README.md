@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.3.0**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.3.0.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。当前源码版本为 **0.3.1**，本版接口与交付范围见[发布记录](../docs/RELEASE_0.3.1.md)；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -42,6 +42,8 @@
 `script-authoring.mjs` 的 `listScriptStarters()`／`prepareScriptDraft(context,request)` 提供 Godot GDScript、Bevy Rust 起始内容与普通 TXT 草稿提案。`prepareScriptDraftApply` 再验当前会话、正文目录和类型目录；不创建 UUID、关系或执行源码。已有行为、声音、动画与物理各由自己的 edit／source 契约接入原文草稿，最终普通保存权仍属于宿主。
 
 0.3.0 源码收录 `scene-behavior-binding-copy.mjs` 的 `proposeSceneBehaviorBindingCopy({bindings, sourceBindingId, targetInstanceId, bindingId, instances, sourceObjectIds})`。输入是当前普通绑定表单及已核对目录；调用方分配新 UUID，模块检查精确数据结构、数量、已存在来源及目标身份，返回可继续编辑且脱离输入的新绑定。参数原字符串（包括未完成数字、空值与换行）及信号顺序保留；参数内的 UUID 不推断改写。一个文档最多32条绑定，语义合法性、原文提案、依赖重查与保存继续由原链负责。模块不依赖渲染器、I/O、随机身份服务或具体后端，也不新增持久格式。操作与验证见[绑定配置复制](../docs/SCENE_BEHAVIORS.md#复制当前绑定到场景实例)和[开发专题](../docs/test-results/scene-behavior-binding-copy/README.md)。
+
+0.3.1 将首次创建的辅助拆为独立模块：`scene-behavior-create-parameters.mjs` 检查逐绑定原始参数并显式补齐已识别接口的缺失项；`scene-behavior-create-references.mjs` 捕获严格创建来源并提出实例／组装成员／输入动作的 String 替换；`scene-behavior-create-audio.mjs` 持有独立音轨目录品牌，复用 native/WASM 声音声明校验后提出音轨 String 替换。目录与视图不执行作者代码、不取得 I/O 或保存权；核心不可用时不添加 JS 替代规则。界面在异步回填前复核会话、来源与整份已审阅清单预算，最终正文和关系仍由原完整校验及 `behavior.create` 事务准入。所选字符串不新增隐藏关系或播放权限，三项操作与证据见[首次参数配置](../docs/SCENE_BEHAVIORS.md#首次创建时配置参数)。
 
 [完整接口细节与阶段记录](../docs/history/engine-2026-10-25.md#section-02)。
 

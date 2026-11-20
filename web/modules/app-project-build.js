@@ -203,7 +203,7 @@ const toolReasonLabels = { platform_unsupported: errorLabels.build_platform_unsu
   tool_failed: '构建工具身份检查失败，请检查宿主工具配置。', tool_output_limit: '工具返回内容超出限制，检查已停止。',
   tool_cancelled: '工具检查已取消。', tool_changed: '构建工具已变化，请重新检查。' };
 
-export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, openAuthorSource = () => false, requestScriptCreation, setBusy = () => {}, applied = async () => {} } = {}) {
+export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, openAuthorSource = () => false, requestScriptCreation, getReferences, getAudioTracks, setBusy = () => {}, applied = async () => {} } = {}) {
   const button = document.getElementById('projectBuildBtn');
   if (!button) return { setAvailable() {} };
   const dialog = document.createElement('dialog');
@@ -981,7 +981,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
 
   const behaviorCreator = typeof setupSceneBehaviorCreate === 'function' ? setupSceneBehaviorCreate({
-    requestScriptCreation,
+    requestScriptCreation, getReferences, getAudioTracks,
     getContext: () => { const context = getContext(); return { ...context,
       busy: (behaviorCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || data?.job?.status === 'running',
       session: String(dialogSession), sceneId: selected, visible: dialog.open, sourceToken: context.sceneDraftToken }; },

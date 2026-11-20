@@ -1,0 +1,496 @@
+TAP version 13
+# Subtest: build UI checks a frozen plan, submits that snapshot, and waits for an explicit run
+ok 1 - build UI checks a frozen plan, submits that snapshot, and waits for an explicit run
+  ---
+  duration_ms: 612.894429
+  type: 'test'
+  ...
+# Subtest: tool identity checks preserve approved plans, author drafts and control input through closing and reopening
+ok 2 - tool identity checks preserve approved plans, author drafts and control input through closing and reopening
+  ---
+  duration_ms: 532.611772
+  type: 'test'
+  ...
+# Subtest: tool failures disable execution, preserve plan checks and render only safe status text
+ok 3 - tool failures disable execution, preserve plan checks and render only safe status text
+  ---
+  duration_ms: 437.022554
+  type: 'test'
+  ...
+# Subtest: external tool checks use read polling and cannot start build jobs or another probe
+ok 4 - external tool checks use read polling and cannot start build jobs or another probe
+  ---
+  duration_ms: 265.270076
+  type: 'test'
+  ...
+# Subtest: legacy hosts hide tool checking and malformed identities cannot replace accepted build state
+ok 5 - legacy hosts hide tool checking and malformed identities cannot replace accepted build state
+  ---
+  duration_ms: 421.79525
+  type: 'test'
+  ...
+# Subtest: a lost tool-check response is reconciled by reading status without repeating the process
+ok 6 - a lost tool-check response is reconciled by reading status without repeating the process
+  ---
+  duration_ms: 336.362076
+  type: 'test'
+  ...
+# Subtest: offline author catalog blocks new plans and builds while preserving frozen execution, tools and runtime observations
+ok 7 - offline author catalog blocks new plans and builds while preserving frozen execution, tools and runtime observations
+  ---
+  duration_ms: 416.280491
+  type: 'test'
+  ...
+# Subtest: scene switching cannot reuse another scene plan or artifact
+ok 8 - scene switching cannot reuse another scene plan or artifact
+  ---
+  duration_ms: 487.612827
+  type: 'test'
+  ...
+# Subtest: saving a layout refreshes preview and invalidates the approved build plan without submitting a job
+ok 9 - saving a layout refreshes preview and invalidates the approved build plan without submitting a job
+  ---
+  duration_ms: 464.359741
+  type: 'test'
+  ...
+# Subtest: draft, creation, busy and browse guards prevent task submission even when context changed after rendering
+ok 10 - draft, creation, busy and browse guards prevent task submission even when context changed after rendering
+  ---
+  duration_ms: 522.379505
+  type: 'test'
+  ...
+# Subtest: closing a running task preserves it and polling, while dirty drafts still allow cancellation
+ok 11 - closing a running task preserves it and polling, while dirty drafts still allow cancellation
+  ---
+  duration_ms: 451.139307
+  type: 'test'
+  ...
+# Subtest: a lost submission response is reconciled with GET without resubmitting the task
+ok 12 - a lost submission response is reconciled with GET without resubmitting the task
+  ---
+  duration_ms: 343.592236
+  type: 'test'
+  ...
+# Subtest: diagnostics retain exact source coordinates, protect declined navigation, and render details as text
+ok 13 - diagnostics retain exact source coordinates, protect declined navigation, and render details as text
+  ---
+  duration_ms: 189.338444
+  type: 'test'
+  ...
+# Subtest: preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks
+ok 14 - preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks
+  ---
+  duration_ms: 619.733921
+  type: 'test'
+  ...
+# Subtest: late source navigation cannot close a reopened dialog or replace a newer navigation focus
+ok 15 - late source navigation cannot close a reopened dialog or replace a newer navigation focus
+  ---
+  duration_ms: 483.761378
+  type: 'test'
+  ...
+# Subtest: queued dialog-close focus is discarded when the dialog is reopened before the close event
+ok 16 - queued dialog-close focus is discarded when the dialog is reopened before the close event
+  ---
+  duration_ms: 298.361137
+  type: 'test'
+  ...
+# Subtest: multiple queued close events focus the final closed session only once
+ok 17 - multiple queued close events focus the final closed session only once
+  ---
+  duration_ms: 305.159046
+  type: 'test'
+  ...
+# Subtest: snapshot conflicts invalidate the approved plan and preserve original error details
+ok 18 - snapshot conflicts invalidate the approved plan and preserve original error details
+  ---
+  duration_ms: 329.847483
+  type: 'test'
+  ...
+# Subtest: an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry
+ok 19 - an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry
+  ---
+  duration_ms: 288.34896
+  type: 'test'
+  ...
+# Subtest: all build dialog user messages have English and Japanese translations
+ok 20 - all build dialog user messages have English and Japanese translations
+  ---
+  duration_ms: 4.171011
+  type: 'test'
+  ...
+# Subtest: asynchronous snapshot conflicts invalidate the plan after the job completes
+ok 21 - asynchronous snapshot conflicts invalidate the plan after the job completes
+  ---
+  duration_ms: 438.953431
+  type: 'test'
+  ...
+# Subtest: editor build context resolves generated source paths without changing the active draft
+ok 22 - editor build context resolves generated source paths without changing the active draft
+  ---
+  duration_ms: 18.968338
+  type: 'test'
+  ...
+# Subtest: source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command
+ok 23 - source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command
+  ---
+  duration_ms: 209.447811
+  type: 'test'
+  ...
+# Subtest: source layout bridge discards delayed opens after scene or dialog ownership changes
+ok 24 - source layout bridge discards delayed opens after scene or dialog ownership changes
+  ---
+  duration_ms: 642.666401
+  type: 'test'
+  ...
+# Subtest: source apply propagates live origin ownership to the asynchronous editor host
+ok 25 - source apply propagates live origin ownership to the asynchronous editor host
+  ---
+  duration_ms: 964.189124
+  type: 'test'
+  ...
+# Subtest: problem rows belong to their task rather than the selected scene, and replaced rows cannot navigate
+ok 26 - problem rows belong to their task rather than the selected scene, and replaced rows cannot navigate
+  ---
+  duration_ms: 278.98904
+  type: 'test'
+  ...
+# Subtest: identical polling preserves problem navigation ownership while newer results revoke it
+ok 27 - identical polling preserves problem navigation ownership while newer results revoke it
+  ---
+  duration_ms: 315.744567
+  type: 'test'
+  ...
+# Subtest: malformed or foreign backend problems clear navigation and show an explicit unavailable result
+ok 28 - malformed or foreign backend problems clear navigation and show an explicit unavailable result
+  ---
+  duration_ms: 313.591398
+  type: 'test'
+  ...
+# Subtest: recipe materialization is offered only for a saved writable preview selection
+ok 29 - recipe materialization is offered only for a saved writable preview selection
+  ---
+  duration_ms: 384.608022
+  type: 'test'
+  ...
+# Subtest: materialized scene becomes the build selection and requires a fresh explicit plan
+ok 30 - materialized scene becomes the build selection and requires a fresh explicit plan
+  ---
+  duration_ms: 418.038735
+  type: 'test'
+  ...
+# Subtest: materialization host context reports session, selection and external busy state independently
+ok 31 - materialization host context reports session, selection and external busy state independently
+  ---
+  duration_ms: 423.695717
+  type: 'test'
+  ...
+# Subtest: successful plan displays input-action warning, keeps build available and navigates to the exact binding
+ok 32 - successful plan displays input-action warning, keeps build available and navigates to the exact binding
+  ---
+  duration_ms: 167.896548
+  type: 'test'
+  ...
+# Subtest: successful legacy project plan shows the non-blocking missing-input-map warning in all languages
+ok 33 - successful legacy project plan shows the non-blocking missing-input-map warning in all languages
+  ---
+  duration_ms: 171.462804
+  type: 'test'
+  ...
+# Subtest: build diagnostics explain invalid Unicode titles and link to their source
+ok 34 - build diagnostics explain invalid Unicode titles and link to their source
+  ---
+  duration_ms: 168.316635
+  type: 'test'
+  ...
+# Subtest: behavior audio directory reads only the current scene and returns a source-bound immutable track directory
+ok 35 - behavior audio directory reads only the current scene and returns a source-bound immutable track directory
+  ---
+  duration_ms: 11.327564
+  type: 'test'
+  ...
+# Subtest: a scene without an audio opt-in returns an explicit empty catalog without changing the draft
+ok 36 - a scene without an audio opt-in returns an explicit empty catalog without changing the draft
+  ---
+  duration_ms: 1.911702
+  type: 'test'
+  ...
+# Subtest: audio directory read refuses every owner change after both digest and both service boundaries
+ok 37 - audio directory read refuses every owner change after both digest and both service boundaries
+  ---
+  duration_ms: 23.560215
+  type: 'test'
+  ...
+# Subtest: requested source data is captured before awaits without invoking caller accessors
+ok 38 - requested source data is captured before awaits without invoking caller accessors
+  ---
+  duration_ms: 2.52031
+  type: 'test'
+  ...
+# Subtest: changed and malformed behavior dependency reviews never request the audio directory
+ok 39 - changed and malformed behavior dependency reviews never request the audio directory
+  ---
+  duration_ms: 1.678668
+  type: 'test'
+  ...
+# Subtest: audio directory must match all three scene dependency fields captured by behavior review
+ok 40 - audio directory must match all three scene dependency fields captured by behavior review
+  ---
+  duration_ms: 2.316159
+  type: 'test'
+  ...
+# Subtest: service failures and a stale requested source never supply a reusable directory
+ok 41 - service failures and a stale requested source never supply a reusable directory
+  ---
+  duration_ms: 1.894
+  type: 'test'
+  ...
+# Subtest: optional capability is advertised only for explicit true with both read ports
+ok 42 - optional capability is advertised only for explicit true with both read ports
+  ---
+  duration_ms: 1.25741
+  type: 'test'
+  ...
+# Subtest: old services still support ordinary behavior edits without an audio read port
+ok 43 - old services still support ordinary behavior edits without an audio read port
+  ---
+  duration_ms: 5.893114
+  type: 'test'
+  ...
+# Subtest: an unsaved behavior draft can read audio tracks and selected values use the existing string proposal path
+ok 44 - an unsaved behavior draft can read audio tracks and selected values use the existing string proposal path
+  ---
+  duration_ms: 5.833366
+  type: 'test'
+  ...
+# Subtest: observed optional capability disappearance and return rejects pending directories without changing the ordinary source
+ok 45 - observed optional capability disappearance and return rejects pending directories without changing the ordinary source
+  ---
+  duration_ms: 7.837115
+  type: 'test'
+  ...
+# Subtest: optional audio capability withdrawal leaves reviewed ordinary proposals applicable before and during each apply boundary
+ok 46 - optional audio capability withdrawal leaves reviewed ordinary proposals applicable before and during each apply boundary
+  ---
+  duration_ms: 13.386984
+  type: 'test'
+  ...
+# Subtest: audio track directory transport uses only its read endpoint and places the API token in headers
+ok 47 - audio track directory transport uses only its read endpoint and places the API token in headers
+  ---
+  duration_ms: 7.745047
+  type: 'test'
+  ...
+# Subtest: runtime supplies a separate directory port and requires the explicit service capability without changing existing behavior ports
+ok 48 - runtime supplies a separate directory port and requires the explicit service capability without changing existing behavior ports
+  ---
+  duration_ms: 16.344482
+  type: 'test'
+  ...
+# Subtest: first-creation runtime exposes a live independent strict-boolean audio-directory capability and rejects disabled reads before transport
+ok 49 - first-creation runtime exposes a live independent strict-boolean audio-directory capability and rejects disabled reads before transport
+  ---
+  duration_ms: 36.635251
+  type: 'test'
+  ...
+# Subtest: creation directory failures propagate unchanged without consulting a saved-source host or any write port
+ok 50 - creation directory failures propagate unchanged without consulting a saved-source host or any write port
+  ---
+  duration_ms: 5.279577
+  type: 'test'
+  ...
+# Subtest: the actual creation runtime port reaches the existing authenticated readonly audio transport with only a saved scene identity
+ok 51 - the actual creation runtime port reaches the existing authenticated readonly audio transport with only a saved scene identity
+  ---
+  duration_ms: 6.97234
+  type: 'test'
+  ...
+# Subtest: the actual build controller injects the optional readonly function unchanged and forwards current ownership and capability into creation
+ok 52 - the actual build controller injects the optional readonly function unchanged and forwards current ownership and capability into creation
+  ---
+  duration_ms: 233.321316
+  type: 'test'
+  ...
+# Subtest: legacy build composition with no directory port still opens ordinary behavior creation and forwards absent capability unchanged
+ok 53 - legacy build composition with no directory port still opens ordinary behavior creation and forwards absent capability unchanged
+  ---
+  duration_ms: 199.739967
+  type: 'test'
+  ...
+# Subtest: settings finish before localized areas mount, with the document authority already host-owned
+ok 54 - settings finish before localized areas mount, with the document authority already host-owned
+  ---
+  duration_ms: 9.984617
+  type: 'test'
+  ...
+# Subtest: a failed language initialization does not partly mount domain views
+ok 55 - a failed language initialization does not partly mount domain views
+  ---
+  duration_ms: 3.718684
+  type: 'test'
+  ...
+# Subtest: each area receives only its own frozen options and unchanged author callbacks
+ok 56 - each area receives only its own frozen options and unchanged author callbacks
+  ---
+  duration_ms: 3.834004
+  type: 'test'
+  ...
+# Subtest: port configuration is captured before awaiting settings and caller mutation cannot replace source authority
+ok 57 - port configuration is captured before awaiting settings and caller mutation cannot replace source authority
+  ---
+  duration_ms: 3.412206
+  type: 'test'
+  ...
+# Subtest: the public system surface and snapshots never expose controllers, functions or source text
+ok 58 - the public system surface and snapshots never expose controllers, functions or source text
+  ---
+  duration_ms: 3.155027
+  type: 'test'
+  ...
+# Subtest: media receives the declared export provider rather than a caller-supplied sibling override
+ok 59 - media receives the declared export provider rather than a caller-supplied sibling override
+  ---
+  duration_ms: 3.545318
+  type: 'test'
+  ...
+# Subtest: disabling export leaves reference editing active and gives media no phantom export provider
+ok 60 - disabling export leaves reference editing active and gives media no phantom export provider
+  ---
+  duration_ms: 2.624471
+  type: 'test'
+  ...
+# Subtest: an exporter without an asset provider does not disable or invent the optional media service
+ok 61 - an exporter without an asset provider does not disable or invent the optional media service
+  ---
+  duration_ms: 2.204887
+  type: 'test'
+  ...
+# Subtest: disabling project settings does not disable the document, world or build modules
+ok 62 - disabling project settings does not disable the document, world or build modules
+  ---
+  duration_ms: 2.606237
+  type: 'test'
+  ...
+# Subtest: disabling media leaves package exporting available and refresh performs no hidden media setup
+ok 63 - disabling media leaves package exporting available and refresh performs no hidden media setup
+  ---
+  duration_ms: 2.887039
+  type: 'test'
+  ...
+# Subtest: all legacy optional features may be disabled while base source and execution views stay assembled
+ok 64 - all legacy optional features may be disabled while base source and execution views stay assembled
+  ---
+  duration_ms: 1.790732
+  type: 'test'
+  ...
+# Subtest: module assembly does not grant host World writes, execution or preview availability
+ok 65 - module assembly does not grant host World writes, execution or preview availability
+  ---
+  duration_ms: 2.643185
+  type: 'test'
+  ...
+# Subtest: World access, execution and scene preview are independent host capabilities
+ok 66 - World access, execution and scene preview are independent host capabilities
+  ---
+  duration_ms: 1.69612
+  type: 'test'
+  ...
+# Subtest: host capability refresh fails closed for non-booleans and revokes previous grants
+ok 67 - host capability refresh fails closed for non-booleans and revokes previous grants
+  ---
+  duration_ms: 3.083777
+  type: 'test'
+  ...
+# Subtest: command arrays are isolated from the caller and every receiving area
+ok 68 - command arrays are isolated from the caller and every receiving area
+  ---
+  duration_ms: 2.721057
+  type: 'test'
+  ...
+# Subtest: snapshot mutation cannot change future module plans or capability delivery
+ok 69 - snapshot mutation cannot change future module plans or capability delivery
+  ---
+  duration_ms: 2.134738
+  type: 'test'
+  ...
+# Subtest: a future required 3D request reports the missing capability without unmounting current authoring
+ok 70 - a future required 3D request reports the missing capability without unmounting current authoring
+  ---
+  duration_ms: 2.376409
+  type: 'test'
+  ...
+# Subtest: optional missing or unsupported capabilities remain diagnostics and never imply Rust author compilation
+ok 71 - optional missing or unsupported capabilities remain diagnostics and never imply Rust author compilation
+  ---
+  duration_ms: 1.832117
+  type: 'test'
+  ...
+# Subtest: a disabled requested module is inactive while its independent sibling still supports author resources
+ok 72 - a disabled requested module is inactive while its independent sibling still supports author resources
+  ---
+  duration_ms: 3.87051
+  type: 'test'
+  ...
+# Subtest: malformed project profiles report a local diagnostic and preserve the already mounted editor
+ok 73 - malformed project profiles report a local diagnostic and preserve the already mounted editor
+  ---
+  duration_ms: 2.141531
+  type: 'test'
+  ...
+# Subtest: an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data
+ok 74 - an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data
+  ---
+  duration_ms: 2.214694
+  type: 'test'
+  ...
+# Subtest: a future profile schema preserves authored requests and assembled modules with a local invalid diagnostic
+ok 75 - a future profile schema preserves authored requests and assembled modules with a local invalid diagnostic
+  ---
+  duration_ms: 2.605986
+  type: 'test'
+  ...
+# Subtest: moving between additive profiles and a legacy project changes only plan diagnostics
+ok 76 - moving between additive profiles and a legacy project changes only plan diagnostics
+  ---
+  duration_ms: 2.688136
+  type: 'test'
+  ...
+# Subtest: refresh affects only the mounted media controller and does not remount any functional area
+ok 77 - refresh affects only the mounted media controller and does not remount any functional area
+  ---
+  duration_ms: 2.720395
+  type: 'test'
+  ...
+# Subtest: assembly and metadata refresh preserve injected source callbacks without invoking ordinary Save
+ok 78 - assembly and metadata refresh preserve injected source callbacks without invoking ordinary Save
+  ---
+  duration_ms: 1.572655
+  type: 'test'
+  ...
+# Subtest: settings fallback is used once and the explicit runtime settings remain authoritative
+ok 79 - settings fallback is used once and the explicit runtime settings remain authoritative
+  ---
+  duration_ms: 2.934094
+  type: 'test'
+  ...
+# Subtest: behavior directory reads are an explicit host grant independent of relationship writes
+ok 80 - behavior directory reads are an explicit host grant independent of relationship writes
+  ---
+  duration_ms: 2.27843
+  type: 'test'
+  ...
+# Subtest: saved scene animation preview requires both its module and explicit host grants without granting writes
+ok 81 - saved scene animation preview requires both its module and explicit host grants without granting writes
+  ---
+  duration_ms: 7.261226
+  type: 'test'
+  ...
+1..81
+# tests 81
+# suites 0
+# pass 81
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12912.533738

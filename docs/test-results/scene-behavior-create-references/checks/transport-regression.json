@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "counts": {
+    "tests": 123,
+    "pass": 123,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "newTests": 5,
+  "sources": {
+    "web/modules/app-project-build.js": "482203945f230c74c35087d91a7aa411c20b3e0ec305f03bd54c2a861a1f63ef",
+    "web/modules/app-runtime.js": "1f8aaf3350064547062d23c01fcd352ef2c0306960809a5c033d819aff719f4d",
+    "scripts/tests/scene-behavior-create-references-transport.test.mjs": "7d98f347816fd85a78e29266298639541bdce5f0dae5db36a7af6ea384df2ce2"
+  },
+  "log": "/tmp/viento-create-references-transport-verified.tap",
+  "firstFixtureRun": "/tmp/viento-create-references-transport-first.log",
+  "firstFixtureCorrection": "The standalone build fixture omitted existing PROJECT_BUILD_API_PATH, so two tests could not read build status; import and injection of the real existing constant corrected the fixture without product changes.",
+  "changes": [
+    "runtime builds an independent readonly getReferences(payload) port with strict service capability checks before dispatch",
+    "runtime build context carries referencesAvailable strictly as a boolean",
+    "project build passes the optional function unchanged to the creation UI and retains the existing context spread"
+  ],
+  "unchangedScope": [
+    "Existing behavior-source branding and host ports",
+    "HTTP endpoint and service",
+    "Studio module registry",
+    "Author formats and persistence transactions",
+    "Runtime protocol"
+  ],
+  "frozen": true,
+  "command": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node --test --test-reporter=tap scripts/tests/scene-behavior-create-references-transport.test.mjs scripts/tests/scene-behavior-reference-transport.test.mjs scripts/tests/project-build-ui.test.mjs scripts/tests/studio-system-ui.test.mjs scripts/tests/scene-behavior-create-ui.test.mjs scripts/tests/scene-behavior-create-parameters-ui.test.mjs",
+  "execution": "require_escalated; actual 123 named test cases, not aggregate restricted file wrappers",
+  "restrictedAggregateNotCounted": [
+    "/tmp/viento-create-references-transport-final.log",
+    "/tmp/viento-create-references-transport-final.tap"
+  ],
+  "sourcesUnchangedAtCompletion": true
+}

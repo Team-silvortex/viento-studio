@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-11-13**。源码版本 **0.3.0**；审查基线为提交 `c46631350f53ee60e0a70523684274f08b4c73b4`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-11-20**。源码版本 **0.3.1**；审查基线为提交 `fbaff4632b412f9205b70fdbeab8c982538c8f20`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 205 |
-| 实现单元（含规划占位） | 622 |
-| 已审查实现关系 | 837 |
-| 显式评分单元 | 3348 |
-| 语义依赖边 | 649 |
-| 工作流切片 | 170 |
+| 功能 | 208 |
+| 实现单元（含规划占位） | 631 |
+| 已审查实现关系 | 846 |
+| 显式评分单元 | 3384 |
+| 语义依赖边 | 658 |
+| 工作流切片 | 173 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 3200 |
+| 引用并校验指纹的文件 | 3229 |
 
 ## 评分锚点
 
@@ -272,6 +272,9 @@
 | [空影视工程→人物/剧本/分镜→图片音视频引用→标准作者ZIP换根恢复](function-atlas.html#workflow=film-template-author-migration) | [五类独立工程起始模板包](#project.starter-packs) → [影视创作模板、剧本与分镜素材迁移](#project.film_template) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [图片／视频／音频导入、引用、草稿预览与播放](#media.embed-play) → [导出准备、下载、原生保存及清理](#export.jobs-delivery) | 本次未登记额外缺口（不表示完成） | 八类模板和普通作者资源闭环；真实浏览器只在移动预览编辑场次/镜头，媒体HTTP和原生ZIP另验。不是影片时间线、剪辑、镜头自动执行、成片输出或安装设备验收。 |
 | [三场景空白结构→官方菜单→按名称替换/追加→保存重开→原窗口与ZIP离线](function-atlas.html#workflow=menu-target-authoring) | [保存态脚本参数接口与当前绑定显式修复](#authoring.script_parameter_interface) → [按名称连接成员、实例与输入动作参数](#behavior.parameter_references) → [菜单按钮的成员名称接线与原文保真编辑](#behavior.menu_target_authoring) → [独立运行菜单与键鼠释放后执行](#authoring.project_menu) | 本次未登记额外缺口（不表示完成） | 独立菜单作者纵切，原始条目保真、显式组装及重试空覆盖；不是完整关卡从空白、脚本创建返回、持续运行、发行或安装验收。 |
 | [首次行为暂存→普通脚本保存/取消→显式返回→重验与明确绑定→Godot第二实例事件](function-atlas.html#workflow=scene-script-creation-return) | [从已保存场景首次创建行为声明与关联](#behavior.creation) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [首次行为配置与普通脚本创建的显式往返](#behavior.script_creation_return) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) | 本次未登记额外缺口（不表示完成） | 单个两实例场景的作者纵切，四文档成功工程；三语/取消/改源范围，不是整款游戏、持久会话恢复、已有dirty行为原文或安装验收。 |
+| [空白作者结构→已保存TXT→首次逐绑定参数→显式补缺/审阅/取消或保存→实际计划](function-atlas.html#workflow=scene-behavior-creation-parameters) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [首次行为清单的多实例与多脚本创建](#behavior.multi_creation) → [保存态脚本参数接口与当前绑定显式修复](#authoring.script_parameter_interface) → [首次行为创建的逐绑定参数草稿与显式接口补齐](#behavior.creation_parameters) | 本次未登记额外缺口（不表示完成） | 首次行为参数作者纵切；浏览器/原生结果按专题，非整款游戏、既有dirty原文往返或新安装验收。 |
+| [空白作者结构→首次参数→显式名称选择→重核来源→审阅/取消或保存→实际组装运行](function-atlas.html#workflow=scene-behavior-creation-references) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [首次行为清单的多实例与多脚本创建](#behavior.multi_creation) → [首次行为创建的逐绑定参数草稿与显式接口补齐](#behavior.creation_parameters) → [首次行为创建时按名称连接文本参数](#behavior.creation_references) | 本次未登记额外缺口（不表示完成） | 首次创建名称连接作者纵切；与旧保存态编辑各自保持来源品牌，不代表完整游戏从空白或安装验收。 |
+| [空白作者结构→WAV/场景声音→首次行为选音轨→审阅保存→事件驱动真实播放器](function-atlas.html#workflow=scene-behavior-creation-audio) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [保存场景首次创建声音与完整登记](#scene.audio_creation) → [已有场景声音的素材选择、轨道管理与时间提示编排](#scene.audio_authoring) → [首次行为创建的逐绑定参数草稿与显式接口补齐](#behavior.creation_parameters) → [首次行为创建的声明音轨选择与文本填入](#behavior.creation_audio) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) | 本次未登记额外缺口（不表示完成） | 首次音轨接线作者纵切，Dummy音频驱动仅验证真实播放器状态；不代表整款游戏、扬声器或新安装。 |
 
 ## 功能与实现切片
 
@@ -3983,6 +3986,57 @@
 平台：Linux Node编辑服务与Chrome中英日390px，真实GUI作者步骤、Godot4.7.2音频修订，成功样例仅真实构建和一次headless事件。边界：仅首次行为创建，原表单在闭包保留文档/绑定UUID、所有未完成字段、Profile/Type/Path/选择和dirty；不导出可重灌draft DTO。；跨区纯意图含world/root/场景两修订/路径/后端/语言，一次性内存token；不写作品格式、事务、恢复日志或运行协议。关闭的dirty表单仍参与退出保护，reload不恢复这份临时配置。；装配层以受限服务连接scripts/build，不互传控制器。服务只有两模块均active才注入，picker初选对应后端，实际语言和脚本选择仍由作者核对。；host在成功writeDoc点观察path/content修订，未把saveNewDoc正常返回或isCreating=false视为注册完成；新Save失败/重试、后续已有Save、迟到创建会话与index失败分别测试。；显式返回先fresh目录核scene object/source revision和实际written script path/revision，再既有受护导航、fresh build context及表单第二次inspect。允许普通TXT创建带来的world baseRevision变化，旧preview不复用。；不自动选新TXT、补绑定或关系。原空选择仍空；无效新目录保留设置供只读查看/明确取消，来源变化前置拒绝不拉走当前正文。显式Discard只清暂存配置，脚本草稿另处理。；真实Chrome三独立零正文空结构，成功4文档10文件/取消2文档6文件/改源恢复3文档8文件；17截图、549生产来源稳定，实际Godot第二实例及原binding发context_ready [dock,0]。；本轮30host/协调器、102创建相邻、6保存接线、34构建UI与完整应用分别按回执验证；首轮运行中源码变化/截图遮挡、Node夹具新导入失败独立留证，不计最终通过。；现有行为原文有未保存修改时的往返尚未接入；未覆盖完整关卡复建、长期运行、存档、独立发行、设备/安装或Bevy执行对等。开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0。。
 
 下一步：继续从空白完整复建第一款参考关卡，按实际重复操作补参数/诊断交接；现有行为原文dirty往返另定义来源和草稿保真。
+
+<a id="behavior.creation_parameters"></a>
+### 首次行为创建的逐绑定参数草稿与显式接口补齐
+
+`behavior.creation_parameters` · 创作与工程 · 源码交付
+
+入口：已保存场景/TXT→首次添加行为→逐绑定参数JSON→明确补齐默认项→完整正文/关系审阅→既有三文件事务
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **首次参数JSON标量审阅、默认项插入与创建正文保真嵌入**；首次参数JSON标量审阅、默认项插入与创建正文保真嵌入 | 4 / 4 / 4 / 3 | [docs/test-results/scene-behavior-create-parameters/README\.md](../docs/test-results/scene-behavior-create-parameters/README.md)、[docs/test-results/scene-behavior-create-parameters/checks/application-status\.json](../docs/test-results/scene-behavior-create-parameters/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+| 本机服务与适配 | **首次目录的同快照可选参数接口发现**；首次目录的同快照可选参数接口发现 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-parameters/README\.md](../docs/test-results/scene-behavior-create-parameters/README.md)、[docs/test-results/scene-behavior-create-parameters/checks/application-status\.json](../docs/test-results/scene-behavior-create-parameters/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+| 交互与渲染 | **独立首次参数提示与逐绑定草稿接线**；独立首次参数提示与逐绑定草稿接线 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-parameters/README\.md](../docs/test-results/scene-behavior-create-parameters/README.md)、[docs/test-results/scene-behavior-create-parameters/checks/application-status\.json](../docs/test-results/scene-behavior-create-parameters/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+
+平台：Linux Node编辑服务与Chrome三语390px；实际结果见本轮回执、0.3.1源码收录；最近安装验收仍0.2.0，非新安装、Bevy对等或实体设备验收。边界：每条绑定独立保留原始参数JSON；选择脚本、切绑定/语言、刷新目录及首次脚本往返不隐式填值，不丢稳定身份与未完成输入。；只从同一次只读来源快照发现既有固定provider及受支持动画接口；任意GDScript/Rust不猜接口，不执行或返回作者代码，合同与来源修订成对。；明确补齐只按原文范围追加缺失默认项，已有值、空白、转义和数值写法保持；不推断UUID、动作、目标或共享状态。坏接口降级手工编辑，语法未完成和预算失败保留输入；无变化/失败保留既有审阅。；旧identity-only planner保持严格，独立纯参数片段校验及范围插入后，最终完整manifest继续由原inspect及behavior.create预览/应用/恢复准入；无格式、事务或运行层升级。；参数为最多32项有界标量，完整行为最多32KiB；先拒绝超预算正文再建索引。浏览器textarea按标准规范化输入行尾，便携BOM/CRLF保真与实际可见控件分别记录。；本轮作者纵切不是完整游戏从空白、既有dirty行为原文往返、长期运行、跨启动存档、独立发行、Bevy执行对等或新安装验收。。
+
+下一步：继续从空白完成第一款关卡的完整作者任务；按实际操作补名称接线与诊断交接，既有行为dirty往返另定义宿主草稿边界。
+
+<a id="behavior.creation_references"></a>
+### 首次行为创建时按名称连接文本参数
+
+`behavior.creation_references` · 创作与工程 · 源码交付
+
+入口：首次添加行为→显式读取保存态目录→选择实例/组装成员/输入动作及现有String→重核来源→替换词元→原完整审阅及创建事务
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **首次参数目录独立品牌与精确字符串词元替换**；首次参数目录独立品牌与精确字符串词元替换 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-references/README\.md](../docs/test-results/scene-behavior-create-references/README.md)、[docs/test-results/scene-behavior-create-references/checks/application-status\.json](../docs/test-results/scene-behavior-create-references/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+| 交互与渲染 | **独立名称选择与首次创建草稿所有权保护**；独立名称选择与首次创建草稿所有权保护 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-references/README\.md](../docs/test-results/scene-behavior-create-references/README.md)、[docs/test-results/scene-behavior-create-references/checks/application-status\.json](../docs/test-results/scene-behavior-create-references/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+| 交互与渲染 | **首次创建的可选只读目录宿主接线**；首次创建的可选只读目录宿主接线 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-references/README\.md](../docs/test-results/scene-behavior-create-references/README.md)、[docs/test-results/scene-behavior-create-references/checks/application-status\.json](../docs/test-results/scene-behavior-create-references/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+
+平台：Linux Node编辑服务与Chrome三语390px；实际键鼠Godot纵切按专题、0.3.1源码收录；最近安装验收仍0.2.0，非新安装、Bevy对等或实体设备验收。边界：首次创建尚无行为登记，使用独立只读来源品牌；复用既有目录HTTP和服务，不伪造已登记行为或借用旧原文编辑器的brand。；只列出当前原始参数JSON内已有String；实例身份与定义身份分别展示，成员和输入动作须明确选择组装，不推断参数名、创建键、关系或共享状态。；填入前重新读取，核对world/baseRevision/scene来源和完整目录；会话、脚本、实例、绑定、语言、创建读轮次、选项及原始片段均受保护。迟到请求不覆盖新输入。；仅替换所选字符串词元，便携BOM/CRLF/负零/指数数值保持；读取、选择、同值、失败和超预算保留参数及父审阅，实际变更才撤审阅。；纯规则、独立界面、只读宿主端口和已有事务分离；最终完整正文仍由原inspect和behavior.create准入，没有作者格式、持久化或运行协议升级。；真实空白八文档作者任务与Godot键鼠运行按本轮证据，不替代整款参考游戏从空白、长期运行、存档、独立发行或安装验收。。
+
+下一步：继续第一款参考关卡的完整从空白作者任务，按实际使用打通诊断和跨区交接；已有dirty行为原文往返另定义保真边界。
+
+<a id="behavior.creation_audio"></a>
+### 首次行为创建的声明音轨选择与文本填入
+
+`behavior.creation_audio` · 创作与工程 · 源码交付
+
+入口：保存场景声音→首次创建行为→明确读取并选择音轨及现有String→重核来源→完整审阅→原创建事务→构建/实际播放观察
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **首次音轨来源捕获与原文String提案**；首次音轨来源捕获与原文String提案 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-audio/README\.md](../docs/test-results/scene-behavior-create-audio/README.md)、[docs/test-results/scene-behavior-create-audio/checks/application-status\.json](../docs/test-results/scene-behavior-create-audio/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+| 交互与渲染 | **音轨选择视图与首次创建的共同草稿守卫**；音轨选择视图与首次创建的共同草稿守卫 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-audio/README\.md](../docs/test-results/scene-behavior-create-audio/README.md)、[docs/test-results/scene-behavior-create-audio/checks/application-status\.json](../docs/test-results/scene-behavior-create-audio/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+| 交互与渲染 | **可选只读音轨端口与构建创建入口接线**；可选只读音轨端口与构建创建入口接线 | 4 / 4 / 3 / 3 | [docs/test-results/scene-behavior-create-audio/README\.md](../docs/test-results/scene-behavior-create-audio/README.md)、[docs/test-results/scene-behavior-create-audio/checks/application-status\.json](../docs/test-results/scene-behavior-create-audio/checks/application-status.json)、[docs/RELEASE\_0\.3\.1\.md](../docs/RELEASE_0.3.1.md) |
+
+平台：Linux Node与Chrome三语390px；实际Godot Dummy音频驱动状态按专题、0.3.1源码收录；最近安装验收仍0.2.0，非新安装、Bevy对等或实体设备验收。边界：复用既有只读音轨目录API和native/WASM声音声明校验；首次创建另立来源品牌，不制造已登记行为或借用旧编辑器品牌。；只选择当前保存态声明的音轨身份，不选素材身份；同资源不同音轨各自显示序号/角色/身份，显式选择既有String，不推断参数用途、增键或创建关系。；填入前fresh读取，比较world/base/scene及声音声明修订与音轨身份目录；会话、绑定、脚本、实例、脚本语言、读轮次、控件与完整原片段均受保护。目录不是伪造宿主的字节认证。；读/选/同值/失败保留原文与审阅；真改才撤审阅，有完整approval时共用全bindings预算预检；无approval的未完成兄弟绑定保留到普通检查。；纯提案、视图、只读宿主和原事务分离；native/WASM声音校验不可用时ready读取失败，empty/null合法，手工参数和普通审阅仍可；不添加JS替代规则。；真实7文档1WAV作者纵切和只读播放器观察，不代表整款游戏从空白、设备出声、跨启动存档、持续运行、独立发行或候选安装。。
+
+下一步：继续从空白完成参考关卡；首次动画片段选择与已有dirty行为脚本往返分别验证，保持来源与草稿边界。
 
 ## 旧功能链路映射
 

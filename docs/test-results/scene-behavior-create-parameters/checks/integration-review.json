@@ -1,0 +1,128 @@
+{
+  "reviewedAt": "2026-11-13T13:03:58.211272+00:00",
+  "scope": "Read-only integration review after parser-budget fix; no repository/source/test/version mutations and no broad test rerun.",
+  "newProductionFindings": [],
+  "reviewedSources": [
+    {
+      "path": "engine/scene-behavior-create-parameters.mjs",
+      "sha256": "0f6ab41ad0e0bd0eb5c803042fea721dfb78c1576b408633bd93806117fd524e"
+    },
+    {
+      "path": "engine/scene-behavior-create-plan.mjs",
+      "sha256": "6f626880fa77ee318e913fb9ed6716aa32505ff03c6aa11389ebd4feea8049be"
+    },
+    {
+      "path": "engine/world-behavior-create.mjs",
+      "sha256": "cc26e688ddbfc3cd14fd60bad657e8990e8ce7e6ec9a3467c491fa2e07424c37"
+    },
+    {
+      "path": "engine/script-parameter-discovery.mjs",
+      "sha256": "b49d5591fd368f3541a825e80111af422298c764867dcd163c529d0da0f8588c"
+    },
+    {
+      "path": "web/modules/app-scene-behavior-create-parameters.js",
+      "sha256": "f911bca54f18b99499e4e053109a19579cb4b2a667249540f8a28810595ca85f"
+    },
+    {
+      "path": "web/modules/app-scene-behavior-create.js",
+      "sha256": "15d5dd6191ed2d8815b92e98947dc2505dcfe50c5a6e5acc8636517676586230"
+    },
+    {
+      "path": "scripts/lib/scene-behavior-creation-service.mjs",
+      "sha256": "e85f1279c27a8e48c423a9c465c4f1e9570a50e1f732a15d228ea20373355ef4"
+    },
+    {
+      "path": "scripts/adapters/node-world-commands.mjs",
+      "sha256": "8bfe4fca4f2a5c20481bf69065584d98586b457ff48e2d8c85071d9abebea98e"
+    },
+    {
+      "path": "scripts/tests/dialog-harness.mjs",
+      "sha256": "54fd1796123de3f014e0b60038b5d26533986666639ea3296a754d14f2d67b53"
+    },
+    {
+      "path": "scripts/tests/scene-behavior-create-parameters-ui.test.mjs",
+      "sha256": "badf7f4e0cba8fbfe8d982174990d7c261c1d5433c774260d7a189af6a3ba58c"
+    },
+    {
+      "path": "scripts/tests/scene-behavior-creation-parameters.test.mjs",
+      "sha256": "a0cfbf6ec070556e5bd8e174e0bc981bb45a0123f4f8be1dac84a4faa7905d37"
+    }
+  ],
+  "checks": [
+    {
+      "area": "broken-advisory-contract downgrade",
+      "paths": [
+        "web/modules/app-scene-behavior-create.js:181-200",
+        "web/modules/app-scene-behavior-create-parameters.js:53-77"
+      ],
+      "result": "The four required saved-source fields are descriptor-checked. Optional parameterContract is read via its own data descriptor, strictly captured and omitted on failure; a getter/serializer cannot obtain a callback. Unsupported/modified/unavailable/incompatible advice disables only completion, preserving manual JSON and ordinary review."
+    },
+    {
+      "area": "stale control ownership",
+      "paths": [
+        "web/modules/app-scene-behavior-create-parameters.js:17-44",
+        "web/modules/app-scene-behavior-create.js:129-140",
+        "web/modules/app-scene-behavior-create.js:239-257"
+      ],
+      "result": "Owner equality pins session/catalog/source references, binding ID, backend/language, creator epoch and catalog-read epoch. Pending/dirty/stale/disposed contexts cannot apply. Catalog refresh increments epoch before await, clones fresh data and invalidates previous source ownership. Explicit mutation rechecks the exact current fragment; parent captures and rechecks immediately before replacing only its local textarea."
+    },
+    {
+      "area": "raw source and review authority",
+      "paths": [
+        "web/modules/app-scene-behavior-create.js:63-69",
+        "web/modules/app-scene-behavior-create.js:101-105",
+        "web/modules/app-scene-behavior-create.js:132-140",
+        "web/modules/app-scene-behavior-create.js:205-217"
+      ],
+      "result": "parameterDisplay retains original fragment bytes separately from browser newline normalization. Each stable binding owns its own parametersContent. Source selection/add-binding never silently fills defaults; completion invalidates the old preview. Incomplete input and failed oversized completion are retained. Language changes and script suspend/resume keep raw input without granting a saved review."
+    },
+    {
+      "area": "creation service captured source consistency",
+      "paths": [
+        "scripts/lib/scene-behavior-creation-service.mjs:25-39"
+      ],
+      "result": "Provider inspection consumes the same bounded captured TXT bytes as sourceRevision; lazy optional core loading does not reread the source. Ordinary scripts retain four fields; fixed providers add only a bounded frozen contract. Authenticated no-store route and candidate budgets remain unchanged; source text and filesystem roots are not returned or executed."
+    },
+    {
+      "area": "final existing transaction validation",
+      "paths": [
+        "web/modules/app-scene-behavior-create.js:205-217",
+        "engine/world-behavior-create.mjs:174-204",
+        "scripts/adapters/node-world-commands.mjs:137-141",
+        "scripts/adapters/node-world-commands.mjs:209-215"
+      ],
+      "result": "UI supplies only identities to the unchanged strict planner, embeds explicitly edited fragments by source ranges, and sends the old behavior.create command shape. Existing world/scene revisions, complete scalar manifest inspection, document registration/dependencies, scene build and recovery evidence are recomputed. Apply recaptures under the original registry lock. Optional catalog advice does not grant persistence or bypass domain validation."
+    },
+    {
+      "area": "harness bridge scope",
+      "paths": [
+        "scripts/tests/dialog-harness.mjs:49-78",
+        "scripts/tests/dialog-harness.mjs:216-221"
+      ],
+      "result": "The VM bridge transports own data descriptors, rejects getters/functions/symbols and caches one transported source per original identity, preserving the stale-control comparisons. Prototype normalization is fixture transport, not a production validator: malicious prototype assertions belong at the actual pure boundary. The bridge does not replace final transaction checks or prove actual Chrome layout."
+    }
+  ],
+  "priorBudgetFinding": {
+    "status": "fixed-and-independently-rechecked",
+    "command": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node /tmp/viento-create-parameters-budget-probe.mjs > /tmp/viento-create-parameters-budget-probe-fixed.log",
+    "observations": [
+      {
+        "characters": 32769,
+        "oversizedJsonParseCalls": 0,
+        "rejected": true
+      },
+      {
+        "characters": 1048576,
+        "oversizedJsonParseCalls": 0,
+        "rejected": true
+      }
+    ],
+    "log": "/tmp/viento-create-parameters-budget-probe-fixed.log",
+    "logSha256": "ea54ddb67a37d4443313ff6ac8ae216d8e6d29255005448e49b5a4287c743def"
+  },
+  "evidenceBoundary": {
+    "newUi18AndIntegrated55": "Read the actual new tests and reviewed integration paths; parent/UI agents executed these groups. This review does not claim an additional rerun of them.",
+    "independentExecution": "Only the two-case repaired parser-budget probe was rerun here.",
+    "remainingAcceptance": "Real Chrome parameter completion/save and backend run remain separate acceptance tasks; the earlier script-return smoke does not establish new parameter UI acceptance."
+  }
+}

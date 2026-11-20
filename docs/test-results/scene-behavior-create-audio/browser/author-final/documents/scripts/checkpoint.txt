@@ -1,0 +1,16 @@
+extends Node
+
+var _project
+
+func _ready() -> void:
+	if not has_meta("viento_project"):
+		return
+	_project = get_meta("viento_project")
+	_project.subscribe_event("checkpoint", _on_checkpoint)
+	call_deferred("_publish_checkpoint")
+
+func _publish_checkpoint() -> void:
+	_project.publish_event("checkpoint", "hello")
+
+func _on_checkpoint(value) -> bool:
+	return _project.write_state("last_event", value)

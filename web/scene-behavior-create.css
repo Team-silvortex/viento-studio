@@ -14,7 +14,7 @@
 .scene-behavior-create-profile { grid-column:1/-1; }
 .scene-behavior-create-dialog fieldset { margin:14px 0; padding:12px; min-width:0; border:1px solid #33536a; }
 .scene-behavior-create-dialog label { display:grid; gap:5px; min-width:0; }
-.scene-behavior-create-dialog input,.scene-behavior-create-dialog select { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
+.scene-behavior-create-dialog input,.scene-behavior-create-dialog select,.scene-behavior-create-dialog textarea { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
 .scene-behavior-create-dialog select { text-overflow:ellipsis; }
 .scene-behavior-create-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
 .scene-behavior-create-dialog pre { margin:8px 0; padding:10px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.8rem; }
@@ -31,3 +31,17 @@
  .scene-behavior-create-grid,.scene-behavior-create-bindings { grid-template-columns:minmax(0,1fr); }
  .scene-behavior-create-binding-list select { height:132px; }
 }
+
+.scene-behavior-create-dialog textarea { resize:vertical; min-height:7em; font-family:ui-monospace,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+.scene-behavior-create-parameters { min-width:0; margin:12px 0; padding:10px; border:1px solid #33536a; border-radius:8px; }
+.scene-behavior-create-parameters ul { padding-left:20px; overflow-wrap:anywhere; }
+
+.scene-behavior-create-references { min-width:0; margin:12px 0; padding:10px; border:1px solid #33536a; border-radius:8px; }
+.scene-behavior-create-reference-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:10px 0; }
+.scene-behavior-create-references p { white-space:pre-wrap; overflow-wrap:anywhere; }
+@media(max-width:700px) { .scene-behavior-create-reference-fields { grid-template-columns:minmax(0,1fr); } }
+
+.scene-behavior-create-audio { min-width:0; margin:12px 0; padding:10px; border:1px solid #33536a; border-radius:8px; }
+.scene-behavior-create-audio-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:10px 0; }
+.scene-behavior-create-audio p { white-space:pre-wrap; overflow-wrap:anywhere; }
+@media(max-width:700px) { .scene-behavior-create-audio-fields { grid-template-columns:minmax(0,1fr); } }

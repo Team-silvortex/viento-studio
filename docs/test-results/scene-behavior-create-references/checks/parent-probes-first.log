@@ -1,0 +1,50 @@
+TAP version 13
+# Subtest: readonly-review: pending fill cannot cross an actual binding switch or revive its detached controls
+ok 1 - readonly-review: pending fill cannot cross an actual binding switch or revive its detached controls
+  ---
+  duration_ms: 160.206033
+  type: 'test'
+  ...
+# Subtest: readonly-review: closing and reopening the real creator cannot revive a pending fill or detached owner
+ok 2 - readonly-review: closing and reopening the real creator cannot revive a pending fill or detached owner
+  ---
+  duration_ms: 120.051205
+  type: 'test'
+  ...
+# Subtest: readonly-review: observed profile switch away and back permanently revokes an in-flight fill
+ok 3 - readonly-review: observed profile switch away and back permanently revokes an in-flight fill
+  ---
+  duration_ms: 99.105624
+  type: 'test'
+  ...
+# Subtest: readonly-review: observe final combined budget after a small valid String replacement
+not ok 4 - readonly-review: observe final combined budget after a small valid String replacement
+  ---
+  duration_ms: 528.39515
+  type: 'test'
+  location: '/tmp/viento-create-references-parent-probes.mjs:113:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    ordinary final review must reject the aggregate overflow before a command
+    
+    15 !== 14
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 14
+  actual: 15
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/viento-create-references-parent-probes.mjs:124:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 982.377533

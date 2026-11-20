@@ -1,0 +1,31 @@
+{
+  "rootCause": {
+    "runId": 43405810377,
+    "commit": "fbaff4632b412f9205b70fdbeab8c982538c8f20",
+    "job": "application",
+    "conclusion": "cancelled",
+    "annotation": "The job has exceeded the maximum execution time of 15m0s",
+    "compatibility": "success"
+  },
+  "previousSuccessfulRun": {
+    "runId": 43364069506,
+    "applicationWallSeconds": 812,
+    "tests": 9515,
+    "pass": 8844,
+    "skip": 671,
+    "testDurationMs": 723134.360829
+  },
+  "changes": [
+    "Application job timeout 15 to 30 minutes",
+    "Cache crates/viento-studio-core/target with the existing Rust cache action",
+    "Stream final Node test TAP output with inherited stdio; keep all test selection, concurrency and nonzero failures",
+    "Add 3 real child CLI regression cases",
+    "Update testing guide and two atlas source hashes"
+  ],
+  "targeted": {
+    "passed": 3,
+    "failed": 0,
+    "negativeControl": "Old entry fails live-output regression as expected"
+  },
+  "hostedVerification": "Not rerun against changed workflow; changes are local"
+}

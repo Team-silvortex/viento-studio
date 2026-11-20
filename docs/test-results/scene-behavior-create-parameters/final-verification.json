@@ -1,0 +1,113 @@
+{
+  "format": "viento-behavior-creation-parameters-verification",
+  "checkedAt": "2026-11-13T13:18:56.334525+00:00",
+  "ok": true,
+  "scope": "Post-0.3.0 working tree; first-behavior parameter authoring, not a complete from-blank game or new release/installation.",
+  "parentCommit": "fbaff4632b412f9205b70fdbeab8c982538c8f20",
+  "application": {
+    "counts": {
+      "tests": 9796,
+      "pass": 9096,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 700,
+      "todo": 0
+    },
+    "sourceFiles": 2325,
+    "sourcesUnchanged": true,
+    "log": "checks/application-check.log.gz"
+  },
+  "targeted": {
+    "pureAndOldCreationAndCatalog": {
+      "tests": 55,
+      "pass": 55,
+      "skipped": 0
+    },
+    "uiAndAdjacentCreation": {
+      "tests": 120,
+      "pass": 120,
+      "skipped": 0
+    },
+    "catalogAndAdjacentService": {
+      "tests": 28,
+      "pass": 28,
+      "skipped": 0
+    },
+    "note": "These targeted runs overlap and are not added as independent coverage. New focused tests total 37: pure 11, UI 18, service 8."
+  },
+  "browser": {
+    "ok": true,
+    "authoredDocuments": 8,
+    "authorFiles": 18,
+    "assets": 0,
+    "screenshots": 8,
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "width": 390,
+    "sourceGuards": 33,
+    "sourceHashesUnchanged": true,
+    "sampleHashesUnchanged": true,
+    "behaviorApplyTransactions": 1,
+    "onlyExpectedThreeAuthorPathsChanged": true,
+    "ordinaryReloadPreservesSource": true
+  },
+  "native": {
+    "ok": true,
+    "events": 10,
+    "generatedFiles": 43,
+    "authorFilesUnchanged": true,
+    "input": "XTest Enter/Escape",
+    "result": "Second member initializes score=0/health=3 and actual HUD text; normal finish.",
+    "log": "checks/native.log"
+  },
+  "review": {
+    "unresolvedFindings": 0,
+    "fixedIssue": "Oversized initial source used to parse after rejection; fixed before final source freeze, independently probed and covered by pure test.",
+    "visual": "checks/visual-review.json",
+    "integration": "checks/integration-review.json"
+  },
+  "preservation": {
+    "baselineFiles": 17799,
+    "allExist": true,
+    "unexpectedChanges": 0,
+    "oldAtlasObjectsAndScoresPreserved": true,
+    "oldExamplesAndEvidenceAndVersionsUnchanged": true,
+    "report": "checks/preservation.json"
+  },
+  "atlas": {
+    "ok": true,
+    "mode": "check",
+    "architectures": 11,
+    "functions": 206,
+    "implementations": 625,
+    "bindings": 840,
+    "cells": 3360,
+    "dependencyEdges": 652,
+    "workflows": 171,
+    "historicalChains": 50,
+    "referencedFiles": 3209
+  },
+  "documents": {
+    "protectedDocuments": 173,
+    "oldHeadings": 1517,
+    "links": 7486,
+    "brokenLinks": 0,
+    "oldHeadingsAndAnchorsPreserved": true
+  },
+  "diffCheck": "passed",
+  "diagnostics": {
+    "earlyFullRunInterruptedForDriverRevision": true,
+    "earlyRunStatus": "checks/early-driver-revision/status.json",
+    "browserFirstExecutionPassed": true
+  },
+  "limits": [
+    "No product version, author format, recovery journal, host API or backend runtime version upgrade.",
+    "700 skipped tests remain skipped; app-only does not claim Rust/mobile/full packaging verification.",
+    "Real-browser workspace starts empty but native project-library/folder picking is fixture initialized.",
+    "Native execution uses software Xvfb/Mesa and synthetic keyboard, not hardware/installation acceptance.",
+    "Existing dirty behavior source round-trip, complete game from blank, persistence, long sessions and standalone game delivery remain outside this slice."
+  ]
+}

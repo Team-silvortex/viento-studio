@@ -1,0 +1,340 @@
+TAP version 13
+# Subtest: first-creation defaults are explicit proposals, scalar typed and retain negative zero
+ok 1 - first-creation defaults are explicit proposals, scalar typed and retain negative zero
+  ---
+  duration_ms: 4.046279
+  type: 'test'
+  ...
+# Subtest: defaults append without rewriting any existing parameter bytes: single line
+ok 2 - defaults append without rewriting any existing parameter bytes: single line
+  ---
+  duration_ms: 0.953146
+  type: 'test'
+  ...
+# Subtest: defaults append without rewriting any existing parameter bytes: CRLF tabs and BOM
+ok 3 - defaults append without rewriting any existing parameter bytes: CRLF tabs and BOM
+  ---
+  duration_ms: 1.245926
+  type: 'test'
+  ...
+# Subtest: complete defaults are an exact no-op and wrong existing types remain for author review
+ok 4 - complete defaults are an exact no-op and wrong existing types remain for author review
+  ---
+  duration_ms: 0.616991
+  type: 'test'
+  ...
+# Subtest: unsupported or mismatched interface never enables additions; arbitrary manual parameters still embed
+ok 5 - unsupported or mismatched interface never enables additions; arbitrary manual parameters still embed
+  ---
+  duration_ms: 2.232285
+  type: 'test'
+  ...
+# Subtest: incomplete, duplicate, reserved, structured and out-of-budget inputs cannot produce a proposal
+ok 6 - incomplete, duplicate, reserved, structured and out-of-budget inputs cannot produce a proposal
+  ---
+  duration_ms: 2.379416
+  type: 'test'
+  ...
+# Subtest: source-range embedding preserves per-binding raw JSON and the strict legacy planner
+ok 7 - source-range embedding preserves per-binding raw JSON and the strict legacy planner
+  ---
+  duration_ms: 1.816559
+  type: 'test'
+  ...
+# Subtest: embedding rejects missing, sparse or accessor fragments and never overwrites existing parameters
+ok 8 - embedding rejects missing, sparse or accessor fragments and never overwrites existing parameters
+  ---
+  duration_ms: 1.373701
+  type: 'test'
+  ...
+# Subtest: public parameter boundary rejects accessor and extra input keys without calling them
+ok 9 - public parameter boundary rejects accessor and extra input keys without calling them
+  ---
+  duration_ms: 0.428631
+  type: 'test'
+  ...
+# Subtest: the whole created manifest retains the existing 32KiB budget across multiple bindings
+ok 10 - the whole created manifest retains the existing 32KiB budget across multiple bindings
+  ---
+  duration_ms: 2.38087
+  type: 'test'
+  ...
+# Subtest: oversized initial manifests are rejected before any source indexing parses them
+ok 11 - oversized initial manifests are rejected before any source indexing parses them
+  ---
+  duration_ms: 0.763873
+  type: 'test'
+  ...
+# Subtest: creation is capability-gated and refuses dirty, busy, creating, hidden or different-scene owners without reading
+ok 12 - creation is capability-gated and refuses dirty, busy, creating, hidden or different-scene owners without reading
+  ---
+  duration_ms: 109.185636
+  type: 'test'
+  ...
+# Subtest: one empty binding uses the selected stable instance and existing script; all three relationships and full exact source are reviewed
+ok 13 - one empty binding uses the selected stable instance and existing script; all three relationships and full exact source are reviewed
+  ---
+  duration_ms: 57.051536
+  type: 'test'
+  ...
+# Subtest: apply preserves exactly reviewed bytes and IDs, refreshes once, then explicitly opens the saved source revision
+ok 14 - apply preserves exactly reviewed bytes and IDs, refreshes once, then explicitly opens the saved source revision
+  ---
+  duration_ms: 66.755079
+  type: 'test'
+  ...
+# Subtest: editing and silent DOM changes invalidate approval and cannot submit hidden changed values
+ok 15 - editing and silent DOM changes invalidate approval and cannot submit hidden changed values
+  ---
+  duration_ms: 77.879132
+  type: 'test'
+  ...
+# Subtest: raw unfinished values and stable IDs survive language changes, failed validation and refreshed catalogs
+ok 16 - raw unfinished values and stable IDs survive language changes, failed validation and refreshed catalogs
+  ---
+  duration_ms: 54.30677
+  type: 'test'
+  ...
+# Subtest: safe JSON path and catalog membership are enforced before issuing a command
+ok 17 - safe JSON path and catalog membership are enforced before issuing a command
+  ---
+  duration_ms: 269.962932
+  type: 'test'
+  ...
+# Subtest: empty script catalog explains the required saved TXT document and never creates one implicitly
+ok 18 - empty script catalog explains the required saved TXT document and never creates one implicitly
+  ---
+  duration_ms: 23.225809
+  type: 'test'
+  ...
+# Subtest: unknown or malformed catalog versions, duplicates and unsafe source paths fail closed
+ok 19 - unknown or malformed catalog versions, duplicates and unsafe source paths fail closed
+  ---
+  duration_ms: 121.070292
+  type: 'test'
+  ...
+# Subtest: stale scene, session, source, capability or dirty state cannot accept a late catalog
+ok 20 - stale scene, session, source, capability or dirty state cannot accept a late catalog
+  ---
+  duration_ms: 92.240593
+  type: 'test'
+  ...
+# Subtest: late previews and silently edited pending forms never enable save
+ok 21 - late previews and silently edited pending forms never enable save
+  ---
+  duration_ms: 231.890264
+  type: 'test'
+  ...
+# Subtest: forged preview source, source revision, identity, proposal, or relationship cannot be approved
+ok 22 - forged preview source, source revision, identity, proposal, or relationship cannot be approved
+  ---
+  duration_ms: 262.753036
+  type: 'test'
+  ...
+# Subtest: known revision conflict keeps IDs and draft, requires rereading and fresh approval
+ok 23 - known revision conflict keeps IDs and draft, requires rereading and fresh approval
+  ---
+  duration_ms: 89.27381
+  type: 'test'
+  ...
+# Subtest: an uncertain apply, including malformed success, remains locked after rereading and cannot repeat the write
+ok 24 - an uncertain apply, including malformed success, remains locked after rereading and cannot repeat the write
+  ---
+  duration_ms: 136.909283
+  type: 'test'
+  ...
+# Subtest: successful save followed by catalog-refresh failure is never resubmitted and refresh can retry separately
+ok 25 - successful save followed by catalog-refresh failure is never resubmitted and refresh can retry separately
+  ---
+  duration_ms: 65.464215
+  type: 'test'
+  ...
+# Subtest: owner changes during apply never refresh or navigate a different parent session
+ok 26 - owner changes during apply never refresh or navigate a different parent session
+  ---
+  duration_ms: 54.863232
+  type: 'test'
+  ...
+# Subtest: save refresh may change source token itself; saved navigation still protects new dirty drafts
+ok 27 - save refresh may change source token itself; saved navigation still protects new dirty drafts
+  ---
+  duration_ms: 69.708761
+  type: 'test'
+  ...
+# Subtest: close and Escape confirm local unsaved settings; pending operations block closing and shortcuts do not save the editor
+ok 28 - close and Escape confirm local unsaved settings; pending operations block closing and shortcuts do not save the editor
+  ---
+  duration_ms: 40.238907
+  type: 'test'
+  ...
+# Subtest: dispose invalidates pending operations, releases its busy guard once and removes the dialog
+ok 29 - dispose invalidates pending operations, releases its busy guard once and removes the dialog
+  ---
+  duration_ms: 32.476011
+  type: 'test'
+  ...
+# Subtest: failed navigation retains the saved state for a safe retry and never repeats creation
+ok 30 - failed navigation retains the saved state for a safe retry and never repeats creation
+  ---
+  duration_ms: 74.998972
+  type: 'test'
+  ...
+# Subtest: all fixed creation copy is translated and dynamic catalog labels remain text
+ok 31 - all fixed creation copy is translated and dynamic catalog labels remain text
+  ---
+  duration_ms: 15.908905
+  type: 'test'
+  ...
+# Subtest: capability withdrawal remains invalidating even if the host restores it before the pending response
+ok 32 - capability withdrawal remains invalidating even if the host restores it before the pending response
+  ---
+  duration_ms: 54.228828
+  type: 'test'
+  ...
+# Subtest: new bindings prefer unused instances, then permit independent behaviors on the same instance
+ok 33 - new bindings prefer unused instances, then permit independent behaviors on the same instance
+  ---
+  duration_ms: 47.049008
+  type: 'test'
+  ...
+# Subtest: multiple scripts produce the complete deduplicated relationship review and exactly reviewed save request
+ok 34 - multiple scripts produce the complete deduplicated relationship review and exactly reviewed save request
+  ---
+  duration_ms: 66.923328
+  type: 'test'
+  ...
+# Subtest: a receipt missing, duplicating or replacing any additional script reference cannot be approved
+ok 35 - a receipt missing, duplicating or replacing any additional script reference cannot be approved
+  ---
+  duration_ms: 204.036106
+  type: 'test'
+  ...
+# Subtest: switching and translating bindings preserves reviewed bytes, identities and the chosen script of each row
+ok 36 - switching and translating bindings preserves reviewed bytes, identities and the chosen script of each row
+  ---
+  duration_ms: 95.579643
+  type: 'test'
+  ...
+# Subtest: binding removal chooses a neighbor and preserves surviving identities; new entries never reuse removed IDs
+ok 37 - binding removal chooses a neighbor and preserves surviving identities; new entries never reuse removed IDs
+  ---
+  duration_ms: 64.8464
+  type: 'test'
+  ...
+# Subtest: the binding list enforces the existing 32-item limit and still permits repeated instance and script references
+ok 38 - the binding list enforces the existing 32-item limit and still permits repeated instance and script references
+  ---
+  duration_ms: 159.797079
+  type: 'test'
+  ...
+# Subtest: nine distinct scripts are rejected before a command, then correction retains all bindings and IDs
+ok 39 - nine distinct scripts are rejected before a command, then correction retains all bindings and IDs
+  ---
+  duration_ms: 118.043479
+  type: 'test'
+  ...
+# Subtest: unfinished choices on an unselected binding survive language refresh and block whole-document review
+ok 40 - unfinished choices on an unselected binding survive language refresh and block whole-document review
+  ---
+  duration_ms: 107.420936
+  type: 'test'
+  ...
+# Subtest: refreshed catalogs keep missing scripts and instances visible on every affected binding until corrected
+ok 41 - refreshed catalogs keep missing scripts and instances visible on every affected binding until corrected
+  ---
+  duration_ms: 112.360425
+  type: 'test'
+  ...
+# Subtest: pending reviews lock list selection and topology, and silent selected-binding edits invalidate late responses
+ok 42 - pending reviews lock list selection and topology, and silent selected-binding edits invalidate late responses
+  ---
+  duration_ms: 49.825734
+  type: 'test'
+  ...
+# Subtest: cancellation protects the complete binding list and discards it without commands when confirmed
+ok 43 - cancellation protects the complete binding list and discards it without commands when confirmed
+  ---
+  duration_ms: 33.950133
+  type: 'test'
+  ...
+# Subtest: backend selection invalidates approval and preserves every binding identity and selected script
+ok 44 - backend selection invalidates approval and preserves every binding identity and selected script
+  ---
+  duration_ms: 97.779593
+  type: 'test'
+  ...
+# Subtest: a silent backend switch cannot submit a reviewed profile or approve a late pending response
+ok 45 - a silent backend switch cannot submit a reviewed profile or approve a late pending response
+  ---
+  duration_ms: 100.243292
+  type: 'test'
+  ...
+# Subtest: unknown behavior profiles fail before command execution rather than falling back to Godot
+ok 46 - unknown behavior profiles fail before command execution rather than falling back to Godot
+  ---
+  duration_ms: 105.791215
+  type: 'test'
+  ...
+# Subtest: profile and exact reviewed source survive language changes, binding selection and catalog refresh
+ok 47 - profile and exact reviewed source survive language changes, binding selection and catalog refresh
+  ---
+  duration_ms: 129.841922
+  type: 'test'
+  ...
+# Subtest: ordinary TXT keeps the exact four-field shape and creation envelope, with no execution, source leak or author writes
+ok 48 - ordinary TXT keeps the exact four-field shape and creation envelope, with no execution, source leak or author writes
+  ---
+  duration_ms: 61.263032
+  type: 'test'
+  ...
+# Subtest: all four exact ordinary Godot providers expose bounded detached defaults with the revision of their captured TXT bytes
+ok 49 - all four exact ordinary Godot providers expose bounded detached defaults with the revision of their captured TXT bytes
+  ---
+  duration_ms: 279.815871
+  type: 'test'
+  ...
+# Subtest: authored edits and export lookalikes withdraw only optional advice and change saved revision without changing scene or registration
+ok 50 - authored edits and export lookalikes withdraw only optional advice and change saved revision without changing scene or registration
+  ---
+  duration_ms: 58.090315
+  type: 'test'
+  ...
+# Subtest: editable animation providers retain ready, modified and unsupported statuses without executable source or metadata changes
+ok 51 - editable animation providers retain ready, modified and unsupported statuses without executable source or metadata changes
+  ---
+  duration_ms: 59.343646
+  type: 'test'
+  ...
+# Subtest: a fresh pure-provider creation catalog never loads the optional Rust core adapter
+ok 52 - a fresh pure-provider creation catalog never loads the optional Rust core adapter
+  ---
+  duration_ms: 180.173781
+  type: 'test'
+  ...
+# Subtest: unavailable optional animation core leaves pure advice ready and all legacy creation candidates selectable
+ok 53 - unavailable optional animation core leaves pure advice ready and all legacy creation candidates selectable
+  ---
+  duration_ms: 131.689077
+  type: 'test'
+  ...
+# Subtest: optional core loading cannot pair a later file edit with the earlier captured source revision or defaults
+ok 54 - optional core loading cannot pair a later file edit with the earlier captured source revision or defaults
+  ---
+  duration_ms: 204.215015
+  type: 'test'
+  ...
+# Subtest: HTTP creation inspection returns only the optional bounded data through the original authenticated no-store route
+ok 55 - HTTP creation inspection returns only the optional bounded data through the original authenticated no-store route
+  ---
+  duration_ms: 301.382021
+  type: 'test'
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 55
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3621.351249

@@ -1,3 +1,5 @@
+import { requiresScriptParameterCore, discoverScriptParameterContract } from '../../engine/script-parameter-discovery.mjs';
+import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { inspectBehaviorCreateScene } from '../../engine/world-behavior-create.mjs';
 import { SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
@@ -21,13 +23,21 @@ export function createSceneBehaviorCreationService(root) {
     const { scene, instances } = inspectBehaviorCreateScene(observed.source, observed.projection, sceneObjectId);
     const sourceObjects = new Map(observed.projection.objects.map(object => [object.id, object]));
     const object = sourceObjects.get(sceneObjectId);
-    const sources = observed.source.documents.filter(document => uuid(document.record?.id) && document.record.id !== sceneObjectId
+    const sourceDocuments = observed.source.documents.filter(document => uuid(document.record?.id) && document.record.id !== sceneObjectId
       && document.record.sourcePath === document.sourcePath && /\.txt$/i.test(document.sourcePath)
       && revision(document.sourceRevision) && validText(document.content)
-      && document.content.length <= SCENE_BEHAVIOR_LIMITS.sourceBytes && Buffer.byteLength(document.content) <= SCENE_BEHAVIOR_LIMITS.sourceBytes)
-      .map(document => ({ objectId: document.record.id, sourcePath: document.sourcePath, sourceRevision: document.sourceRevision,
-        name: label(sourceFileName(document.sourcePath)) })).sort((a, b) => a.sourcePath < b.sourcePath ? -1 : a.sourcePath > b.sourcePath ? 1 : 0);
-    if (sources.length > 256) throw createError(413, 'Behavior creation supports at most 256 source candidates.', {}, 'world_behavior_create_limit');
+      && document.content.length <= SCENE_BEHAVIOR_LIMITS.sourceBytes && Buffer.byteLength(document.content) <= SCENE_BEHAVIOR_LIMITS.sourceBytes);
+    if (sourceDocuments.length > 256) throw createError(413, 'Behavior creation supports at most 256 source candidates.', {}, 'world_behavior_create_limit');
+    // Match ordinary behavior authoring discovery. Inspection consumes only
+    // the already captured source bytes; no author script is evaluated or
+    // reread after the optional core load, and its revision stays paired.
+    if (sourceDocuments.some(document => requiresScriptParameterCore(document.content))) await import('../adapters/node-studio-core.mjs');
+    const sources = sourceDocuments.map(document => {
+      const discovered = discoverScriptParameterContract(document.content);
+      const parameterContract = discovered ? captureScriptParameterContract(discovered) : null;
+      return { objectId: document.record.id, sourcePath: document.sourcePath, sourceRevision: document.sourceRevision,
+        name: label(sourceFileName(document.sourcePath)), ...(parameterContract ? { parameterContract } : {}) };
+    }).sort((a, b) => a.sourcePath < b.sourcePath ? -1 : a.sourcePath > b.sourcePath ? 1 : 0);
     return freeze({ format: 'viento-behavior-creation-context', schemaVersion: 1,
       worldId: observed.projection.world.id, baseRevision: observed.projection.world.revision,
       documentRoot: observed.source.definition.paths.documents,

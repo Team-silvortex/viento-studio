@@ -1,0 +1,144 @@
+{
+  "format": "viento-release-evidence-audit",
+  "generatedAt": "2026-11-20T11:30:05.151650+00:00",
+  "ok": true,
+  "release": "0.3.1",
+  "baseCommit": "fbaff4632b412f9205b70fdbeab8c982538c8f20",
+  "scope": "Only three new scene-behavior-create evidence directories; independent read-only filesystem, inventory, Git attributes/ignore, and HEAD PNG blob inspection. No application test execution or staging mutation.",
+  "totalFiles": 212,
+  "totalBytes": 8348968,
+  "inventories": [
+    {
+      "topic": "parameters",
+      "actualFiles": 61,
+      "declaredFilesExcludingInventory": 60,
+      "missing": [],
+      "mismatches": [],
+      "unexpected": []
+    },
+    {
+      "topic": "references",
+      "actualFiles": 83,
+      "declaredFilesExcludingInventory": 82,
+      "missing": [],
+      "mismatches": [],
+      "unexpected": []
+    },
+    {
+      "topic": "audio",
+      "actualFiles": 68,
+      "declaredFilesExcludingInventory": 67,
+      "missing": [],
+      "mismatches": [],
+      "unexpected": []
+    }
+  ],
+  "ignoredRequiredFiles": [
+    {
+      "path": "docs/test-results/scene-behavior-create-audio/browser/author-final/assets/media/audio/04ca58cb-f6c5-417c-8341-9211aa1bc604.wav",
+      "bytes": 16044,
+      "sha256": "0e971b21d34dcfe7dbe6973922f5419a486508dfe9d5e49c801142e0494de238",
+      "ignored": {
+        "source": ".gitignore",
+        "line": 36,
+        "pattern": "assets/"
+      }
+    },
+    {
+      "path": "docs/test-results/scene-behavior-create-audio/browser/author-final/metadata/assets/04ca58cb-f6c5-417c-8341-9211aa1bc604.json",
+      "bytes": 411,
+      "sha256": "a6274b7dc30ade1e0d08d7bfec4545ad0e2d8e6b900a93c292a64923aa607505",
+      "ignored": {
+        "source": ".gitignore",
+        "line": 36,
+        "pattern": "assets/"
+      }
+    }
+  ],
+  "ignoredRequiredCount": 2,
+  "byteFidelity": {
+    "allEvidenceTextAttribute": "unset",
+    "unexpectedTextConversionRisks": [],
+    "pngFilterAttributeCount": 27,
+    "lfsCleanConfigured": false,
+    "existingRawPngSamples": [
+      {
+        "path": "docs/test-results/android-device-b.4.5/editor-insets.png",
+        "headBytes": 262265,
+        "headSha256": "146c28643d02433a625bc5b4fcee4a930b984ae0ad8e1d6b8ffdf6c58f668963",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/android-device-b.4.5/fields-keyboard-fixed.png",
+        "headBytes": 186800,
+        "headSha256": "bf728a42b0a222b2960eaf52f69e7efe4a5b31687148b9583cb02f31bb698b3d",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/android-device-b.4.5/fields-keyboard.png",
+        "headBytes": 287282,
+        "headSha256": "145ad41cf6b41af536796298ec1276a9c45d12b67b5f67c10907717a7c19d134",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/android-device-b.4.5/library-initial.png",
+        "headBytes": 168884,
+        "headSha256": "201176f61eea3c706ebfb1e08f2f504e2f28a0c84caaa8cd923eef5aba382a69",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/android-host-b.4.4/mobile-fields-en.png",
+        "headBytes": 29640,
+        "headSha256": "77df71b412c445c7b1abaa1481ec2363e839d7bae80284244dfc93b27c5db6d8",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/android-transfer-b.4.4/library-en.png",
+        "headBytes": 37712,
+        "headSha256": "be101f6dfbcf56c6a67dafe951d196f9ab1174c5842ffd65549ae36b569e8a2d",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/android-transfer-b.4.4/library-ja.png",
+        "headBytes": 41755,
+        "headSha256": "6f87d524f0dd221060e1b4fd41776a6db652e778e75ffbfa8f7c62fbf4ab6823",
+        "lfsPointer": false
+      },
+      {
+        "path": "docs/test-results/animation-condition-groups/browser-1792733377411/failure.png",
+        "headBytes": 223776,
+        "headSha256": "5811c8c7303ca7478ba198b9b44f826c45a0ad2638d15a207e5398abcb771812",
+        "lfsPointer": false
+      }
+    ],
+    "note": "Repository evidence is -text; existing PNG samples are raw blobs, despite filter=lfs attributes. Preserve current raw-blob publication strategy and independently verify index blob hashes after staging."
+  },
+  "cacheAndSizeScan": {
+    "cacheDirectoryNames": [
+      "node_modules",
+      "target",
+      ".godot",
+      ".git",
+      "__pycache__",
+      ".venv",
+      "build",
+      "dist"
+    ],
+    "largeFileThresholdBytes": 5242880,
+    "findings": []
+  },
+  "credentialScan": {
+    "scope": "All raw files and decompressed gzip payloads in these three evidence directories; no credentials copied or printed. Signature scan is not a comprehensive secret audit.",
+    "patterns": [
+      "PEM private key header",
+      "GitHub classic/fine-grained token",
+      "AWS AKIA access key identifier",
+      "Slack token"
+    ],
+    "findings": []
+  },
+  "claimReview": {
+    "unresolvedFindings": [],
+    "bounds": "Readmes distinguish individual authoring slices from complete-game, installer, device, Rust/Android, physical audio/GPU acceptance; retained historical counts are not summed as unique coverage."
+  }
+}

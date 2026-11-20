@@ -1,0 +1,156 @@
+{
+  "ok": true,
+  "reviewedAt": "2026-11-13T13:10:48.756112+00:00",
+  "method": "Read-only visual inspection of six actual Chrome screenshots through the image viewer, plus receipt SHA/size and recorded DOM layout checks. No additional browser interaction or code changes.",
+  "browserReceipt": "/tmp/viento-create-parameters-browser-first/browser.json",
+  "browserReceiptSha256": "7351b5613fda02dd92f31302febaf22417ba48eec9db3d83557ba5fd05607586",
+  "browser": "Chrome/156.0.8078.73",
+  "narrowViewport": {
+    "width": 390,
+    "height": 844,
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ]
+  },
+  "screenshots": [
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/two-scenes-created-desktop.png",
+      "visuallyInspected": false,
+      "width": 1440,
+      "height": 957,
+      "bytes": 189214,
+      "sha256": "4774a7871060f5a06ecc01d79c9813c16260a891d5c0b76e24fc6675a5fb884d",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/level-hud-created-desktop.png",
+      "visuallyInspected": false,
+      "width": 1440,
+      "height": 957,
+      "bytes": 146455,
+      "sha256": "1437199d8c07ed50a58b085800474fa97707f77e93d79bbb41797e79336f3ed6",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/unfinished-parameter-json-desktop.png",
+      "visuallyInspected": true,
+      "width": 1440,
+      "height": 957,
+      "bytes": 201013,
+      "sha256": "abec6b465b08ae5969d2eaf83cf8e9073f385990f72bd3ea481c6d5aefa48950",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/first-create-parameter-interface-zh-CN-390.png",
+      "visuallyInspected": true,
+      "width": 390,
+      "height": 844,
+      "bytes": 83022,
+      "sha256": "04feabf4634f1fb5f6df4f22671490166c12615451ecf04e6101c3beb1500e6c",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/first-create-parameter-interface-en-390.png",
+      "visuallyInspected": true,
+      "width": 390,
+      "height": 844,
+      "bytes": 83708,
+      "sha256": "8ced5410499d62c58cfb0f25709915fa5a701a77bcf40c264535a40d18c92f8c",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/first-create-parameter-interface-ja-390.png",
+      "visuallyInspected": true,
+      "width": 390,
+      "height": 844,
+      "bytes": 89179,
+      "sha256": "51082fc46f5b2717a45b0e573808dcbff55676b206064afa50970e74a06dc7fe",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/first-parameterized-behavior-reviewed-desktop.png",
+      "visuallyInspected": true,
+      "width": 1440,
+      "height": 957,
+      "bytes": 191721,
+      "sha256": "15ba464f4f90940b10f6e69ff12fbccb52f4054fb9548141956c0838fdae3cae",
+      "matchesBrowserReceipt": true
+    },
+    {
+      "path": "/tmp/viento-create-parameters-browser-first/parameterized-first-save-reopened-desktop.png",
+      "visuallyInspected": true,
+      "width": 1440,
+      "height": 957,
+      "bytes": 297272,
+      "sha256": "d8a92f74f2deb083a18e0b986afb83b0566691ae1494c788fb3646cb70591fdc",
+      "matchesBrowserReceipt": true
+    }
+  ],
+  "narrowFindings": {
+    "newActionReadable": true,
+    "newActionNotCovered": true,
+    "footerActionsVisible": true,
+    "headerBackActionVisible": true,
+    "interfaceTextAndDefaultsWrap": true,
+    "noVisibleHorizontalOverflow": true,
+    "noChineseTranslationKeysVisibleInEnglishOrJapaneseInterface": true,
+    "authorIdentifiersAndJsonDefaultsIntentionallyUntranslated": true,
+    "notes": [
+      "The English footer wraps its action labels onto multiple lines without overlap or clipping.",
+      "Long parameter identifiers and the JSON String default wrap inside the advisory card in all three languages.",
+      "The scrollable body keeps header and footer controls visible. The Japanese capture is scrolled farther down, so the card title and note are above the captured body viewport."
+    ]
+  },
+  "desktopFindings": {
+    "parameterJsonEditorVisibleAndReadableInReviewedCapture": true,
+    "parameterJsonAndAdvisoryCardsSeparated": true,
+    "reviewFeedbackAndSaveActionVisible": true,
+    "invalidJsonFeedbackVisible": true,
+    "savedSourceOrdinaryEditorVisible": true
+  },
+  "recordedBrowserDomChecks": {
+    "first-create-parameter-interface-zh-CN": {
+      "noOverflow": true,
+      "title": "为场景添加行为",
+      "helperTitle": "脚本参数接口",
+      "helperStatus": "缺失 3 · 未声明 3 · 类型不匹配 0 · 无效编号 0 · 重复名称 0",
+      "actionVisible": true,
+      "actionHit": true,
+      "helperReady": "ready",
+      "raw": "{\n  \"probe\":1e2,\n  \"negative_zero\":-0,\n  \"note\":\"first\\r\\nnext\"\n}",
+      "binding": "f1861088-e7b3-443a-b994-b9d59c5276fc"
+    },
+    "first-create-parameter-interface-en": {
+      "noOverflow": true,
+      "title": "Add behavior to scene",
+      "helperTitle": "Script parameter interface",
+      "helperStatus": "Missing 3 · Undeclared 3 · Type mismatch 0 · Invalid ID 0 · Duplicate name 0",
+      "actionVisible": true,
+      "actionHit": true,
+      "helperReady": "ready",
+      "raw": "{\n  \"probe\":1e2,\n  \"negative_zero\":-0,\n  \"note\":\"first\\r\\nnext\"\n}",
+      "binding": "f1861088-e7b3-443a-b994-b9d59c5276fc"
+    },
+    "first-create-parameter-interface-ja": {
+      "noOverflow": true,
+      "title": "シーンに動作を追加",
+      "helperTitle": "スクリプトのパラメーター仕様",
+      "helperStatus": "不足 3 · 未宣言 3 · 型の不一致 0 · 無効な ID 0 · 名前の重複 0",
+      "actionVisible": true,
+      "actionHit": true,
+      "helperReady": "ready",
+      "raw": "{\n  \"probe\":1e2,\n  \"negative_zero\":-0,\n  \"note\":\"first\\r\\nnext\"\n}",
+      "binding": "f1861088-e7b3-443a-b994-b9d59c5276fc"
+    }
+  },
+  "findingsRequiringCodeChange": [],
+  "limits": [
+    "This review covers desktop Chrome at 390x844 emulated viewport and the captured 1440x957 desktop layouts. It is not installed Tauri, Android, touchscreen or device acceptance.",
+    "Narrow screenshots are deliberately scrolled to the advisory action; they do not show the parameter JSON textarea or the full creation entry at that moment. Its actual raw value and modal/page overflow are recorded by the browser driver, while direct visual JSON-editor inspection here is limited to the desktop reviewed screenshot.",
+    "Action hit testing and clickability assertions come from the recorded actual-browser run (actionVisible/actionHit), not a new interaction performed during this visual review.",
+    "The new driver actual first-creation transaction remains the functional evidence; screenshots alone do not prove saving, persistence or native gameplay."
+  ],
+  "repositoryChanged": false
+}

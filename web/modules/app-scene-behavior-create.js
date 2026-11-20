@@ -1,3 +1,8 @@
+import { setupSceneBehaviorCreateAudio } from './app-scene-behavior-create-audio.js';
+import { setupSceneBehaviorCreateReferences } from './app-scene-behavior-create-references.js';
+import { setupSceneBehaviorCreateParameters } from './app-scene-behavior-create-parameters.js';
+import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
+import { applySceneBehaviorCreateParameterSources } from '../../engine/scene-behavior-create-parameters.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { createSceneBehaviorCreationDraft } from '../../engine/scene-behavior-create-plan.mjs';
 import { SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
@@ -12,7 +17,7 @@ const behaviorProfiles = Object.freeze([
 // Creation owns a local declaration and a single reviewed transaction. Source
 // navigation, world authority and author-file writes belong to injected ports.
 export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = () => {}, inspect = async () => null,
-  command = async () => null, applied = async () => {}, openSource = async () => false, requestScriptCreation } = {}) {
+  command = async () => null, applied = async () => {}, openSource = async () => false, requestScriptCreation, getReferences, getAudioTracks } = {}) {
   if (!document.getElementById('sceneBehaviorCreateStyle')) {
     const link = document.createElement('link'); link.id = 'sceneBehaviorCreateStyle'; link.rel = 'stylesheet'; link.href = '/web/scene-behavior-create.css';
     (document.head || document.body).append(link);
@@ -37,7 +42,12 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
       <label><span data-i18n="场景实例"></span><select id="sceneBehaviorCreateInstance"></select></label>
       <label><span data-i18n="已登记脚本"></span><select id="sceneBehaviorCreateSource"></select></label></div>
       </div><p class="scene-behavior-create-note" data-i18n="每条绑定拥有独立身份；可复用同一脚本，也可为同一实例添加多个行为。新增时优先选择尚未分配的实例。"></p>
-      <p id="sceneBehaviorCreateIdentity" class="scene-behavior-create-note"></p></fieldset>
+      <p id="sceneBehaviorCreateIdentity" class="scene-behavior-create-note"></p>
+      <label><span data-i18n="参数 JSON"></span><textarea id="sceneBehaviorCreateParameters" rows="5" spellcheck="false"></textarea></label>
+      <p class="scene-behavior-create-note" data-i18n="每条绑定独立保存参数 JSON；无效或未完成的输入会保留，审阅时再检查。"></p>
+      <section id="sceneBehaviorCreateParameterInterface" hidden></section>
+      <section id="sceneBehaviorCreateReferences" hidden></section>
+      <section id="sceneBehaviorCreateAudio" hidden></section></fieldset>
     <section id="sceneBehaviorCreateReview" hidden><h3 data-i18n="创建行为审阅"></h3><p data-i18n="保存会新建下列完整原文和文档登记，并更新场景登记中的行为关系；场景正文与脚本正文保持原样。"></p>
       <h4 data-i18n="将登记的关系"></h4><ul id="sceneBehaviorCreateRelations"></ul><h4 data-i18n="将创建的完整原文"></h4><pre id="sceneBehaviorCreateSourceText" tabindex="0"></pre></section></div>
     <div class="scene-behavior-create-feedback"><p id="sceneBehaviorCreateStatus" role="status" aria-live="polite"></p><p id="sceneBehaviorCreateDetails" class="scene-behavior-create-note"></p></div>
@@ -54,10 +64,12 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   const fail = key => { throw Object.assign(new Error(t(key)), { uiKey: key }); };
   let enabled = false, supported = false, disposed = false, epoch = 0, owner = null, catalog = null, draft = null, baseline = '', preview = null;
   let phase = '', dirty = false, saved = null, refreshed = false, uncertain = false, needsRefresh = false, opener = null, message = '', details = '';
+  let parameterDisplay = null, catalogReadEpoch = 0;
   let selectedBindingId = '', suspended = null, returnOrigin = null, scriptRequest = false, scriptRequestSequence = 0, suppressCloseFocus = false;
-  const fields = ['Profile', 'Type', 'Path', 'Instance', 'Source'];
+  const fields = ['Profile', 'Type', 'Path', 'Instance', 'Source', 'Parameters'];
   const selectedBinding = () => draft?.bindings.find(binding => binding.bindingId === selectedBindingId);
-  const bindingFields = () => ({ instanceId: el('Instance').value, sourceObjectId: el('Source').value });
+  const bindingFields = () => ({ instanceId: el('Instance').value, sourceObjectId: el('Source').value,
+    parametersContent: parameterDisplay?.bindingId === selectedBindingId && el('Parameters').value === parameterDisplay.display ? parameterDisplay.raw : el('Parameters').value });
   const raw = () => ({ Profile: el('Profile').value, Type: el('Type').value, Path: el('Path').value,
     bindings: (draft?.bindings || []).map(binding => ({ ...binding, ...(binding.bindingId === selectedBindingId ? bindingFields() : {}) })) });
   const signature = () => JSON.stringify(raw());
@@ -93,6 +105,8 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     const binding = selectedBinding();
     options(el('Instance'), catalog.scene.instances.map(item => [item.instanceId, `${item.name} · ${item.instanceId}`]), binding?.instanceId || '');
     options(el('Source'), catalog.sources.map(item => [item.objectId, `${item.name} · ${item.sourcePath}`]), binding?.sourceObjectId || '');
+    const parameters = binding?.parametersContent ?? '{}'; el('Parameters').value = parameters;
+    parameterDisplay = { bindingId: selectedBindingId, raw: parameters, display: el('Parameters').value };
     renderBindingList();
   }
   function selectBinding() {
@@ -107,7 +121,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     if (!uuid(bindingId) || bindingId === draft.objectId || draft.bindings.some(binding => binding.bindingId === bindingId)) return;
     const instance = catalog.scene.instances.find(item => !used.has(item.instanceId))
       || catalog.scene.instances.find(item => item.instanceId === previous?.instanceId) || catalog.scene.instances[0];
-    draft.bindings.push({ bindingId, instanceId: instance.instanceId, sourceObjectId: previous?.sourceObjectId || catalog.sources[0].objectId });
+    draft.bindings.push({ bindingId, instanceId: instance.instanceId, sourceObjectId: previous?.sourceObjectId || catalog.sources[0].objectId, parametersContent: '{}' });
     selectedBindingId = bindingId; renderFields(); invalidate(); update(); el('Instance').focus();
   }
   function removeBinding() {
@@ -115,6 +129,50 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     capture(); const index = draft.bindings.findIndex(binding => binding.bindingId === selectedBindingId); if (index < 0) return;
     draft.bindings.splice(index, 1); selectedBindingId = draft.bindings[Math.min(index, draft.bindings.length - 1)].bindingId;
     renderFields(); invalidate(); update(); el('BindingList').focus();
+  }
+  const parameterInterface = typeof setupSceneBehaviorCreateParameters === 'function' ? setupSceneBehaviorCreateParameters({ container: el('ParameterInterface'), translate: t,
+    getContext: () => { const profile = behaviorProfiles.find(item => item.id === el('Profile').value); return {
+      current: Boolean(!suspended && !saved && catalog && draft && owns()), pending: !canChange(), session: owner, catalog,
+      source: catalog?.sources.find(item => item.objectId === el('Source').value), bindingId: selectedBindingId,
+      backendId: profile?.backendId || '', language: profile?.language || '', epoch, readEpoch: catalogReadEpoch, content: bindingFields().parametersContent }; },
+    onUse: (proposed, { isCurrent }) => {
+      if (!canChange() || !isCurrent()) return;
+      capture(); if (!isCurrent()) return;
+      el('Parameters').value = proposed.content; parameterDisplay = { bindingId: selectedBindingId, raw: proposed.content, display: el('Parameters').value };
+      capture(); invalidate(); update(); el('Parameters').focus();
+    },
+  }) : null;
+  const references = typeof setupSceneBehaviorCreateReferences === 'function' ? setupSceneBehaviorCreateReferences({ container: el('References'), getReferences, translate: t,
+    getContext: () => { const profile = behaviorProfiles.find(item => item.id === el('Profile').value); return {
+      available: getContext().referencesAvailable === true, current: Boolean(!suspended && !saved && catalog && draft && owns()), pending: !canChange(),
+      session: owner, catalog, source: catalog?.sources.find(item => item.objectId === el('Source').value), bindingId: selectedBindingId, instanceId: el('Instance').value,
+      backendId: profile?.backendId || '', language: profile?.language || '', epoch, readEpoch: catalogReadEpoch, content: bindingFields().parametersContent,
+      origin: catalog ? { worldId: catalog.worldId, baseRevision: catalog.baseRevision, scene: Object.fromEntries(['objectId', 'objectRevision', 'sourcePath', 'sourceRevision'].map(key => [key, catalog.scene[key]])) } : null,
+    }; },
+    onUse: applyChosenString,
+  }) : null;
+  const audio = typeof setupSceneBehaviorCreateAudio === 'function' ? setupSceneBehaviorCreateAudio({ container: el('Audio'), getAudioTracks, translate: t,
+    getContext: () => { const profile = behaviorProfiles.find(item => item.id === el('Profile').value); return {
+      available: getContext().audioTracksAvailable === true, current: Boolean(!suspended && !saved && catalog && draft && owns()), pending: !canChange(),
+      session: owner, catalog, source: catalog?.sources.find(item => item.objectId === el('Source').value), bindingId: selectedBindingId, instanceId: el('Instance').value,
+      backendId: profile?.backendId || '', language: profile?.language || '', epoch, readEpoch: catalogReadEpoch, content: bindingFields().parametersContent,
+      origin: catalog ? { worldId: catalog.worldId, baseRevision: catalog.baseRevision, scene: Object.fromEntries(['objectId', 'objectRevision', 'sourcePath', 'sourceRevision'].map(key => [key, catalog.scene[key]])) } : null,
+    }; },
+    onUse: applyChosenString,
+  }) : null;
+  function applyChosenString(proposed, { isCurrent }) {
+    if (!canChange() || !proposed.changed || !isCurrent()) return;
+    if (approval()) {
+      const reviewed = preview, profile = behaviorProfiles.find(item => item.id === el('Profile').value);
+      // Check the complete reviewed manifest before changing one local String;
+      // unreviewed forms may still contain unfinished sibling bindings.
+      createContent(raw().bindings.map(binding => binding.bindingId === selectedBindingId
+        ? { ...binding, parametersContent: proposed.content } : binding), profile);
+      if (preview !== reviewed || !approval() || !canChange() || !isCurrent()) return;
+    }
+    capture(); if (!isCurrent()) return;
+    el('Parameters').value = proposed.content; parameterDisplay = { bindingId: selectedBindingId, raw: proposed.content, display: el('Parameters').value };
+    capture(); invalidate(); update(); el('Parameters').focus();
   }
   const referenceIds = requested => [...new Set([requested.sceneObjectId,
     ...JSON.parse(requested.content).bindings.map(binding => binding.implementation.sourceObjectId)])].sort();
@@ -144,6 +202,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
       const item = document.createElement('li'); item.textContent = `${from} → ${kind} → ${to}`; el('Relations').append(item);
     }
     el('Status').textContent = t(message); el('Details').textContent = details;
+    parameterInterface?.refresh(); references?.refresh(); audio?.refresh();
   }
   function validateCatalog(value) {
     if (!exact(value, ['format', 'schemaVersion', 'worldId', 'baseRevision', 'documentRoot', 'documentTypes', 'scene', 'sources'])
@@ -158,10 +217,28 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
       || new Set(value.documentTypes.map(item => item.id)).size !== value.documentTypes.length
       || value.scene.instances.some(item => !exact(item, ['instanceId', 'objectId', 'name']) || !uuid(item.instanceId) || !uuid(item.objectId) || !text(item.name))
       || new Set(value.scene.instances.map(item => item.instanceId)).size !== value.scene.instances.length
-      || value.sources.some(item => !exact(item, ['objectId', 'sourcePath', 'sourceRevision', 'name']) || !uuid(item.objectId) || !text(item.name) || !revision(item.sourceRevision)
+      || value.sources.some(item => !item || typeof item !== 'object' || Array.isArray(item)
+        || Reflect.ownKeys(item).some(key => typeof key !== 'string' || !['objectId', 'sourcePath', 'sourceRevision', 'name', 'parameterContract'].includes(key))
+        || ['objectId', 'sourcePath', 'sourceRevision', 'name'].some(key => { const descriptor = Object.getOwnPropertyDescriptor(item, key); return !descriptor?.enumerable || !Object.hasOwn(descriptor, 'value'); })
+        || !uuid(item.objectId) || !text(item.name) || !revision(item.sourceRevision)
         || !text(item.sourcePath, 1024) || !/\.txt$/i.test(item.sourcePath) || !item.sourcePath.startsWith(value.documentRoot + '/') || getCreatePathError(item.sourcePath))
       || new Set(value.sources.map(item => item.objectId)).size !== value.sources.length || new Set(value.sources.map(item => item.sourcePath)).size !== value.sources.length) fail('无法核对行为创建目录，请返回工程检查。');
-    return clone(value);
+    const sources = value.sources.map(item => {
+      const source = Object.fromEntries(['objectId', 'sourcePath', 'sourceRevision', 'name'].map(key => [key, item[key]]));
+      const descriptor = Object.getOwnPropertyDescriptor(item, 'parameterContract');
+      // A broken optional advisory declaration cannot remove manual creation.
+      if (descriptor?.enumerable && Object.hasOwn(descriptor, 'value')) {
+        try { source.parameterContract = captureScriptParameterContract(descriptor.value); } catch {}
+      }
+      return source;
+    });
+    return clone({ ...value, sources });
+  }
+  function createContent(bindings, profile) {
+    const planned = createSceneBehaviorCreationDraft({ sceneObjectId: catalog.scene.objectId, backendId: profile.backendId, language: profile.language,
+      bindings: bindings.map(({ bindingId, instanceId, sourceObjectId }) => ({ bindingId, instanceId, sourceObjectId })) });
+    if (!planned.ok) fail('行为绑定设置无效，请检查独立绑定身份，以及最多 32 条绑定和 8 份脚本的限制。');
+    return applySceneBehaviorCreateParameterSources({ content: planned.content, parameters: bindings.map(binding => binding.parametersContent ?? '{}') }).content;
   }
   function request() {
     capture();
@@ -170,9 +247,9 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     if (!text(draft.Path, 1024) || !draft.Path.startsWith(catalog.documentRoot + '/') || !/\.json$/i.test(draft.Path) || getCreatePathError(draft.Path)) fail('请使用正文目录内可迁移的 JSON 文件路径。');
     const profile = behaviorProfiles.find(item => item.id === draft.Profile);
     if (!profile) fail('请选择已支持的行为后端与脚本语言。');
-    const planned = createSceneBehaviorCreationDraft({ sceneObjectId: catalog.scene.objectId, backendId: profile.backendId, language: profile.language, bindings: draft.bindings });
-    if (!planned.ok) fail('行为绑定设置无效，请检查独立绑定身份，以及最多 32 条绑定和 8 份脚本的限制。');
-    const content = planned.content;
+    let content;
+    try { content = createContent(draft.bindings, profile); }
+    catch (error) { if (error?.uiKey) throw error; fail('参数 JSON 须为有效的标量对象，参数名、数值与数量须符合行为限制。'); }
     return { command: 'behavior.create', mode: 'preview', worldId: catalog.worldId, baseRevision: catalog.baseRevision, actorRef: { kind: 'user', id: 'studio-behavior-create' },
       objectId: draft.objectId, documentType: draft.Type, sourcePath: draft.Path, content, sceneObjectId: catalog.scene.objectId,
       sceneObjectRevision: catalog.scene.objectRevision, sceneSourceRevision: catalog.scene.sourceRevision };
@@ -199,7 +276,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     catch (error) { if (owns(generation, true)) { message = '行为已保存，但目录刷新失败。请重新读取工程，勿重复创建。'; details = error.message || ''; } }
   }
   async function read() {
-    if (phase || scriptRequest || !owns()) return; capture(); const generation = epoch; phase = 'read'; setBusy(true); message = '正在读取行为创建目录…'; details = ''; update();
+    if (phase || scriptRequest || !owns()) return; capture(); const generation = epoch; catalogReadEpoch++; phase = 'read'; setBusy(true); message = '正在读取行为创建目录…'; details = ''; update();
     try {
       if (saved) await synchronize(generation);
       else {
@@ -209,7 +286,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
         catalog = next; preview = null; needsRefresh = false;
         if (!draft) {
           draft = { objectId: crypto.randomUUID(), Profile: behaviorProfiles[0].id, Type: next.documentTypes[0].id,
-            Path: `${next.documentRoot}/behaviors/new-behavior.json`, bindings: [{ bindingId: crypto.randomUUID(), instanceId: next.scene.instances[0].instanceId, sourceObjectId: next.sources[0]?.objectId || '' }] };
+            Path: `${next.documentRoot}/behaviors/new-behavior.json`, bindings: [{ bindingId: crypto.randomUUID(), instanceId: next.scene.instances[0].instanceId, sourceObjectId: next.sources[0]?.objectId || '', parametersContent: '{}' }] };
           selectedBindingId = draft.bindings[0].bindingId;
           renderFields(); baseline = signature();
         } else renderFields();
@@ -341,6 +418,6 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     },
     suspendForScript, resumeFromScript, discardSuspended,
     setAvailable(value, commands = []) { enabled = value === true; supported = Array.isArray(commands) && commands.includes('behavior.create'); if (dialog.open) { if (!enabled || !supported) { preview = null; if (owner) owner.invalidated = true; } update(); } },
-    dispose() { if (disposed) return; disposed = true; epoch++; scriptRequestSequence++; suspended = null; returnOrigin = null; scriptRequest = false; if (phase && phase !== 'open') setBusy(false); phase = ''; owner = null; if (typeof unsubscribe === 'function') unsubscribe(); dialog.close(); dialog.remove(); },
+    dispose() { if (disposed) return; disposed = true; epoch++; scriptRequestSequence++; suspended = null; returnOrigin = null; scriptRequest = false; if (phase && phase !== 'open') setBusy(false); phase = ''; owner = null; parameterInterface?.dispose(); references?.dispose(); audio?.dispose(); if (typeof unsubscribe === 'function') unsubscribe(); dialog.close(); dialog.remove(); },
   });
 }

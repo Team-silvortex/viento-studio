@@ -1,0 +1,39 @@
+{
+  "status": "frozen",
+  "tests": 28,
+  "passed": 28,
+  "failed": 0,
+  "skipped": 0,
+  "newTests": 8,
+  "command": "node --test scripts/tests/scene-behavior-creation-parameters.test.mjs scripts/tests/scene-behavior-creation-service.test.mjs scripts/tests/scene-behavior-creation-http.test.mjs scripts/tests/scene-behavior-multi-create-service.test.mjs scripts/tests/scene-behavior-parameter-contract-service.test.mjs scripts/tests/scene-retry-parameter-service.test.mjs",
+  "log": "/tmp/viento-creation-parameters-final.log",
+  "source": [
+    {
+      "path": "scripts/lib/scene-behavior-creation-service.mjs",
+      "bytes": 4342,
+      "sha256": "e85f1279c27a8e48c423a9c465c4f1e9570a50e1f732a15d228ea20373355ef4"
+    },
+    {
+      "path": "scripts/tests/scene-behavior-creation-parameters.test.mjs",
+      "bytes": 13374,
+      "sha256": "a0cfbf6ec070556e5bd8e174e0bc981bb45a0123f4f8be1dac84a4faa7905d37"
+    }
+  ],
+  "contract": "sources retain legacy {objectId,sourcePath,sourceRevision,name} plus optional bounded parameterContract captured from the same saved snapshot bytes; creation envelope/schemaVersion remain unchanged.",
+  "scope": [
+    "read-only discovery with no author execution or source disclosure",
+    "pure providers require no optional core load",
+    "animation providers use the same optional loader and non-actionable statuses as ordinary authoring",
+    "captured source bytes and revision remain paired across optional loader awaits",
+    "HTTP authorization/no-store and ordinary candidates/transaction behavior unchanged"
+  ],
+  "unmodified": [
+    "web/**",
+    "engine/world-behavior-create.mjs",
+    "engine parameter JSON helper",
+    "author formats and runtime protocols",
+    "transactions",
+    "templates/examples and old reports"
+  ],
+  "notes": "The loader-race test deliberately modifies only its temporary script during a child-process loader hook; all other captured author files remain unchanged."
+}

@@ -1,0 +1,191 @@
+TAP version 13
+# Subtest: first audio is optional, strictly capability gated and never reads or edits at mount
+ok 1 - first audio is optional, strictly capability gated and never reads or edits at mount
+  ---
+  duration_ms: 17.970676
+  type: 'test'
+  ...
+# Subtest: explicit load lists ordered track identities without auto-selecting or confusing a repeated resource with a track
+ok 2 - explicit load lists ordered track identities without auto-selecting or confusing a repeated resource with a track
+  ---
+  duration_ms: 22.597867
+  type: 'test'
+  ...
+# Subtest: fill rereads the directory and replaces only the explicitly selected String token
+ok 3 - fill rereads the directory and replaces only the explicitly selected String token
+  ---
+  duration_ms: 24.94732
+  type: 'test'
+  ...
+# Subtest: an equal semantic track value preserves its escaped source and approved review
+ok 4 - an equal semantic track value preserves its escaped source and approved review
+  ---
+  duration_ms: 22.336316
+  type: 'test'
+  ...
+# Subtest: unfinished duplicate nonscalar and nonobject JSON remain untouched and expose no target String
+ok 5 - unfinished duplicate nonscalar and nonobject JSON remain untouched and expose no target String
+  ---
+  duration_ms: 88.77443
+  type: 'test'
+  ...
+# Subtest: an empty saved directory is available but provides no invented track while a ready declaration with no tracks is rejected
+ok 6 - an empty saved directory is available but provides no invented track while a ready declaration with no tracks is rejected
+  ---
+  duration_ms: 21.84963
+  type: 'test'
+  ...
+# Subtest: world and saved scene changes request an explicit parent refresh instead of adopting another creation baseline
+ok 7 - world and saved scene changes request an explicit parent refresh instead of adopting another creation baseline
+  ---
+  duration_ms: 40.655716
+  type: 'test'
+  ...
+# Subtest: fresh manifest versions, paths, identities, track order, role and resource changes refuse the pending fill
+ok 8 - fresh manifest versions, paths, identities, track order, role and resource changes refuse the pending fill
+  ---
+  duration_ms: 141.436559
+  type: 'test'
+  ...
+# Subtest: each owner identity change revokes late loads and prevents detached controls from acquiring the new form
+ok 9 - each owner identity change revokes late loads and prevents detached controls from acquiring the new form
+  ---
+  duration_ms: 233.460233
+  type: 'test'
+  ...
+# Subtest: each owner identity change also revokes an already selected track during fresh fill revalidation
+ok 10 - each owner identity change also revokes an already selected track during fresh fill revalidation
+  ---
+  duration_ms: 322.803191
+  type: 'test'
+  ...
+# Subtest: silent JSON and selector changes cannot overwrite a concurrent edit or redirect a pending track fill
+ok 11 - silent JSON and selector changes cannot overwrite a concurrent edit or redirect a pending track fill
+  ---
+  duration_ms: 76.704065
+  type: 'test'
+  ...
+# Subtest: an observed pending phase, capability withdrawal or suspension permanently revokes a late response
+ok 12 - an observed pending phase, capability withdrawal or suspension permanently revokes a late response
+  ---
+  duration_ms: 48.546505
+  type: 'test'
+  ...
+# Subtest: failed load or revalidation clears unusable choices and allows retry without editing raw parameters or review
+ok 13 - failed load or revalidation clears unusable choices and allows retry without editing raw parameters or review
+  ---
+  duration_ms: 66.519329
+  type: 'test'
+  ...
+# Subtest: forged resource, track or parameter choices cannot issue a fill request
+ok 14 - forged resource, track or parameter choices cannot issue a fill request
+  ---
+  duration_ms: 76.974922
+  type: 'test'
+  ...
+# Subtest: all three display languages retain explicit choices, focused controls and unmodified parameters
+ok 15 - all three display languages retain explicit choices, focused controls and unmodified parameters
+  ---
+  duration_ms: 12.036502
+  type: 'test'
+  ...
+# Subtest: duplicate reads and reset or disposed controls cannot issue another read or deliver a late mutation
+ok 16 - duplicate reads and reset or disposed controls cannot issue another read or deliver a late mutation
+  ---
+  duration_ms: 44.395954
+  type: 'test'
+  ...
+# Subtest: a malformed directory never evaluates author getters and leaves manual editing and approval intact
+ok 17 - a malformed directory never evaluates author getters and leaves manual editing and approval intact
+  ---
+  duration_ms: 10.606848
+  type: 'test'
+  ...
+# Subtest: the actual creation dialog revokes an approved transaction only after an effective track fill and saves its newly reviewed source
+ok 18 - the actual creation dialog revokes an approved transaction only after an effective track fill and saves its newly reviewed source
+  ---
+  duration_ms: 149.163794
+  type: 'test'
+  ...
+# Subtest: same-value insertion and failed audio reads preserve the actual parent review and its exact source
+ok 19 - same-value insertion and failed audio reads preserve the actual parent review and its exact source
+  ---
+  duration_ms: 149.972776
+  type: 'test'
+  ...
+# Subtest: actual parent review and script suspend/resume revoke a pending audio read without losing raw JSON
+ok 20 - actual parent review and script suspend/resume revoke a pending audio read without losing raw JSON
+  ---
+  duration_ms: 107.314662
+  type: 'test'
+  ...
+# Subtest: the actual creation dialog keeps manual parameter review when the optional audio port or exact capability is absent
+ok 21 - the actual creation dialog keeps manual parameter review when the optional audio port or exact capability is absent
+  ---
+  duration_ms: 136.439005
+  type: 'test'
+  ...
+# Subtest: actual parent binding, source and instance switches revoke late audio fills and preserve each binding fragment
+not ok 22 - actual parent binding, source and instance switches revoke late audio fills and preserve each binding fragment
+  ---
+  duration_ms: 274.554269
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-create-audio-ui.test.mjs:239:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '{"arbitrary":"00000000-0000-4000-8000-000000000004"}'
+    - '{"arbitrary":"second"}'
+                     ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '{"arbitrary":"second"}'
+  actual: '{"arbitrary":"00000000-0000-4000-8000-000000000004"}'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-create-audio-ui.test.mjs:245:99)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: every fixed audio-helper message has English and Japanese translations
+ok 23 - every fixed audio-helper message has English and Japanese translations
+  ---
+  duration_ms: 1.430957
+  type: 'test'
+  ...
+# Subtest: a growing UUID that exceeds the fragment source budget preserves approval, raw JSON and the valid audio directory
+ok 24 - a growing UUID that exceeds the fragment source budget preserves approval, raw JSON and the valid audio directory
+  ---
+  duration_ms: 237.92129
+  type: 'test'
+  ...
+# Subtest: a two-binding reviewed source at 32768 bytes rejects aggregate overflow before editing and still saves the original approved source
+ok 25 - a two-binding reviewed source at 32768 bytes rejects aggregate overflow before editing and still saves the original approved source
+  ---
+  duration_ms: 194.128458
+  type: 'test'
+  ...
+# Subtest: valid reviewed sibling bindings accept an effective track fill and retain all other raw parameter tokens
+ok 26 - valid reviewed sibling bindings accept an effective track fill and retain all other raw parameter tokens
+  ---
+  duration_ms: 179.221226
+  type: 'test'
+  ...
+# Subtest: unreviewed unfinished sibling parameters never block filling the selected valid fragment or get rewritten
+ok 27 - unreviewed unfinished sibling parameters never block filling the selected valid fragment or get rewritten
+  ---
+  duration_ms: 101.996202
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 26
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2948.415872

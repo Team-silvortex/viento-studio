@@ -1,0 +1,64 @@
+{
+  "reviewedAt": "2026-11-13T13:32:38.183710+00:00",
+  "scope": "Read-only pure-boundary review. Repository and all earlier uncommitted reports are preserved; no source or test edits.",
+  "findings": [],
+  "sources": [
+    {
+      "path": "engine/scene-behavior-create-references.mjs",
+      "sha256": "1a6ad743ef81d2e5b32c5f89f06564f8ea716558fb319ef933658faa9f24700c"
+    },
+    {
+      "path": "engine/scene-behavior-reference-directory.mjs",
+      "sha256": "290e4c35c05081c1cd22c3e42b07a5a69a43af4ff9f1f74d3ecc59464dcbc904"
+    },
+    {
+      "path": "engine/scene-behavior-create-parameters.mjs",
+      "sha256": "0f6ab41ad0e0bd0eb5c803042fea721dfb78c1576b408633bd93806117fd524e"
+    },
+    {
+      "path": "engine/scene-behavior-create-plan.mjs",
+      "sha256": "6f626880fa77ee318e913fb9ed6716aa32505ff03c6aa11389ebd4feea8049be"
+    },
+    {
+      "path": "scripts/tests/scene-behavior-create-references.test.mjs",
+      "sha256": "3cd1e00d1c6352fb0af7514ebdd51c2cf8126e1dee4cc3a3a39cc513854e4577"
+    }
+  ],
+  "verifiedBoundaries": [
+    "Exact own data descriptors are captured for origin/proposal, while the original strict directory capture owns scene/instance/assembly/action DTO validation and nested array bounds.",
+    "Creation origin strictly pins world ID, base revision, scene object ID, object revision, source path and source revision. Directory world/revision/scene source must match before independent branding.",
+    "A separate WeakMap creates first-creation identity. Raw, serialized, shallow-copy and old saved-manifest brands cannot directly propose a first-creation insertion; first-creation brands also cannot call the old saved-source value helper.",
+    "Only existing scalar String fields may be selected. Numeric/boolean fields and implicit parameter creation are refused; no parameter-name inference or navigation policy is introduced.",
+    "The chosen value must exist in the captured instance list or the explicitly selected assembly member/action list; shared definition UUIDs do not replace instance UUIDs.",
+    "Both input and output parameter JSON are validated through the existing first-creation scalar/UTF-8/full-manifest budget authority. Same-value no-op still validates input and preserves escaped lexemes.",
+    "Replacement uses an exact UTF-16 JSON Pointer value span; surrounding BOM/CRLF/nonBMP/escapes/numeric lexemes remain unchanged. Output contains only a frozen ordinary content/changed record, with no I/O or persistence grant."
+  ],
+  "independentTests": {
+    "command": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node --test --test-isolation=none --test-reporter=tap /tmp/viento-create-references-extra-review.mjs",
+    "tests": 6,
+    "pass": 6,
+    "fail": 0,
+    "skip": 0,
+    "source": "/tmp/viento-create-references-extra-review.mjs",
+    "log": "/tmp/viento-create-references-extra-review.log",
+    "sourceSha256": "405934f5e9fa19c52861fe355f1bba1fdb525c043d587bc8b90f186619798432",
+    "logSha256": "4395e7050866d1353fa6b196bc6c2d4515a3f5ef6df7ffbb7406283cac854cd8",
+    "cases": [
+      "Corrupt or unnormalized origin+directory paths reject",
+      "Nested accessors/decorated arrays including newline action reject with0getter calls",
+      "Boxed inputs and proposal getters never coerce or execute",
+      "No-op still rejects unrelated invalid scalar content while retaining valid escaped bytes",
+      "A valid input at exact full-manifest budget refuses a growing replacement",
+      "Old saved-manifest and creation brands are disjoint in both directions"
+    ]
+  },
+  "parentTests": "The supplied12formal pure tests and /tmp/viento-create-references-pure.log were reviewed, not rerun here. Independent6are not a new formal total.",
+  "integrationRequirements": [
+    "The pure origin deliberately carries no binding/source-control ownership. UI must pin the current creator session, binding, script selection and complete raw parameter fragment across async directory reads and the final mutation.",
+    "Use fresh read-only directory selection and explicit assembly choice; reconfirm origin and complete directory fingerprint immediately before insertion.",
+    "Keep manual JSON and original review when reading/selecting/cancelling/no-op or errors do not change text. A real text change must invalidate the old full behavior review.",
+    "Final creation must continue through strict identity-only planner, separate fragment embedding and ordinary behavior.create validation; no hidden source relation or write authority is added."
+  ],
+  "diagnosticDiscardedHypothesis": "An exploratory newline-action fixture was rejected by the shared directory validator before branding; it is not a product finding. The passing second test explicitly confirms this rejection.",
+  "repositoryWrites": false
+}

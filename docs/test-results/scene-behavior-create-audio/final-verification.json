@@ -1,0 +1,200 @@
+{
+  "format": "viento-first-behavior-audio-verification",
+  "checkedAt": "2026-11-20T11:03:19.366882+00:00",
+  "ok": true,
+  "status": "Complete",
+  "scope": "Post-0.3.0 working tree; first-save declared-audio track selection and actual native playback state; not a complete game or installation.",
+  "parentCommit": "fbaff4632b412f9205b70fdbeab8c982538c8f20",
+  "application": {
+    "counts": {
+      "tests": 9885,
+      "pass": 9185,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 700,
+      "todo": 0
+    },
+    "sources": 2338,
+    "unchanged": true,
+    "log": "checks/application-check.log.gz",
+    "testsAddedSinceLastCompletedCheck": 47
+  },
+  "targeted": {
+    "pureAndAdjacent": {
+      "tests": 37,
+      "pass": 37,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "uiAndAdjacent": {
+      "tests": 172,
+      "suites": 0,
+      "pass": 172,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "transportAndAdjacent": {
+      "tests": 81,
+      "pass": 81,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "newFormalTests": {
+      "pure": 15,
+      "ui": 27,
+      "transport": 5,
+      "total": 47
+    },
+    "independentReviewProbes": 5,
+    "note": "Runs overlap and are not added as independent coverage; five additional review probes are not counted as formal tests."
+  },
+  "browser": {
+    "ok": true,
+    "checkedAt": "2026-11-20T11:01:20.438584+00:00",
+    "driver": "scripts/tests/scene-behavior-create-audio-smoke.mjs",
+    "driverSha256": "0476210b2076806498703523588db347c2c3a48e3a5ad22b2ba5cba97bb96f70",
+    "sourceGuards": 44,
+    "sourcesUnchanged": true,
+    "officialExampleFilesUnchanged": 98,
+    "documents": 7,
+    "assets": 1,
+    "authorFiles": 18,
+    "screenshots": 7,
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "width": 390,
+    "layoutValid": true,
+    "readonlyDirectoryReads": 13,
+    "heldRealHttpRequests": 2,
+    "cancelledWrites": 0,
+    "behaviorApplyCount": 1,
+    "firstSavePaths": [
+      "documents/behaviors/checkpoint.json",
+      "metadata/documents/561d6d43-7009-4421-885d-0060ba8028dc.json",
+      "metadata/documents/96c04f7b-5e82-4392-a8b9-3d6758bb6008.json"
+    ],
+    "trackWrittenOnlyByExplicitAudioUse": true,
+    "identities": {
+      "definition": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+      "scene": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+      "actorInstance": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+      "assembly": "4f47a5ac-099b-4387-bb23-1949bacd82f0",
+      "audio": "7608896d-199a-4ffb-94d7-0f057afaea57",
+      "eventAudioScript": "61b27e76-b459-4bd9-9120-692507ebc79f",
+      "publisherScript": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+      "behavior": "561d6d43-7009-4421-885d-0060ba8028dc",
+      "resource": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+      "tracks": [
+        "b52a066a-032e-4642-baf4-87330ad24fbb",
+        "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d"
+      ],
+      "audioBinding": "a9bec4da-b207-4c7a-9bee-8827d72bf2d2",
+      "publisherBinding": "dd36bb77-be55-4813-b1a1-8a6396693a89"
+    },
+    "limitations": [
+      "The harness initializes the official blank template layout with one generic document type and zero authored documents/assets/registrations. It does not automate desktop-library project creation, native folder pickers, installed Tauri or Android.",
+      "Seven documents (definition, one scene, two official TXT scripts, audio, assembly and first behavior) and one synthesized PCM16 WAV are created or imported through actual Studio controls; no prepared game source, scene UUID or author registration is injected.",
+      "First-creation audio choices come only from the real saved scene audio directory. Load/selection never changes JSON; explicit Use fresh-checks and inserts one existing String token. The selected track is the second declaration, not the resource UUID. No playback is performed by this helper.",
+      "The retained author-final workspace and frozen plan enable a separate actual Godot checkpoint/audio-command check. This browser report does not claim native playback, audible output or independent distribution."
+    ]
+  },
+  "native": {
+    "ok": true,
+    "tool": {
+      "executable": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+      "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+      "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "author": {
+      "root": "/tmp/viento-create-audio-browser-final/author-final",
+      "documents": 7,
+      "assets": 1,
+      "fileCount": 18,
+      "unchanged": true,
+      "before": "author-before.json",
+      "after": "author-after.json"
+    },
+    "events": 12,
+    "samples": 23,
+    "generatedFiles": 38,
+    "generatedAndResourceBytesUnchanged": true,
+    "selectedTrackId": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+    "unselectedTrackId": "b52a066a-032e-4642-baf4-87330ad24fbb",
+    "observedState": {
+      "last_event": "hello"
+    },
+    "playbackObservedSeconds": 1.25,
+    "audioDriver": "Dummy",
+    "report": "native/verification.json",
+    "limits": [
+      "Headless Godot with the Dummy audio driver validates native playback state, stream decoding and looping; it does not claim physical speaker output or a listening test.",
+      "This is a seven-document first-behavior audio slice, not a complete game or installed desktop application test."
+    ]
+  },
+  "review": {
+    "unresolvedFindings": 0,
+    "sourcesUnchanged": true,
+    "report": "checks/integrated-review.json",
+    "supplementalProbes": 5
+  },
+  "preservation": {
+    "baselineFiles": 17959,
+    "allExist": true,
+    "unexpectedChanges": 0,
+    "oldAtlasObjectsAndScoresPreserved": true,
+    "previousCompletedApplicationSources": 2331,
+    "report": "checks/preservation.json",
+    "scope": "Continuation baseline preserves the unfinished audio implementation as observed; the last completed 0.3.0-working-tree source check is separately compared. Earlier missing temporary baseline is not reconstructed or claimed."
+  },
+  "atlas": {
+    "ok": true,
+    "mode": "check",
+    "architectures": 11,
+    "functions": 208,
+    "implementations": 631,
+    "bindings": 846,
+    "cells": 3384,
+    "dependencyEdges": 658,
+    "workflows": 173,
+    "historicalChains": 50,
+    "referencedFiles": 3226
+  },
+  "diagnostics": {
+    "firstBrowserDriverFixtureFailed": true,
+    "firstBrowserReason": "The official event-audio starter has no fixed parameter contract; the driver was corrected to ordinary manual JSON followed by explicit track selection. Production unchanged.",
+    "uiInitialFixtureFailure": {
+      "log": "/tmp/viento-create-audio-ui-initial.log",
+      "passed": 26,
+      "failed": 1,
+      "cause": "Fixture attempted to switch second binding to the instance it already used; corrected to choose the first existing instance. No production fix was needed."
+    },
+    "nativeFirstRunPassed": true
+  },
+  "diffCheck": "passed",
+  "limits": [
+    "Author schema, transactions, HTTP APIs, backend/runtime versions and installation were not upgraded.",
+    "Conditional app-only skips remain skipped; no new Rust/Android/desktop packaging claim.",
+    "Native project-library/folder setup is fixture initialized; subsequent author operations use real visible editor controls.",
+    "Godot Headless and Dummy audio validate native playback state, stream decoding and looping, not physical speaker sound.",
+    "Manifest source revision and typed identity directory are compared; this is not authentication of a forged trusted host response.",
+    "Complete game from blank, persistent saves, long sessions, standalone distribution, first animation-clip picker and existing dirty behavior-script return remain separate work."
+  ],
+  "documents": {
+    "protectedDocuments": 173,
+    "oldHeadings": 1521,
+    "links": 7538,
+    "dynamicWorkflowRoutes": 178,
+    "sourcesUnchanged": true,
+    "brokenLinks": 0,
+    "oldHeadingsAndAnchorsPreserved": true
+  }
+}

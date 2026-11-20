@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
-    "date": "2026-11-13",
-    "version": "0.3.0",
-    "commit": "c46631350f53ee60e0a70523684274f08b4c73b4",
-    "scope": "0.3.0源码交付将行为复制、同场景重启、暂停恢复、运行菜单、影视模板、菜单成员名称接线与首次脚本创建往返七项能力纳入版本。205功能/622实现/837绑定/3348评分/649依赖/170工作流；仅22个对应交付评分由2升至3，实现/验证/解耦评分与其他关系保留。此前各专题的0.2.10开发实测按原始回执阅读，本次0.3.0发布检查单独留证。审查基线为上次0.2.10提交，安装验收仍0.2.0；未完成完整关卡从空白、现有行为dirty往返、存档/长期运行/独立发行与新安装验收。独立Godot/Bevy/模板版本与业务协议保持原层级。",
+    "date": "2026-11-20",
+    "version": "0.3.1",
+    "commit": "fbaff4632b412f9205b70fdbeab8c982538c8f20",
+    "scope": "0.3.1源码发布，基于fbaff463及本轮工作树：收录首次行为参数、名称与音轨辅助及CI超时/实时日志修复。208功能/631实现/846绑定/3384评分/658依赖/173工作流保持，仅三项功能九个交付单元2→3；其他评分、旧对象与历史证据保持。正式升版完整应用、版本/归档及保真按发布回执；安装仍0.2.0，完整游戏从空白/长期运行/存档/独立发行未完成。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -4433,6 +4433,66 @@
           "现有行为原文有未保存修改时的往返尚未接入；未覆盖完整关卡复建、长期运行、存档、独立发行、设备/安装或Bevy执行对等。开发验收时应用0.2.10；现纳入0.3.0源码，安装验收仍0.2.0。"
         ],
         "next": "继续从空白完整复建第一款参考关卡，按实际重复操作补参数/诊断交接；现有行为原文dirty往返另定义来源和草稿保真。"
+      },
+      {
+        "id": "behavior.creation_parameters",
+        "label": "首次行为创建的逐绑定参数草稿与显式接口补齐",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "已保存场景/TXT→首次添加行为→逐绑定参数JSON→明确补齐默认项→完整正文/关系审阅→既有三文件事务",
+        "platforms": [
+          "Linux Node编辑服务与Chrome三语390px；实际结果见本轮回执",
+          "0.3.1源码收录；最近安装验收仍0.2.0，非新安装、Bevy对等或实体设备验收"
+        ],
+        "boundary": [
+          "每条绑定独立保留原始参数JSON；选择脚本、切绑定/语言、刷新目录及首次脚本往返不隐式填值，不丢稳定身份与未完成输入。",
+          "只从同一次只读来源快照发现既有固定provider及受支持动画接口；任意GDScript/Rust不猜接口，不执行或返回作者代码，合同与来源修订成对。",
+          "明确补齐只按原文范围追加缺失默认项，已有值、空白、转义和数值写法保持；不推断UUID、动作、目标或共享状态。坏接口降级手工编辑，语法未完成和预算失败保留输入；无变化/失败保留既有审阅。",
+          "旧identity-only planner保持严格，独立纯参数片段校验及范围插入后，最终完整manifest继续由原inspect及behavior.create预览/应用/恢复准入；无格式、事务或运行层升级。",
+          "参数为最多32项有界标量，完整行为最多32KiB；先拒绝超预算正文再建索引。浏览器textarea按标准规范化输入行尾，便携BOM/CRLF保真与实际可见控件分别记录。",
+          "本轮作者纵切不是完整游戏从空白、既有dirty行为原文往返、长期运行、跨启动存档、独立发行、Bevy执行对等或新安装验收。"
+        ],
+        "next": "继续从空白完成第一款关卡的完整作者任务；按实际操作补名称接线与诊断交接，既有行为dirty往返另定义宿主草稿边界。"
+      },
+      {
+        "id": "behavior.creation_references",
+        "label": "首次行为创建时按名称连接文本参数",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "首次添加行为→显式读取保存态目录→选择实例/组装成员/输入动作及现有String→重核来源→替换词元→原完整审阅及创建事务",
+        "platforms": [
+          "Linux Node编辑服务与Chrome三语390px；实际键鼠Godot纵切按专题",
+          "0.3.1源码收录；最近安装验收仍0.2.0，非新安装、Bevy对等或实体设备验收"
+        ],
+        "boundary": [
+          "首次创建尚无行为登记，使用独立只读来源品牌；复用既有目录HTTP和服务，不伪造已登记行为或借用旧原文编辑器的brand。",
+          "只列出当前原始参数JSON内已有String；实例身份与定义身份分别展示，成员和输入动作须明确选择组装，不推断参数名、创建键、关系或共享状态。",
+          "填入前重新读取，核对world/baseRevision/scene来源和完整目录；会话、脚本、实例、绑定、语言、创建读轮次、选项及原始片段均受保护。迟到请求不覆盖新输入。",
+          "仅替换所选字符串词元，便携BOM/CRLF/负零/指数数值保持；读取、选择、同值、失败和超预算保留参数及父审阅，实际变更才撤审阅。",
+          "纯规则、独立界面、只读宿主端口和已有事务分离；最终完整正文仍由原inspect和behavior.create准入，没有作者格式、持久化或运行协议升级。",
+          "真实空白八文档作者任务与Godot键鼠运行按本轮证据，不替代整款参考游戏从空白、长期运行、存档、独立发行或安装验收。"
+        ],
+        "next": "继续第一款参考关卡的完整从空白作者任务，按实际使用打通诊断和跨区交接；已有dirty行为原文往返另定义保真边界。"
+      },
+      {
+        "id": "behavior.creation_audio",
+        "label": "首次行为创建的声明音轨选择与文本填入",
+        "group": "创作与工程",
+        "delivery": "source-release",
+        "entry": "保存场景声音→首次创建行为→明确读取并选择音轨及现有String→重核来源→完整审阅→原创建事务→构建/实际播放观察",
+        "platforms": [
+          "Linux Node与Chrome三语390px；实际Godot Dummy音频驱动状态按专题",
+          "0.3.1源码收录；最近安装验收仍0.2.0，非新安装、Bevy对等或实体设备验收"
+        ],
+        "boundary": [
+          "复用既有只读音轨目录API和native/WASM声音声明校验；首次创建另立来源品牌，不制造已登记行为或借用旧编辑器品牌。",
+          "只选择当前保存态声明的音轨身份，不选素材身份；同资源不同音轨各自显示序号/角色/身份，显式选择既有String，不推断参数用途、增键或创建关系。",
+          "填入前fresh读取，比较world/base/scene及声音声明修订与音轨身份目录；会话、绑定、脚本、实例、脚本语言、读轮次、控件与完整原片段均受保护。目录不是伪造宿主的字节认证。",
+          "读/选/同值/失败保留原文与审阅；真改才撤审阅，有完整approval时共用全bindings预算预检；无approval的未完成兄弟绑定保留到普通检查。",
+          "纯提案、视图、只读宿主和原事务分离；native/WASM声音校验不可用时ready读取失败，empty/null合法，手工参数和普通审阅仍可；不添加JS替代规则。",
+          "真实7文档1WAV作者纵切和只读播放器观察，不代表整款游戏从空白、设备出声、跨启动存档、持续运行、独立发行或候选安装。"
+        ],
+        "next": "继续从空白完成参考关卡；首次动画片段选择与已有dirty行为脚本往返分别验证，保持来源与草稿边界。"
       }
     ],
     "implementation": [
@@ -12605,6 +12665,123 @@
           "scripts/tests/scene-script-return-coordinator-ui.test.mjs",
           "scripts/tests/scene-script-return-authoring-smoke.mjs"
         ]
+      },
+      {
+        "id": "i623",
+        "label": "首次参数JSON标量审阅、默认项插入与创建正文保真嵌入",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-behavior-create-parameters.mjs"
+        ]
+      },
+      {
+        "id": "i624",
+        "label": "首次目录的同快照可选参数接口发现",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/lib/scene-behavior-creation-service.mjs"
+        ]
+      },
+      {
+        "id": "i625",
+        "label": "独立首次参数提示与逐绑定草稿接线",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-scene-behavior-create-parameters.js",
+          "web/modules/app-scene-behavior-create.js",
+          "web/scene-behavior-create.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i626",
+        "label": "首次参数目录独立品牌与精确字符串词元替换",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-behavior-create-references.mjs"
+        ]
+      },
+      {
+        "id": "i627",
+        "label": "独立名称选择与首次创建草稿所有权保护",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-scene-behavior-create-references.js",
+          "web/modules/app-scene-behavior-create.js",
+          "web/scene-behavior-create.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i628",
+        "label": "首次创建的可选只读目录宿主接线",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-project-build.js",
+          "web/modules/app-runtime.js"
+        ]
+      },
+      {
+        "id": "i629",
+        "label": "首次音轨来源捕获与原文String提案",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-behavior-create-audio.mjs",
+          "engine/scene-behavior-create-references.mjs"
+        ]
+      },
+      {
+        "id": "i630",
+        "label": "音轨选择视图与首次创建的共同草稿守卫",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-scene-behavior-create-audio.js",
+          "web/modules/app-scene-behavior-create.js",
+          "web/scene-behavior-create.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i631",
+        "label": "可选只读音轨端口与构建创建入口接线",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-project-build.js",
+          "web/modules/app-runtime.js"
+        ]
       }
     ],
     "maturity": [
@@ -14194,7 +14371,9 @@
         "e499",
         "e500",
         "e501",
-        "e502"
+        "e502",
+        "e3931",
+        "e3932"
       ]
     },
     {
@@ -14229,7 +14408,9 @@
         "e166",
         "e009",
         "e363",
-        "e364"
+        "e364",
+        "e3931",
+        "e3932"
       ]
     },
     {
@@ -35539,6 +35720,204 @@
         "e3894",
         "e3895",
         "e3896"
+      ]
+    },
+    {
+      "id": "b839",
+      "architecture": "semantic-js",
+      "function": "behavior.creation_parameters",
+      "implementation": "i623",
+      "role": "首次参数JSON标量审阅、默认项插入与创建正文保真嵌入",
+      "evidence": [
+        "e3897",
+        "e3898",
+        "e3899",
+        "e3900",
+        "e3901",
+        "e3902",
+        "e3903",
+        "e3904",
+        "e3905",
+        "e3906",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b840",
+      "architecture": "node-service",
+      "function": "behavior.creation_parameters",
+      "implementation": "i624",
+      "role": "首次目录的同快照可选参数接口发现",
+      "evidence": [
+        "e3897",
+        "e3898",
+        "e3899",
+        "e3900",
+        "e3901",
+        "e3902",
+        "e3903",
+        "e3904",
+        "e3905",
+        "e3906",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b841",
+      "architecture": "ui",
+      "function": "behavior.creation_parameters",
+      "implementation": "i625",
+      "role": "独立首次参数提示与逐绑定草稿接线",
+      "evidence": [
+        "e3897",
+        "e3898",
+        "e3899",
+        "e3900",
+        "e3901",
+        "e3902",
+        "e3903",
+        "e3904",
+        "e3905",
+        "e3906",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b842",
+      "architecture": "semantic-js",
+      "function": "behavior.creation_references",
+      "implementation": "i626",
+      "role": "首次参数目录独立品牌与精确字符串词元替换",
+      "evidence": [
+        "e3907",
+        "e3908",
+        "e3909",
+        "e3910",
+        "e3911",
+        "e3912",
+        "e3913",
+        "e3914",
+        "e3915",
+        "e3916",
+        "e3917",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b843",
+      "architecture": "ui",
+      "function": "behavior.creation_references",
+      "implementation": "i627",
+      "role": "独立名称选择与首次创建草稿所有权保护",
+      "evidence": [
+        "e3907",
+        "e3908",
+        "e3909",
+        "e3910",
+        "e3911",
+        "e3912",
+        "e3913",
+        "e3914",
+        "e3915",
+        "e3916",
+        "e3917",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b844",
+      "architecture": "ui",
+      "function": "behavior.creation_references",
+      "implementation": "i628",
+      "role": "首次创建的可选只读目录宿主接线",
+      "evidence": [
+        "e3907",
+        "e3908",
+        "e3909",
+        "e3910",
+        "e3911",
+        "e3912",
+        "e3913",
+        "e3914",
+        "e3915",
+        "e3916",
+        "e3917",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b845",
+      "architecture": "semantic-js",
+      "function": "behavior.creation_audio",
+      "implementation": "i629",
+      "role": "首次音轨来源捕获与原文String提案",
+      "evidence": [
+        "e3918",
+        "e3919",
+        "e3920",
+        "e3921",
+        "e3922",
+        "e3923",
+        "e3924",
+        "e3925",
+        "e3926",
+        "e3927",
+        "e3928",
+        "e3929",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b846",
+      "architecture": "ui",
+      "function": "behavior.creation_audio",
+      "implementation": "i630",
+      "role": "音轨选择视图与首次创建的共同草稿守卫",
+      "evidence": [
+        "e3918",
+        "e3919",
+        "e3920",
+        "e3921",
+        "e3922",
+        "e3923",
+        "e3924",
+        "e3925",
+        "e3926",
+        "e3927",
+        "e3928",
+        "e3929",
+        "e3930",
+        "e3931"
+      ]
+    },
+    {
+      "id": "b847",
+      "architecture": "ui",
+      "function": "behavior.creation_audio",
+      "implementation": "i631",
+      "role": "可选只读音轨端口与构建创建入口接线",
+      "evidence": [
+        "e3918",
+        "e3919",
+        "e3920",
+        "e3921",
+        "e3922",
+        "e3923",
+        "e3924",
+        "e3925",
+        "e3926",
+        "e3927",
+        "e3928",
+        "e3929",
+        "e3930",
+        "e3931"
       ]
     }
   ],
@@ -69022,6 +69401,366 @@
       ],
       "value": 3,
       "reason": "0.3.0已纳入源码交付；开发阶段的原交付依据：未发布工作树，应用0.2.10/下一版0.3.0/安装0.2.0；未有新安装验收。 本次不代表新安装包或新增目标平台验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_parameters",
+        "i623",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "实际产品入口已连接标量规则、只读目录、逐绑定草稿及原有创建事务；本行仅覆盖该职责。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_parameters",
+        "i623",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "定向、来源及真实作者任务按本轮回执分别验证，未把跳过或旧安装算通过。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_parameters",
+        "i623",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "参数规则/只读来源/界面与保存各有边界；完整创建编排和其他场景语义仍在JS。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_parameters",
+        "i623",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.creation_parameters",
+        "i624",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "实际产品入口已连接标量规则、只读目录、逐绑定草稿及原有创建事务；本行仅覆盖该职责。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.creation_parameters",
+        "i624",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "定向、来源及真实作者任务按本轮回执分别验证，未把跳过或旧安装算通过。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.creation_parameters",
+        "i624",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "参数规则/只读来源/界面与保存各有边界；完整创建编排和其他场景语义仍在JS。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.creation_parameters",
+        "i624",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_parameters",
+        "i625",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "实际产品入口已连接标量规则、只读目录、逐绑定草稿及原有创建事务；本行仅覆盖该职责。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_parameters",
+        "i625",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "定向、来源及真实作者任务按本轮回执分别验证，未把跳过或旧安装算通过。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_parameters",
+        "i625",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "参数规则/只读来源/界面与保存各有边界；完整创建编排和其他场景语义仍在JS。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_parameters",
+        "i625",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_references",
+        "i626",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "显式名称选择已接入首次创建主流程；错误、无变化与迟到请求分别处理。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_references",
+        "i626",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮定向、真实Chrome空白作者任务与Godot键鼠纵切按实际回执；环境与范围分别限定。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_references",
+        "i626",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯词元规则、只读目录、UI所有权和原事务边界明确；尚未完成原生新目标替换验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_references",
+        "i626",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i627",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "显式名称选择已接入首次创建主流程；错误、无变化与迟到请求分别处理。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i627",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮定向、真实Chrome空白作者任务与Godot键鼠纵切按实际回执；环境与范围分别限定。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i627",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯词元规则、只读目录、UI所有权和原事务边界明确；尚未完成原生新目标替换验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i627",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i628",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "显式名称选择已接入首次创建主流程；错误、无变化与迟到请求分别处理。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i628",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮定向、真实Chrome空白作者任务与Godot键鼠纵切按实际回执；环境与范围分别限定。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i628",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯词元规则、只读目录、UI所有权和原事务边界明确；尚未完成原生新目标替换验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_references",
+        "i628",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_audio",
+        "i629",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "首次创建主流程接通声明音轨显式选择；失败、空目录、无变化和迟到分别处理。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_audio",
+        "i629",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Chrome从空白的7文档1WAV与Godot只读播放器纵切、实际定向和应用回归按专题；非扬声器/安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_audio",
+        "i629",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "来源/词元规则、native声音校验、只读目录、视图和原事务边界明确；未完成原生新宿主替换。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.creation_audio",
+        "i629",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i630",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "首次创建主流程接通声明音轨显式选择；失败、空目录、无变化和迟到分别处理。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i630",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Chrome从空白的7文档1WAV与Godot只读播放器纵切、实际定向和应用回归按专题；非扬声器/安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i630",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "来源/词元规则、native声音校验、只读目录、视图和原事务边界明确；未完成原生新宿主替换。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i630",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i631",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "首次创建主流程接通声明音轨显式选择；失败、空目录、无变化和迟到分别处理。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i631",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Chrome从空白的7文档1WAV与Godot只读播放器纵切、实际定向和应用回归按专题；非扬声器/安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i631",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "来源/词元规则、native声音校验、只读目录、视图和原事务边界明确；未完成原生新宿主替换。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.creation_audio",
+        "i631",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "0.3.1源码版本收录，发布完整检查和证据索引按独立回执；未构建或更新安装，本机验收仍0.2.0。"
     }
   ],
   "evidence": [
@@ -92400,6 +93139,222 @@
       "kind": "report",
       "path": "docs/test-results/release-0.3.0/README.md",
       "note": "实际0.3.0版本一致性、源码归档、完整应用回归及来源保真检查；源码验证不等于安装验收。"
+    },
+    {
+      "id": "e3897",
+      "kind": "source",
+      "path": "engine/scene-behavior-create-parameters.mjs",
+      "note": "纯标量JSON审阅、原文范围补缺及完整创建正文嵌入，无I/O或保存权限。"
+    },
+    {
+      "id": "e3898",
+      "kind": "source",
+      "path": "scripts/lib/scene-behavior-creation-service.mjs",
+      "note": "同只读快照返回固定provider参数接口与对应源码修订，不执行作者源。"
+    },
+    {
+      "id": "e3899",
+      "kind": "source",
+      "path": "web/modules/app-scene-behavior-create-parameters.js",
+      "note": "独立owner守卫、提示及显式本地补缺，不接持久化。"
+    },
+    {
+      "id": "e3900",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-parameter-sources.test.mjs",
+      "note": "11项便携标量、词元保真、非法输入、getter与预算测试。"
+    },
+    {
+      "id": "e3901",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-creation-parameters.test.mjs",
+      "note": "8项来源快照/provider/optional core/真实HTTP与作者原文保全测试。"
+    },
+    {
+      "id": "e3902",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-parameters-ui.test.mjs",
+      "note": "18项真实创建控制器/独立helper和失效所有权回归。"
+    },
+    {
+      "id": "e3903",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-parameters-smoke.mjs",
+      "note": "真实Chrome空白作者任务与三语窄屏，范围与结果按回执。"
+    },
+    {
+      "id": "e3904",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-create-parameters/README.md",
+      "note": "本轮实际定向、Chrome作者任务、后端计划及全量回归/来源保真，分清执行范围。"
+    },
+    {
+      "id": "e3905",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-create-parameters/checks/application-status.json",
+      "note": "本轮完整应用实际计数及执行前后来源摘要，跳过保持跳过。"
+    },
+    {
+      "id": "e3906",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "首次创建参数操作、显式补缺、原始JSON与普通保存边界。"
+    },
+    {
+      "id": "e3907",
+      "kind": "source",
+      "path": "engine/scene-behavior-create-references.mjs",
+      "note": "独立创建来源品牌、现有String与原文词元提案，不取得I/O或保存权限。"
+    },
+    {
+      "id": "e3908",
+      "kind": "source",
+      "path": "web/modules/app-scene-behavior-create-references.js",
+      "note": "新创建无登记时的只读目录与显式选项；fresh/owner/content守卫及无变化和预算保留。"
+    },
+    {
+      "id": "e3909",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "向首次创建传递可选独立getReferences端口，旧原文编辑器品牌保持。"
+    },
+    {
+      "id": "e3910",
+      "kind": "source",
+      "path": "web/modules/app-runtime.js",
+      "note": "按真实能力flag提供只读目录端口，复用既有HTTP而不增加宿主写入权。"
+    },
+    {
+      "id": "e3911",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-references.test.mjs",
+      "note": "12项独立品牌、源绑定、String选择、原文保真与非法输入验证。"
+    },
+    {
+      "id": "e3912",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-references-ui.test.mjs",
+      "note": "25项独立/实际父界面、迟到回复、源改变、同值与预算保留验证。"
+    },
+    {
+      "id": "e3913",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-references-transport.test.mjs",
+      "note": "5项只读宿主能力门与端口透传，旧行为传输独立。"
+    },
+    {
+      "id": "e3914",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-references-smoke.mjs",
+      "note": "真实Chrome从空白八文档、名称填入、请求延迟、三语390px与保存重开。"
+    },
+    {
+      "id": "e3915",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-create-references/README.md",
+      "note": "定向、真实界面及Godot键鼠纵切与保真边界分别记载。"
+    },
+    {
+      "id": "e3916",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-create-references/checks/application-status.json",
+      "note": "冻结来源后的完整应用实际计数和前后摘要；条件跳过不计工具通过。"
+    },
+    {
+      "id": "e3917",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "首次保存前名称接线操作、显式选择与保真/失效规则。"
+    },
+    {
+      "id": "e3918",
+      "kind": "source",
+      "path": "engine/scene-behavior-create-audio.mjs",
+      "note": "首次音轨独立来源与品牌、现有String词元提案，复用native/WASM声明校验且不读素材字节。"
+    },
+    {
+      "id": "e3919",
+      "kind": "source",
+      "path": "web/modules/app-scene-behavior-create-audio.js",
+      "note": "独立音轨辅助、fresh来源与owner保护；无变化和错误不改父审阅。"
+    },
+    {
+      "id": "e3920",
+      "kind": "source",
+      "path": "web/modules/app-scene-behavior-create.js",
+      "note": "共享受护文本回写和已审阅全manifest预算预检，最终仍由原创建事务准入。"
+    },
+    {
+      "id": "e3921",
+      "kind": "source",
+      "path": "web/modules/app-runtime.js",
+      "note": "能力严格true的独立只读音轨端口，不借旧saved-source host。"
+    },
+    {
+      "id": "e3922",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-audio.test.mjs",
+      "note": "15项来源/品牌/轨道与素材区分/CST/预算/core不可用反例。"
+    },
+    {
+      "id": "e3923",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-audio-ui.test.mjs",
+      "note": "27项真实helper/parent与异步、全预算、双helper独立和手工回退验证。"
+    },
+    {
+      "id": "e3924",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-audio-transport.test.mjs",
+      "note": "5项可选端口与原鉴权传输的真实接线及能力门。"
+    },
+    {
+      "id": "e3925",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-audio-smoke.mjs",
+      "note": "真实Chrome从零作者结构创建7doc1WAV，两条同素材音轨，显式选择/取消/迟到/三语/重开。"
+    },
+    {
+      "id": "e3926",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-create-audio-native-smoke.mjs",
+      "note": "从真实界面作者构建，观察普通事件驱动选中track的原生播放器，不调用玩法控制。"
+    },
+    {
+      "id": "e3927",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-create-audio/README.md",
+      "note": "本轮实际界面、原生状态、回归与保真限制；包含早期驱动失败。"
+    },
+    {
+      "id": "e3928",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-create-audio/checks/application-status.json",
+      "note": "最终冻结来源的完整应用实际计数；跳过仍是跳过。"
+    },
+    {
+      "id": "e3929",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "首次音轨选择操作与来源、普通String、保存和播放权限边界。"
+    },
+    {
+      "id": "e3930",
+      "kind": "report",
+      "path": "docs/RELEASE_0.3.1.md",
+      "note": "0.3.1源码收录范围、独立模板/后端身份与实际交付限制。"
+    },
+    {
+      "id": "e3931",
+      "kind": "report",
+      "path": "docs/test-results/release-0.3.1/README.md",
+      "note": "正式升版后的完整应用、版本/归档、证据索引、保真和文档验证；非新安装验收。"
+    },
+    {
+      "id": "e3932",
+      "kind": "test",
+      "path": "scripts/tests/check-project-output.test.mjs",
+      "note": "真实子CLI验证测试结束前stdout/stderr可见、失败TAP诊断与非零退出、成功退出。"
     }
   ],
   "dependencies": [
@@ -96296,6 +97251,60 @@
       "to": "authoring.document-edit",
       "relation": "requires",
       "reason": "写入回执只来自原文实际保存，导航不能绕过未保存编辑。"
+    },
+    {
+      "from": "behavior.creation",
+      "to": "behavior.creation_parameters",
+      "relation": "requires",
+      "reason": "沿原首次创建身份、预览、原子提交与恢复合同。"
+    },
+    {
+      "from": "authoring.script_parameter_interface",
+      "to": "behavior.creation_parameters",
+      "relation": "requires",
+      "reason": "只消费既有固定provider与严格捕获的标量参数接口。"
+    },
+    {
+      "from": "behavior.multi_creation",
+      "to": "behavior.creation_parameters",
+      "relation": "requires",
+      "reason": "复用原多绑定身份和独立草稿；参数辅助为可选能力，不成为旧多绑定创建的前置条件。"
+    },
+    {
+      "from": "behavior.creation_parameters",
+      "to": "behavior.creation_references",
+      "relation": "requires",
+      "reason": "复用原始逐绑定参数JSON和最终完整校验；名称选择只提出局部文本替换。"
+    },
+    {
+      "from": "behavior.parameter_references",
+      "to": "behavior.creation_references",
+      "relation": "requires",
+      "reason": "复用既有保存态目录契约，首次创建另用独立来源与所有权，不要求已登记行为。"
+    },
+    {
+      "from": "behavior.multi_creation",
+      "to": "behavior.creation_references",
+      "relation": "requires",
+      "reason": "绑定与实例仍由原多绑定创建维护；名称选择不成为旧创建的前置条件。"
+    },
+    {
+      "from": "behavior.creation_parameters",
+      "to": "behavior.creation_audio",
+      "relation": "requires",
+      "reason": "复用逐绑定原始JSON与全量校验；音轨只替换一个已有String词元。"
+    },
+    {
+      "from": "scene.audio_timeline",
+      "to": "behavior.creation_audio",
+      "relation": "requires",
+      "reason": "复用已保存声音声明与稳定音轨身份，不读取/播放素材或改变时间提示。"
+    },
+    {
+      "from": "behavior.multi_creation",
+      "to": "behavior.creation_audio",
+      "relation": "requires",
+      "reason": "保留多绑定身份、独立草稿与原三文件事务；可选辅助不成为旧创建前置。"
     }
   ],
   "workflows": [
@@ -98543,6 +99552,46 @@
       ],
       "gaps": [],
       "boundary": "单个两实例场景的作者纵切，四文档成功工程；三语/取消/改源范围，不是整款游戏、持久会话恢复、已有dirty行为原文或安装验收。"
+    },
+    {
+      "id": "scene-behavior-creation-parameters",
+      "label": "空白作者结构→已保存TXT→首次逐绑定参数→显式补缺/审阅/取消或保存→实际计划",
+      "steps": [
+        "script.authoring",
+        "behavior.creation",
+        "behavior.multi_creation",
+        "authoring.script_parameter_interface",
+        "behavior.creation_parameters"
+      ],
+      "gaps": [],
+      "boundary": "首次行为参数作者纵切；浏览器/原生结果按专题，非整款游戏、既有dirty原文往返或新安装验收。"
+    },
+    {
+      "id": "scene-behavior-creation-references",
+      "label": "空白作者结构→首次参数→显式名称选择→重核来源→审阅/取消或保存→实际组装运行",
+      "steps": [
+        "script.authoring",
+        "behavior.creation",
+        "behavior.multi_creation",
+        "behavior.creation_parameters",
+        "behavior.creation_references"
+      ],
+      "gaps": [],
+      "boundary": "首次创建名称连接作者纵切；与旧保存态编辑各自保持来源品牌，不代表完整游戏从空白或安装验收。"
+    },
+    {
+      "id": "scene-behavior-creation-audio",
+      "label": "空白作者结构→WAV/场景声音→首次行为选音轨→审阅保存→事件驱动真实播放器",
+      "steps": [
+        "script.authoring",
+        "scene.audio_creation",
+        "scene.audio_authoring",
+        "behavior.creation_parameters",
+        "behavior.creation_audio",
+        "runtime.project_audio_controls"
+      ],
+      "gaps": [],
+      "boundary": "首次音轨接线作者纵切，Dummy音频驱动仅验证真实播放器状态；不代表整款游戏、扬声器或新安装。"
     }
   ],
   "legacyCoverage": [
@@ -99069,7 +100118,7 @@
     }
   ],
   "sourceSnapshot": {
-    ".github/workflows/check.yml": "27081eeaefd7dc2243095954d5563404675f3dcc7e80c2b1c3bff771122358c9",
+    ".github/workflows/check.yml": "6b46c76f34429658609e2524cb18f1c488311c5d8c2c276e37aecb692ef4f327",
     ".github/workflows/desktop.yml": "d847be30613177a7ffb3f2785890ba183fce7dbf8f4fa35e2991325ef2cd78a6",
     "crates/viento-bevy-runtime/Cargo.lock": "020a9107ef3963bff994b8519f8cdc40e794bc6f8a4a05f6822c2f000328fce1",
     "crates/viento-bevy-runtime/Cargo.toml": "83963741707ad7e02848116a79e33e89ae25db33036b8c45dab0b9d2544a1578",
@@ -99124,14 +100173,14 @@
     "desktop/tests/native-smoke.py": "5a5446e05d056fffc36c5f61fbe84a1785db4ee14ccb067186abf45edc02014a",
     "desktop/tests/native_workflow_2d.py": "d1d1c78ddec1bc1f5c036ce032d9fb232df8b0eecec73125b389bee2aa014091",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
-    "docs/ARCHITECTURE.md": "a59bbfce5aa191801411b71eba150a97047f41286880fec6ca52b2ad21da6560",
-    "docs/BACKEND_MIDDLEWARE.md": "8d560c37d8e2e54ee7e5a4a0a0c588ae5f752f80413caaa9729a930743c0329a",
+    "docs/ARCHITECTURE.md": "d72a6885742dfb9f9357e1ae16abe24f696870fc7f8f4bd6dc2aad4bf54096ae",
+    "docs/BACKEND_MIDDLEWARE.md": "720fee1588d31d5bd8bf314686382d6eaa498f780a2c308f28b3d166f1c086e7",
     "docs/BACKEND_PROJECTS.md": "c274e879222d9d66eb0f4feb6cecf93d5fff7c589d85d8330987c62dc97a0174",
     "docs/BEVY_BACKEND.md": "d7b839d99edc97e68e17497dddd7c50a7bb7325109afd39dd381145aea3b2828",
     "docs/FILM_WORKFLOW.md": "0ec2a59770b2a2242a25d309077d1fe81fab2a7d2f68af643f27d11a047044c6",
-    "docs/FUNCTION_MAPPING_2D.md": "fd5eb719eadbf0608bef27e2fe86aa83b988e24f11681f88fe9abd98b65c05de",
+    "docs/FUNCTION_MAPPING_2D.md": "701062c524f33b22585a4b581c7b36726cede7d55fb511a3917c7183dd01a4ed",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
-    "docs/MILESTONE_0.5.0.md": "815eccf15419c126bed7fd0e8a42d0376c013ef1509d815629ec1fe01243b5d3",
+    "docs/MILESTONE_0.5.0.md": "857c0f3ed4874b69fd581d5d0526a838c5ebf3d808287f0b9a5096759ad08d0b",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "d39ed92f8916c4911c1b8b9007adb5784173f8ff84be0bdf869681c0530093ad",
     "docs/PROJECT_ASSEMBLY.md": "e5fd60d8ba16fb1b925884c92f0ca6e96567009d62772f9bb9a61159ba48fd0e",
     "docs/PROJECT_AUDIO_CONTROLS.md": "dc7734deb7e3ead51447d1262b58847bac741877f8da96c338cb0ff65f7aeecc",
@@ -99140,7 +100189,7 @@
     "docs/PROJECT_MENU.md": "dc4c8e936c2249b897ca6c3fb40689c03d72eeee8e1db1febd97822a7b8a46de",
     "docs/PROJECT_PAUSE.md": "7c87e8bbb6c55c41cb7b647b98ea32b8c54cb74f0c56ca3d18109b74e07e17c1",
     "docs/PROJECT_SHARED_STATE.md": "5fdb2413042c956eb15d7e42a046c74a54fc5e64caac69d4722f5fc28fca1fa1",
-    "docs/PROJECT_WORKFLOW.md": "7bfc2c0d27453b2b6a71aaeae3dd1632eaf31de572f9c2e55e8849443931061f",
+    "docs/PROJECT_WORKFLOW.md": "6d0f43a8ece5619bc8e8b25ce8cc83d8f4948b3dc66b0c237fa8348ecdb86258",
     "docs/RELEASE_0.0.10.md": "6d2bdaa7d2998c13c3eb6be4843a88b90a6168d829c7457444acb94f1da239f4",
     "docs/RELEASE_0.0.7.md": "2fd35d702ddcf55edb8813fef0646f6d3d3a846a0e6f33f64c6fc44399e0375e",
     "docs/RELEASE_0.0.8.md": "dfc6b4e1fb850f3f7d5888f89c0a7ceffdad9e0c5b2c6fc68f9f8e65b114fe7b",
@@ -99160,7 +100209,8 @@
     "docs/RELEASE_0.2.5.md": "abc8d1af2dec8d6abae9c714b69e2876c5b638051b53e7d83a16b74d1d9b4c65",
     "docs/RELEASE_0.2.8.md": "dd39219b4b452b268349177660a6e72f43e401e02e09063f102db07e18f8a48b",
     "docs/RELEASE_0.3.0.md": "68797f76cd83c2a3a87c1fe3457d98562fdc5912502f98f56ba1b9805895d8a6",
-    "docs/ROADMAP.md": "d39ce19bd9cc9731649eb65c7e2093c9728de4379e6372c4a63f364a1049df26",
+    "docs/RELEASE_0.3.1.md": "951974e3f63575ba609825e0c4b6065bf768bdbc02b5b9679b2d02a68d2bc21e",
+    "docs/ROADMAP.md": "b01e05937868933d1305da7d275bed73fb00352077ba90652756302a734392a8",
     "docs/RUNTIME_CASES.md": "a0016d535de4b3e8ba2c19816e274f5fe9a3730e5dcace7786629bdea734b7c7",
     "docs/RUNTIME_CASE_REPORTS.md": "42b67098cefebfa016f68e184499962afea7feda0607c8dbd461e647fff40f04",
     "docs/RUNTIME_CASE_SUITES.md": "112b701db28ce258ca28435ade21349b1773f416a7f9c7d7f35d5e801e3beb74",
@@ -99170,7 +100220,7 @@
     "docs/SCENE_ANIMATION.md": "0fb56206fbdc247c3348dc624f1cbdff60ebd31394840ee180244434ad196f05",
     "docs/SCENE_AUDIO.md": "a254d5d162d7de9bd2513dcf71d391ec4fd2254678de6468697621364a27e752",
     "docs/SCENE_AUTHORING.md": "2c3092ee6a68a8ba2e31958b2deb235c608a16d81d3ce4081b085761d296dccd",
-    "docs/SCENE_BEHAVIORS.md": "4f91443efead9ff129e8404f4e20261a17880dbdc518c3495f21f7919458ab79",
+    "docs/SCENE_BEHAVIORS.md": "d6f9bd48e50c65783b35c7da6e8ae23dfefa16ad4e76aa438e69aef42114c2bc",
     "docs/SCENE_CAMERA2D.md": "364a069cea30a7e2db2820ab1af9804d63d4b0fc24bdef3eaedbaa389a10671e",
     "docs/SCENE_COMPOSITION.md": "d61647165b6c7c9f44fdc9e9c8243592e8e205d7630a9be700c47ccbde09cc05",
     "docs/SCENE_HUD2D.md": "455036e9f4f5a65732151928b4b70a5e8063edd4d1fd26e15114584f0a23c13b",
@@ -99179,7 +100229,7 @@
     "docs/SCENE_RESTART.md": "64931ef1419713dc8464514d52539d444f14054cf37120b8f0c5cc0c0640c59b",
     "docs/SCENE_RETRY.md": "ef84e7488aa4f18779b2e3101cde6c424c8a326175d2e33439c7f74162e64fc4",
     "docs/SECURITY_ZIP_2026-11-04.md": "a34a98275b1948f17829f294df5a04042243a9d1b312f950b9777111fd6c6591",
-    "docs/STATUS.md": "aebf1f86aca21e99129499ab4076fd2041eeff9fa172852421aaedc1cd94bcbe",
+    "docs/STATUS.md": "aff0d8a3863cb152bfb3c7939a3001dd8008e9926eab53a9a4fa3bb69988c5c6",
     "docs/STUDIO_MODULES.md": "a61f3e4880df120d6b08ce6403811d735ba0f0eab3e90258e9d747efdb99562d",
     "docs/WORLD_TRANSACTIONS.md": "bcdf7e96289f68e92271fc7c6ad025985e3744857f304fa21eb2ede43a37394e",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
@@ -99470,6 +100520,7 @@
     "docs/test-results/release-0.2.8/README.md": "e0a51335941c21921e473ca0deed54800d910fd79486b4b790163910fecc20e9",
     "docs/test-results/release-0.2.9/README.md": "b3383660758d561e8eb0ac33184de603a999bcdda9139d7eaf826bfdd28df7b5",
     "docs/test-results/release-0.3.0/README.md": "57a5cf06b4a4364e6ddf69943506bd594174e3e43b25879d2fc7508ef8e0e820",
+    "docs/test-results/release-0.3.1/README.md": "d20f8ed684651116d53d53bbfceb890be91c937994c5f04c45c36e0e0dfb9abb",
     "docs/test-results/resource-packages/results.json": "8a1a13357a461cd249efe5178b7c5bf06d2f950b377b0e25afb73abf84cdb3f9",
     "docs/test-results/runtime-case-documents/browser/browser.json": "06b19cd5fd9ef6e5fd2dbbb698d89ff887324af123eb472f4d534d590bb53203",
     "docs/test-results/runtime-case-documents/cleanup.json": "e4911d39652c0a64767b3861edd6e0b8426e4092e3822b937bd76a3efe9fb387",
@@ -99692,6 +100743,12 @@
     "docs/test-results/scene-behavior-binding-copy/README.md": "89abc6fb3fa094aa5bc9d94b796611d1f2f22f72490d17789259a81dd893e149",
     "docs/test-results/scene-behavior-binding-copy/browser-final/browser.json": "0f3850aa80c14ce8022480c425accb16bc6f3fddd4c9afad198056415b9e66db",
     "docs/test-results/scene-behavior-binding-copy/native-final/native.log": "a85a8984f7ee4fc265464379f71c2ddffa975c027debe0abccf180287586fb91",
+    "docs/test-results/scene-behavior-create-audio/README.md": "a20edf7c97ac8e78af6f3dfdb2b965e21f359c3c5d47d82fa10770a550b2ebd1",
+    "docs/test-results/scene-behavior-create-audio/checks/application-status.json": "fda2ec544a99b4ea75e43dbb3b64d97d5e12021dde2de356b90da6962ef52f36",
+    "docs/test-results/scene-behavior-create-parameters/README.md": "de2b89ad7023487a31863959c5013da2547826d3e5677ac46f2ac9c1b296b7c5",
+    "docs/test-results/scene-behavior-create-parameters/checks/application-status.json": "839a372509b4c9c5b6b5de177f60c12b21126d8e577967b2a32095a650193929",
+    "docs/test-results/scene-behavior-create-references/README.md": "65b4fdf718b90454b5bde7e163bd9a11913ab8c179442f75ed5b524010dfee02",
+    "docs/test-results/scene-behavior-create-references/checks/application-status.json": "a9920094d27007974ac99fd2af3a0f4cbee95cad80d0d720184fcdba9288ddef",
     "docs/test-results/scene-behavior-creation/README.md": "93b1007a2c837ed37f3701ff8b2c0993d66759a96cee0fc4e6741f5e29bc4ef7",
     "docs/test-results/scene-behavior-creation/summary.json": "99294a27d1cbafbb58549a7fa11a123f0f1f6f4181455de2427ec75b8547d88e",
     "docs/test-results/scene-behavior-links/summary.json": "ac2e90953000b856ccb76ba812f22ae7fa5bb34bd5885415d43df59715a81cf4",
@@ -100574,7 +101631,7 @@
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
     "docs/test-results/zip-security-2026-11-04/README.md": "0e3eb285dedeeedbacc283554bdf66eb24c60c0991473aa313933428e094c625",
-    "engine/README.md": "ffbd5f35b5213f8f3a0028e28680c9b6ab792e1bdc82b54045d8b36c85de2927",
+    "engine/README.md": "0251d778d563cd73a86e911b8c1c3a6f8c422127f9b6bf84f2e52e6351585064",
     "engine/animation-state-bindings.mjs": "a77eb5534e292ad6561c9bac4dedbc4d4cd5cb3ecddf3257c3981a1171f8336b",
     "engine/animation-state-branches-core.mjs": "2e0fdad7c839a70735de5e54d0afaf8a14082cbb40b5ee165eabec3ca4ee9c15",
     "engine/animation-state-combinations-core.mjs": "978f0794a802c6da196b650dd3e03cba1a7a63d8aebc7209810e4c4bfd041f95",
@@ -100714,7 +101771,10 @@
     "engine/scene-authoring-workflow.mjs": "577593157ec5a1924170ec9fc3e5e071e04dd2df2237231372c52e6526d2d10d",
     "engine/scene-behavior-authoring-contract.mjs": "328e9d5fa29a8257ed333c871d6ac34dbe54f579e13884b359a22c76c9d9cb6b",
     "engine/scene-behavior-binding-copy.mjs": "2f655b9051971e781ba433394cd4b31634f43b4bec1372ae91068fa3a532cbcb",
+    "engine/scene-behavior-create-audio.mjs": "97cd248761bdf67e12ef0baaa632d0706295a46f8775037016d1b5f9a7974f02",
+    "engine/scene-behavior-create-parameters.mjs": "0f6ab41ad0e0bd0eb5c803042fea721dfb78c1576b408633bd93806117fd524e",
     "engine/scene-behavior-create-plan.mjs": "6f626880fa77ee318e913fb9ed6716aa32505ff03c6aa11389ebd4feea8049be",
+    "engine/scene-behavior-create-references.mjs": "aa6da9b53a0ec9f685ba83e76b9411d266dba0346335da1dabdd9e9ed88a83be",
     "engine/scene-behavior-creation-contract.mjs": "c2ae49d7ba16d33a67af6faea23c44bf42a5108dc86297504e2badb24d4a8d65",
     "engine/scene-behavior-directory.mjs": "51ce505e317ee114ec8d7531b63a25842a3ee01eab42dbac85132df4540edce0",
     "engine/scene-behavior-events.mjs": "f94299bfa1a23a6f16911ff7cff82bb0df6574751dc8bcff5c2400571f4eb735",
@@ -101010,7 +102070,7 @@
     "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
     "scripts/browse-server.mjs": "7a47725ae7c4ef5ee1bd126beb6ae9ce51d804880bb2b8584ac3e522c29ab373",
     "scripts/build-studio-core.mjs": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452",
-    "scripts/check-project.mjs": "c9f490f1dd0683f4ac452c202ed35292609c4b9e19c6eafabb3d90bcbc846e77",
+    "scripts/check-project.mjs": "c539eb0d24c20e5edcea00a8eefe851325083566c2c6699453184d1cb683fcec",
     "scripts/doc-site-server.mjs": "5b46e7846e3cc3c9d6dd374a61ef856be9e4b7386145ecf16ac23aa649f9088e",
     "scripts/function-atlas-view.mjs": "75ee3fa52660721638aa561f62753ffa0bf71b96b11fd1aaa2a7f725bbe70e48",
     "scripts/function-atlas.mjs": "0671bfe401713bb187decf610a6bc410c2a97c8c19720a099486113ad60b591d",
@@ -101057,7 +102117,7 @@
     "scripts/lib/scene-audio-directory-service.mjs": "27cff75cb7ef19d67dad3a8ad3e2c0504b3322ff674f1040875b5054ebcd2a56",
     "scripts/lib/scene-audio-usage-service.mjs": "38c443198bf6ed95bb1b2aef8bc956d36be3c810553aa7a135be47df39de8af9",
     "scripts/lib/scene-behavior-authoring-service.mjs": "58afc603d96b5f9487739a3a9f8cbb54787f9795d3eef3f37e4b35f8b0712afb",
-    "scripts/lib/scene-behavior-creation-service.mjs": "df27d24ce2165a0ac74869a8b06bac43ae3e5b99001806689c7374c094ce3c14",
+    "scripts/lib/scene-behavior-creation-service.mjs": "e85f1279c27a8e48c423a9c465c4f1e9570a50e1f732a15d228ea20373355ef4",
     "scripts/lib/scene-behavior-directory-service.mjs": "9843db309e5909f4b686aa153b23d233ba5ecae3baade7d21975dba6bce59ea8",
     "scripts/lib/scene-behavior-reference-directory-service.mjs": "3d8a46da54cec6d580a333a34fc7525cad19fa56728644087ac9d4708128b4f8",
     "scripts/lib/scene-camera2d-documents.mjs": "5a9550910ef08f23290021f099426623a3bc11ae112e2669d26f1370b6d7f952",
@@ -101178,11 +102238,12 @@
     "scripts/tests/character-drop-through-starter.test.mjs": "d198a15cc0ee4624021d87b030f0b686d6ae5d31bc7725b7c449bcfdc25cf2bb",
     "scripts/tests/character-intent-starter.test.mjs": "7dc2448430967a22f9e0c41c004da08c4c3883a2ba11ae28c907df868ea8b294",
     "scripts/tests/character-motion-event-starters.test.mjs": "2ec3c672a92b6351df0fa417d1d78bcd590b3b9f67bba6e40f0fe87ae76b6e2e",
+    "scripts/tests/check-project-output.test.mjs": "a932baa5f8e5286660d7a970493fe989f55eae055d17d8dd953a74f777cf669e",
     "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
     "scripts/tests/desktop-close.test.mjs": "9af2c664add04c4fba6a5f8082de953c31b9ca8783067d72f27d31240bd39fd0",
     "scripts/tests/desktop-library.test.mjs": "4b0134b06cccf881bbb32905721c60a9662d18d269c69c4b0f5cb655b9809137",
     "scripts/tests/desktop-workspace.test.mjs": "95a79fabec528755b749c2e40a373315ab36e09050e294cb867d606ed7bd09ac",
-    "scripts/tests/dialog-harness.mjs": "7c82ec383ae6db53a3913ab7eb630953dc5fbc94cabab42bab059e911975e621",
+    "scripts/tests/dialog-harness.mjs": "2d8bcbaf55bce134561063b5b2425d31f4e9d6fd45c5e9232f83dc504f5609ef",
     "scripts/tests/doc-api.test.mjs": "1b7ec1a5e0081840789af02e7d39c01afde0a6b8e8b5f5762c5af5b68e899a2b",
     "scripts/tests/document-migration.test.mjs": "3215a96aeef64508e53ee228da0f7aab8bb3e92c9e61a1b7bd2a4f3dcee5a0a7",
     "scripts/tests/document-model.test.mjs": "993e6aa192cef7585cf221b3d10fd5f8f8289930c7168515afe89aeb2e386054",
@@ -101590,9 +102651,22 @@
     "scripts/tests/scene-behavior-binding-copy-smoke.mjs": "fb2def765c757297a43558cc17bdad753e0307f5e106e294043a9074b9ccbfcb",
     "scripts/tests/scene-behavior-binding-copy-ui.test.mjs": "a6f2a103dd341485595c44dcdf068842e6612aa723f654d839ca4ee77777d519",
     "scripts/tests/scene-behavior-binding-copy.test.mjs": "50de988ab45bbd2ea74a401623f5c86814d81a7b12cd61275b2cbf583f83772d",
+    "scripts/tests/scene-behavior-create-audio-native-smoke.mjs": "89cb20f233887ba887b43400faa89d60b983cf9524af5ecfc6a06f375db68c6e",
+    "scripts/tests/scene-behavior-create-audio-smoke.mjs": "0476210b2076806498703523588db347c2c3a48e3a5ad22b2ba5cba97bb96f70",
+    "scripts/tests/scene-behavior-create-audio-transport.test.mjs": "f58fb57019a82db28ab1e3652746f03754fbc30694c456a1f3d4905b368b033e",
+    "scripts/tests/scene-behavior-create-audio-ui.test.mjs": "61a89e2e85fa5a66293ebf5ac29e25339a895944d08ea6a916757380d15529be",
+    "scripts/tests/scene-behavior-create-audio.test.mjs": "4bb47946fcf1a7e1a6273030842ec66ac6f81f3a51fe447e08e204f7aeceff28",
+    "scripts/tests/scene-behavior-create-parameter-sources.test.mjs": "2bf17d5b8fc35f9808c8f42d3c003499fab5c6fa674ed2d10a547088e9dc3640",
+    "scripts/tests/scene-behavior-create-parameters-smoke.mjs": "daa598b59652d3daabcfc77acd01f02986b438fa409a9d42794a16c693f3c7a7",
+    "scripts/tests/scene-behavior-create-parameters-ui.test.mjs": "badf7f4e0cba8fbfe8d982174990d7c261c1d5433c774260d7a189af6a3ba58c",
     "scripts/tests/scene-behavior-create-plan.test.mjs": "08a4aa1b89afd576849e11001c082050979867ac096a9a871155822b777b1a51",
+    "scripts/tests/scene-behavior-create-references-smoke.mjs": "082a043669c5e910ba1a70749b5f83e5513c764d9de6661336193311dac1e034",
+    "scripts/tests/scene-behavior-create-references-transport.test.mjs": "7d98f347816fd85a78e29266298639541bdce5f0dae5db36a7af6ea384df2ce2",
+    "scripts/tests/scene-behavior-create-references-ui.test.mjs": "13dfe26c9fcfbc8884177df6402807e5000a0dc6db070a5717e2a4da32b9fcfc",
+    "scripts/tests/scene-behavior-create-references.test.mjs": "3cd1e00d1c6352fb0af7514ebdd51c2cf8126e1dee4cc3a3a39cc513854e4577",
     "scripts/tests/scene-behavior-create-ui.test.mjs": "97634c0bb752ed62db395fc46441ee9e7cc25f38461e126b4080816114f893d8",
     "scripts/tests/scene-behavior-creation-http.test.mjs": "5b6c936a085c68bce5bfba0a79aaaed54c667e960f402d5710792bcda7ed57cf",
+    "scripts/tests/scene-behavior-creation-parameters.test.mjs": "a0cfbf6ec070556e5bd8e174e0bc981bb45a0123f4f8be1dac84a4faa7905d37",
     "scripts/tests/scene-behavior-creation-service.test.mjs": "b2081657702ed66fd521b7ffb471b9acc32ca00bd002abed80e34066b460de4f",
     "scripts/tests/scene-behavior-creation-smoke.mjs": "162337bc37960168710f9dfdc49e2a0fdc7c1653736f2202e318a8e5b06cefd0",
     "scripts/tests/scene-behavior-creation-system-ports.test.mjs": "9ec156ae952e2693ce186e7df94b46e58e39f55513ec9fe919fe6d330e558318",
@@ -102074,8 +103148,8 @@
     "scripts/tests/world-transactions.test.mjs": "02427bc668beb9b84ec4ba1fe3fcedf1a4293869ed09d08e0ff213dc31afd7c3",
     "scripts/workspace.mjs": "8067d98be67d70aaf9d83b48e01e8fdef69fe83395aaff33e7814a13894a3077",
     "scripts/world.mjs": "5f1f1b1f6e145b0738112856ee08f59aa5f5835e58ec6adaafc6d6365fe4667c",
-    "src-tauri/Cargo.lock": "b51923a798e271460686df1e2c119cff50bd0b55b492ed54538b18689538bdd4",
-    "src-tauri/Cargo.toml": "745cf3ccf7bbfa5323abc0c1ebc86853f3fe3884661414d77fa504096cf52228",
+    "src-tauri/Cargo.lock": "c7a3c881da3a6eaaac2540d70637637bef02f8e91669c8dd4753c37055cd124d",
+    "src-tauri/Cargo.toml": "a563a276cef3335c4127ab87e4bb3bc5c5f8c60a898e74995af614c537455c05",
     "src-tauri/gen/android/app/src/main/java/io/viento/studio/ArchiveTransferPlugin.kt": "309b6dea7b8085b935673f160e7ba3d7c37deb855f177df673c4a62fafba0a0e",
     "src-tauri/src/close_state.rs": "06f5639c1f9f9e086ee73de9b81e1a3a9a09a4b2436980826c4b5c92c891c11b",
     "src-tauri/src/desktop_host.rs": "cf5ef9448848178d8084782712545ed9aa3017e6a9bf16d14112495f8b6bd5e8",
@@ -102096,10 +103170,10 @@
     "web/animation-state-trial-case-editor.css": "6b69cae01ab42a233b7ef00efb3848c7da1c7b83693ceb83d9f923f5713c7259",
     "web/animation-state-trial-case.css": "b945e97e563ba61dca5b626f2ce51710df9024dbc94330d90c4768bc9269e4f5",
     "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
-    "web/i18n/en.js": "b281455fb562f3d7169c9880c21f22c22502362a43cdd9fd852076b9ba1a7c6c",
+    "web/i18n/en.js": "d920de1c614aa81ffcf4b62db369fdf7976b1d70d82b6ebc9f28adff3e52c158",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "daab49c6a1df3d5230909eb80ef8f71f872b5640b180ccf5e90d178b017824c6",
-    "web/index.html": "b72fa8ee4bb03568a5173f5dd9edd95716da540b188615faf60ded148bcaef91",
+    "web/i18n/ja.js": "fb95b28495e5b18866ae196ad8305e60cd5b6e3766803a6af76f472536b80ec6",
+    "web/index.html": "75dccfbefaed36a1f41ffef482f093e73aac0115ed8157c18690f85cc488c2ab",
     "web/modules/app-animation-state-condition-group.js": "0c1b02f720757ed756c2efc2e27ca04346760400dbafc8a5c9768f4ba1a592d5",
     "web/modules/app-animation-state-condition.js": "62ca96e0221d6eb0a5b72eac21bacdf888c55a3851c0d4de85ef4bb376067c1a",
     "web/modules/app-animation-state-event-preview.js": "b178da0734dcf8f8af086b57f25db41003e9f68e715069c6a2c7c65aa28e5cea",
@@ -102130,7 +103204,7 @@
     "web/modules/app-project-animation-target-review.js": "7dea0d3f58daa91486f46b56f57681cb10ddb4f2acfd9cf9a7e9eb2c4ad3bfb1",
     "web/modules/app-project-assembly.js": "75af5b925651bed5852779ee6bb58de934db7705443957f9099ff759ba3a12d3",
     "web/modules/app-project-audio-observation.js": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
-    "web/modules/app-project-build.js": "3e5f9194dc1e72662eb60fddb26bce4a361e64b6f835c99387ccd0bb621f89ea",
+    "web/modules/app-project-build.js": "8bdf1b5939e9493cecce094e05198792ac1d8faf7a560e48afab2310bdafd84f",
     "web/modules/app-project-event-observation.js": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
     "web/modules/app-project-event-positions-observation.js": "598e7a04cd6357f872b24078d42abbd81037b025bf0924dbd9f8d179ad3f9856",
     "web/modules/app-project-event-review.js": "9558ea75da21182a51c25add0595a959fc6bdfa8a509d532260cd0774da379a9",
@@ -102144,7 +103218,7 @@
     "web/modules/app-runtime-case-documents.js": "e2d0b9df3b21251f90c20612a9cb127735be78b23eee4b273de956c2ec040da4",
     "web/modules/app-runtime-case-report.js": "3c481e99bdc698312fcc70172fa0c6f90b9fd3860c584aeea3c7d38816526e2d",
     "web/modules/app-runtime-case-suites.js": "9290a982a2fe1ff4fe5917f5c35f8f37c148d259fb4c08fc9025f3e16b6e1e42",
-    "web/modules/app-runtime.js": "763b1997c50af06593c7e12a7c202e6b67126ecd795f82db65a112d8a176a054",
+    "web/modules/app-runtime.js": "ac46dc02f46924efb4ca939bdcbcca4b51b5766f7e328515317d567fb73871d7",
     "web/modules/app-scene-animation-clips.js": "5ea47930ece48f75c5bfad5e1a2c83599fb72a2e748b8216746e66264e286bab",
     "web/modules/app-scene-animation-create.js": "494c12e33defb03e27adee07b62ce071dc956f97818f309aca2e7afee7647f70",
     "web/modules/app-scene-animation-retime.js": "9d5c7d24faad9820bd8525066110055f535252ced254f04d7f1d72bcbd61bcbc",
@@ -102158,7 +103232,10 @@
     "web/modules/app-scene-audio.js": "48bf3ce96f796212cda72a6374e5a9e437d15f9570a2e1d40e20a76c62af94ce",
     "web/modules/app-scene-authoring.js": "791f84a9aa3a4b92d9c1bfc1a62b5754d3c75e6803298f7f45331ce3ac70da21",
     "web/modules/app-scene-behavior-animation-clips.js": "8ce8939de5a713bedbe611be1f474ad341944aa17bed2b48c006f8aece3847af",
-    "web/modules/app-scene-behavior-create.js": "a8b0f9c1969cc677d454a6ae536ef8b76f37cca254bf38e23c3080fd3bad2753",
+    "web/modules/app-scene-behavior-create-audio.js": "68bd9acd5bcf0e2e2cb1844ea62fd20b322540288193dc77dd83677495342687",
+    "web/modules/app-scene-behavior-create-parameters.js": "f911bca54f18b99499e4e053109a19579cb4b2a667249540f8a28810595ca85f",
+    "web/modules/app-scene-behavior-create-references.js": "bde9469e00f5a4865371420b60cb37eff943fe1278ff9d06d7939ec511475383",
+    "web/modules/app-scene-behavior-create.js": "52e28d69a4895702ca0393abe66b3c8977aa5373638d470d764021d60763fccf",
     "web/modules/app-scene-behavior-links.js": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
     "web/modules/app-scene-behavior-menu-targets.js": "055091edec17a8c417aed10998c3852bcde4f9ea1b130c1b2a1c1bc7ccdd73ef",
     "web/modules/app-scene-behavior-parameters.js": "e66884f73c19124d1c8336577ea23e8ce766edda10df1918eeb9c344ce13333c",
@@ -102243,6 +103320,7 @@
     "web/scene-animation.css": "b1c25d01d4a4624b641fdcbba56a861806bd3e3dbdbca5986a3edc06e7ce1ada",
     "web/scene-audio-create.css": "c3685f7059031b8b8dbdcc7d0338d9ff72bfaaeb1c94a653e96d05d33dfea58a",
     "web/scene-audio.css": "1d230ea2ce60d983d9096465ed8440728a3a1b0db47ea7a46acb1c582f93c2a2",
+    "web/scene-behavior-create.css": "1c9554d213226a9b006cb19a91043663c85b54df7390d7a5f60a31a9d4a3d7db",
     "web/scene-behavior-links.css": "0ff6305fadffa7db3f4b7e4636dba91b751a9d2f8b7bf885ce3debf4462ab064",
     "web/scene-behavior-menu-targets.css": "a605af72dee676415e62ff99e6a5a226d667fbc66f7486bcfcff0f743963b6f7",
     "web/scene-behaviors.css": "970ce4241b77008e76d5bd02f79d002132618183eb708d748e509e6dfd773a90",

@@ -1,6 +1,6 @@
 # 验证指南
 
-本页提供验证入口和证据要求。当前源码为 **0.3.0**；最近安装验收仍为 **0.2.0**，具体范围见[当前状态](STATUS.md)。0.3.0 发布验证见[发布检查](test-results/release-0.3.0/README.md)；此前发布记录与本轮能力的发布前专题保留各自执行时点，专题证据不重标为本轮发布或安装验收。逐轮日志、旧命令上下文和历史计数见[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
+本页提供验证入口和证据要求。当前源码为 **0.3.1**；最近安装验收仍为 **0.2.0**，具体范围见[当前状态](STATUS.md)。0.3.1 发布验证见[发布检查](test-results/release-0.3.1/README.md)；此前发布记录与本轮能力的发布前专题保留各自执行时点，专题证据不重标为本轮发布或安装验收。逐轮日志、旧命令上下文和历史计数见[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
 
 0.2.6 收录的[调度观察专题](test-results/runtime-execution-clock/README.md)独立验证真实引擎帧归窗、七维用量、留存与取消，不修改原运行协议或累计上限。复现纯合同与库存：
 
@@ -109,7 +109,7 @@ npm run core:test
 npm run check -- --app-only
 ```
 
-`check-project.mjs` 准备核心后检查版本、JavaScript 语法、API 契约，并以并发 2 运行应用测试。`--app-only` 跳过当前作品的标准文档、模板对齐和静态索引检查；`npm test` 只运行应用测试，执行前也会准备核心。
+`check-project.mjs` 准备核心后检查版本、JavaScript 语法、API 契约，并以并发 2 运行应用测试；TAP 进度和错误诊断直接输出，失败退出码继续向上传递。GitHub Actions 的应用作业预算为 30 分钟，包含准备与测试阶段，并缓存 Rust 核心构建；兼容性作业独立执行。`--app-only` 跳过当前作品的标准文档、模板对齐和静态索引检查；`npm test` 只运行应用测试，执行前也会准备核心。
 
 需要核对所选作者工程时，在明确选定的隔离工程环境运行 `npm run rebuild` 和 `npm run check`。完整检查会读取当前工程，不为文档维护或减少跳过数擅自切换到日常作品。缺少原生工具、Godot、Python 等条件时，相关测试按自身逻辑跳过；记录所缺条件，不能将 skipped 写成通过。
 
@@ -118,6 +118,18 @@ npm run check -- --app-only
 ```sh
 node --test scripts/tests/version.test.mjs scripts/tests/source-archive.test.mjs
 ```
+
+## 首次行为的参数与引用配置
+
+0.3.1 收录三个独立创建辅助，复用既有行为格式、只读目录和三文件事务。规则、来源、界面与端口分别验证：
+
+```sh
+node --test --test-reporter=tap scripts/tests/scene-behavior-creation-parameters.test.mjs scripts/tests/scene-behavior-create-parameter-sources.test.mjs scripts/tests/scene-behavior-create-references.test.mjs scripts/tests/scene-behavior-create-audio.test.mjs
+node --test --test-reporter=tap scripts/tests/scene-behavior-create-parameters-ui.test.mjs scripts/tests/scene-behavior-create-references-ui.test.mjs scripts/tests/scene-behavior-create-audio-ui.test.mjs scripts/tests/scene-behavior-create-references-transport.test.mjs scripts/tests/scene-behavior-create-audio-transport.test.mjs
+node --test --test-reporter=tap scripts/tests/check-project-output.test.mjs
+```
+
+核对各绑定原始 JSON、稳定身份、只读目录来源、迟到请求拒绝、同值／失败保留审阅，以及完整多绑定 32 KiB 预算。真实 Chrome 作者纵切及其 Godot 结果分别保存在[参数专题](test-results/scene-behavior-create-parameters/README.md)、[名称专题](test-results/scene-behavior-create-references/README.md)与[音轨专题](test-results/scene-behavior-create-audio/README.md)，原命令、失败现场和完整检查数保持执行时点。音轨采用 Headless／Dummy 驱动检查解码流和播放器状态，不代表物理设备出声；这些作者纵切也不代表整款游戏从空白、安装或其他后端对等。检查器输出测试另核对实时转发、错误诊断及失败退出码，不能代替远端 CI 运行结果。
 
 ## 共享 Rust 核心
 

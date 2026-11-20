@@ -1,0 +1,71 @@
+{
+  "reviewedAt": "2026-11-13T12:58:47.007163+00:00",
+  "scope": "Read-only review of first behavior creation parameter scalar/source proposal module. No repository mutation or version change.",
+  "reviewedModule": "engine/scene-behavior-create-parameters.mjs",
+  "reviewedModuleSha256": "59f339879e748e85f31ffff5596b44527c57260bb1eceaa3891b22fd88c432da",
+  "findings": [
+    {
+      "severity": "bounded-parser-efficiency",
+      "location": "engine/scene-behavior-create-parameters.mjs:64",
+      "summary": "apply derives a general JSON CST even after the behavior inspector has already rejected oversized source, so the 32KiB manifest budget does not guard JSON.parse work.",
+      "reproduction": "32769-character and1MiB valid planner manifest plus whitespace each cause one full-size JSON.parse call before the expected rejection.",
+      "acceptanceBoundary": "Neither invalid source is accepted; ordinary UI planner products are already bounded. This finding does not establish a GUI exploit, persistent data loss or privilege change.",
+      "minimalFix": "Validate string/character bound before inspector and derive the CST only after recognized/ok checks pass.",
+      "minimalRegression": "With JSON.parse counter restored in finally, assert no oversized source parse for32769-character input; retain valid small source merging and final total-byte rejection tests."
+    }
+  ],
+  "tests": {
+    "command": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node --test --test-isolation=none --test-reporter=tap /tmp/viento-create-parameters-review.mjs",
+    "total": 14,
+    "pass": 14,
+    "fail": 0,
+    "skip": 0,
+    "cases": [
+      "Source-preserving BOM/CRLF/nonBMP/escaped-string/exponent/-0 additions",
+      "Seven compact/empty/multiline/trailing whitespace insertion layouts",
+      "Exact no-op output bytes",
+      "modified/unsupported/unavailable and incompatible profile states",
+      "Decoded duplicate/reserved/non-scalar/unsafe-number/unpaired-surrogate refusal",
+      "32parameters/4096UTF16/UTF8 input boundaries",
+      "Row-count permission distinct from oversized merged default refusal",
+      "Unknown or mistyped values reported and preserved",
+      "Own descriptor/accessor/symbol/inherited input refusal without executing getters",
+      "Two-binding exact range embedding and surrounding-byte retention",
+      "Sparse/decorated/accessor fragment refusal and nonempty old parameter refusal",
+      "Individually valid fragments rejected when combined manifest exceeds budget",
+      "Legacy identity-only planner rejects extra new fields",
+      "Reviewed module hash unchanged during fourteen probes"
+    ]
+  },
+  "budgetProbe": {
+    "source": "/tmp/viento-create-parameters-budget-probe.mjs",
+    "log": "/tmp/viento-create-parameters-budget-probe.log"
+  },
+  "artifacts": [
+    {
+      "path": "/tmp/viento-create-parameters-review.mjs",
+      "sha256": "cf24ea26570894f0eacf0e83c784bba239972c6cd2c83eddf1a3c9a675cb0b57"
+    },
+    {
+      "path": "/tmp/viento-create-parameters-review.log",
+      "sha256": "13e1ae1c3a383cd5f77225613de9552f9a777383e983d28fa121be9baa452f97"
+    },
+    {
+      "path": "/tmp/viento-create-parameters-review-direct.log",
+      "sha256": "953d1ebc471cc725df079a6f48dfb59e7125930561c811867bbdfd5ca2c360da"
+    },
+    {
+      "path": "/tmp/viento-create-parameters-review-tap.log",
+      "sha256": "17864880ed8167af3859cdb240d0edb437025ea916d44459480b419a1edd692d"
+    },
+    {
+      "path": "/tmp/viento-create-parameters-budget-probe.mjs",
+      "sha256": "789123d66425d30cbc2c3597436d8448c6853ec08ae16a103e775eeb5dade998"
+    },
+    {
+      "path": "/tmp/viento-create-parameters-budget-probe.log",
+      "sha256": "29234dc4024c98fa8464c93f6ac73de6fa7519a4d8644cf9b80df86e13bc8217"
+    }
+  ],
+  "reportingNote": "Initial default isolated TAP listed one file-level aggregate;14individual passing test names/counts are in the direct and isolation=none runs. All logs retained; no file-level aggregate is claimed as14individual results."
+}

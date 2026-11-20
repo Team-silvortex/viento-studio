@@ -4,7 +4,7 @@
 
 [快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [0.5.0 验收目标](MILESTONE_0.5.0.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
 
-当前源码的[0.3.0 发布记录](RELEASE_0.3.0.md)说明功能收录，0.3.0 发布验证见[发布检查](test-results/release-0.3.0/README.md)；上一版见[0.2.10 发布记录](RELEASE_0.2.10.md)。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
+当前源码的[0.3.1 发布记录](RELEASE_0.3.1.md)说明首次行为参数、名称与音轨连接及 CI 修复；本次发布验证见[发布检查](test-results/release-0.3.1/README.md)，上一版见[0.3.0 发布记录](RELEASE_0.3.0.md)。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
 
 ## 第一次使用
 
@@ -28,6 +28,7 @@
 | --- | --- |
 | 打开可编辑的俯视收集游戏初稿、查看玩法和迁移边界 | [晶石庭院](../examples/topdown-collect/README.md)、[本轮证据](test-results/topdown-collect/README.md) |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
+| 首次建立行为并填写参数、按名称连接对象／动作或选择音轨 | [首次参数配置](SCENE_BEHAVIORS.md#首次创建时配置参数)、[名称连接](SCENE_BEHAVIORS.md#首次创建时按名称连接参数)、[音轨选择](SCENE_BEHAVIORS.md#首次创建时选择音轨) |
 | 设置运行主相机的固定中心／实例跟随，保留独立编辑取景 | [二维运行主相机](SCENE_CAMERA2D.md) |
 | 编辑屏幕文本／状态条、锚点与共享状态样本 | [场景 HUD](SCENE_HUD2D.md) |
 | 新建多演员配方、起始排布、九域编辑及生成独立运行场景 | [场景片段组合](SCENE_COMPOSITION.md) |

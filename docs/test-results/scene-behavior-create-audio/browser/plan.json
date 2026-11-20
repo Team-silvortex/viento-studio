@@ -1,0 +1,837 @@
+{
+  "ok": true,
+  "plan": {
+    "format": "viento-build-plan",
+    "schemaVersion": 1,
+    "kind": "project",
+    "projectId": "657eb636-5e04-4f7c-942a-55f70ffdf76b",
+    "worldId": "world:7a1e90ec72bf63dd212afe9bc4ad2dc35d421745351f4a53c2abae6bc7bb5f23",
+    "worldRevision": "sha256:4e56a9726e6545a7a2e5067f4ddd5d9cffb98df930e28a36f76b355d181440cc",
+    "assembly": {
+      "objectId": "4f47a5ac-099b-4387-bb23-1949bacd82f0",
+      "sourcePath": "documents/projects/checkpoint.json",
+      "sourceRevision": "sha256:7c7aca34cff1ee5ff931707c1a338b9cbcf9c85018d58a7de047eef4b966116d",
+      "title": "Checkpoint audio trial"
+    },
+    "entrySceneId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+    "scenes": [
+      {
+        "format": "viento-build-plan",
+        "schemaVersion": 3,
+        "kind": "scene2d",
+        "projectId": "657eb636-5e04-4f7c-942a-55f70ffdf76b",
+        "worldId": "world:7a1e90ec72bf63dd212afe9bc4ad2dc35d421745351f4a53c2abae6bc7bb5f23",
+        "worldRevision": "sha256:4e56a9726e6545a7a2e5067f4ddd5d9cffb98df930e28a36f76b355d181440cc",
+        "scene": {
+          "objectId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+          "sourcePath": "documents/scenes/checkpoint.json",
+          "sourceRevision": "sha256:e0c8918cc08dd8fd95eaea3598ddaa61b82c60590e76dbdd42d185ae9c338a78",
+          "title": "Checkpoint sound scene",
+          "viewport": [
+            800,
+            480
+          ],
+          "background": "#152f2a"
+        },
+        "requiredCapabilities": [
+          "scene2d",
+          "input.arrows",
+          "state.movement",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "audio.nonspatial",
+          "audio.timeline"
+        ],
+        "actors": [
+          {
+            "instanceId": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+            "objectId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+            "position": [
+              200,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "name": "Event audio display object",
+            "sourcePath": "documents/definition.md",
+            "sourceRevision": "sha256:1d5e19983e4f0880c18cd3ec0eec1329b77c070faad1b1fae84e98883c99aa18",
+            "declaration": {
+              "objectId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+              "sourcePath": "documents/scenes/checkpoint.json",
+              "propertyPath": "/actors/0"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+            "kind": "audio",
+            "extension": "wav",
+            "size": 16044,
+            "sha256": "0e971b21d34dcfe7dbe6973922f5419a486508dfe9d5e49c801142e0494de238"
+          }
+        ],
+        "behaviors": {
+          "format": "viento-behavior-plan",
+          "schemaVersion": 1,
+          "backendId": "org.viento.godot4",
+          "language": "gdscript",
+          "manifest": {
+            "objectId": "561d6d43-7009-4421-885d-0060ba8028dc",
+            "sourcePath": "documents/behaviors/checkpoint.json",
+            "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382"
+          },
+          "sources": [
+            {
+              "objectId": "61b27e76-b459-4bd9-9120-692507ebc79f",
+              "sourcePath": "documents/scripts/event-audio.txt",
+              "sourceRevision": "sha256:7378f93fcc3c99ad50d6e08bc8b598ade3df7b0d88b02f1ef41d3c4d24a9da25",
+              "language": "gdscript",
+              "content": "extends Node\n\n@export var event_name: String = \"physics.landed\"\n@export var track_id: String = \"\"\n@export var instance_id: String = \"\"\nvar _project\nvar _subscription: int = 0\n\nfunc _object_valid(value) -> bool:\n\treturn typeof(value) == TYPE_OBJECT and is_instance_valid(value)\n\nfunc _uuid(value: String) -> bool:\n\tvar pattern := RegEx.new()\n\tpattern.compile(\"^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$\")\n\treturn value.length() == 36 and pattern.search(value) != null\n\nfunc _ready() -> void:\n\tif event_name.is_empty() or not _uuid(track_id) or (not instance_id.is_empty() and not _uuid(instance_id)):\n\t\t_fail(\"Choose an event name, a declared track UUID and an optional instance UUID.\")\n\t\treturn\n\tif not has_meta(\"viento_project\"):\n\t\t_fail(\"Bind this script in a project run with a declared audio track.\")\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tif not _object_valid(project):\n\t\t_fail(\"The project event and audio port is unavailable.\")\n\t\treturn\n\tfor method in [\"subscribe_event\", \"unsubscribe_event\", \"play_audio\"]:\n\t\tif not project.has_method(method):\n\t\t\t_fail(\"The project event and audio port has an unsupported contract.\")\n\t\t\treturn\n\t_project = project\n\tvar subscription = _project.subscribe_event(event_name, _on_event)\n\tif typeof(subscription) != TYPE_INT or subscription <= 0:\n\t\t_fail(\"Cannot subscribe to the requested project event.\")\n\t\treturn\n\t_subscription = subscription\n\nfunc _on_event(value) -> bool:\n\tif _subscription == 0 or not _object_valid(_project):\n\t\t_fail(\"The project event subscription is no longer available.\")\n\t\treturn false\n\tif not instance_id.is_empty() and (typeof(value) != TYPE_STRING or value != instance_id):\n\t\treturn true\n\tvar accepted = _project.play_audio(track_id)\n\tif typeof(accepted) != TYPE_BOOL or not accepted:\n\t\t_fail(\"The project rejected the requested audio track.\")\n\t\treturn false\n\treturn true\n\nfunc _disconnect() -> void:\n\tvar project = _project\n\tvar subscription := _subscription\n\t_project = null\n\t_subscription = 0\n\tif subscription != 0 and _object_valid(project) and project.has_method(\"unsubscribe_event\"):\n\t\tproject.unsubscribe_event(subscription)\n\nfunc _fail(message: String) -> void:\n\t_disconnect()\n\tpush_error(\"Project event audio: \" + message)\n\nfunc _exit_tree() -> void:\n\t_disconnect()\n"
+            },
+            {
+              "objectId": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+              "sourcePath": "documents/scripts/checkpoint.txt",
+              "sourceRevision": "sha256:f40e086df243c90358345a774ae7c7c6a237273d12aed61cffb5e7848d0829b8",
+              "language": "gdscript",
+              "content": "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n"
+            }
+          ],
+          "bindings": [
+            {
+              "bindingId": "a9bec4da-b207-4c7a-9bee-8827d72bf2d2",
+              "instanceId": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+              "implementation": {
+                "backendId": "org.viento.godot4",
+                "language": "gdscript",
+                "sourceObjectId": "61b27e76-b459-4bd9-9120-692507ebc79f"
+              },
+              "parameters": {
+                "event_name": "checkpoint",
+                "track_id": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+                "instance_id": ""
+              },
+              "events": [],
+              "objectId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+              "declaration": {
+                "objectId": "561d6d43-7009-4421-885d-0060ba8028dc",
+                "sourcePath": "documents/behaviors/checkpoint.json",
+                "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382",
+                "propertyPath": "/bindings/0"
+              }
+            },
+            {
+              "bindingId": "dd36bb77-be55-4813-b1a1-8a6396693a89",
+              "instanceId": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+              "implementation": {
+                "backendId": "org.viento.godot4",
+                "language": "gdscript",
+                "sourceObjectId": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739"
+              },
+              "parameters": {},
+              "events": [],
+              "objectId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+              "declaration": {
+                "objectId": "561d6d43-7009-4421-885d-0060ba8028dc",
+                "sourcePath": "documents/behaviors/checkpoint.json",
+                "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382",
+                "propertyPath": "/bindings/1"
+              }
+            }
+          ]
+        },
+        "audio": {
+          "format": "viento-audio-plan",
+          "schemaVersion": 1,
+          "manifest": {
+            "objectId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+            "sourcePath": "documents/audio/checkpoint.json",
+            "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4"
+          },
+          "document": {
+            "cues": [],
+            "format": "viento-scene-audio",
+            "sceneObjectId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+            "schemaVersion": 1,
+            "tracks": [
+              {
+                "id": "b52a066a-032e-4642-baf4-87330ad24fbb",
+                "loop": false,
+                "resourceId": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+                "role": "effect",
+                "volume": 0.25
+              },
+              {
+                "id": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+                "loop": true,
+                "resourceId": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+                "role": "music",
+                "volume": 0.15
+              }
+            ]
+          },
+          "locations": {
+            "tracks": [
+              {
+                "id": "b52a066a-032e-4642-baf4-87330ad24fbb",
+                "declaration": {
+                  "objectId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+                  "sourcePath": "documents/audio/checkpoint.json",
+                  "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4",
+                  "propertyPath": "/tracks/0",
+                  "sourceRange": {
+                    "start": 149,
+                    "end": 334,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+                "declaration": {
+                  "objectId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+                  "sourcePath": "documents/audio/checkpoint.json",
+                  "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4",
+                  "propertyPath": "/tracks/1",
+                  "sourceRange": {
+                    "start": 340,
+                    "end": 523,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/1",
+                    "exact": true
+                  }
+                }
+              }
+            ],
+            "cues": []
+          }
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+        "kind": "audio",
+        "extension": "wav",
+        "size": 16044,
+        "sha256": "0e971b21d34dcfe7dbe6973922f5419a486508dfe9d5e49c801142e0494de238"
+      }
+    ],
+    "requiredCapabilities": [
+      "audio.nonspatial",
+      "audio.timeline",
+      "behavior.bindings",
+      "behavior.gdscript",
+      "input.arrows",
+      "project.scenes",
+      "scene2d",
+      "state.movement"
+    ]
+  },
+  "diagnostics": [],
+  "snapshot": {
+    "format": "viento-build-snapshot",
+    "schemaVersion": 1,
+    "source": {
+      "workspace": {
+        "format": "viento-workspace",
+        "version": 3,
+        "id": "657eb636-5e04-4f7c-942a-55f70ffdf76b",
+        "name": "First creation audio reference UI trial",
+        "createdAt": 0,
+        "paths": {
+          "documents": "documents",
+          "templates": "templates",
+          "metadata": "metadata"
+        },
+        "assetStores": {
+          "main": {
+            "path": "assets"
+          }
+        },
+        "documentTypes": [
+          {
+            "id": "document",
+            "label": "文档",
+            "directory": "",
+            "parserProfile": "structured",
+            "template": "document.md"
+          }
+        ]
+      },
+      "definition": {
+        "id": "657eb636-5e04-4f7c-942a-55f70ffdf76b",
+        "name": "First creation audio reference UI trial",
+        "version": 3,
+        "paths": {
+          "documents": "documents",
+          "templates": "templates",
+          "metadata": "metadata"
+        },
+        "configurable": true,
+        "projectTypes": true,
+        "documentTypes": [
+          {
+            "id": "document",
+            "label": "文档",
+            "directory": "",
+            "parserProfile": "structured",
+            "template": "document.md",
+            "templateSource": "templates/document.md",
+            "content": ""
+          }
+        ]
+      },
+      "documents": [
+        {
+          "sourcePath": "documents/audio/checkpoint.json",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "7608896d-199a-4ffb-94d7-0f057afaea57",
+            "sourcePath": "documents/audio/checkpoint.json",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+                "slot": ""
+              }
+            ],
+            "assetBindings": [
+              {
+                "assetId": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+                "role": "audio"
+              }
+            ]
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+                "slot": ""
+              }
+            ],
+            "format": "viento-document",
+            "version": 1,
+            "id": "7608896d-199a-4ffb-94d7-0f057afaea57",
+            "sourcePath": "documents/audio/checkpoint.json",
+            "assetBindings": [
+              {
+                "assetId": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+                "role": "audio"
+              }
+            ],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "{\n  \"cues\": [],\n  \"format\": \"viento-scene-audio\",\n  \"sceneObjectId\": \"96c04f7b-5e82-4392-a8b9-3d6758bb6008\",\n  \"schemaVersion\": 1,\n  \"tracks\": [\n    {\n      \"id\": \"b52a066a-032e-4642-baf4-87330ad24fbb\",\n      \"loop\": false,\n      \"resourceId\": \"04ca58cb-f6c5-417c-8341-9211aa1bc604\",\n      \"role\": \"effect\",\n      \"volume\": 0.25\n    },\n    {\n      \"id\": \"4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d\",\n      \"loop\": true,\n      \"resourceId\": \"04ca58cb-f6c5-417c-8341-9211aa1bc604\",\n      \"role\": \"music\",\n      \"volume\": 0.15\n    }\n  ]\n}\n",
+          "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4"
+        },
+        {
+          "sourcePath": "documents/behaviors/checkpoint.json",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "561d6d43-7009-4421-885d-0060ba8028dc",
+            "sourcePath": "documents/behaviors/checkpoint.json",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "61b27e76-b459-4bd9-9120-692507ebc79f",
+                "slot": ""
+              },
+              {
+                "kind": "references",
+                "targetId": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+                "slot": ""
+              },
+              {
+                "kind": "references",
+                "targetId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+                "slot": ""
+              }
+            ],
+            "assetBindings": []
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "61b27e76-b459-4bd9-9120-692507ebc79f",
+                "slot": ""
+              },
+              {
+                "kind": "references",
+                "targetId": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+                "slot": ""
+              },
+              {
+                "kind": "references",
+                "targetId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+                "slot": ""
+              }
+            ],
+            "format": "viento-document",
+            "version": 1,
+            "id": "561d6d43-7009-4421-885d-0060ba8028dc",
+            "sourcePath": "documents/behaviors/checkpoint.json",
+            "assetBindings": [],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "{\n  \"format\": \"viento-scene-behaviors\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"96c04f7b-5e82-4392-a8b9-3d6758bb6008\",\n  \"bindings\": [\n    {\n      \"bindingId\": \"a9bec4da-b207-4c7a-9bee-8827d72bf2d2\",\n      \"instanceId\": \"b34e5840-ff4d-4da8-b8ac-8af4ab963c15\",\n      \"implementation\": {\n        \"backendId\": \"org.viento.godot4\",\n        \"language\": \"gdscript\",\n        \"sourceObjectId\": \"61b27e76-b459-4bd9-9120-692507ebc79f\"\n      },\n      \"parameters\": { \"event_name\":\"checkpoint\", \"track_id\":\"4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d\", \"instance_id\":\"\" },\n      \"events\": []\n    },\n    {\n      \"bindingId\": \"dd36bb77-be55-4813-b1a1-8a6396693a89\",\n      \"instanceId\": \"b34e5840-ff4d-4da8-b8ac-8af4ab963c15\",\n      \"implementation\": {\n        \"backendId\": \"org.viento.godot4\",\n        \"language\": \"gdscript\",\n        \"sourceObjectId\": \"6f051ec7-0bcc-4155-bb3f-deaa2db3d739\"\n      },\n      \"parameters\": {},\n      \"events\": []\n    }\n  ]\n}\n",
+          "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382"
+        },
+        {
+          "sourcePath": "documents/definition.md",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+            "sourcePath": "documents/definition.md",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "assetBindings": []
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "format": "viento-document",
+            "version": 1,
+            "id": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+            "sourcePath": "documents/definition.md",
+            "assetBindings": [],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "# Event audio display object\n\nOne authored object with two independent behavior bindings.\n\n\n!audio[checkpoint-tone.wav](asset:04ca58cb-f6c5-417c-8341-9211aa1bc604)\n\n",
+          "sourceRevision": "sha256:1d5e19983e4f0880c18cd3ec0eec1329b77c070faad1b1fae84e98883c99aa18"
+        },
+        {
+          "sourcePath": "documents/projects/checkpoint.json",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "4f47a5ac-099b-4387-bb23-1949bacd82f0",
+            "sourcePath": "documents/projects/checkpoint.json",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "assetBindings": []
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "format": "viento-document",
+            "version": 1,
+            "id": "4f47a5ac-099b-4387-bb23-1949bacd82f0",
+            "sourcePath": "documents/projects/checkpoint.json",
+            "assetBindings": [],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "{\n  \"format\": \"viento-project-assembly\",\n  \"schemaVersion\": 1,\n  \"title\": \"Checkpoint audio trial\",\n  \"entrySceneId\": \"96c04f7b-5e82-4392-a8b9-3d6758bb6008\",\n  \"sceneIds\": [\n    \"96c04f7b-5e82-4392-a8b9-3d6758bb6008\"\n  ]\n}\n",
+          "sourceRevision": "sha256:7c7aca34cff1ee5ff931707c1a338b9cbcf9c85018d58a7de047eef4b966116d"
+        },
+        {
+          "sourcePath": "documents/scenes/checkpoint.json",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+            "sourcePath": "documents/scenes/checkpoint.json",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+                "slot": ""
+              },
+              {
+                "kind": "audio",
+                "targetId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+                "slot": ""
+              },
+              {
+                "kind": "behavior",
+                "targetId": "561d6d43-7009-4421-885d-0060ba8028dc",
+                "slot": ""
+              }
+            ],
+            "assetBindings": []
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+                "slot": ""
+              },
+              {
+                "kind": "audio",
+                "targetId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+                "slot": ""
+              },
+              {
+                "kind": "behavior",
+                "targetId": "561d6d43-7009-4421-885d-0060ba8028dc",
+                "slot": ""
+              }
+            ],
+            "format": "viento-document",
+            "version": 1,
+            "id": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+            "sourcePath": "documents/scenes/checkpoint.json",
+            "assetBindings": [],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 2,\n  \"title\": \"Checkpoint sound scene\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#152f2a\",\n  \"actors\": [\n    {\n      \"instanceId\": \"b34e5840-ff4d-4da8-b8ac-8af4ab963c15\",\n      \"objectId\": \"e3e6bde0-1aa8-47dd-9809-db6cf51367a9\",\n      \"position\": [\n        200,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 0,\n      \"controls\": \"none\"\n    }\n  ]\n}\n",
+          "sourceRevision": "sha256:e0c8918cc08dd8fd95eaea3598ddaa61b82c60590e76dbdd42d185ae9c338a78"
+        },
+        {
+          "sourcePath": "documents/scripts/checkpoint.txt",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+            "sourcePath": "documents/scripts/checkpoint.txt",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "assetBindings": []
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "format": "viento-document",
+            "version": 1,
+            "id": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+            "sourcePath": "documents/scripts/checkpoint.txt",
+            "assetBindings": [],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n",
+          "sourceRevision": "sha256:f40e086df243c90358345a774ae7c7c6a237273d12aed61cffb5e7848d0829b8"
+        },
+        {
+          "sourcePath": "documents/scripts/event-audio.txt",
+          "record": {
+            "format": "viento-document",
+            "version": 1,
+            "id": "61b27e76-b459-4bd9-9120-692507ebc79f",
+            "sourcePath": "documents/scripts/event-audio.txt",
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "assetBindings": []
+          },
+          "descriptor": {
+            "documentType": "document",
+            "parserProfile": "structured",
+            "relations": [],
+            "format": "viento-document",
+            "version": 1,
+            "id": "61b27e76-b459-4bd9-9120-692507ebc79f",
+            "sourcePath": "documents/scripts/event-audio.txt",
+            "assetBindings": [],
+            "parserOptions": {},
+            "fieldGroups": [],
+            "typeLabel": "文档"
+          },
+          "content": "extends Node\n\n@export var event_name: String = \"physics.landed\"\n@export var track_id: String = \"\"\n@export var instance_id: String = \"\"\nvar _project\nvar _subscription: int = 0\n\nfunc _object_valid(value) -> bool:\n\treturn typeof(value) == TYPE_OBJECT and is_instance_valid(value)\n\nfunc _uuid(value: String) -> bool:\n\tvar pattern := RegEx.new()\n\tpattern.compile(\"^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$\")\n\treturn value.length() == 36 and pattern.search(value) != null\n\nfunc _ready() -> void:\n\tif event_name.is_empty() or not _uuid(track_id) or (not instance_id.is_empty() and not _uuid(instance_id)):\n\t\t_fail(\"Choose an event name, a declared track UUID and an optional instance UUID.\")\n\t\treturn\n\tif not has_meta(\"viento_project\"):\n\t\t_fail(\"Bind this script in a project run with a declared audio track.\")\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tif not _object_valid(project):\n\t\t_fail(\"The project event and audio port is unavailable.\")\n\t\treturn\n\tfor method in [\"subscribe_event\", \"unsubscribe_event\", \"play_audio\"]:\n\t\tif not project.has_method(method):\n\t\t\t_fail(\"The project event and audio port has an unsupported contract.\")\n\t\t\treturn\n\t_project = project\n\tvar subscription = _project.subscribe_event(event_name, _on_event)\n\tif typeof(subscription) != TYPE_INT or subscription <= 0:\n\t\t_fail(\"Cannot subscribe to the requested project event.\")\n\t\treturn\n\t_subscription = subscription\n\nfunc _on_event(value) -> bool:\n\tif _subscription == 0 or not _object_valid(_project):\n\t\t_fail(\"The project event subscription is no longer available.\")\n\t\treturn false\n\tif not instance_id.is_empty() and (typeof(value) != TYPE_STRING or value != instance_id):\n\t\treturn true\n\tvar accepted = _project.play_audio(track_id)\n\tif typeof(accepted) != TYPE_BOOL or not accepted:\n\t\t_fail(\"The project rejected the requested audio track.\")\n\t\treturn false\n\treturn true\n\nfunc _disconnect() -> void:\n\tvar project = _project\n\tvar subscription := _subscription\n\t_project = null\n\t_subscription = 0\n\tif subscription != 0 and _object_valid(project) and project.has_method(\"unsubscribe_event\"):\n\t\tproject.unsubscribe_event(subscription)\n\nfunc _fail(message: String) -> void:\n\t_disconnect()\n\tpush_error(\"Project event audio: \" + message)\n\nfunc _exit_tree() -> void:\n\t_disconnect()\n",
+          "sourceRevision": "sha256:7378f93fcc3c99ad50d6e08bc8b598ade3df7b0d88b02f1ef41d3c4d24a9da25"
+        }
+      ],
+      "assets": [
+        {
+          "record": {
+            "format": "viento-asset",
+            "version": 1,
+            "id": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+            "name": "checkpoint-tone.wav",
+            "kind": "audio",
+            "tags": [],
+            "content": {
+              "size": 16044,
+              "sha256": "0e971b21d34dcfe7dbe6973922f5419a486508dfe9d5e49c801142e0494de238"
+            },
+            "location": {
+              "store": "main",
+              "path": "media/audio/04ca58cb-f6c5-417c-8341-9211aa1bc604.wav"
+            },
+            "legacyPaths": []
+          },
+          "availability": "present-unverified"
+        }
+      ]
+    },
+    "plan": {
+      "format": "viento-build-plan",
+      "schemaVersion": 1,
+      "kind": "project",
+      "projectId": "657eb636-5e04-4f7c-942a-55f70ffdf76b",
+      "worldId": "world:7a1e90ec72bf63dd212afe9bc4ad2dc35d421745351f4a53c2abae6bc7bb5f23",
+      "worldRevision": "sha256:4e56a9726e6545a7a2e5067f4ddd5d9cffb98df930e28a36f76b355d181440cc",
+      "assembly": {
+        "objectId": "4f47a5ac-099b-4387-bb23-1949bacd82f0",
+        "sourcePath": "documents/projects/checkpoint.json",
+        "sourceRevision": "sha256:7c7aca34cff1ee5ff931707c1a338b9cbcf9c85018d58a7de047eef4b966116d",
+        "title": "Checkpoint audio trial"
+      },
+      "entrySceneId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+      "scenes": [
+        {
+          "format": "viento-build-plan",
+          "schemaVersion": 3,
+          "kind": "scene2d",
+          "projectId": "657eb636-5e04-4f7c-942a-55f70ffdf76b",
+          "worldId": "world:7a1e90ec72bf63dd212afe9bc4ad2dc35d421745351f4a53c2abae6bc7bb5f23",
+          "worldRevision": "sha256:4e56a9726e6545a7a2e5067f4ddd5d9cffb98df930e28a36f76b355d181440cc",
+          "scene": {
+            "objectId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+            "sourcePath": "documents/scenes/checkpoint.json",
+            "sourceRevision": "sha256:e0c8918cc08dd8fd95eaea3598ddaa61b82c60590e76dbdd42d185ae9c338a78",
+            "title": "Checkpoint sound scene",
+            "viewport": [
+              800,
+              480
+            ],
+            "background": "#152f2a"
+          },
+          "requiredCapabilities": [
+            "scene2d",
+            "input.arrows",
+            "state.movement",
+            "behavior.bindings",
+            "behavior.gdscript",
+            "audio.nonspatial",
+            "audio.timeline"
+          ],
+          "actors": [
+            {
+              "instanceId": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+              "objectId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+              "position": [
+                200,
+                220
+              ],
+              "size": [
+                80,
+                80
+              ],
+              "color": "#ffffff",
+              "speed": 0,
+              "controls": "none",
+              "name": "Event audio display object",
+              "sourcePath": "documents/definition.md",
+              "sourceRevision": "sha256:1d5e19983e4f0880c18cd3ec0eec1329b77c070faad1b1fae84e98883c99aa18",
+              "declaration": {
+                "objectId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+                "sourcePath": "documents/scenes/checkpoint.json",
+                "propertyPath": "/actors/0"
+              }
+            }
+          ],
+          "resources": [
+            {
+              "id": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+              "kind": "audio",
+              "extension": "wav",
+              "size": 16044,
+              "sha256": "0e971b21d34dcfe7dbe6973922f5419a486508dfe9d5e49c801142e0494de238"
+            }
+          ],
+          "behaviors": {
+            "format": "viento-behavior-plan",
+            "schemaVersion": 1,
+            "backendId": "org.viento.godot4",
+            "language": "gdscript",
+            "manifest": {
+              "objectId": "561d6d43-7009-4421-885d-0060ba8028dc",
+              "sourcePath": "documents/behaviors/checkpoint.json",
+              "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382"
+            },
+            "sources": [
+              {
+                "objectId": "61b27e76-b459-4bd9-9120-692507ebc79f",
+                "sourcePath": "documents/scripts/event-audio.txt",
+                "sourceRevision": "sha256:7378f93fcc3c99ad50d6e08bc8b598ade3df7b0d88b02f1ef41d3c4d24a9da25",
+                "language": "gdscript",
+                "content": "extends Node\n\n@export var event_name: String = \"physics.landed\"\n@export var track_id: String = \"\"\n@export var instance_id: String = \"\"\nvar _project\nvar _subscription: int = 0\n\nfunc _object_valid(value) -> bool:\n\treturn typeof(value) == TYPE_OBJECT and is_instance_valid(value)\n\nfunc _uuid(value: String) -> bool:\n\tvar pattern := RegEx.new()\n\tpattern.compile(\"^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$\")\n\treturn value.length() == 36 and pattern.search(value) != null\n\nfunc _ready() -> void:\n\tif event_name.is_empty() or not _uuid(track_id) or (not instance_id.is_empty() and not _uuid(instance_id)):\n\t\t_fail(\"Choose an event name, a declared track UUID and an optional instance UUID.\")\n\t\treturn\n\tif not has_meta(\"viento_project\"):\n\t\t_fail(\"Bind this script in a project run with a declared audio track.\")\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tif not _object_valid(project):\n\t\t_fail(\"The project event and audio port is unavailable.\")\n\t\treturn\n\tfor method in [\"subscribe_event\", \"unsubscribe_event\", \"play_audio\"]:\n\t\tif not project.has_method(method):\n\t\t\t_fail(\"The project event and audio port has an unsupported contract.\")\n\t\t\treturn\n\t_project = project\n\tvar subscription = _project.subscribe_event(event_name, _on_event)\n\tif typeof(subscription) != TYPE_INT or subscription <= 0:\n\t\t_fail(\"Cannot subscribe to the requested project event.\")\n\t\treturn\n\t_subscription = subscription\n\nfunc _on_event(value) -> bool:\n\tif _subscription == 0 or not _object_valid(_project):\n\t\t_fail(\"The project event subscription is no longer available.\")\n\t\treturn false\n\tif not instance_id.is_empty() and (typeof(value) != TYPE_STRING or value != instance_id):\n\t\treturn true\n\tvar accepted = _project.play_audio(track_id)\n\tif typeof(accepted) != TYPE_BOOL or not accepted:\n\t\t_fail(\"The project rejected the requested audio track.\")\n\t\treturn false\n\treturn true\n\nfunc _disconnect() -> void:\n\tvar project = _project\n\tvar subscription := _subscription\n\t_project = null\n\t_subscription = 0\n\tif subscription != 0 and _object_valid(project) and project.has_method(\"unsubscribe_event\"):\n\t\tproject.unsubscribe_event(subscription)\n\nfunc _fail(message: String) -> void:\n\t_disconnect()\n\tpush_error(\"Project event audio: \" + message)\n\nfunc _exit_tree() -> void:\n\t_disconnect()\n"
+              },
+              {
+                "objectId": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739",
+                "sourcePath": "documents/scripts/checkpoint.txt",
+                "sourceRevision": "sha256:f40e086df243c90358345a774ae7c7c6a237273d12aed61cffb5e7848d0829b8",
+                "language": "gdscript",
+                "content": "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n"
+              }
+            ],
+            "bindings": [
+              {
+                "bindingId": "a9bec4da-b207-4c7a-9bee-8827d72bf2d2",
+                "instanceId": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+                "implementation": {
+                  "backendId": "org.viento.godot4",
+                  "language": "gdscript",
+                  "sourceObjectId": "61b27e76-b459-4bd9-9120-692507ebc79f"
+                },
+                "parameters": {
+                  "event_name": "checkpoint",
+                  "track_id": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+                  "instance_id": ""
+                },
+                "events": [],
+                "objectId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+                "declaration": {
+                  "objectId": "561d6d43-7009-4421-885d-0060ba8028dc",
+                  "sourcePath": "documents/behaviors/checkpoint.json",
+                  "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382",
+                  "propertyPath": "/bindings/0"
+                }
+              },
+              {
+                "bindingId": "dd36bb77-be55-4813-b1a1-8a6396693a89",
+                "instanceId": "b34e5840-ff4d-4da8-b8ac-8af4ab963c15",
+                "implementation": {
+                  "backendId": "org.viento.godot4",
+                  "language": "gdscript",
+                  "sourceObjectId": "6f051ec7-0bcc-4155-bb3f-deaa2db3d739"
+                },
+                "parameters": {},
+                "events": [],
+                "objectId": "e3e6bde0-1aa8-47dd-9809-db6cf51367a9",
+                "declaration": {
+                  "objectId": "561d6d43-7009-4421-885d-0060ba8028dc",
+                  "sourcePath": "documents/behaviors/checkpoint.json",
+                  "sourceRevision": "sha256:a3ac83f8da570edd0e56232cef674a11eeff7f224049715c2bd5a914b1a1e382",
+                  "propertyPath": "/bindings/1"
+                }
+              }
+            ]
+          },
+          "audio": {
+            "format": "viento-audio-plan",
+            "schemaVersion": 1,
+            "manifest": {
+              "objectId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+              "sourcePath": "documents/audio/checkpoint.json",
+              "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4"
+            },
+            "document": {
+              "cues": [],
+              "format": "viento-scene-audio",
+              "sceneObjectId": "96c04f7b-5e82-4392-a8b9-3d6758bb6008",
+              "schemaVersion": 1,
+              "tracks": [
+                {
+                  "id": "b52a066a-032e-4642-baf4-87330ad24fbb",
+                  "loop": false,
+                  "resourceId": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+                  "role": "effect",
+                  "volume": 0.25
+                },
+                {
+                  "id": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+                  "loop": true,
+                  "resourceId": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+                  "role": "music",
+                  "volume": 0.15
+                }
+              ]
+            },
+            "locations": {
+              "tracks": [
+                {
+                  "id": "b52a066a-032e-4642-baf4-87330ad24fbb",
+                  "declaration": {
+                    "objectId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+                    "sourcePath": "documents/audio/checkpoint.json",
+                    "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4",
+                    "propertyPath": "/tracks/0",
+                    "sourceRange": {
+                      "start": 149,
+                      "end": 334,
+                      "encoding": "utf-16",
+                      "propertyPath": "/tracks/0",
+                      "exact": true
+                    }
+                  }
+                },
+                {
+                  "id": "4cd0d63e-60a2-4ab3-8bb1-00e97e5f397d",
+                  "declaration": {
+                    "objectId": "7608896d-199a-4ffb-94d7-0f057afaea57",
+                    "sourcePath": "documents/audio/checkpoint.json",
+                    "sourceRevision": "sha256:edf318562309391dc882fee019d2331136cba57681a9bc4ab9fddd16ea5342c4",
+                    "propertyPath": "/tracks/1",
+                    "sourceRange": {
+                      "start": 340,
+                      "end": 523,
+                      "encoding": "utf-16",
+                      "propertyPath": "/tracks/1",
+                      "exact": true
+                    }
+                  }
+                }
+              ],
+              "cues": []
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "04ca58cb-f6c5-417c-8341-9211aa1bc604",
+          "kind": "audio",
+          "extension": "wav",
+          "size": 16044,
+          "sha256": "0e971b21d34dcfe7dbe6973922f5419a486508dfe9d5e49c801142e0494de238"
+        }
+      ],
+      "requiredCapabilities": [
+        "audio.nonspatial",
+        "audio.timeline",
+        "behavior.bindings",
+        "behavior.gdscript",
+        "input.arrows",
+        "project.scenes",
+        "scene2d",
+        "state.movement"
+      ]
+    }
+  },
+  "snapshotId": "sha256:3ea39538203c07eaf767561bef2fdca2646ba40efeb4a92e79d9711e8f756a72",
+  "resources": {}
+}

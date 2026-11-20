@@ -1,3 +1,8 @@
+import { setupSceneBehaviorCreateAudio } from '../../web/modules/app-scene-behavior-create-audio.js';
+import { setupSceneBehaviorCreateReferences } from '../../web/modules/app-scene-behavior-create-references.js';
+import { setupSceneBehaviorCreateParameters } from '../../web/modules/app-scene-behavior-create-parameters.js';
+import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
+import { reviewSceneBehaviorCreateParameters, proposeSceneBehaviorCreateParameters, applySceneBehaviorCreateParameterSources } from '../../engine/scene-behavior-create-parameters.mjs';
 import { setupSceneBehaviorMenuTargets } from '../../web/modules/app-scene-behavior-menu-targets.js';
 import { validateProjectPauseObservation } from '../../engine/project-pause-observation.mjs';
 import { proposeSceneBehaviorBindingCopy } from '../../engine/scene-behavior-binding-copy.mjs';
@@ -45,6 +50,33 @@ import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } fro
 import { validateRuntimeCaseSuite, summarizeRuntimeCaseSuite } from '../../engine/runtime-case-suite-contract.mjs';
 import { validateRuntimeCaseReport } from '../../engine/runtime-case-report.mjs';
 import { getCreatePathError } from '../../engine/document-contract.mjs';
+
+// Transport only data descriptors across the fixture's VM boundary. Browser
+// imports share one realm; the adversarial pure-module tests remain strict.
+function parameterData(value, depth = 0) {
+  if (value === null || typeof value !== 'object') {
+    if (['string', 'number', 'boolean', 'undefined'].includes(typeof value) || value === null) return value;
+    throw new TypeError('Expected parameter fixture data');
+  }
+  if (depth > 16) throw new TypeError('Parameter fixture data is too deep');
+  const descriptors = Object.getOwnPropertyDescriptors(value), result = Array.isArray(value) ? [] : {};
+  for (const key of Reflect.ownKeys(descriptors)) {
+    if (Array.isArray(value) && key === 'length') { result.length = descriptors[key].value; continue; }
+    const descriptor = descriptors[key];
+    if (typeof key !== 'string' || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) throw new TypeError('Expected a data descriptor');
+    Object.defineProperty(result, key, { value: parameterData(descriptor.value, depth + 1), enumerable: true, writable: true, configurable: true });
+  }
+  return result;
+}
+function parameterCreationFixture(options) {
+  const sources = new WeakMap();
+  return setupSceneBehaviorCreateParameters({ ...options, getContext() {
+    const context = options.getContext(), source = context.source;
+    if (!source || typeof source !== 'object') return context;
+    if (!sources.has(source)) sources.set(source, parameterData(source));
+    return { ...context, source: sources.get(source) };
+  } });
+}
 
 // Event-capable DOM fixture for the real dialog controllers. It reads their
 // actual markup; layout and rendering remain covered by the native smoke test.
@@ -183,6 +215,19 @@ export async function dialogHarness(module, overrides = {}) {
     clearTimeout: (id) => timers.delete(id),
     proposeSceneBehaviorBindingCopy: value => proposeSceneBehaviorBindingCopy(JSON.parse(JSON.stringify(value))),
     setupSceneBehaviorMenuTargets,
+    setupSceneBehaviorCreateParameters: parameterCreationFixture,
+    setupSceneBehaviorCreateReferences: options => setupSceneBehaviorCreateReferences({ ...options,
+      getContext: () => { const context = options.getContext(); return { ...context, origin: context.origin ? parameterData(context.origin) : context.origin }; },
+      ...(typeof options.getReferences === 'function' ? { getReferences: async payload => parameterData(await options.getReferences(payload)) } : {}),
+    }),
+    setupSceneBehaviorCreateAudio: options => setupSceneBehaviorCreateAudio({ ...options,
+      getContext: () => { const context = options.getContext(); return { ...context, origin: context.origin ? parameterData(context.origin) : context.origin }; },
+      ...(typeof options.getAudioTracks === 'function' ? { getAudioTracks: async payload => parameterData(await options.getAudioTracks(payload)) } : {}),
+    }),
+    captureScriptParameterContract: value => captureScriptParameterContract(parameterData(value)),
+    reviewSceneBehaviorCreateParameters: value => reviewSceneBehaviorCreateParameters(parameterData(value)),
+    proposeSceneBehaviorCreateParameters: value => proposeSceneBehaviorCreateParameters(parameterData(value)),
+    applySceneBehaviorCreateParameterSources: value => applySceneBehaviorCreateParameterSources(parameterData(value)),
     setupSceneBehaviorReferences: () => ({ refresh() {}, reset() {}, dispose() {} }),
     setupSceneLayout: () => ({ setAvailable() {}, open() {} }),
     setupSceneCompositionOverrides: () => ({ open() {}, refresh() {}, destroy() {} }),

@@ -38,8 +38,8 @@ async function main() {
     console.log(`静态索引检查通过：${index.count} 个唯一文档`);
   }
   const tests = (await fs.readdir('scripts/tests')).filter((name) => name.endsWith('.test.mjs'));
-  const result = await runCommand(process.execPath, ['--test', '--test-concurrency=2', ...tests.map((name) => path.join('scripts/tests', name))]);
-  console.log(result.stdout);
+  console.log(`运行应用测试：${tests.length} 个文件（并发 2）`);
+  await runCommand(process.execPath, ['--test', '--test-reporter=tap', '--test-concurrency=2', ...tests.map((name) => path.join('scripts/tests', name))], { stdio: 'inherit' });
 }
 
 main().catch((error) => {

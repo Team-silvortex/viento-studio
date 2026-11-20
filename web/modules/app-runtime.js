@@ -6052,12 +6052,20 @@ async function initApp(options = {}) {
       scene3dCopy: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DCopyDraft },
       scene3dRemoval: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DRemovalDraft },
       build: {
-        getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(),
+        getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), referencesAvailable: sceneBehaviorReferencesAvailable === true, audioTracksAvailable: sceneAudioDirectoryAvailable === true,
           nonWorldBusy: Boolean(state.isSaving || state.isRebuilding || state.isImportingMedia || state.isExporting || state.isConfiguringProject || state.isLoadingSource || state.isLoadingTemplate || state.isLoadingFields), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
           sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
           sceneDraftWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source' && state.editHasUnsavedChanges,
           compositionSourceWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source',
           sceneDraftToken: `${editorLoadToken}:${scenePreviewDraftEpoch}` }),
+        getReferences: async payload => {
+          if (sceneBehaviorReferencesAvailable !== true) throw Object.assign(new Error('Scene behavior reference directory is unavailable.'), { errorCode: 'scene_behavior_reference_directory_unavailable' });
+          return inspectSceneBehaviorReferenceDirectory(payload);
+        },
+        getAudioTracks: async payload => {
+          if (sceneAudioDirectoryAvailable !== true) throw Object.assign(new Error('Scene audio directory is unavailable.'), { errorCode: 'scene_audio_directory_unavailable' });
+          return inspectSceneAudioDirectory(payload);
+        },
         getSceneDraft: getScenePreviewDraft,
         applySceneDraft: applySceneSourceLayoutDraft,
         getCompositionSource: getSceneCompositionSource,

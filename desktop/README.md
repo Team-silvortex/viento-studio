@@ -1,6 +1,6 @@
 # Viento Studio 桌面版
 
-当前源码版本 **0.3.0**，功能范围见[版本记录](../docs/RELEASE_0.3.0.md)。本次只交付源码，本机 Linux x86_64 AppImage 仍为 **0.2.0**，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前源码版本 **0.3.1**，功能范围见[版本记录](../docs/RELEASE_0.3.1.md)。本次只交付源码，本机 Linux x86_64 AppImage 仍为 **0.2.0**，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
 2026-10-24 本机安装更新到 **0.2.0**。原生验收发现交互问题后，修复已重新打包并安装；首轮、诊断及最终复测分别保留包摘要和来源。实测包括作品库与导出、三语和编辑媒体、配方生成与有限 Godot 无头链，以及新建状态表中的手动试算和用例 JSON 编辑；各项是否在同一包上复测以[本轮记录](../docs/test-results/native-installed-0.2.0/README.md)为准。此前 [0.1.1 安装验收](../docs/test-results/native-installed-0.1.1/README.md)和[0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留原时点；其他平台不由本机结果外推。
 

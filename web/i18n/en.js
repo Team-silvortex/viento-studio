@@ -1,6 +1,16 @@
 // Source messages are stable Chinese keys. Parameters use {0}, {1}, …;
 // replacements are text, never markup or translation keys.
 export default {
+  "从已保存场景、组装和输入映射读取名称；明确填入一个已有文本参数后，仍需审阅新行为并保存。": "Read names from saved scenes, assemblies and input maps. Explicitly fill one existing text parameter, then review and save the new behavior.",
+  "请选择参考类型": "Select a reference type",
+  "已填入文本参数；仍需审阅新行为并保存。": "The text parameter is filled. Review and save the new behavior.",
+  "所选值与当前参数相同，参数与审阅保持不变。": "The selected value already matches. The parameter and review remain unchanged.",
+  "无法补齐参数，原始输入已保留；请检查参数大小和数量。": "Could not add missing parameters. Your input is retained; check parameter sizes and counts.",
+  "参数 JSON": "Parameter JSON",
+  "每条绑定独立保存参数 JSON；无效或未完成的输入会保留，审阅时再检查。": "Each binding keeps its own parameter JSON. Invalid or unfinished input is retained and checked during review.",
+  "参数接口仅作提示。补齐只追加缺失默认项，保留已有参数；选择脚本不会自动填入。": "The interface is advisory. Add only missing defaults explicitly; existing parameters stay unchanged. Selecting a script does not fill parameters.",
+  "参数 JSON 尚未有效，辅助不会修改原文；请继续手工编辑。": "The parameter JSON is not valid yet. The helper will keep the source unchanged; continue editing it manually.",
+  "参数 JSON 须为有效的标量对象，参数名、数值与数量须符合行为限制。": "Parameter JSON must be a valid scalar object with names, values and counts within the behavior limits.",
   "关卡重试目标无效。请选择组装中的其他成员场景，并填写完整的小写 UUID。": "Invalid level retry target. Enter the full lowercase UUID of another member of this assembly.",
   "关卡重试动作无效。请填写已注册的非空动作名称。": "Invalid retry action. Enter a nonempty registered action name.",
   "关卡重试初始值无效。请输入最多16个标量键、4096 UTF-8字节的严格 JSON 对象。": "Invalid retry defaults. Enter a strict JSON object with at most 16 scalar keys and 4096 UTF-8 bytes.",
@@ -4439,4 +4449,11 @@ export default {
   "行为设置已暂存；保存普通 TXT 脚本后，请明确返回并重新选择脚本。": "Behavior settings are held. After saving an ordinary TXT script, explicitly return and choose the script again.",
   "正在返回原场景并重新核对脚本目录…": "Returning to the original scene and rechecking the script directory…",
   "未进入脚本创建，行为设置已保留，请重试。": "Script creation did not start. Behavior settings are preserved. Try again.",
+  "连接目录与创建来源不一致；请在创建窗口重新读取工程，参数与审阅保持不变。": "The reference directory does not match the creation source. Reload the project in the creation dialog. Parameters and review are preserved.",
+  "无法填入参数，原始输入已保留；请检查参数大小和数量。": "Could not insert the value. Your original input is preserved. Check the parameter size and count.",
+  "按声明音轨填写行为参数": "Fill behavior parameters from declared tracks",
+  "读取当前场景已保存的音轨，明确选择音轨和已有文本参数后填入；不会识别参数用途或播放声音。": "Read this scene’s saved tracks, choose a track and an existing text parameter, then insert it. This does not infer parameter meaning or play audio.",
+  "音轨编号：{0}；素材编号：{1}": "Track ID: {0}; asset ID: {1}",
+  "音轨目录与创建来源不一致；请在创建窗口重新读取工程，参数与审阅保持不变。": "The audio directory does not match the creation source. Reload the project in the creation dialog. Parameters and review are preserved.",
+  "已填入音轨编号；仍需审阅新行为并保存。": "Track ID inserted. Review and save the new behavior.",
 };
